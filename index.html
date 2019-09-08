@@ -1,0 +1,28 @@
+<html>
+
+<head>
+    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script>
+    <!-- <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.0.0/dist/aframe-extras.min.js"></script> -->
+    <script src="components/rain-of-entities.js"></script>
+    <script src="components/rain-of-posts.js"></script>
+
+</head>
+
+<body>
+    <a-scene physics id="theScene" rain-of-entities="spread:13" rain-of-posts="spread: 3">
+        <a-entity id="rig" position="0 1.6 0">
+            <a-entity id="camera" camera look-controls wasd-controls></a-entity>
+        </a-entity>
+        <!-- <a-box position="-1 10 -3" rotation="0 45 0" color="#4CC3D9" height="2" dynamic-body></a-box> -->
+        <!-- <a-box position="-1 4 -3" rotation="0 45 0" color="#4CC3D9" height="2" dynamic-body></a-box> -->
+
+        <a-box position="0 -0 -4" rotation="-90 0 0" width="4" height="4" color="#3E3E3E" static-body></a-box>
+        <a-sky color="#ECECEC"></a-sky>
+    </a-scene>
+
+
+    <script src="./kaaro.js"></script>
+</body>
+
+</html>
