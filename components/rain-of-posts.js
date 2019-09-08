@@ -10,7 +10,7 @@
 AFRAME.registerComponent('rain-of-posts', {
     schema: {
       tagName:    { default: 'a-box' },
-      components: { default: ['dynamic-body', 'force-pushable', 'color|#4CC3D9', 'height|2']},
+      components: { default: ['dynamic-body', 'force-pushable', 'height|2']},
       spread:     { default: 10, min: 0 },
       maxCount:   { default: 10, min: 0 },
       interval:   { default: 1000, min: 0 },
