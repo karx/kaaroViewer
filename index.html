@@ -12,15 +12,24 @@
 
 <body>
     <a-scene physics id="theScene" rain-of-entities="spread:13" rain-of-posts="spread: 5">
+        <a-assets>
+            <canvas id="my-sky-canvas" crossorigin="anonymous"></canvas>
+            <img id="my-sky-image" src="./images/aos-corr-dim-pano2.jpg">
+            <img id="my-sky-image2" src="./images/Cmglee_Wikimania2016_Esino_Lario_Last_Supper_tinyplanet.jpg">
+            
+        </a-assets>
         <a-entity id="rig" position="0 1.6 0">
             <a-entity id="camera" camera look-controls wasd-controls></a-entity>
-            <canvas id="my-sky-canvas" crossorigin="anonymous"></canvas>
         </a-entity>
         <!-- <a-box position="-1 10 -3" rotation="0 45 0" color="#4CC3D9" height="2" dynamic-body></a-box> -->
         <!-- <a-box position="-1 4 -3" rotation="0 45 0" color="#4CC3D9" height="2" dynamic-body></a-box> -->
 
         <a-box position="0 -0 -4" rotation="-90 0 0" width="4" height="4" color="#3E3E3E" static-body></a-box>
-        <a-sky sky-canvas="my-sky-canvas"></a-sky>
+        <!-- <a-sky sky-canvas="my-sky-canvas"></a-sky> -->
+        <!-- <a-sphere position="0 1.6 0" radius="10" side="double" src="#my-sky-image2"></a-sphere> -->
+        <a-sphere position="0 1.6 0" radius="10" side="double"   material="src: #my-sky-canvas" sky-canvas="my-sky-canvas"></a-sphere>
+
+        <!-- <a-entity geometry="primitive: sphere; radius: 10; side: double"  material="src: #my-sky-canvas" sky-canvas="my-sky-canvas"></a-entity>
     </a-scene>
 
 
