@@ -4,6 +4,8 @@ var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEv
 var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
 
 var g_height = 0;
+let entities_captured = {};
+let entities_height = {};
 
 async function entityMatch(query = "John Trivolta's performace in Pulp fiction was jazzy") {
     let headers = {
@@ -149,15 +151,26 @@ async function pushImagesToViewer(array_of_imags) {
       });
       document.getElementById("theScene").append(...nodes_to_append);
       g_height += 2;
-      document.getElementById("rig").setAttribute('position', `0 ${1.6 + g_height/2} 0`);
+      document.getElementById("rig").setAttribute('position', `0 ${1.6 + g_height} 0`);
+}
+
+async function jumpToAHeight(height) {
+    document.getElementById("rig").setAttribute('position', `0 ${1.6 + height} 0`);
 }
 
 async function parseAndActOnText(text) {
     let quid_list = await entityMatch(text);
     quid_list.forEach( async (quid) => {
         if (quid) {
-            let images_from_wiki = await getEntityImages(quid);
-            pushImagesToViewer(images_from_wiki);
+            if (entities_captured[quid]) {
+                jumpToAHeight(entities_height[quid]);
+            } else {
+                entities_captured[quid] = true;
+                entities_height[quid] = g_height;
+                let images_from_wiki = await getEntityImages(quid);
+                pushImagesToViewer(images_from_wiki);
+            }
+
         }
     });
 }
@@ -192,6 +205,10 @@ async function listenForAllTheThingsTheUserSaysMostlyEntities() {
 
     recognition.onaudiostart = (event) => {
         console.log("Mic is On");
+        let el = document.createElement("a-entity");
+        el.setAttribute('gltf-model','#mic-asset');
+        el.setAttribute('position',`2 ${g_height} -2`);
+        // <a-entity gltf-model="#type-person-boy" position="2 2 -2" static-body></a-entity>
         document.getElementById('theMic').setAttribute('gltf-model','#mic-asset');
     }
 
