@@ -5,15 +5,16 @@ var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
 
 var g_height = 0;
 
-async function entityMatch(query = "Pulp fiction") {
+async function entityMatch(query = "John Trivolta's performace in Pulp fiction was jazzy") {
     let headers = {
         "User-Agent":
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
       };
   console.log("init");
-  const wikiEntityLikingResponse = await fetch(`https://opentapioca.org/api/annotate?query=${query}`, {
+  console.log(query);
+  const wikiEntityLikingResponse = await fetch(`https://cors-anywhere.herokuapp.com/https://opentapioca.org/api/annotate?query=${encodeURI(query)}`, {
     method: 'GET',
-    mode: 'no-cors',
+    mode: 'cors',
     headers: headers
   });
   console.log(wikiEntityLikingResponse);
@@ -29,6 +30,7 @@ async function entityMatch(query = "Pulp fiction") {
   quid_list = qid_list.filter(quid => !!quid)
   console.log(qid_list);
   return qid_list;
+    // return ['Q712548', 'Q9570'];
 }
 
 async function getEntityImages(QID) {
@@ -130,7 +132,7 @@ async function pushImagesToViewer(array_of_imags) {
         console.log(image);
         console.log(i);
     
-        const r = 4; //radius of the scene
+        const r = 4 + (array_of_imags.length/10); //radius of the scene
         const angle = ((2 * Math.PI) / array_of_imags.length) * i;
         entityEl.setAttribute(
           "position",
@@ -146,15 +148,17 @@ async function pushImagesToViewer(array_of_imags) {
         nodes_to_append.push(entityEl);
       });
       document.getElementById("theScene").append(...nodes_to_append);
-      g_height += 3;
-      document.getElementById("rig").setAttribute('position', `0 ${1.6 + g_height} 0`);
+      g_height += 2;
+      document.getElementById("rig").setAttribute('position', `0 ${1.6 + g_height/2} 0`);
 }
 
 async function parseAndActOnText(text) {
     let quid_list = await entityMatch(text);
     quid_list.forEach( async (quid) => {
-        let images_from_wiki = await getEntityImages(quid);
-        pushImagesToViewer(images_from_wiki);
+        if (quid) {
+            let images_from_wiki = await getEntityImages(quid);
+            pushImagesToViewer(images_from_wiki);
+        }
     });
 }
 
@@ -194,6 +198,9 @@ async function listenForAllTheThingsTheUserSaysMostlyEntities() {
     recognition.onend = (event) => {
         console.log("Ended");
         document.getElementById('theMic').setAttribute('gltf-model', '#type-person-boy');
+        setTimeout(() => {
+            recognition.start();
+        },1000);
     }
 
     recognition.error = (event) => {
@@ -209,3 +216,6 @@ async function listenForAllTheThingsTheUserSaysMostlyEntities() {
 // });
 // showFromWikidata();
 listenForAllTheThingsTheUserSaysMostlyEntities();
+
+// parseAndActOnText('kartik');
+// entityMatch();
