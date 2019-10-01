@@ -14,6 +14,10 @@ async function entityMatch(query = "John Trivolta's performace in Pulp fiction w
       };
   console.log("init");
   console.log(query);
+  if (!query || query.length < 3) {
+    return [];
+    
+  }
   const wikiEntityLikingResponse = await fetch(`https://cors-anywhere.herokuapp.com/https://opentapioca.org/api/annotate?query=${encodeURI(query)}`, {
     method: 'GET',
     mode: 'cors',
@@ -187,9 +191,9 @@ async function listenForAllTheThingsTheUserSaysMostlyEntities() {
     // speechRecognitionList.addFromString(grammar, 1);
 
     // recognition.grammars = speechRecognitionList;
-    // //recognition.continuous = false;
+    // recognition.continuous = true;
     // recognition.lang = 'en-US';
-    // recognition.interimResults = false;
+    recognition.interimResults = true;
     // recognition.maxAlternatives = 1;
     recognition.start();
 
@@ -228,11 +232,4 @@ async function listenForAllTheThingsTheUserSaysMostlyEntities() {
     
 }
 
-// document.onload(() => {
-//   console.log("Loaded");
-// });
-// showFromWikidata();
 listenForAllTheThingsTheUserSaysMostlyEntities();
-
-// parseAndActOnText('kartik');
-// entityMatch();
