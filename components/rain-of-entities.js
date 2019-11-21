@@ -58,7 +58,7 @@ AFRAME.registerComponent('rain-of-entities', {
       var spread = this.data.spread;
       return {
         x: Math.random() * spread - spread / 2,
-        y: 3,
+        y: 6,
         z: Math.random() * spread - spread / 2
       };
     }

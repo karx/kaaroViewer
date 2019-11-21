@@ -5,27 +5,40 @@
     <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script>
     <!-- <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.0.0/dist/aframe-extras.min.js"></script> -->
     <script src="components/rain-of-entities.js"></script>
-    <script src="components/rain-of-posts.js"></script>
+    <!-- <script src="components/rain-of-posts.js"></script> -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.js"></script>
+
+    <script src="main.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
-    <a-scene physics id="theScene" rain-of-entities="spread:13" rain-of-posts="spread: 5">
+    <a-scene id="theScene" rain-of-entities="spread:13">
+        
+        <a-entity id="focusPoint" position="0 0 0"></a-entity>
+
         <a-entity id="rig" position="0 1.6 0" rotation="0 180 0">
-            <a-entity id="camera" camera look-controls wasd-controls></a-entity>
+            <a-entity id="camera" camera="active: true" camera look-controls wasd-controls></a-entity>
         </a-entity>
-        <!-- <a-box position="-1 10 -3" rotation="0 45 0" color="#4CC3D9" height="2" dynamic-body></a-box> -->
-        <!-- <a-box position="-1 4 -3" rotation="0 45 0" color="#4CC3D9" height="2" dynamic-body></a-box> -->
+        
+        <a-entity id="rig2" position="0 1.6 0">
+            <a-entity id="camera2" camera look-controls wasd-controls></a-entity>
+        </a-entity>
+        
+        <a-box id="slidePage" position="0 3 4" rotation="15 0 0" width="4" height="4" material="src: url(https://akriya.co.in/assets/images/wendor-events/wendorEventLarge.jpg)"></a-box>
 
-        <a-box position="0 -0 -4" rotation="-90 0 0" width="4" height="4" color="#3E3E3E" static-body></a-box>
         <a-sky color="#ea3456"></a-sky>
+
     </a-scene>
+    <div id="overlay-text">KT Session 1</div>
 
 
-    <script src="./kaaro.js"></script>
+    <!-- <script src="./kaaro.js"></script> -->
 </body>
 
 </html>
