@@ -3,22 +3,22 @@
 let slides = {
     "data": [
         {
-            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/1.png"
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/1-dev1.png"
         },
         {
-            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/2.png"
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/2-dev1.png"
         },
         {
-            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/3.png"
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/3-dev1.png"
         },
         {
-            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/4.png"
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/4-dev1.png"
         },
         {
-            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/5.png"
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/5-dev1.png"
         },
         {
-            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/6.png"
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/dev1-start.png"
         }
 
     ],
