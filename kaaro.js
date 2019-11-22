@@ -40,7 +40,7 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
       );
     };
     var client = new Paho.Client(
-      "ws://api.akriya.co.in:8083/mqtt",
+      "wss://api.akriya.co.in:8084/mqtt",
       `clientId-kaaro_Event_Canvas-1${ID}`
     );
   
