@@ -3,17 +3,26 @@
 let slides = {
     "data": [
         {
-            "imgUrl":"https://akriya.co.in/assets/images/coke-voting-show.png"
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/1.png"
         },
         {
-            "imgUrl":"https://akriya.co.in/assets/images/coke-voting.png"
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/2.png"
         },
         {
-            "imgUrl":"https://akriya.co.in/assets/images/wendor-events/wendorEventMini.jpg"
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/3.png"
+        },
+        {
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/4.png"
+        },
+        {
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/5.png"
+        },
+        {
+            "imgUrl":"https://akriya.co.in/assets/images/kaaroEvents/6.png"
         }
 
     ],
-    "count":3
+    "count":6
 };
 const l = console.log;
 let i = 0;
