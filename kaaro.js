@@ -18,7 +18,7 @@ let slides = {
       imgUrl: "https://akriya.co.in/assets/images/kaaroEvents/5-dev1.png"
     },
     {
-      imgUrl: "https://akriya.co.in/assets/images/kaaroEvents/dev1-start.png"
+      imgUrl: "https://akriya.co.in/assets/images/kaaroEvents/Adev1-hint.png"
     }
   ],
   count: 6
@@ -42,9 +42,12 @@ let slides2 = {
       },
       {
         imgUrl: "https://akriya.co.in/assets/images/kaaroEvents/6-dev2.png"
+      },
+      {
+          imgUrl: "https://akriya.co.in/assets/images/kaaroEvents/Adev2-hint.png"
       }
     ],
-    count: 6
+    count: 7
   };
 const l = console.log;
 let i1 = 0;
