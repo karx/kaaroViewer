@@ -19,3 +19,8 @@
   font-size: 2em;
   font-family: sans-serif, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana;
 }
+
+
+#arjsDebugUIContainer {
+  display: none;
+}
