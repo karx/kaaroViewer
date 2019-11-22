@@ -94,8 +94,8 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
   async function nextSlide() {
       l(`src: url(${slides.data[i%slides.count].imgUrl})`);
 
-      pushImagesToViewer([slides.data[i%slides.count].imgUrl], i);
-    //   document.getElementById('slidePage').setAttribute("material", `src: url(${slides.data[i%slides.count].imgUrl})`);
+    //   pushImagesToViewer([slides.data[i%slides.count].imgUrl], i);
+      document.getElementById('slidePage').setAttribute("material", `src: url(${slides.data[i%slides.count].imgUrl})`);
       i++;
   }
   async function restartSlides() {

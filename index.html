@@ -3,6 +3,7 @@
 <head>
     <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.1/aframe/build/aframe-ar.js"></script>
     <!-- <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.0.0/dist/aframe-extras.min.js"></script> -->
     <script src="components/rain-of-entities.js"></script>
     <!-- <script src="components/rain-of-posts.js"></script> -->
@@ -18,21 +19,20 @@
 </head>
 
 <body>
-    <a-scene id="theScene" rain-of-entities="spread:13">
-        
-        <a-entity id="focusPoint" position="0 0 0"></a-entity>
+    <a-scene embedded arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;' id="theScene" rain-of-entities="spread:13">
+        <a-assets>
+                <a-asset-item id="perry_the_platypus" src="https://raw.githubusercontent.com/karx/karx.github.io/master/Socks/feed/perry_the_platypus/scene.gltf"></a-asset-item>
+                <a-asset-item id="black_bird" src="https://raw.githubusercontent.com/karx/karx.github.io/master/Socks/feed/sr71_blackbird_voxel/scene.gltf"></a-asset-item>             
+        </a-assets>	
 
-        <a-entity id="rig" position="0 1.6 0" rotation="0 180 0">
-            <a-entity id="camera" camera="active: true" camera look-controls wasd-controls></a-entity>
-        </a-entity>
         
-        <a-entity id="rig2" position="0 1.6 0">
-            <a-entity id="camera2" camera look-controls wasd-controls></a-entity>
-        </a-entity>
-        
-        <a-box id="slidePage" position="0 3 4" rotation="15 0 0" width="4" height="4" material="src: url(https://akriya.co.in/assets/images/wendor-events/wendorEventLarge.jpg)"></a-box>
+		<a-entity camera></a-entity>
 
-        <a-sky color="#ea3456"></a-sky>
+        <a-marker type='barcode' value='5' id="bar-5">
+            <a-box id="slidePage" position="0 0 0" rotation="-90 0 0" width="2" height="4"
+                material="src: url(https://akriya.co.in/assets/images/wendor-events/wendorEventLarge.jpg)"></a-box>
+        </a-marker>
+        
 
     </a-scene>
     <div id="overlay-text">KT Session 1</div>
