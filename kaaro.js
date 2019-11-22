@@ -25,7 +25,7 @@ import {
     entityInGraphCheck,
     showTextFeedbackToUserForContext,
     switchCamera
-  } from "./gviewr_functions.mjs";
+  } from "./gviewr_functions.js";
 
 async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
     var ID = function() {
