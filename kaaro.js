@@ -49,11 +49,11 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
   function onConnect() {
     // Once a connection has been made, make a subscription and send a message.
     console.log("onConnect");
-    client.subscribe("kaaroEvent/dev1/screen1/input");
-    client.subscribe("kaaroEvent/dev1/screen1/cameraSwitch");
-    client.subscribe("kaaroEvent/dev1/screen1/forceReStream");
+    client.subscribe("kaaroEvent/dev2/screen1/input");
+    client.subscribe("kaaroEvent/dev2/screen1/cameraSwitch");
+    client.subscribe("kaaroEvent/dev2/screen1/forceReStream");
     let message = new Paho.Message("Hello from Streaming canvas");
-    message.destinationName = "kaaroEvent/dev1/screen1/streaming_canvas";
+    message.destinationName = "kaaroEvent/dev2/screen1/streaming_canvas";
     client.send(message);
     //Once connection to MQTT established, it is time to start streaming the canvas.
     //   startStreamingTheCanvas();
@@ -69,17 +69,17 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
   // called when a message arrives
   function onMessageArrived(message) {
     console.log("onMessageArrived:" + message.payloadString);
-    if (message.destinationName === 'kaaroEvent/dev1/screen1/cameraSwitch') {
+    if (message.destinationName === 'kaaroEvent/dev2/screen1/cameraSwitch') {
       console.log('switching cam');
       switchCamera();
-    } else if (message.destinationName === 'kaaroEvent/dev1/screen1/forceReStream') {
+    } else if (message.destinationName === 'kaaroEvent/dev2/screen1/forceReStream') {
       console.log('Force Restream triggered');
 
       restartSlides();
     } else {
       nextSlide();
     }
-    showTextFeedbackToUserForContext(message.payloadString);
+    // showTextFeedbackToUserForContext(message.payloadString);
   }
 }
 
