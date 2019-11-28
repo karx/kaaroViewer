@@ -56,6 +56,7 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
     let message = new Paho.Message("Hello from Streaming canvas");
     message.destinationName = "kaaroEvent/dev2/screen1/streaming_canvas";
     client.send(message);
+    document.getElementById('vidToShow').play();
     //Once connection to MQTT established, it is time to start streaming the canvas.
     //   startStreamingTheCanvas();
   }
@@ -97,8 +98,10 @@ async function nextSlide() {
   }
   
   document.getElementById('vidToShow').setAttribute("src", video.data[1].vidUrl);
+  document.getElementById('vidToShow').play();
   setTimeout(() => {
     document.getElementById('vidToShow').setAttribute("src", video.data[0].vidUrl);
+    document.getElementById('vidToShow').play();
   }, 4000);
 }
 async function restartSlides() {

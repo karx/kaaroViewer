@@ -19,3 +19,12 @@
   font-size: 2em;
   font-family: sans-serif, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana;
 }
+
+#vidToShow {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: black;
+}
