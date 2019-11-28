@@ -51,6 +51,7 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
     console.log("onConnect");
     client.subscribe("kaaroEvent/dev2/screen1/input");
     client.subscribe("kaaroEvent/dev1/screen1/input");
+    client.subscribe("malboro/activate/now");
     client.subscribe("kaaroEvent/dev2/screen1/cameraSwitch");
     client.subscribe("kaaroEvent/dev2/screen1/forceReStream");
     let message = new Paho.Message("Hello from Streaming canvas");
