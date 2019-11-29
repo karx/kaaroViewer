@@ -3,7 +3,7 @@
 let video = {
   "data": [
     {
-      "vidUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+      "vidUrl": "https://raw.githubusercontent.com/karx/homepage/master/assets/MangalaoreKannadaAdvanceTacticalLEFTJPG-MyVideo-imagetovideo-com.mp4"
     },
     {
       "vidUrl": "https://raw.githubusercontent.com/karx/homepage/master/assets/FilterBlack_FineTouch_247.mp4"
