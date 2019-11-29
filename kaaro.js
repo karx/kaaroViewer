@@ -103,7 +103,7 @@ async function nextSlide() {
   setTimeout(() => {
     document.getElementById('vidToShow').setAttribute("src", video.data[0].vidUrl);
     document.getElementById('vidToShow').play();
-  }, 4000);
+  }, 10000);
 }
 async function restartSlides() {
   i = 0;
