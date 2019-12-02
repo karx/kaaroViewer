@@ -64,6 +64,7 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
 
   // called when the client loses its connection
   function onConnectionLost(responseObject) {
+    console.log(`@kaaro, lost detected`);
     if (responseObject.errorCode !== 0) {
       console.log("onConnectionLost:" + responseObject.errorMessage);
     }
