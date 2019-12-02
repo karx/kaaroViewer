@@ -89,23 +89,13 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
 }
 
 async function nextSlide() {
-  var elem = document.getElementById('vidToShow');
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen();
-  } else if (elem.mozRequestFullScreen) {
-    elem.mozRequestFullScreen();
-  } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen();
-  }
   
   document.getElementById('vidToShow').setAttribute("src", video.data[1].vidUrl);
   document.getElementById('vidToShow').play();
   setTimeout(() => {
     document.getElementById('vidToShow').setAttribute("src", video.data[0].vidUrl);
     document.getElementById('vidToShow').play();
-  }, 10000);
+  }, 4000);
 }
 async function restartSlides() {
   i = 0;
