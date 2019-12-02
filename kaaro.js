@@ -68,6 +68,7 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
     if (responseObject.errorCode !== 0) {
       console.log("onConnectionLost:" + responseObject.errorMessage);
     }
+    client.connect({ onSuccess: onConnect });
   }
 
   // called when a message arrives
