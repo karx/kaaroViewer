@@ -49,11 +49,7 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
   function onConnect() {
     // Once a connection has been made, make a subscription and send a message.
     console.log("onConnect");
-    client.subscribe("kaaroEvent/dev2/screen1/input");
-    client.subscribe("kaaroEvent/dev1/screen1/input");
-    client.subscribe("malboro/activate/now");
-    client.subscribe("kaaroEvent/dev2/screen1/cameraSwitch");
-    client.subscribe("kaaroEvent/dev2/screen1/forceReStream");
+    client.subscribe("prod/activate/now");
     let message = new Paho.Message("Hello from Streaming canvas");
     message.destinationName = "kaaroEvent/dev2/screen1/streaming_canvas";
     client.send(message);
@@ -64,7 +60,7 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
 
   // called when the client loses its connection
   function onConnectionLost(responseObject) {
-    console.log(`@kaaro, lost detected`);
+    console.log(`@kaaro, lost detected ${responseObject}`);
     if (responseObject.errorCode !== 0) {
       console.log("onConnectionLost:" + responseObject.errorMessage);
     }
@@ -73,7 +69,7 @@ async function listenOnOpenChannelForUserInteractionOnDifferentPlatforms() {
 
   // called when a message arrives
   function onMessageArrived(message) {
-    console.log("onMessageArrived:" + message.payloadString);
+    console.log(`onMessageArrived: ${message.payloadString} from Topic: ${message.destinationName}`);
     if (message.destinationName === 'kaaroEvent/dev2/screen1/cameraSwitch') {
       console.log('switching cam');
       switchCamera();
