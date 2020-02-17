@@ -11,22 +11,40 @@
 </head>
 
 <body>
-    <a-scene physics id="theScene"  >
-        <a-assets>
-            <a-asset-item id="type-person-boy" src="/assets/type/person_boy.glb" look-at="#rig"></a-asset-item>
-            <a-asset-item id="mic-asset" src="/assets/type/mic.glb" look-at="#rig"></a-asset-item>
+    <div class="full-info-screen">
+        <div class="data-in-raw" id="logger">
 
-        </a-assets>
-        <!-- <a-box position="0 1 -2" width="2" depth="0.2" height="2" color="#3E3E3E" static-body></a-box> -->
 
-        <a-entity id="theMic" gltf-model="#type-person-boy" position="2 2 -2" static-body></a-entity>
-        <a-entity id="rig" position="0 1.6 0">
-            <a-entity id="camera" camera look-controls wasd-controls></a-entity>
-        </a-entity>
-       
-       
-    </a-scene>
+        </div>
+        <div class="word-map">
 
+
+        </div>
+        <div class="threed-viz">
+            <a-scene physics id="theScene" embedded>
+                <a-assets>
+                    <a-asset-item id="type-person-boy" src="/assets/type/person_boy.glb" look-at="#rig"></a-asset-item>
+                    <a-asset-item id="mic-asset" src="/assets/type/mic.glb" look-at="#rig"></a-asset-item>
+        
+                </a-assets>
+                <!-- <a-box position="0 1 -2" width="2" depth="0.2" height="2" color="#3E3E3E" static-body></a-box> -->
+        
+                <a-entity id="theMic" gltf-model="#type-person-boy" position="2 2 -2" static-body></a-entity>
+                <a-entity id="rig" position="0 1.6 0">
+                    <a-entity id="camera" camera look-controls wasd-controls></a-entity>
+                </a-entity>
+               
+            </a-scene>
+
+        </div>
+        <div class="location-map">
+
+        </div>
+    </div>
+   
+    <div class="session-manager">
+        
+    </div>
 
     <script  src="./kaaro.js"></script>
 </body>

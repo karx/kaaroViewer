@@ -6,3 +6,26 @@
     overflow: hidden;
   }
    */
+
+   .full-info-screen {
+     display: flex;
+     flex-direction: row;
+     flex-wrap: wrap;
+     height: 100vh;
+     width: 100vw;
+   }
+   .full-info-screen div {
+     flex: 1;
+   }
+   .data-in-raw {
+    background-color: aqua;
+   }
+   .word-map{ 
+    background-color: aquamarine;
+   }
+   .threed-viz {
+    background-color: beige;
+   }
+   .location-map {
+    background-color: bisque;
+   }

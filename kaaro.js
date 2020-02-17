@@ -162,7 +162,22 @@ async function jumpToAHeight(height) {
     document.getElementById("rig").setAttribute('position', `0 ${1.6 + height} 0`);
 }
 
+async function logTextToCurrentSessionViewer(text) {
+  let el = document.createElement("p");
+  el.innerHTML = text;
+  document.getElementById('logger').append(el);
+}
+
 async function parseAndActOnText(text) {
+
+    //Step 1: Send text to current session logger
+    logTextToCurrentSessionViewer(text);
+
+    // Step 2: Remove stop words and push for word-map generator
+
+
+
+    //Step 3: Look for entities for 3d viewer and send to viewer
     let quid_list = await entityMatch(text);
     quid_list.forEach( async (quid) => {
         if (quid) {
@@ -177,6 +192,8 @@ async function parseAndActOnText(text) {
 
         }
     });
+
+
 }
 
 async function listenForAllTheThingsTheUserSaysMostlyEntities() {
@@ -232,4 +249,8 @@ async function listenForAllTheThingsTheUserSaysMostlyEntities() {
     
 }
 
-listenForAllTheThingsTheUserSaysMostlyEntities();
+// listenForAllTheThingsTheUserSaysMostlyEntities();
+parseAndActOnText('random');
+parseAndActOnText('text');
+parseAndActOnText('to start of this basic');
+parseAndActOnText('setup i call setup');
