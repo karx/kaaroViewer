@@ -17,3 +17,21 @@ For general support and discussion of this project, please join the Discord serv
 To check known bugs and see planned changes and features for this project, please see the GitHub issues.
 
 Found a bug we don't already have an issue for? Please report it in a new GitHub issue with as much detail as you can!
+
+### Entity Matching
+Simple name place animal thing:
+
+
+```
+ SELECT ?level2Node ?level2NodeLabel ?prop
+      WHERE 
+      {    
+        VALUES ?props {wd:Q5 wd:Q2221906 wd:Q48264 wd:Q515}
+        wd:Q9570 wdt:P31 ?instanceof .
+        wd:Q9570 ?prop ?level2Node .
+        ?level2Node wdt:P31 ?props .
+        
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+    
+      }
+```

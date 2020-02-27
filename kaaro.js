@@ -432,3 +432,40 @@ document.addEventListener(
 async function test() {
   updateChartWithStrings(["Getting started is 50% of the job done"], "started");
 }
+
+document.getElementById('secret-text-box').addEventListener('keydown', (event) => {
+  if (event.isComposing || event.keyCode === 229) {
+    return;
+  }
+  if (event.keyCode === 13) {
+    let in_el = document.getElementById('secret-text-box');
+    let text = in_el.value;
+    in_el.value = '';
+    console.log(text)
+    parseAndActOnText(text);
+
+  }
+
+});
+
+async function show_secret_input(toShow = true) {
+  if (toShow) {
+    document.getElementById('direct-input-box-id').style.visibility = 'visible';
+  } else {
+    document.getElementById('direct-input-box-id').style.visibility = 'hidden';
+  }
+}
+
+
+document.addEventListener('keydown', (event) => {
+  if (event.isComposing || event.keyCode === 229) {
+    return;
+  }
+  if (event.key === 'G') {
+    show_secret_input();
+  }
+  if (event.key === 'Z') {
+    show_secret_input(false);
+  }
+  // console.log(event);
+});

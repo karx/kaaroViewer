@@ -37,3 +37,7 @@ body {
 .location-map {
   background-color: bisque;
 }
+
+.direct-input-box {
+  visibility: hidden;
+}
