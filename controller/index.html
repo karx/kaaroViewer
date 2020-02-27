@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+      }
+    </style>
+    <title>Talk to Me - ⏏</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="to-connect-div">
+        <input
+          type="number"
+          placeholder="Enter Viewer Code to Link"
+          aria-label="Connection Code"
+          id="connection_code"
+        />
+        <button value="Connect" id="btn-click">
+          Connect Jumper
+        </button>
+      </div>
+      <div class="live-scene">
+        <div class="your-watch">
+          <img src="../assets/images/watch.jpg" alt="" srcset="" />
+        </div>
+        <div class="connected-tables" id="all-tables"></div>
+      </div>
+    </div>
+    <script src="./speech-to-text-to-mqtt.js"></script>
+  </body>
+</html>
