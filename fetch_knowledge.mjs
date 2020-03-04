@@ -105,7 +105,7 @@ async function _sparqlQuery(query) {
   };
   const SPARQL = query;
   const sparqlQueryResponse = await fetch(
-    `https://query.wikidata.org/sparql?query=${SPARQL}&format=json`,
+    `https://cors-anywhere.herokuapp.com/https://query.wikidata.org/sparql?query=${SPARQL}&format=json`,
     {
       method: "GET",
       headers: headers,
@@ -116,11 +116,10 @@ async function _sparqlQuery(query) {
   console.log("sparqlResponse", sparqlResponse);
 
   if (
-    sparqlResponse &&
-    sparqlResponse.results &&
-    sparqlResponse.results.bindings
+    sparqlResponse
   ) {
-    console.log(sparqlResponse.results.bindings);
+    console.log(sparqlResponse);
+    return sparqlResponse;
     // return sparqlResponse.results.bindings.map(data => {
     //   return { url: data.img.value };
     // });
@@ -130,13 +129,19 @@ async function _sparqlQuery(query) {
 
 async function getEntityByte(QID) {
   let data = _sparqlQuery(`
-    SELECT ?quidLabel ?instanceofLabel ?image
+    SELECT ?quid ?quidLabel ?instanceofLabel ?image_url
     WHERE 
     {    
-      VALUES ?quid {wd:Q312}
-      wd:Q312 wdt:P31 ?instanceof .
-      wd:Q312 wdt:P18 ?image .
+      VALUES ?quid {wd:${QID}}
+      wd:${QID} wdt:P31 ?instanceof .
+      wd:${QID} (wdt:P18|wdt:P41) ?image .
       
+
+      BIND(REPLACE(wikibase:decodeUri(STR(?image)), "http://commons.wikimedia.org/wiki/Special:FilePath/", "") as ?fileName) .
+      BIND(REPLACE(?fileName, " ", "_") as ?safeFileName)
+      BIND(MD5(?safeFileName) as ?fileNameMD5) .
+      BIND(CONCAT("https://upload.wikimedia.org/wikipedia/commons/thumb/", SUBSTR(?fileNameMD5, 1, 1), "/", SUBSTR(?fileNameMD5, 1, 2), "/", ?safeFileName, "/650px-", ?safeFileName) as ?image_url)
+        
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
   
     }
@@ -144,7 +149,7 @@ async function getEntityByte(QID) {
 
   let firsthop = _sparqlQuery(
     `
-    SELECT ?propLabel ?level2NodeLabel ?level2InstanceOfLabel ?level2Image
+    SELECT ?propLabel ?level2NodeLabel ?level2InstanceOfLabel ?level2_image_url
     WHERE 
     {    
       VALUES ?props {wd:Q5 wd:Q2221906 wd:Q48264 wd:Q515}
@@ -153,14 +158,21 @@ async function getEntityByte(QID) {
       ?level2Node wdt:P31 ?level2InstanceOf .
       ?level2Node wdt:P18 ?level2Image .
       
+      
+      BIND(REPLACE(wikibase:decodeUri(STR(?level2Image)), "http://commons.wikimedia.org/wiki/Special:FilePath/", "") as ?fileName) .
+      BIND(REPLACE(?fileName, " ", "_") as ?safeFileName)
+      BIND(MD5(?safeFileName) as ?fileNameMD5) .
+      BIND(CONCAT("https://upload.wikimedia.org/wikipedia/commons/thumb/", SUBSTR(?fileNameMD5, 1, 1), "/", SUBSTR(?fileNameMD5, 1, 2), "/", ?safeFileName, "/650px-", ?safeFileName) as ?level2_image_url)
+        
+
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
   
     }
     `
   );
   return {
-    data: data,
-    firsthop: firsthop
+    data: await data,
+    firsthop: await firsthop
   };
 }
 

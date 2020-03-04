@@ -33,7 +33,7 @@ async function parseAndActOnText(text) {
         // pushImagesToViewer(images_from_wiki, quid);
 
         let entity_from_wiki = await getEntityByte(quid);
-        pushEntityToViewer(entity_from_wiki);
+        pushEntityToViewer(entity_from_wiki, quid);
         console.log('Now in kaaro.js | This is what i got');
         console.log(entity_from_wiki);
       }

@@ -50,19 +50,53 @@ async function pushImagesToViewer(array_of_imags, quid) {
 
 
 async function pushEntityToViewer(entity_byte, quid) {
-  entities_captured[quid] = true;
-  entities_height[quid] = g_height;
- 
-  let node_data = entity_byte.data;
-  console.log(`Data to use For Entity. Node_data:`, node_data);
+  console.log('checking for ')
+  if (entityInGraphCheck(quid)) {
+    jumpToAHeight(quid);
+  } else {
+    entities_captured[quid] = true;
+    entities_height[quid] = g_height;
+   
+    let node_data = entity_byte.data.results.bindings[0];
+    console.log(`Data to use For Entity. Node_data results:`, node_data);
+    let nodes_to_append = [];
+    let parentEntity = document.createElement("a-entity");
+    parentEntity.setAttribute('position',`0 ${g_height} 0`);
+    parentEntity.setAttribute('wikidata-entity', `image_url: ${node_data.image_url.value}; instanceof: ${node_data.instanceofLabel.value}; label: ${node_data.quidLabel.value}`);
+    parentEntity.setAttribute("look-at", "#camera");
+    parentEntity.setAttribute('id',quid);
+    parentEntity.setAttribute('scale','2 2 2');
+    nodes_to_append.push(parentEntity);
+  
+    let linkedData = entity_byte.firsthop.results.bindings;
+    console.log(`Level 2 Linkec Entity. linked_data:`, linkedData);
 
-  let parentEntity = document.createElement("wikidata-entity");
-
+    linkedData.forEach((ent , i) => {
+      let entityEl = document.createElement("a-entity");
+      const r = determineRadiusBasedOnCount(linkedData.length);
+  
+      const angle = ((2 * Math.PI) / linkedData.length) * i;
+      const positionString = `${(r * Math.sin(angle))} ${g_height} ${(r * Math.cos(angle))}`;
+      entityEl.setAttribute(
+        "position",
+        positionString
+      );
+      entityEl.setAttribute('wikidata-entity', `image_url: ${ent.level2_image_url.value}; instanceof: ${ent.level2InstanceOfLabel.value}; label: ${ent.level2NodeLabel.value}`);
+      entityEl.setAttribute("look-at", `#${quid}`);
+      
+      nodes_to_append.push(entityEl);
+    });
+    document.getElementById("theScene").append(...nodes_to_append);
+    updateGHeightAndNeedful();
+    
+  }
+  
+  
 }
 
 async function updateGHeightAndNeedful() {
-  g_height += 2;
-  document.getElementById('focusPoint').setAttribute('position', `0 ${g_height/2} 0`);
+  g_height += 4;
+  // document.getElementById('focusPoint').setAttribute('position', `0 ${g_height/2} 0`);
 }
 async function jumpToAHeight(quid) {
   let height = entities_height[quid];
