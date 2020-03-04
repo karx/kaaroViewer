@@ -56,7 +56,7 @@ async function pushEntityToViewer(entity_byte, quid) {
   } else {
     entities_captured[quid] = true;
     entities_height[quid] = g_height;
-   
+    jumpToAHeight(quid);
     let node_data = entity_byte.data.results.bindings[0];
     console.log(`Data to use For Entity. Node_data results:`, node_data);
     let nodes_to_append = [];
@@ -88,6 +88,8 @@ async function pushEntityToViewer(entity_byte, quid) {
       nodes_to_append.push(entityEl);
     });
     document.getElementById("theScene").append(...nodes_to_append);
+    autoRotatingCamera1(linkedData.length, g_height);
+    autoRotatingCamera2(length, g_height);
     updateGHeightAndNeedful();
     
   }
@@ -138,7 +140,7 @@ async function autoRotatingCamera1(length, height) {
     let camera_speed = PER_IMAGE_MIN_TIMI_MILLS * length;
     camera_speed = camera_speed > 20000 ? camera_speed : 20000;
     console.log(camera_speed);
-    camera_path += `; closed:true; dur:${camera_speed}`;
+    camera_path += `; closed:true; dur:${camera_speed}; loop:true`;
     console.log(camera_path);
     document
       .getElementById("rig")
@@ -161,7 +163,7 @@ async function autoRotatingCamera2(length, height) {
 
     let camera_speed = 35000;
     
-    camera_path += `; closed:true; dur:${camera_speed}`;
+    camera_path += `; closed:true; dur:${camera_speed}; loop: true`;
     console.log('rig2 ', camera_path);
     document
       .getElementById("rig2")

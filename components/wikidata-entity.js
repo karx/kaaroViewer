@@ -52,10 +52,23 @@ AFRAME.registerComponent("wikidata-entity", {
 
 
 
-    this.parentEntity.setAttribute("material", `src: url(${this.data.image_url})`);
+    this.parentEntity.setAttribute("material", `src: url(${handleSvg(this.data.image_url)})`);
     this.textEntity.setAttribute("value", this.data.label);
     this.typetextEntity.setAttribute("value", this.data.instanceof);
     this.connectionType.setAttribute("value", this.data.connectionType);
   }
   // ...
 });
+
+
+function handleSvg(image_url) {
+  console.log(image_url);
+  if (image_url.split('.').pop() === 'svg') {
+    console.log(`${image_url} is SVG` );
+    let img_split_arr = image_url.split('.');
+    img_split_arr[img_split_arr.length-1]='png';
+    return img_split_arr.join('.');
+  } else {
+    return image_url;
+  }
+}
