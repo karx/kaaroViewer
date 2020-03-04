@@ -9,7 +9,7 @@ import { getEntityByte } from "./fetch_knowledge.mjs";
 
 
 async function logTextToCurrentSessionViewer(text) {
-  let el = document.createElement("p");
+  let el = document.createElement("div");
   el.innerHTML = text;
   document.getElementById("logger").append(el);
 }

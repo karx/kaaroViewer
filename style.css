@@ -25,6 +25,9 @@ body {
 }
 .data-in-raw {
   background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 .word-map {
   background-color: #ffffff;

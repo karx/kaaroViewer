@@ -168,6 +168,7 @@ async function autoRotatingCamera2(length, height) {
     document
       .getElementById("rig2")
       .setAttribute("alongpath", camera_path);
+    // document.getElementById("rig2").setAttribute("look-at","#theMic");
 }
 
 function entityInGraphCheck(quid) {
