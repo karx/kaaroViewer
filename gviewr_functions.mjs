@@ -65,11 +65,12 @@ async function pushEntityToViewer(entity_byte, quid) {
     parentEntity.setAttribute('wikidata-entity', `image_url: ${node_data.image_url.value}; instanceof: ${node_data.instanceofLabel.value}; label: ${node_data.quidLabel.value}`);
     parentEntity.setAttribute("look-at", "#camera");
     parentEntity.setAttribute('id',quid);
-    parentEntity.setAttribute('scale','2 2 2');
+    parentEntity.setAttribute('scale','1.2 1.2 1.2');
     nodes_to_append.push(parentEntity);
   
-    let linkedData = entity_byte.firsthop.results.bindings;
-    console.log(`Level 2 Linkec Entity. linked_data:`, linkedData);
+    let linkedData = await temp_clean_linked_data(entity_byte.firsthop.results.bindings);
+    console.log(`Level 2 Linkec Entity. linked_data:`, entity_byte.firsthop.results.bindings);
+    console.log(`Level 2 Clened Linked Entity. linked_data:`, linkedData);
 
     linkedData.forEach((ent , i) => {
       let entityEl = document.createElement("a-entity");
@@ -81,7 +82,7 @@ async function pushEntityToViewer(entity_byte, quid) {
         "position",
         positionString
       );
-      entityEl.setAttribute('wikidata-entity', `image_url: ${ent.level2_image_url.value}; instanceof: ${ent.level2InstanceOfLabel.value}; label: ${ent.level2NodeLabel.value}`);
+      entityEl.setAttribute('wikidata-entity', `image_url: ${ent.level2_image_url.value}; instanceof: ${ent.level2InstanceOfLabel.value}; label: ${ent.level2NodeLabel.value}; connectionType: ${ent.propLabel.value.split('/').pop()}`);
       entityEl.setAttribute("look-at", `#${quid}`);
       
       nodes_to_append.push(entityEl);
@@ -92,6 +93,19 @@ async function pushEntityToViewer(entity_byte, quid) {
   }
   
   
+}
+
+async function temp_clean_linked_data(arr) {
+  let contains_quid = {};
+  let to_return = arr.filter( (e) => {
+    if(contains_quid[e.level2Node.value]) {
+      return false
+    } else {
+      contains_quid[e.level2Node.value] = true;
+      return true;
+    }
+  });
+  return to_return;
 }
 
 async function updateGHeightAndNeedful() {

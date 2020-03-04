@@ -25,7 +25,7 @@ AFRAME.registerComponent("wikidata-entity", {
     //Create Text Entity
     this.textEntity = document.createElement('a-text');
     this.el.appendChild(this.textEntity);
-    this.textEntity.setAttribute("position", '-0.8 1.3 0');
+    this.textEntity.setAttribute("position", '-0.8 1.8 0');
     this.textEntity.setAttribute("color", '#FFF');
     this.textEntity.setAttribute("scale", '2 2 2');
     this.textEntity.setAttribute("font", 'mozillavr');

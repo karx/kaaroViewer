@@ -149,7 +149,7 @@ async function getEntityByte(QID) {
 
   let firsthop = _sparqlQuery(
     `
-    SELECT ?propLabel ?level2NodeLabel ?level2InstanceOfLabel ?level2_image_url
+    SELECT ?propLabel ?level2Node ?level2NodeLabel ?level2InstanceOfLabel ?level2_image_url
     WHERE 
     {    
       VALUES ?props {wd:Q5 wd:Q2221906 wd:Q48264 wd:Q515}
