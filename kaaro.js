@@ -153,11 +153,7 @@ function buzzer_click() {
 }
 
 function showMicEntityToMarkInput() {
-  let el = document.createElement("a-entity");
-  el.setAttribute("gltf-model", "#mic-asset");
-  el.setAttribute("position", `2 ${g_height} -2`);
-  // <a-entity gltf-model="#type-person-boy" position="2 2 -2" static-body></a-entity>
-  document.getElementById("theMic").setAttribute("gltf-model", "#mic-asset");
+  document.getElementById('theMic').setAttribute('color','red');
 }
 // listenForAllTheThingsTheUserSaysMostlyEntities();
 
@@ -219,3 +215,5 @@ document.addEventListener('keydown', (event) => {
   }
   // console.log(event);
 });
+
+document.getElementById('init-btn').addEventListener('click', (e) => {beginTheThing();});

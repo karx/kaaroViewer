@@ -56,6 +56,7 @@ async function pushEntityToViewer(entity_byte, quid) {
   } else {
     entities_captured[quid] = true;
     entities_height[quid] = g_height;
+    entities_length = 5;
     jumpToAHeight(quid);
     let node_data = entity_byte.data.results.bindings[0];
     console.log(`Data to use For Entity. Node_data results:`, node_data);
@@ -71,6 +72,7 @@ async function pushEntityToViewer(entity_byte, quid) {
     let linkedData = await temp_clean_linked_data(entity_byte.firsthop.results.bindings);
     console.log(`Level 2 Linkec Entity. linked_data:`, entity_byte.firsthop.results.bindings);
     console.log(`Level 2 Clened Linked Entity. linked_data:`, linkedData);
+    entities_length = linkedData.length;
 
     linkedData.forEach((ent , i) => {
       let entityEl = document.createElement("a-entity");
@@ -127,7 +129,7 @@ async function jumpToAHeight(quid) {
     // autoRotatingCamera2(length, g_height);
 }
 
-async function autoRotatingCamera1(length, height) {
+async function autoRotatingCamera1(length = 5, height) {
   let camera_path = 'path:';
   console.log('jumping and now with length of', length );
   let r = determineRadiusBasedOnCount(length);
