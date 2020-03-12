@@ -10,6 +10,7 @@ import { getEntityByte } from "./fetch_knowledge.mjs";
 
 async function logTextToCurrentSessionViewer(text) {
   let el = document.createElement("div");
+  el.classList.add('log-string')
   el.innerHTML = text;
   document.getElementById("logger").append(el);
 }
