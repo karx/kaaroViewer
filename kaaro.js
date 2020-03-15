@@ -12,7 +12,8 @@ async function sendSampleText() {
   parseAndActOnText("to started of this basic");
   parseAndActOnText("wd:Q60068");
   parseAndActOnText("wd:Q1058");
-  
+  parseAndActOnText("wd:Q668");
+  parseAndActOnText("wd:Q2");
 
   updateChartWithStrings(["Getting started is 50% of the job done"], "started");
   
@@ -21,7 +22,6 @@ async function sendSampleText() {
 async function sampleForKaaroDemo() {
   parseAndActOnText("wd:Q9570");
   parseAndActOnText("wd:Q112343");
-
 
   updateChartWithStrings(["Demo data is pushed","Kaaro demo data", "data is important", " All data is valuable"], "data");
   

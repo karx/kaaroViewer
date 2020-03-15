@@ -15,7 +15,8 @@ body {
 }
 .data-in-raw {
   background-color: aqua;
-  overflow: scroll hidden;d
+  overflow: scroll hidden;
+  max-height: 20vh;
 }
 .data-in-raw .log-string {
   display: inline;
