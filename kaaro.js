@@ -7,6 +7,25 @@ import { updateChartWithStrings, getFocusWord } from './context_wordmap.mjs';
 import { getEntityByte } from "./fetch_knowledge.mjs";
 
 
+async function sendSampleText() {
+  parseAndActOnText("random");
+  parseAndActOnText("to started of this basic");
+  parseAndActOnText("wd:Q60068");
+  parseAndActOnText("wd:Q1058");
+  
+
+  updateChartWithStrings(["Getting started is 50% of the job done"], "started");
+  
+}
+
+async function sampleForKaaroDemo() {
+  parseAndActOnText("wd:Q9570");
+  parseAndActOnText("wd:Q112343");
+
+
+  updateChartWithStrings(["Demo data is pushed","Kaaro demo data", "data is important", " All data is valuable"], "data");
+  
+}
 
 async function logTextToCurrentSessionViewer(text) {
   let el = document.createElement("div");
@@ -16,14 +35,23 @@ async function logTextToCurrentSessionViewer(text) {
 }
 
 async function parseAndActOnText(text) {
-  //Step 1: Send text to current session logger
-  logTextToCurrentSessionViewer(text);
+  let isWikidataEntity = text.startsWith('wd:'); //bool
+  let quid_list;
+  if(  isWikidataEntity== true) {
+    quid_list = [text.split(':')[1]];
+  } else {
+    //Step 1: Send text to current session logger
+    logTextToCurrentSessionViewer(text);
+      
+    // Step 2: Remove stop words and push for word-map generator
+    updateChartWithStrings([text]);
+
+    quid_list = await entityMatch(text);
+
+  }
   
-  // Step 2: Remove stop words and push for word-map generator
-  updateChartWithStrings([text]);
 
   //Step 3: Look for entities for 3d viewer and send to viewer
-  let quid_list = await entityMatch(text);
   console.log('DEBUG | List of matched Entities', quid_list);
   quid_list.forEach(async quid => {
     
@@ -159,23 +187,22 @@ function showMicEntityToMarkInput() {
 // listenForAllTheThingsTheUserSaysMostlyEntities();
 
 
+async function show_secret_input(toShow = true) {
+  if (toShow) {
+    document.getElementById('direct-input-box-id').style.visibility = 'visible';
+  } else {
+    document.getElementById('direct-input-box-id').style.visibility = 'hidden';
+  }
+}
+
 document.addEventListener(
   "DOMContentLoaded",
   function() {
     // pushThePlayButton();
-    setTimeout(sendSampleText, 2600);
+    setTimeout(sendSampleText, 400);
   },
   false
 );
-
-async function sendSampleText() {
-  parseAndActOnText("random");
-  parseAndActOnText("Paris is not in Australia");
-  parseAndActOnText("to started of this basic");
-
-  updateChartWithStrings(["Getting started is 50% of the job done"], "started");
-  
-}
 
 document.getElementById('secret-text-box').addEventListener('keydown', (event) => {
   if (event.isComposing || event.keyCode === 229) {
@@ -187,18 +214,10 @@ document.getElementById('secret-text-box').addEventListener('keydown', (event) =
     in_el.value = '';
     console.log(text)
     parseAndActOnText(text);
-
   }
 
 });
 
-async function show_secret_input(toShow = true) {
-  if (toShow) {
-    document.getElementById('direct-input-box-id').style.visibility = 'visible';
-  } else {
-    document.getElementById('direct-input-box-id').style.visibility = 'hidden';
-  }
-}
 
 
 document.addEventListener('keydown', (event) => {
@@ -213,6 +232,9 @@ document.addEventListener('keydown', (event) => {
   }
   if (event.key === 'C') {
     switchCamera();
+  }
+  if (event.key === '|') {
+    sampleForKaaroDemo();
   }
   // console.log(event);
 });
