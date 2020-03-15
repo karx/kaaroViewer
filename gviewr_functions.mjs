@@ -62,8 +62,8 @@ async function pushEntityToViewer(entity_byte, quid) {
       let parentEntity = document.createElement("a-entity");
       const r = 1.2;
 
-      const angle = ((2 * Math.PI) / node_dataArray.length) * i;
-      const positionString = `${0} ${g_height + r * Math.cos(angle)} ${r *
+      const angle = (((2 * Math.PI) / node_dataArray.length) * i);
+      const positionString = `${0} ${g_height + r * Math.cos(angle+ Math.PI/2)} ${r *
         Math.sin(angle)}`;
       let scaleValue = 1.2/node_dataArray.length;
       parentEntity.setAttribute("position", positionString);
@@ -115,14 +115,14 @@ async function pushEntityToViewer(entity_byte, quid) {
     {
       let central_ring = document.createElement("a-entity");
       central_ring.setAttribute("position", `0 ${g_height} 0`);
-      central_ring.setAttribute('geometry',`primitive: sphere; radius: ${2.4}; segmentsWidth: ${node_dataArray.length * 2}; segmentsHeight: ${node_dataArray.length * 2};`)
+      central_ring.setAttribute('geometry',`primitive: sphere; radius: ${2.4}; segmentsWidth: ${3 + node_dataArray.length}; segmentsHeight: ${3 + node_dataArray.length};`)
       central_ring.setAttribute('material',`color: #EF2D5E; transparent: true; opacity: 0.5`);
       nodes_to_append.push(central_ring);
 
       var random_number = Math.floor(Math.random() * 8888) + 111;
       let data_ring = document.createElement("a-entity");
       data_ring.setAttribute("position", `0 ${g_height} 0`);
-      data_ring.setAttribute('geometry',`primitive: sphere; radius: ${1} ; segmentsWidth: ${linkedData.length + 2}; segmentsHeight: ${ 2};`)
+      data_ring.setAttribute('geometry',`primitive: sphere; radius: ${1} ; segmentsWidth: ${linkedData.length * 2}; segmentsHeight: ${ linkedData.length };`)
       data_ring.setAttribute('material',`color: #EE${random_number}; transparent: true; opacity: 0.1`);
       data_ring.setAttribute('scale', `${r + 5} 5 ${r + 5}`);
       nodes_to_append.push(data_ring);
