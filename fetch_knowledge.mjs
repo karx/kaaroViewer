@@ -128,27 +128,27 @@ async function _sparqlQuery(query) {
 }
 
 async function getEntityByte(QID) {
-  let data = _sparqlQuery(`
-    SELECT ?quid ?quidLabel ?instanceofLabel ?image_url
-    WHERE 
-    {    
-      VALUES ?quid {wd:${QID}}
-      wd:${QID} wdt:P31 ?instanceof .
-      wd:${QID} (wdt:P18|wdt:P41) ?image .
+  let SparqlQueryForEntityData = `
+  SELECT ?quid ?quidLabel ?instanceofLabel ?image_url
+  WHERE 
+  {    
+    VALUES ?quid {wd:${QID}}
+    wd:${QID} wdt:P31 ?instanceof .
+    wd:${QID} (wdt:P18|wdt:P41) ?image .
+    
+
+    BIND(REPLACE(wikibase:decodeUri(STR(?image)), "http://commons.wikimedia.org/wiki/Special:FilePath/", "") as ?fileName) .
+    BIND(REPLACE(?fileName, " ", "_") as ?safeFileName)
+    BIND(MD5(?safeFileName) as ?fileNameMD5) .
+    BIND(CONCAT("https://upload.wikimedia.org/wikipedia/commons/thumb/", SUBSTR(?fileNameMD5, 1, 1), "/", SUBSTR(?fileNameMD5, 1, 2), "/", ?safeFileName, "/650px-", ?safeFileName) as ?image_url)
       
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 
-      BIND(REPLACE(wikibase:decodeUri(STR(?image)), "http://commons.wikimedia.org/wiki/Special:FilePath/", "") as ?fileName) .
-      BIND(REPLACE(?fileName, " ", "_") as ?safeFileName)
-      BIND(MD5(?safeFileName) as ?fileNameMD5) .
-      BIND(CONCAT("https://upload.wikimedia.org/wikipedia/commons/thumb/", SUBSTR(?fileNameMD5, 1, 1), "/", SUBSTR(?fileNameMD5, 1, 2), "/", ?safeFileName, "/650px-", ?safeFileName) as ?image_url)
-        
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-  
-    }
-  `);
+  }
+`;
 
-  let firsthop = _sparqlQuery(
-    `
+  let SparqlQueryForFirstHopData = 
+  `
     SELECT ?propLabel ?level2Node ?level2NodeLabel ?level2InstanceOfLabel ?level2_image_url
     WHERE 
     {    
@@ -168,8 +168,14 @@ async function getEntityByte(QID) {
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
   
     }
-    `
-  );
+    `;
+
+
+  let data = _sparqlQuery(SparqlQueryForEntityData);
+  let firsthop = _sparqlQuery(SparqlQueryForFirstHopData);
+
+  console.log('SparqlQueryForEntityData: ', SparqlQueryForEntityData);
+  console.log('SparqlQueryForFirstHopData: ', SparqlQueryForFirstHopData);
   return {
     data: await data,
     firsthop: await firsthop

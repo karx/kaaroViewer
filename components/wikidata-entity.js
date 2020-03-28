@@ -19,22 +19,22 @@ AFRAME.registerComponent("wikidata-entity", {
     this.parentEntity.setAttribute("width", "2");
     this.parentEntity.setAttribute("depth", "0.2");
     this.parentEntity.setAttribute("height", "2");
-    // this.parentEntity.setAttribute('color','');
+    this.parentEntity.setAttribute('color','#E3E3E3');
     this.parentEntity.setAttribute("static-body", "true");
 
     //Create Text Entity
     this.textEntity = document.createElement('a-text');
     this.el.appendChild(this.textEntity);
     this.textEntity.setAttribute("position", '-0.8 1.8 0');
-    this.textEntity.setAttribute("color", '#FFF');
+    this.textEntity.setAttribute("color", '#000');
     this.textEntity.setAttribute("scale", '2 2 2');
     this.textEntity.setAttribute("font", 'mozillavr');
 
     //Create Text-type Entity
     this.typetextEntity = document.createElement('a-text');
     this.el.appendChild(this.typetextEntity);
-    this.typetextEntity.setAttribute("color", '#F109EB');
-    this.typetextEntity.setAttribute("position", '-0.9 0 0.5');
+    this.typetextEntity.setAttribute("color", '#31094B');
+    this.typetextEntity.setAttribute("position", 'w-0.9 0 0.5');
     this.typetextEntity.setAttribute("font", 'mozillavr');
     this.typetextEntity.setAttribute("scale", '1.2 1.2 1.2');
 
@@ -56,8 +56,18 @@ AFRAME.registerComponent("wikidata-entity", {
     this.textEntity.setAttribute("value", this.data.label);
     this.typetextEntity.setAttribute("value", this.data.instanceof);
     this.connectionType.setAttribute("value", this.data.connectionType);
-  }
+  },
   // ...
+  addNewImage: function (dataToUse) {
+    let entityEl = this.parentEntity;
+
+
+
+    this.parentEntity.setAttribute("material", `src: url(${handleSvg(this.data.image_url)})`);
+    this.textEntity.setAttribute("value", this.data.label);
+    this.typetextEntity.setAttribute("value", this.data.instanceof);
+    this.connectionType.setAttribute("value", this.data.connectionType);
+  }
 });
 
 

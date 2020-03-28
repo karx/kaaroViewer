@@ -15,7 +15,8 @@ body {
 }
 .data-in-raw {
   background-color: aqua;
-  overflow: scroll;
+  overflow: scroll hidden;
+  max-height: 20vh;
 }
 .data-in-raw .log-string {
   display: inline;
@@ -30,7 +31,7 @@ body {
   background-color: #ffffff;
 }
 .threed-viz {
-  background-color: black;
+  background-color: #ffffff;
 }
 .location-map {
   background-color: bisque;
