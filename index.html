@@ -1,31 +1,64 @@
 <html>
 
 <head>
-    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script>
-    <!-- <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.0.0/dist/aframe-extras.min.js"></script> -->
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <!-- <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script> -->
     <script src="components/rain-of-entities.js"></script>
     <script src="components/rain-of-posts.js"></script>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <script src="components/sky-canvas.js"></script>
+    <script src="./components/alongpath.js"></script>
+    <script src="components/tcgcard.js"></script>
+    <script src="components/wikidata-entity.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.js"></script>
+    <script type=module src="https://unpkg.com/@google-web-components/google-chart@3.0.0/google-chart.js?module"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        #gchart-word {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
-    <a-scene physics id="theScene" rain-of-entities="spread:13" rain-of-posts="spread: 5">
-        <a-entity id="rig" position="0 1.6 0" rotation="0 180 0">
-            <a-entity id="camera" camera look-controls wasd-controls></a-entity>
-        </a-entity>
-        <!-- <a-box position="-1 10 -3" rotation="0 45 0" color="#4CC3D9" height="2" dynamic-body></a-box> -->
-        <!-- <a-box position="-1 4 -3" rotation="0 45 0" color="#4CC3D9" height="2" dynamic-body></a-box> -->
+    <div class="full-info-screen">
+        <div class="data-in-raw section" id="logger">
+            <div class="to-connect-div">
+                <div aria-label="Connection Code" id="connection_code"></div>
 
-        <a-box position="0 -0 -4" rotation="-90 0 0" width="4" height="4" color="#3E3E3E" static-body></a-box>
-        <a-sky color="#ea3456"></a-sky>
-    </a-scene>
+                <button
+                  aria-label="Click to initate"
+                  class="btn"
+                  id="init-btn"
+                >
+                  Reveal Controller Code
+                </button>
+              </div>
+              <div class="direct-input-box" id="direct-input-box-id">
+                  <input type="text" id="secret-text-box">
+              </div>
+        </div>
 
+        <div class="threed-viz section" id="theScene">
+        </div>
+<!--
+        <div class="location-map section">
+        </div> -->
 
-    <script src="./kaaro.js"></script>
+        <!-- <div class="word-map section">
+            <div id="wordtree_basic"></div>
+        </div> -->
+    </div>
+
+    <div class="session-manager">
+
+    </div>
+
+    <script  src="./kaaro.js" type="module"></script>
 </body>
 
 </html>

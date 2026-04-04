@@ -21,3 +21,21 @@ Found a bug we don't already have an issue for? Please report it in a new GitHub
 
 ## Thought jumper
 https://thoughtjumper.netlify.com/
+
+### Entity Matching
+Simple name place animal thing:
+
+
+```
+ SELECT ?level2Node ?level2NodeLabel ?prop
+      WHERE 
+      {    
+        VALUES ?props {wd:Q5 wd:Q2221906 wd:Q48264 wd:Q515}
+        wd:Q9570 wdt:P31 ?instanceof .
+        wd:Q9570 ?prop ?level2Node .
+        ?level2Node wdt:P31 ?props .
+        
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+    
+      }
+```

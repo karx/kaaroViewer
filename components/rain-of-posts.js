@@ -40,6 +40,7 @@ AFRAME.registerComponent('rain-of-posts', {
         box.setAttribute('src', randomMedia.display_url);
         box.setAttribute('width', (randomMedia.dimensions.width / 1000) * 2);
         box.setAttribute('height', (randomMedia.dimensions.height / 1000) * 2);
+        box.setAttribute('rotation', this.randomRotation());
         data.components.forEach(function (s) {
             var parts = s.split('|');
             box.setAttribute(parts[0], parts[1] || '');
@@ -78,6 +79,11 @@ AFRAME.registerComponent('rain-of-posts', {
         console.log(this.ig_data.Medias[randomNumber], randomNumber);
         // var media = this.ig_data.Medias.edges[randomNumber].node.display_url;
         return this.ig_data.Medias.edges[randomNumber].node;
+    },
+    randomRotation: function () {
+        var randomNumber = Math.floor(Math.random() * (180));
+        console.log(randomNumber);
+        return `0 ${randomNumber} 0`;
     },
     getDataFromInstagram: async function () {
         //  let username = 'karx01';
