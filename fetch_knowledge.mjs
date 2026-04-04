@@ -1,9 +1,10 @@
+import { log } from './logger.mjs';
+
 async function getEntityImages(QID) {
   let primaryImages = await _getEntityPrimaryImages(QID);
   let linkedImages = await _getEntitySecondaryImages(QID);
 
-  console.log("primaryImages", primaryImages);
-  console.log("linkedImages", linkedImages);
+  log('SPARQL', `getEntityImages: ${QID}`, { primary: primaryImages.length, linked: linkedImages.length });
 
   let mixed_list = [...primaryImages, ...linkedImages];
   let array_of_imags = mixed_list.map(data => data.url);
@@ -35,26 +36,14 @@ async function _getEntityPrimaryImages(QID) {
       `;
   const primaryImagesResponse = await fetch(
     `https://query.wikidata.org/sparql?query=${SPARQL}&format=json`,
-    {
-      method: "GET",
-      headers: headers,
-      qs: { format: "json" }
-    }
+    { method: "GET", headers }
   );
   const primaryImages = await primaryImagesResponse.json();
-  console.log("primaryImages", primaryImages);
 
-  if (
-    primaryImages &&
-    primaryImages.results &&
-    primaryImages.results.bindings
-  ) {
-    console.log(primaryImages.results.bindings);
-    return primaryImages.results.bindings.map(data => {
-      return { url: data.img.value };
-    });
+  if (primaryImages?.results?.bindings) {
+    return primaryImages.results.bindings.map(data => ({ url: data.img.value }));
   }
-  return null;
+  return [];
 }
 
 async function _getEntitySecondaryImages(QID) {
@@ -78,53 +67,63 @@ async function _getEntitySecondaryImages(QID) {
       }
       `;
   const secondaryImagesResponse = await fetch(
-    `https://query.wikidata.org/sparql?query=${SPARQL}`,
-    {
-      method: "GET",
-      headers: headers,
-      qs: { format: "json" },
-      json: true
-    }
+    `https://query.wikidata.org/sparql?query=${SPARQL}&format=json`,
+    { method: "GET", headers }
   );
-  const secondaryImages = await secondaryImagesResponse.json();
-  console.log("secondaryImages", secondaryImages);
-  return secondaryImages.results.bindings.map(data => {
-    return {
-      url: data.imgLvl2.value,
-      prop: data.prop,
-      value: data.itemLevel2Label.value
-    };
-  });
+  let secondaryImages;
+  try {
+    secondaryImages = await secondaryImagesResponse.json();
+  } catch (err) {
+    log('ERROR', `_getEntitySecondaryImages parse failed: ${QID}`, { message: err.message });
+    return [];
+  }
+
+  return (secondaryImages?.results?.bindings ?? []).map(data => ({
+    url: data.imgLvl2.value,
+    prop: data.prop,
+    value: data.itemLevel2Label.value,
+  }));
 }
 
-async function _sparqlQuery(query) {
+async function _sparqlQuery(query, _label = 'sparql') {
   let headers = {
     "User-Agent":
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
     Accept: "application/sparql-results+json"
   };
-  const SPARQL = query;
-  const sparqlQueryResponse = await fetch(
-    `https://cors-anywhere.herokuapp.com/https://query.wikidata.org/sparql?query=${SPARQL}&format=json`,
-    {
-      method: "GET",
-      headers: headers,
-      qs: { format: "json" }
-    }
-  );
-  const sparqlResponse = await sparqlQueryResponse.json();
-  console.log("sparqlResponse", sparqlResponse);
 
-  if (
-    sparqlResponse
-  ) {
-    console.log(sparqlResponse);
-    return sparqlResponse;
-    // return sparqlResponse.results.bindings.map(data => {
-    //   return { url: data.img.value };
-    // });
+  log('SPARQL', `request → ${_label}`, { label: _label, queryPreview: query.trim().slice(0, 120) });
+  const t0 = performance.now();
+
+  let sparqlQueryResponse;
+  try {
+    sparqlQueryResponse = await fetch(
+      `https://query.wikidata.org/sparql?query=${query}&format=json`,
+      { method: "GET", headers }
+    );
+  } catch (err) {
+    log('ERROR', `SPARQL fetch failed: ${_label}`, { label: _label, message: err.message });
+    return null;
   }
-  return null;
+
+  let sparqlResponse;
+  try {
+    sparqlResponse = await sparqlQueryResponse.json();
+  } catch (err) {
+    log('ERROR', `SPARQL parse failed: ${_label}`, { label: _label, status: sparqlQueryResponse.status, message: err.message });
+    return null;
+  }
+
+  const ms = Math.round(performance.now() - t0);
+  const bindings = sparqlResponse?.results?.bindings ?? [];
+  log('SPARQL', `response ← ${_label} · ${bindings.length} bindings (${ms}ms)`, {
+    label: _label,
+    ms,
+    bindingCount: bindings.length,
+    sample: bindings.slice(0, 2),
+  });
+
+  return sparqlResponse || null;
 }
 
 async function getEntityByte(QID) {
@@ -171,13 +170,11 @@ async function getEntityByte(QID) {
     `;
 
 
-  let data = _sparqlQuery(SparqlQueryForEntityData);
-  let firsthop = _sparqlQuery(SparqlQueryForFirstHopData);
-
-  console.log('SparqlQueryForEntityData: ', SparqlQueryForEntityData);
-  console.log('SparqlQueryForFirstHopData: ', SparqlQueryForFirstHopData);
+  log('SPARQL', `getEntityByte: ${QID}`, { qid: QID });
+  let data     = _sparqlQuery(SparqlQueryForEntityData,    `entityData:${QID}`);
+  let firsthop = _sparqlQuery(SparqlQueryForFirstHopData,  `firsthop:${QID}`);
   return {
-    data: await data,
+    data:     await data,
     firsthop: await firsthop
   };
 }

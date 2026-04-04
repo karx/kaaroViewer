@@ -5,6 +5,7 @@ import { pushImagesToViewer, pushEntityToViewer, jumpToAHeight, entityInGraphChe
 import { showMicAtLevel, showSessionEnd, showSessionError, switchCamera } from './gviewr_functions.mjs';
 import { updateChartWithStrings, getFocusWord } from './context_wordmap.mjs';
 import { getEntityByte } from "./fetch_knowledge.mjs";
+import { log } from './logger.mjs';
 
 async function sendSampleText() {
   parseAndActOnText("random");
@@ -26,11 +27,8 @@ async function sampleForKaaroDemo() {
   
 }
 
-async function logTextToCurrentSessionViewer(text) {
-  let el = document.createElement("div");
-  el.classList.add('log-string')
-  el.innerHTML = text;
-  document.getElementById("logger").append(el);
+function logTextToCurrentSessionViewer(text) {
+  log('INPUT', text);
 }
 
 async function parseAndActOnText(text) {
@@ -51,19 +49,21 @@ async function parseAndActOnText(text) {
   
 
   //Step 3: Look for entities for 3d viewer and send to viewer
-  console.log('DEBUG | List of matched Entities', quid_list);
+  log('ENTITY_MATCH', `${quid_list.length} entity/entities resolved`, { input: text, quid_list });
   quid_list.forEach(async quid => {
-    
+
       if (entityInGraphCheck(quid)) {
+        log('VIEWER', `jump to existing entity: ${quid}`, { quid });
         jumpToAHeight(quid);
       } else {
-        // let images_from_wiki = await getEntityImages(quid);
-        // pushImagesToViewer(images_from_wiki, quid);
-
+        log('VIEWER', `fetching entity byte: ${quid}`, { quid });
         let entity_from_wiki = await getEntityByte(quid);
+        log('VIEWER', `pushing to scene: ${quid}`, {
+          quid,
+          dataBindings:     entity_from_wiki?.data?.results?.bindings?.length ?? 0,
+          firsthopBindings: entity_from_wiki?.firsthop?.results?.bindings?.length ?? 0,
+        });
         pushEntityToViewer(entity_from_wiki, quid);
-        console.log('Now in kaaro.js | This is what i got');
-        console.log(entity_from_wiki);
       }
 
   });

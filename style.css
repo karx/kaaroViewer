@@ -19,13 +19,64 @@ body {
   max-height: 20vh;
 }
 .data-in-raw .log-string {
-  display: inline;
-  box-shadow: 0 3px 9px rgba(0,0,0,0.5);
-  border-radius: 4px;
-  margin: 3px;
-  padding: 2px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  border-radius: 5px;
+  margin: 3px 4px;
+  padding: 3px 6px;
   font-weight: bold;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  cursor: default;
+  vertical-align: middle;
+  background: rgba(0,0,0,0.15);
+}
 
+/* Structured log entries rendered by logger.mjs */
+.data-in-raw .log-entry {
+  cursor: pointer;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.data-in-raw .log-entry:hover {
+  background: rgba(0,0,0,0.3);
+}
+.log-type-badge {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.log-label-text {
+  font-size: 11px;
+  color: #1a1a2e;
+  white-space: nowrap;
+}
+.log-payload-panel {
+  display: block;
+  margin-top: 4px;
+  padding: 6px 8px;
+  background: #0f0f1a;
+  color: #a29bfe;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: pre;
+  max-height: 200px;
+  overflow: auto;
+  min-width: 260px;
+  border: 1px solid #2d2d4e;
+  cursor: text;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 .word-map {
   background-color: #ffffff;
