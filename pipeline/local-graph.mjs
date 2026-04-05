@@ -77,4 +77,11 @@ export const LIBRARY = [
     domain: 'Labour / Technology',
     year:   '2025',
   },
+  {
+    id:     'aoe-2-redbull-april-2026',
+    title:  'Red Bull Wololo: Londinium — April 2026',
+    path:   './library/aoe-2-redbull-april-2026.json',
+    domain: 'Esports / Age of Empires',
+    year:   '2026',
+  },
 ];

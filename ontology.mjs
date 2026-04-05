@@ -51,6 +51,8 @@ export const ENTITY_TYPES = {
   player:       { color: 0x00ddff, radius: 0.55, label: 'Player',       code: 'PLYR' },
   team:         { color: 0x00bbdd, radius: 0.62, label: 'Team',         code: 'TEAM' },
   tournament:   { color: 0xffdd00, radius: 0.65, label: 'Tournament',   code: 'TRNY' },
+  civ:          { color: 0xcc8833, radius: 0.44, label: 'Civilization',  code: 'CIV'  },
+  dlc:          { color: 0xee88ff, radius: 0.52, label: 'DLC',          code: 'DLC'  },
   default:      { color: 0x888866, radius: 0.48, label: 'Entity',       code: 'ENTY' },
 };
 
@@ -132,6 +134,9 @@ export const REL_TYPES = {
   employment: { color: 0x00ccff, label: 'EMPLOYS',     code: 'EMPL' },
   ownership:  { color: 0xff6600, label: 'OWNS',        code: 'OWNR' },
   competes:   { color: 0xff3366, label: 'COMPETES',    code: 'COMP' },
+  qualifies:  { color: 0x00aaff, label: 'QUALIFIES FOR', code: 'QUAL' },
+  features:   { color: 0xffcc00, label: 'FEATURES',    code: 'FEAT' },
+  broadcasts: { color: 0x8899ff, label: 'BROADCASTS',  code: 'BCST' },
   default:    { color: 0x446644, label: 'RELATED TO',  code: 'REL'  },
 };
 

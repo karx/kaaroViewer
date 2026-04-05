@@ -28,6 +28,11 @@ export function showDetail(node, edges, graphGetNode) {
   const typeLabel = getEntityStyle(node.type ?? 'default').label;
   const ts        = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
+  // Source badge
+  const src      = node._source ?? 'wikidata';
+  const srcIcon  = node._sourceIcon ?? '◇';
+  const srcLabel = { wikidata: 'Wikidata', liquipedia: 'Liquipedia', reddit: 'Reddit', youtube: 'YouTube', local: 'Local' }[src] ?? src;
+
   const connections = edges
     .map(e => {
       const nQid     = e.from === node.qid ? e.to : e.from;
@@ -42,12 +47,38 @@ export function showDetail(node, edges, graphGetNode) {
     })
     .filter(c => c.label);
 
+  // Geo section
+  const geoHtml = node._geo ? `
+    <div class="dp-row">
+      <span class="dp-key">Location</span>
+      <span class="dp-val dp-val-dim">${node._geo.lat.toFixed(4)}, ${node._geo.lon.toFixed(4)}</span>
+    </div>` : '';
+
+  // Wiki link
+  const wikiHtml = node._wikiUrl ? `
+    <div class="dp-row">
+      <span class="dp-key">Wikipedia</span>
+      <span class="dp-val"><a href="${_esc(node._wikiUrl)}" target="_blank" style="color:#00ccff;text-decoration:none">Open article ↗</a></span>
+    </div>` : '';
+
+  // External URL (Liquipedia, Reddit, YouTube)
+  const extHtml = node.url && !node._wikiUrl ? `
+    <div class="dp-row">
+      <span class="dp-key">Link</span>
+      <span class="dp-val"><a href="${_esc(node.url)}" target="_blank" style="color:#ff6600;text-decoration:none">View on ${_esc(srcLabel)} ↗</a></span>
+    </div>` : (node.url && node._wikiUrl ? `
+    <div class="dp-row">
+      <span class="dp-key">Source</span>
+      <span class="dp-val"><a href="${_esc(node.url)}" target="_blank" style="color:#ff6600;text-decoration:none">${_esc(srcLabel)} ↗</a></span>
+    </div>` : '');
+
   _panel.innerHTML = `
     <div class="dp-terminal">
 
       <div class="dp-header">
         <span class="dp-qid-code">${_esc(node.qid)}</span>
         <span class="dp-type-label">${_esc(typeLabel)}</span>
+        <span class="dp-source-badge" data-src="${_esc(src)}">${srcIcon} ${_esc(srcLabel).toUpperCase()}</span>
         <div class="dp-header-actions">
           <button class="dp-key-btn" data-action="pin"    title="Pin">F2 PIN</button>
           <button class="dp-key-btn" data-action="expand" title="Expand">F3 XPND</button>
@@ -71,9 +102,12 @@ export function showDetail(node, edges, graphGetNode) {
           <span class="dp-key">About</span>
           <span class="dp-val dp-val-desc">${_esc(node.description)}</span>
         </div>` : ''}
+        ${geoHtml}
+        ${wikiHtml}
+        ${extHtml}
         <div class="dp-row">
           <span class="dp-key">Fetched</span>
-          <span class="dp-val dp-val-dim">${ts} UTC</span>
+          <span class="dp-val dp-val-dim">${ts} UTC${node._enriched ? ' · enriched' : ''}</span>
         </div>
         <div class="dp-row">
           <span class="dp-key">Connections</span>
@@ -94,7 +128,7 @@ export function showDetail(node, edges, graphGetNode) {
         </ul>
       ` : `<div class="dp-empty-msg">&gt; No connections loaded yet<br>&gt; Press F3 XPND to expand</div>`}
 
-      <div class="dp-footer">kaaroViewer  ·  Wikidata  ·  ${_esc(node.qid)}</div>
+      <div class="dp-footer">kaaroViewer  ·  ${_esc(srcLabel)}  ·  ${_esc(node.qid)}</div>
     </div>
   `;
 

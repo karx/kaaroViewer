@@ -27,6 +27,11 @@ import { sourceManager }                                       from './pipeline/
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
 import { YouTubeSource }                                       from './pipeline/sources/youtube.mjs';
+import { enrichNode }                                          from './pipeline/enrichment.mjs';
+import { toggleCausalLayout, isCausalMode }                    from './canvas/causal-layout.mjs';
+import { initNarrative, toggleNarrative, narrativeNext,
+         narrativePrev, stopNarrative, isNarrativeActive,
+         loadTour }                                            from './canvas/narrative.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -41,6 +46,7 @@ requestAnimationFrame(() => {
   initScene(container);
   initDetail();
   initTooltip();
+  initNarrative(focusEntity);
   updateFnBar();
   _renderSourceToggles();
 
@@ -112,6 +118,15 @@ async function focusEntity(qid) {
   if (mesh) focusOn(mesh.position.toArray(), 12);
 
   showDetail(node, graph.getEdgesFor(qid), qid => graph.getNode(qid));
+
+  // Auto-enrich: Wikipedia summary, thumbnail, geodata (async, non-blocking)
+  enrichNode(qid).then(changed => {
+    if (changed && getCurrentQid() === qid) {
+      // Re-render detail with enriched data
+      const fresh = graph.getNode(qid);
+      if (fresh) showDetail(fresh, graph.getEdgesFor(qid), q => graph.getNode(q));
+    }
+  });
 }
 
 // ── Expansion: load neighbors ─────────────────────────────────────────────────
@@ -502,7 +517,10 @@ export function updateFnBar() {
       <span class="fnk"><em>Tab</em> Cycle nodes</span>
       <span class="fnk"><em>F2</em> Save</span>
       <span class="fnk"><em>F5</em> Library</span>
-      <span class="fnk"><em>F8</em> Sessions</span>
+      <span class="fnk"><em>F6</em> Tour</span>
+      <span class="fnk"><em>F7</em> Causal</span>
+      <span class="fnk"><em>F9</em> Present</span>
+      <span class="fnk"><em>F10</em> 📷</span>
       <span class="fnk fnk-right"><em>◎</em> Log</span>`;
   } else {
     const label = graph.getNode(qid)?.label ?? qid;
@@ -510,11 +528,10 @@ export function updateFnBar() {
       <span class="fnk fnk-ctx"><em>E</em> Expand</span>
       <span class="fnk fnk-ctx"><em>I</em> Enrich</span>
       <span class="fnk fnk-ctx"><em>N</em> Next neighbor</span>
-      <span class="fnk fnk-ctx"><em>Shift+N</em> Prev neighbor</span>
       <span class="fnk fnk-ctx"><em>F</em> Frame all</span>
       <span class="fnk fnk-ctx"><em>R</em> Refetch</span>
-      <span class="fnk fnk-ctx"><em>X</em> Pin</span>
-      <span class="fnk fnk-ctx"><em>Tab</em> Cycle</span>
+      <span class="fnk fnk-ctx"><em>F7</em> ${isCausalMode() ? 'Force' : 'Causal'}</span>
+      <span class="fnk fnk-ctx"><em>F9</em> Present</span>
       <span class="fnk fnk-ctx"><em>Esc</em> Deselect</span>
       <span class="fnk fnk-right fnk-selected">◉ ${_esc(label.toUpperCase())}</span>`;
   }
@@ -522,6 +539,22 @@ export function updateFnBar() {
 
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+  // Global keybindings (always active)
+  switch (e.key) {
+    case 'F6':  e.preventDefault(); toggleNarrative();      updateFnBar(); return;
+    case 'F7':  e.preventDefault(); toggleCausalLayout();   updateFnBar(); return;
+    case 'F9':  e.preventDefault(); toggleReportMode();     return;
+    case 'F10': e.preventDefault(); exportCanvasPNG();      return;
+  }
+
+  // Narrative arrow keys
+  if (isNarrativeActive()) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); narrativeNext(); return; }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); narrativePrev(); return; }
+    if (e.key === 'Escape')     { e.preventDefault(); stopNarrative(); updateFnBar(); return; }
+    if (e.key === ' ')          { e.preventDefault(); toggleNarrative(); return; }
+  }
 
   // Tab always cycles nodes
   if (e.key === 'Tab') {
@@ -554,6 +587,78 @@ document.addEventListener('keydown', e => {
       break;
   }
 });
+
+// ── Report mode ───────────────────────────────────────────────────────────────
+
+let _reportMode = false;
+
+function toggleReportMode() {
+  _reportMode = !_reportMode;
+  const shell = document.querySelector('.shell');
+  const overlay = document.getElementById('report-overlay');
+  if (_reportMode) {
+    shell?.classList.add('report-mode');
+    if (overlay) overlay.classList.remove('hidden');
+    log('SYSTEM', 'report mode ON');
+  } else {
+    shell?.classList.remove('report-mode');
+    if (overlay) overlay.classList.add('hidden');
+    log('SYSTEM', 'report mode OFF');
+  }
+}
+
+// ── PNG export ────────────────────────────────────────────────────────────────
+
+import { getScene as _getScene, getCamera as _getCam } from './canvas/scene.mjs';
+
+function exportCanvasPNG() {
+  const canvas = document.querySelector('.canvas-wrap canvas');
+  if (!canvas) { log('ERROR', 'no canvas found'); return; }
+
+  // Force a fresh render
+  const renderer = canvas.__renderer;
+
+  // Create overlay canvas with title + timestamp
+  const w = canvas.width, h = canvas.height;
+  const overlay = document.createElement('canvas');
+  overlay.width = w; overlay.height = h;
+  const ctx = overlay.getContext('2d');
+
+  // Draw the 3D canvas
+  ctx.drawImage(canvas, 0, 0);
+
+  // Title bar
+  ctx.fillStyle = 'rgba(0,0,0,0.7)';
+  ctx.fillRect(0, 0, w, 36);
+  ctx.fillRect(0, h - 28, w, 28);
+
+  ctx.font = 'bold 16px "IBM Plex Mono", monospace';
+  ctx.fillStyle = '#ff6600';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('kaaroViewer', 12, 18);
+
+  // Session info
+  const nodeCount = graph.nodes.size;
+  const edgeCount = graph.edges.size;
+  ctx.font = '12px "IBM Plex Mono", monospace';
+  ctx.fillStyle = '#ccccaa';
+  ctx.textAlign = 'right';
+  ctx.fillText(`${nodeCount} nodes · ${edgeCount} edges · ${new Date().toLocaleDateString()}`, w - 12, 18);
+
+  // Footer
+  ctx.textAlign = 'left';
+  ctx.font = '10px "IBM Plex Mono", monospace';
+  ctx.fillStyle = '#667755';
+  ctx.fillText('Generated by kaaroViewer — Knowledge Graph Explorer', 12, h - 10);
+
+  // Download
+  const link = document.createElement('a');
+  link.download = `kaaroViewer_${new Date().toISOString().slice(0, 10)}.png`;
+  link.href = overlay.toDataURL('image/png');
+  link.click();
+
+  log('SYSTEM', 'PNG exported');
+}
 
 // ── Seed ──────────────────────────────────────────────────────────────────────
 // Auto-seed disabled — canvas starts empty. Use input bar or F5 LIB to load.
