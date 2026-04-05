@@ -1,317 +1,700 @@
 {
   "meta": {
-    "id": "aoe-2-redbull-april-2026",
-    "title": "Red Bull Wololo: Londinium — April 2026",
-    "source": "aoe-2-redbull-april-2026.md",
-    "domain": "Esports / Age of Empires",
-    "year": "2026"
+    "id":       "aoe-2-redbull-april-2026",
+    "title":    "Red Bull Wololo: Londinium — April 2026",
+    "subtitle": "How an esports tournament came to the Royal Albert Hall",
+    "source":   "aoe-2-redbull-april-2026.md",
+    "domain":   "Esports / Age of Empires",
+    "year":     "2026",
+    "tags":     ["esports", "Age of Empires", "tournament", "RTS", "London", "metagame", "cultural elevation"],
+    "tone":     "narrative"
   },
-  "nodes": [
 
-    { "id": "rbw-londinium",
-      "label": "Red Bull Wololo: Londinium",
-      "type": "tournament",
-      "description": "8th edition of the premier AoE esports series. Held across 3 iconic London venues, Apr 1–6 2026. $250k prize pool.",
-      "metrics": { "PRIZE": "$250k", "DAYS": "6", "EDITION": "8th", "VIEWERS": "36k peak" } },
+  "report_card": {
+    "summary": "Red Bull Wololo: Londinium staged the most ambitious Age of Empires tournament in history — a $250K event across three iconic London venues culminating in a live-orchestrated Grand Final at the Royal Albert Hall — while navigating dual visa crises, metagame upheaval from a last-minute DLC release, and a score-victory controversy that divided the community.",
+    "key_stats": [
+      { "label": "Total Prize Pool",    "value": "$250,000" },
+      { "label": "Peak Concurrent",     "value": "36,461 viewers" },
+      { "label": "Hours Watched",       "value": "221,737" },
+      { "label": "Venues",              "value": "3 (Shoreditch → Leicester Sq → Royal Albert Hall)" },
+      { "label": "Players",             "value": "12 (8 AoE2 + 4 AoE4)" },
+      { "label": "DLC Before Final",    "value": "8 weeks (The Last Chieftains)" },
+      { "label": "Players Visa-Denied", "value": "2 (from 2 different titles)" }
+    ],
+    "spine":        ["rbw-londinium", "rbw-aoe2", "rbw-aoe4"],
+    "protagonists": ["theviper", "hera", "marinelord"],
+    "antagonists":  ["visa-crisis", "score-victory"],
+    "themes":       ["Esports", "Age of Empires", "Cultural Elevation", "Meta Disruption", "Logistics Crisis", "Human Drama"]
+  },
 
-    { "id": "rbw-aoe2",
-      "label": "AoE2 Main Event",
-      "type": "event",
-      "description": "8-player Empire Wars bracket. $170k prize pool. Bo5 groups → Bo7 playoffs → Bo9 Grand Final.",
-      "metrics": { "PRIZE": "$170k", "PLAYERS": "8", "FORMAT": "Empire Wars" } },
-
-    { "id": "rbw-aoe4",
-      "label": "AoE4 Main Event",
-      "type": "event",
-      "description": "4-player single-elimination bracket. $40k prize pool. All series Bo5.",
-      "metrics": { "PRIZE": "$40k", "PLAYERS": "4", "FORMAT": "Bo5 SE" } },
-
-    { "id": "rbw-repl-qual",
-      "label": "AoE2 Replacement Qualifier",
-      "type": "event",
-      "description": "Emergency 3-player round-robin on Mar 28, 4 days before groups. Triggered by Vinchester's visa denial.",
-      "metrics": { "DATE": "Mar 28", "PLAYERS": "3", "FORMAT": "RR Bo5", "WINNER": "TheViper" } },
-
-    { "id": "road-to-wololo",
-      "label": "Road to Wololo: Londinium",
-      "type": "event",
-      "description": "AoE4 qualification circuit. Jan–Feb 2026. $50k total pool, $10k for non-qualifying participants.",
-      "metrics": { "POOL": "$50k", "CIRCUIT": "Jan–Feb 2026" } },
-
-    { "id": "aoe2-de",
-      "label": "Age of Empires II: DE",
-      "type": "software",
-      "description": "Definitive Edition of the 1999 classic. Flagship title of Londinium. Empire Wars custom map pool.",
-      "metrics": { "RELEASED": "2019", "CIVS": "45+", "PUBLISHER": "Xbox" },
-      "wikidata": "Q4693024" },
-
-    { "id": "aoe4",
-      "label": "Age of Empires IV",
-      "type": "software",
-      "description": "2021 reboot by Relic Entertainment. Featured in Londinium with 4-player SE bracket.",
-      "metrics": { "RELEASED": "2021", "DEVELOPER": "Relic" },
-      "wikidata": "Q106306050" },
-
-    { "id": "last-chieftains",
-      "label": "The Last Chieftains",
-      "type": "dlc",
-      "description": "AoE2 DLC released Feb 17 2026. Introduced Mapuche, Muisca, Tupi + Inca rework. Reshuffled the tournament meta days before Londinium.",
-      "metrics": { "RELEASED": "Feb 17 2026", "NEW_CIVS": "3", "REWORKED": "Inca" } },
-
-    { "id": "yue-fei",
-      "label": "Yue Fei's Legacy",
-      "type": "dlc",
-      "description": "AoE4 DLC releasing May 19 2026. Introduces Jin Dynasty. Dominated discourse during Londinium as the looming meta disruption.",
-      "metrics": { "RELEASE": "May 19 2026", "NEW_CIV": "Jin Dynasty", "CAMPAIGN": "Song-Jin Wars" } },
-
-    { "id": "naval-overhaul",
-      "label": "Naval Overhaul Patch",
-      "type": "concept",
-      "description": "Free AoE2 patch concurrent with The Last Chieftains. Added Hulk-line anti-fire ships and Catapult Galleons. Disrupted water-map meta on Thames and Loch Ness.",
-      "metrics": { "ADDED": "Hulk / Cat.Galleon", "META": "Fire Ship countered" } },
-
-    { "id": "rb-gaming-sphere",
-      "label": "Red Bull Gaming Sphere",
-      "type": "place",
-      "description": "Intimate esports facility in Shoreditch. Group stages Apr 1–3. Clinical, low-crowd environment — Hera noted no nerves.",
-      "metrics": { "LOCATION": "Shoreditch", "PHASE": "Groups", "DATES": "Apr 1–3" } },
-
-    { "id": "odeon-luxe",
-      "label": "Odeon Luxe Leicester Square",
-      "type": "place",
-      "description": "Luxury cinema. Playoffs & Semifinals Apr 4–5. ~700 attendees on massive theater screens.",
-      "metrics": { "LOCATION": "Leicester Square", "CAPACITY": "700", "PHASE": "Playoffs" } },
-
-    { "id": "royal-albert-hall",
-      "label": "Royal Albert Hall",
-      "type": "place",
-      "description": "Iconic South Kensington concert hall. Grand Final Apr 6. 3000+ fans. World's first live-orchestrated esports final.",
-      "metrics": { "LOCATION": "South Kensington", "CAPACITY": "3000+", "PHASE": "Grand Final" },
-      "wikidata": "Q294819" },
-
-    { "id": "red-bull",
-      "label": "Red Bull",
-      "type": "organization",
-      "description": "Primary organizer and brand of the Wololo series. Provides venues, production, and commercial capital.",
-      "metrics": { "ROLE": "Organizer" },
-      "wikidata": "Q315275" },
-
-    { "id": "worlds-edge",
-      "label": "World's Edge",
-      "type": "organization",
-      "description": "Xbox studio responsible for the Age of Empires franchise. Deep collaboration partner for Londinium.",
-      "metrics": { "ROLE": "Developer / Partner" } },
-
-    { "id": "agon-aoc",
-      "label": "AGON by AOC",
-      "type": "organization",
-      "description": "Hardware sponsor providing high-performance competitive monitors for the event.",
-      "metrics": { "ROLE": "Hardware Sponsor" } },
-
-    { "id": "hera",
-      "label": "Hera",
-      "type": "player",
-      "description": "Canadian AoE2 player. Dominant Group A 1st seed (3-0). Reached Grand Final. Known for clinical, analytical play.",
-      "metrics": { "COUNTRY": "Canada", "GROUP": "A-1st", "RECORD": "3-0", "GAME": "AoE2" } },
-
-    { "id": "theviper",
-      "label": "TheViper",
-      "type": "player",
-      "description": "Norwegian AoE2 GOAT. Failed standard qual, entered via emergency Replacement Qualifier. Won qualifier 2-0, then upset Liereyy in groups.",
-      "metrics": { "COUNTRY": "Norway", "PATH": "Replacement Qual", "REPL_QUAL": "2-0", "GAME": "AoE2" } },
-
-    { "id": "mr-yo",
-      "label": "Mr_Yo",
-      "type": "player",
-      "description": "Chinese AoE2 strategist. Deployed Mapuche against Hera, built central walls on Loch Ness in tactical desperation play. Group A 3rd.",
-      "metrics": { "COUNTRY": "China", "GROUP": "A-3rd", "STYLE": "Defensive Boom", "GAME": "AoE2" } },
-
-    { "id": "hearttt",
-      "label": "Hearttt",
-      "type": "player",
-      "description": "AoE2 player. Group A 2nd seed. Lost to Sebastian 4-3 in playoffs after APM degradation under pressure.",
-      "metrics": { "GROUP": "A-2nd", "RECORD": "2-1", "GAME": "AoE2" } },
-
-    { "id": "mbl",
-      "label": "MbL",
-      "type": "player",
-      "description": "Norwegian veteran. Lost LCQ final to Vinchester, then eliminated in Group A. 0-2 in groups.",
-      "metrics": { "COUNTRY": "Norway", "GROUP": "A-elim", "GAME": "AoE2" } },
-
-    { "id": "liereyy",
-      "label": "Liereyy",
-      "type": "player",
-      "description": "AoE2 mechanical prodigy. Group B 2nd seed. Lost to TheViper in a major upset; advanced to playoffs via strong record.",
-      "metrics": { "GROUP": "B-2nd", "STYLE": "Micro-management", "GAME": "AoE2" } },
-
-    { "id": "sebastian",
-      "label": "Sebastian",
-      "type": "player",
-      "description": "AoE2 player. Group B. Defeated Hearttt 4-3 in a grueling 7-game playoffs series showcasing superior stamina.",
-      "metrics": { "GROUP": "B", "PLAYOFF_W": "4-3 vs Hearttt", "GAME": "AoE2" } },
-
-    { "id": "accm",
-      "label": "ACCM",
-      "type": "player",
-      "description": "Vietnamese AoE2 player. Heavily scripted build orders collapsed against custom map pool chaos. Eliminated Group B without a win.",
-      "metrics": { "COUNTRY": "Vietnam", "GROUP": "B-elim", "RECORD": "0-3", "GAME": "AoE2" } },
-
-    { "id": "vinchester",
-      "label": "Vinchester",
-      "type": "player",
-      "description": "Won LCQ tiebreaker over MbL for the final Londinium spot. Subsequently denied UK travel visa. Replaced by TheViper via emergency qualifier.",
-      "metrics": { "LCQ": "Winner", "STATUS": "Visa Denied", "GAME": "AoE2" } },
-
-    { "id": "marinelord",
-      "label": "MarineLorD",
-      "type": "player",
-      "description": "French AoE4 juggernaut. Known for structurally perfect macro. Won 3-1 vs 1puppypaw to advance to Grand Final.",
-      "metrics": { "COUNTRY": "France", "RESULT": "Grand Final", "STYLE": "Macro", "GAME": "AoE4" } },
-
-    { "id": "wam01",
-      "label": "Wam01",
-      "type": "player",
-      "description": "Canadian AoE4 champion. Methodical, risk-averse macro style. Semi-finalist.",
-      "metrics": { "COUNTRY": "Canada", "STYLE": "Macro / Low-risk", "GAME": "AoE4" } },
-
-    { "id": "vortix",
-      "label": "VortiX",
-      "type": "player",
-      "description": "Spanish AoE4 veteran. Aggressive, micro-intensive momentum style. Semi-finalist.",
-      "metrics": { "COUNTRY": "Spain", "STYLE": "Aggressive micro", "GAME": "AoE4" } },
-
-    { "id": "1puppypaw",
-      "label": "1puppypaw",
-      "type": "player",
-      "description": "Canadian replacement for visa-denied Anotand. Unstudied wildcard with divergent civ preferences. Lost 3-1 to MarineLorD in SF.",
-      "metrics": { "COUNTRY": "Canada", "ROLE": "Replacement", "RESULT": "Lost to MarineLorD 3-1", "GAME": "AoE4" } },
-
-    { "id": "anotand",
-      "label": "Anotand",
-      "type": "player",
-      "description": "Belarusian AoE4 pro from Volda E-sport. Earned his Londinium spot via Road to Wololo, then denied UK travel visa weeks before the event.",
-      "metrics": { "COUNTRY": "Belarus", "TEAM": "Volda E-sport", "STATUS": "Visa Denied", "GAME": "AoE4" } },
-
-    { "id": "civ-mapuche",
-      "label": "Mapuche",
-      "type": "civ",
-      "description": "New AoE2 civ from The Last Chieftains. Kona melee cavalry (damage bonus vs injured units) + Bolas Rider (slowing ranged cavalry). Chile/Argentina theme.",
-      "metrics": { "UNITS": "Kona / Bolas Rider", "STYLE": "Skirmish execution", "WEAKNESS": "Low pierce armor" } },
-
-    { "id": "civ-muisca",
-      "label": "Muisca",
-      "type": "civ",
-      "description": "New AoE2 civ. Guecha Warrior heals nearby allies on death. Temple Guard gains attack speed over time. Colombia theme. Attrition specialist.",
-      "metrics": { "UNITS": "Guecha / Temple Guard", "STYLE": "Sustained attrition" } },
-
-    { "id": "civ-tupi",
-      "label": "Tupi",
-      "type": "civ",
-      "description": "New AoE2 civ. Blackwood Archers train in pairs (double production). Ibirapema Warrior has frontal cleave AoE. Brazil theme. Swarm specialist.",
-      "metrics": { "UNITS": "Blackwood Archer / Ibirapema", "STYLE": "Swarm / Numbers" } },
-
-    { "id": "empire-wars",
-      "label": "Empire Wars",
-      "type": "concept",
-      "description": "Red Bull Wololo's signature AoE2 format. Starts in Feudal Age with active economy — bypasses 5–8 min Dark Age. Forces immediate aggression.",
-      "metrics": { "START_AGE": "Feudal", "TIMER": "75min cap", "FORMAT": "Captains Mode" } },
-
-    { "id": "score-victory",
-      "label": "Score Victory Controversy",
-      "type": "concept",
-      "description": "Hera vs Mr_Yo Game 4. 75-min timer expired. Hera pivoted from combat to score manipulation (exploration, buildings, skirmishes). Won by algorithm, not conquest. Community divided.",
-      "metrics": { "GAME": "Hera vs Mr_Yo", "MAP": "Stonefront", "REACTION": "Polarizing" } },
-
-    { "id": "visa-crisis",
-      "label": "Visa & Logistics Crisis",
-      "type": "concept",
-      "description": "Two qualified players denied UK travel visas weeks before the event. Vinchester (AoE2 LCQ winner) and Anotand (AoE4 Road to Wololo finisher) both unable to enter the UK.",
-      "metrics": { "AFFECTED": "Vinchester + Anotand", "RESPONSE": "Emergency qualifiers" } },
-
-    { "id": "orchestra",
-      "label": "Live 40-Piece Orchestra",
-      "type": "concept",
-      "description": "World's first live-orchestrated esports final. 40-piece orchestra performed AoE soundtrack dynamically in sync with live Grand Final gameplay at Royal Albert Hall.",
-      "metrics": { "VENUE": "Royal Albert Hall", "SIZE": "40 pieces", "FIRST": "in esports history" } },
-
-    { "id": "t90official",
-      "label": "T90Official",
-      "type": "person",
-      "description": "AoE2 casting veteran. Part of the Londinium AoE2 broadcast team alongside Nili, MembTV, and Dave.",
-      "metrics": { "ROLE": "AoE2 Caster" } },
-
-    { "id": "rlyknght",
-      "label": "Riley Knight (RLYKNGHT)",
-      "type": "person",
-      "description": "AoE4 broadcast host. Bridges technical gameplay with mainstream narrative accessibility. Anchored the AoE4 desk at Londinium.",
-      "metrics": { "ROLE": "AoE4 Host", "ALIAS": "RLYKNGHT" } }
-
+  "story": [
+    {
+      "id":        "beat-1-stage",
+      "title":     "The Stage Is Set",
+      "node":      "rbw-londinium",
+      "nodes":     ["red-bull", "worlds-edge"],
+      "narration": "April 2026. Red Bull Wololo arrives in London for its 8th edition — the first time the series trades isolated medieval castles for a global urban capital. Six days. Three venues. $250,000. A game franchise more than two decades old is about to play the Royal Albert Hall.",
+      "tension":   "low",
+      "focus":     "wide"
+    },
+    {
+      "id":        "beat-2-venues",
+      "title":     "Three Venues, Escalating Stakes",
+      "node":      "rb-gaming-sphere",
+      "nodes":     ["odeon-luxe", "royal-albert-hall"],
+      "narration": "The tournament is designed as a physical narrative. Group stages at the Red Bull Gaming Sphere in Shoreditch: clinical, quiet, intimate. Playoffs migrate to the Odeon Luxe in Leicester Square: 700 fans, cinema screens, acoustic intensity. Grand Final at the Royal Albert Hall: 3,000 fans, global broadcast, a live orchestra. Each venue is a chapter.",
+      "tension":   "low",
+      "focus":     "wide"
+    },
+    {
+      "id":        "beat-3-meta",
+      "title":     "The Meta Is Upended",
+      "node":      "last-chieftains",
+      "nodes":     ["civ-mapuche", "civ-muisca", "civ-tupi", "naval-overhaul"],
+      "narration": "February 17, 2026 — eight weeks before the Grand Final. World's Edge deploys The Last Chieftains: three new AoE2 civilizations (Mapuche, Muisca, Tupi), a comprehensive Inca rework, and a free Naval Overhaul patch that rewrites water-map dynamics. Years of practiced heuristics become theoretical overnight. The players haven't solved the new meta when they board their flights to London.",
+      "tension":   "medium",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-4-crisis",
+      "title":     "The Brackets Break",
+      "node":      "visa-crisis",
+      "nodes":     ["vinchester", "anotand"],
+      "narration": "Weeks before play begins: two qualified players are denied UK travel visas. Vinchester — who survived a 97-player LCQ bloodbath, defeating MbL in a tiebreaker for the final AoE2 spot — cannot enter. Anotand — who grinded through months of the Road to Wololo circuit — cannot enter. Two different titles. Same country. Same administrative failure.",
+      "tension":   "high",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-5-viper",
+      "title":     "TheViper's Miraculous Return",
+      "node":      "rbw-repl-qual",
+      "nodes":     ["theviper", "barles", "lewis"],
+      "narration": "March 28, 2026. Four days before Group Stages commence. Three players — TheViper, Lewis, Barles — play an emergency online round-robin to fill the vacant AoE2 spot. TheViper, statistically the most decorated player in the game's 27-year history, had failed to qualify through normal channels. He wins the qualifier 2-0. Against all logic, the greatest player in AoE2 history enters the biggest tournament of the year through its back door.",
+      "tension":   "climax",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-6-hera",
+      "title":     "Clinical Dominance",
+      "node":      "hera",
+      "nodes":     ["mr-yo", "civ-mapuche", "hearttt", "mbl"],
+      "narration": "Group A. Hera is ruthless. He sweeps Hearttt 3-0. He defeats MbL 3-2. Against Mr_Yo, who opens with the newly released Mapuche civilization, Hera performs a live analytical deconstruction: identifies the Kona's pierce armor weakness, refuses to engage in the skirmish geometry the Mapuche require, and dismantles Yo's army from distance. The meta hasn't been solved — Hera just solved it on broadcast.",
+      "tension":   "high",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-7-controversy",
+      "title":     "The Score Victory Controversy",
+      "node":      "score-victory",
+      "nodes":     ["hera", "mr-yo", "empire-wars"],
+      "narration": "Hera vs Mr_Yo, final game. Tatars vs Magyars on Stonefront. 75-minute timer. Neither player can break the other's lines. Hera, realising a military breakthrough is mathematically impossible, makes a rational decision: stop playing the game, start playing the algorithm. Exploration, buildings, controlled skirmishes — all optimized for score metric, not military dominance. Timer expires. Hera wins by algorithm. The community fractures: tactical genius or anti-game?",
+      "tension":   "climax",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-8-aoe4",
+      "title":     "AoE4: The Machine and the Wildcard",
+      "node":      "marinelord",
+      "nodes":     ["1puppypaw", "wam01", "vortix"],
+      "narration": "Across the venue, the AoE4 bracket runs in parallel. MarineLorD — clinically perfect in structure — dismantles wildcard replacement 1puppypaw across four maps, four civilizations, four tactical puzzles. Each game is a different asymmetric problem. MarineLorD solves each one. 3-1. The road to the Grand Final clears.",
+      "tension":   "high",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-9-semifinals",
+      "title":     "The Stakes Rise at the Odeon",
+      "node":      "odeon-luxe",
+      "nodes":     ["theviper", "hera", "sebastian", "hearttt", "liereyy"],
+      "narration": "Playoffs move to the Odeon Luxe. 700 fans. Massive cinema screens. The ambient noise of a crowd enters the game for the first time. Sebastian defeats Hearttt 4-3 in a seven-game marathon. TheViper defeats Mr_Yo 4-2. Hera enters the Semifinals searching for the nerves that would tell him the moment matters. He hasn't found them yet.",
+      "tension":   "high",
+      "focus":     "wide"
+    },
+    {
+      "id":        "beat-10-orchestra",
+      "title":     "The Royal Albert Hall",
+      "node":      "royal-albert-hall",
+      "nodes":     ["orchestra", "rbw-londinium"],
+      "narration": "April 6. Royal Albert Hall. South Kensington. 3,000 fans. A 40-piece live orchestra performs the Age of Empires soundtrack in real time, dynamically responding to the on-screen battles. When cavalry charges: brass swells. When an empire falls: strings. No esports event has ever been staged here. The game is 27 years old. It has just entered the cultural institution that has hosted the BBC Proms since 1895.",
+      "tension":   "climax",
+      "focus":     "wide"
+    }
   ],
+
+  "insights": [
+    {
+      "id":       "ins-visa-systemic",
+      "title":    "Visa logistics remain esports' systemic blind spot",
+      "body":     "Two qualified players, from two different game titles, in the same tournament, denied entry to the same country by the same administrative process. The organizers responded competently both times — emergency qualifiers were deployed, the narrative survived. But the fact that emergency replacement qualifiers are now a known, exercised contingency means the problem is structural, not accidental. International esports has a geopolitical fragility problem it has architecturally accepted rather than solved.",
+      "type":     "warning",
+      "evidence": ["visa-crisis", "vinchester", "anotand", "rbw-repl-qual", "1puppypaw", "theviper"],
+      "severity": "high"
+    },
+    {
+      "id":       "ins-score-victory-flaw",
+      "title":    "Empire Wars' 75-minute cap incentivizes anti-combat play",
+      "body":     "The Score Victory mechanic creates a rational incentive structure orthogonal to the game's core design: the player who correctly identifies they cannot win militarily is rewarded for maximising an arbitrary numerical metric. Hera's decision to pivot from combat to score manipulation was strategically correct, legally valid, and narratively anti-climactic. The rule exists to prevent endless stalemates. The solution creates a different kind of non-game — one where optimising a scoring algorithm defeats the RTS premise entirely.",
+      "type":     "finding",
+      "evidence": ["score-victory", "empire-wars", "hera", "mr-yo"],
+      "severity": "high"
+    },
+    {
+      "id":       "ins-meta-volatility",
+      "title":    "Planned DLC volatility near tournament date is a broadcast asset",
+      "body":     "The Last Chieftains releasing 8 weeks before qualifiers concluded meant players faced legitimately unsolved strategic problems live on broadcast. Hera's real-time identification of the Mapuche's pierce armor weakness — performed analytically rather than from accumulated practice — was only possible because nobody had had enough time to solve it. Metagame volatility near major events forces visible improvisation and signals the game's ongoing vitality. Treated deliberately, it is a spectator asset.",
+      "type":     "opportunity",
+      "evidence": ["last-chieftains", "civ-mapuche", "hera", "mr-yo", "rbw-londinium", "naval-overhaul"],
+      "severity": "medium"
+    },
+    {
+      "id":       "ins-viper-narrative",
+      "title":    "TheViper's backdoor qualification became the tournament's human engine",
+      "body":     "Tournament narratives require antagonist conditions and protagonist comeback arcs. A visa denial gave TheViper an impossible situation. An emergency qualifier gave him a stage. His Group B upset of Liereyy and Round of Six victory over Mr_Yo provided the tournament with a hero's journey the main qualification bracket could not have manufactured. The logistics failure became the content engine. The greatest player in AoE2 history's near-absence made his presence feel earned in a way a straightforward qualification never could have.",
+      "type":     "pattern",
+      "evidence": ["theviper", "rbw-repl-qual", "visa-crisis", "liereyy", "mr-yo", "vinchester"],
+      "severity": "medium"
+    },
+    {
+      "id":       "ins-cultural-elevation",
+      "title":    "Multi-venue escalation physically repositions esports as high culture",
+      "body":     "Moving an esports event through Shoreditch → Leicester Square → Royal Albert Hall is not a logistics decision — it is a cultural argument made in architecture. Each venue is a statement about what this activity is. The live 40-piece orchestra is the capstone: classical music has not been borrowed as ambience, it has been integrated as live reactive performance responding to digital warfare in real time. Esports has been claiming cultural legitimacy for decades. This tournament staged the claim.",
+      "type":     "conclusion",
+      "evidence": ["rbw-londinium", "rb-gaming-sphere", "odeon-luxe", "royal-albert-hall", "orchestra"],
+      "severity": "medium"
+    }
+  ],
+
+  "clusters": [
+    {
+      "id":          "cluster-aoe2-field",
+      "label":       "AoE2 Competitors",
+      "color":       "#00ccff",
+      "nodes":       ["hera", "theviper", "mr-yo", "hearttt", "mbl", "liereyy", "sebastian", "accm", "vinchester", "barles", "lewis"],
+      "description": "All AoE2 competitors including qualification and replacement bracket participants."
+    },
+    {
+      "id":          "cluster-aoe4-field",
+      "label":       "AoE4 Competitors",
+      "color":       "#00eeff",
+      "nodes":       ["marinelord", "wam01", "vortix", "1puppypaw", "anotand"],
+      "description": "AoE4 main event and Road to Wololo participants."
+    },
+    {
+      "id":          "cluster-venue-arc",
+      "label":       "Venue Escalation Arc",
+      "color":       "#ffcc00",
+      "nodes":       ["rb-gaming-sphere", "odeon-luxe", "royal-albert-hall", "orchestra"],
+      "description": "The physical narrative of the tournament: three venues of escalating cultural prestige."
+    },
+    {
+      "id":          "cluster-dlc-disruption",
+      "label":       "DLC & Meta Disruption",
+      "color":       "#ee88ff",
+      "nodes":       ["last-chieftains", "civ-mapuche", "civ-muisca", "civ-tupi", "naval-overhaul", "yue-fei", "jin-dynasty"],
+      "description": "Content releases that reshaped or overshadowed the competitive metagame."
+    },
+    {
+      "id":          "cluster-crisis-response",
+      "label":       "Visa Crisis & Response",
+      "color":       "#ff4422",
+      "nodes":       ["visa-crisis", "vinchester", "anotand", "rbw-repl-qual", "barles", "lewis", "theviper"],
+      "description": "The logistics crisis and the emergency qualification chain it triggered."
+    },
+    {
+      "id":          "cluster-broadcast",
+      "label":       "Broadcast Team",
+      "color":       "#8899ff",
+      "nodes":       ["t90official", "nili", "rlyknght", "soembie"],
+      "description": "The talent team narrating the event across both game titles."
+    }
+  ],
+
+  "nodes": [
+    {
+      "id":        "rbw-londinium",
+      "label":     "Red Bull Wololo: Londinium",
+      "type":      "tournament",
+      "tier":      "spine",
+      "sentiment": "positive",
+      "description": "The 8th edition of the premier Age of Empires competitive series. April 1–6 2026, London. $250,000 prize pool distributed across AoE2, AoE4, and qualification circuits. First esports event staged at the Royal Albert Hall.",
+      "metrics":   { "PRIZE": "$250k", "DAYS": "6", "EDITION": "8th", "PEAK_VIEWERS": "36,461", "HRS_WATCHED": "221,737" }
+    },
+    {
+      "id":        "rbw-aoe2",
+      "label":     "AoE2 Main Event",
+      "type":      "event",
+      "tier":      "spine",
+      "sentiment": "positive",
+      "description": "8-player Empire Wars bracket. $170,000 prize pool. Round-robin group stages (Bo5) → playoffs (Bo7) → Grand Final (Bo9). Custom map pool of 11 bespoke maps.",
+      "metrics":   { "PRIZE": "$170k", "PLAYERS": "8", "FORMAT": "Empire Wars", "MAP_POOL": "11 custom maps" }
+    },
+    {
+      "id":        "rbw-aoe4",
+      "label":     "AoE4 Main Event",
+      "type":      "event",
+      "tier":      "spine",
+      "sentiment": "positive",
+      "description": "4-player single-elimination bracket. $40,000 prize pool. All series played as Bo5. High-stakes, zero-margin-for-error format.",
+      "metrics":   { "PRIZE": "$40k", "PLAYERS": "4", "FORMAT": "Bo5 Single-Elim" }
+    },
+    {
+      "id":        "rbw-repl-qual",
+      "label":     "AoE2 Replacement Qualifier",
+      "type":      "event",
+      "tier":      "primary",
+      "sentiment": "contested",
+      "description": "Emergency online round-robin played March 28 — four days before group stages. Three players (TheViper, Lewis, Barles) competed for the single vacant spot created by Vinchester's visa denial.",
+      "metrics":   { "DATE": "Mar 28 2026", "PLAYERS": "3", "FORMAT": "RR Bo5", "WINNER": "TheViper 2-0" }
+    },
+    {
+      "id":        "road-to-wololo",
+      "label":     "Road to Wololo: Londinium",
+      "type":      "event",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "AoE4 qualification circuit running January–February 2026. $50,000 total prize pool. Unique innovation: $10,000 allocated to players who participated but failed to qualify, sustaining the semi-professional ecosystem.",
+      "metrics":   { "POOL": "$50k", "NON_QUAL_PRIZE": "$10k", "CIRCUIT": "Jan–Feb 2026" }
+    },
+    {
+      "id":        "aoe2-de",
+      "label":     "Age of Empires II: DE",
+      "type":      "software",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "Definitive Edition of the 1999 classic. Flagship title of Londinium with 45+ civilizations and a dedicated competitive scene that has survived for over two decades.",
+      "metrics":   { "RELEASED": "2019", "ORIGINAL": "1999", "CIVS": "45+", "PUBLISHER": "Xbox" },
+      "wikidata":  "Q4693024"
+    },
+    {
+      "id":        "aoe4",
+      "label":     "Age of Empires IV",
+      "type":      "software",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "2021 reboot by Relic Entertainment. Featured at Londinium with a 4-player single-elimination bracket. Metagame dominated by anticipation of the incoming Yue Fei's Legacy DLC.",
+      "metrics":   { "RELEASED": "2021", "DEVELOPER": "Relic Entertainment" },
+      "wikidata":  "Q106306050"
+    },
+    {
+      "id":        "last-chieftains",
+      "label":     "The Last Chieftains",
+      "type":      "dlc",
+      "tier":      "primary",
+      "sentiment": "contested",
+      "description": "AoE2 DLC released February 17, 2026 — eight weeks before the Londinium Grand Final. Introduced three new ranked-viable civilizations (Mapuche, Muisca, Tupi) and a comprehensive Inca rework. Rewrote the tournament metagame before players could fully adapt.",
+      "metrics":   { "RELEASED": "Feb 17 2026", "NEW_CIVS": "3 + Inca rework", "WEEKS_BEFORE_FINAL": "8" }
+    },
+    {
+      "id":        "yue-fei",
+      "label":     "Yue Fei's Legacy",
+      "type":      "dlc",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "AoE4 DLC announcing the Jin Dynasty civilization. Release scheduled May 19, 2026 — after Londinium. Its omnipresent marketing and preview builds dominated strategic discourse during the event, framing every AoE4 game as the last showcase of the 'old' meta.",
+      "metrics":   { "RELEASE": "May 19 2026", "NEW_CIV": "Jin Dynasty", "CAMPAIGN": "Song-Jin Wars" }
+    },
+    {
+      "id":        "naval-overhaul",
+      "label":     "Naval Overhaul Patch",
+      "type":      "concept",
+      "tier":      "secondary",
+      "sentiment": "contested",
+      "description": "Free AoE2 patch concurrent with The Last Chieftains. Introduced Hulk-class ships (direct Fire Ship counter) and Catapult Galleons (shoreline siege). Invalidated decades of water-map strategy on Loch Ness and Thames — two maps in the Londinium pool.",
+      "metrics":   { "ADDED": "Hulk / Catapult Galleon", "AFFECTED_MAPS": "Loch Ness, Thames" }
+    },
+    {
+      "id":        "rb-gaming-sphere",
+      "label":     "Red Bull Gaming Sphere",
+      "type":      "place",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "Modern esports facility in Shoreditch, East London. Group stages April 1–3. Clinical, quiet, technically pristine. Hera described feeling no nerves — attributing it to the familiar gaming-studio environment. The subdued atmosphere paradoxically suppressed the psychological pressure elite players need.",
+      "metrics":   { "LOCATION": "Shoreditch", "PHASE": "Groups Apr 1–3", "ATMOSPHERE": "clinical" },
+      "wikidata":  "Q116836424"
+    },
+    {
+      "id":        "odeon-luxe",
+      "label":     "Odeon Luxe Leicester Square",
+      "type":      "place",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "Luxury cinema in Leicester Square. Playoffs and Semifinals April 4–5. Approximately 700 attendees. Massive high-definition theater screens and surround sound systems elevated the spectator experience. The first introduction of significant crowd noise for players.",
+      "metrics":   { "LOCATION": "Leicester Square", "CAPACITY": "~700", "PHASE": "Playoffs Apr 4–5" }
+    },
+    {
+      "id":        "royal-albert-hall",
+      "label":     "Royal Albert Hall",
+      "type":      "place",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "Iconic South Kensington concert hall, home of the BBC Proms since 1895. Grand Final April 6. Over 3,000 fans. A 40-piece orchestra performed the AoE soundtrack live and dynamically during gameplay — the world's first live-orchestrated esports event.",
+      "metrics":   { "LOCATION": "South Kensington", "CAPACITY": "3,000+", "PHASE": "Grand Final Apr 6" },
+      "wikidata":  "Q294819"
+    },
+    {
+      "id":        "red-bull",
+      "label":     "Red Bull",
+      "type":      "organization",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "Primary organiser and commercial engine of the Wololo series. Provides venues, production, and brand capital. The series is a flagship Red Bull esports property.",
+      "metrics":   { "ROLE": "Organiser", "SERIES_EDITIONS": "8" },
+      "wikidata":  "Q315275"
+    },
+    {
+      "id":        "worlds-edge",
+      "label":     "World's Edge",
+      "type":      "organization",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "Xbox studio responsible for the Age of Empires franchise. Deep collaboration partner for Londinium. Controls the game builds, the DLC release schedule, and the competitive ruleset.",
+      "metrics":   { "ROLE": "Developer / Partner", "FRANCHISE": "Age of Empires" }
+    },
+    {
+      "id":        "agon-aoc",
+      "label":     "AGON by AOC",
+      "type":      "organization",
+      "tier":      "secondary",
+      "sentiment": "neutral",
+      "description": "Hardware sponsor providing high-performance competitive monitors for all tournament setups.",
+      "metrics":   { "ROLE": "Hardware Sponsor" }
+    },
+    {
+      "id":        "hera",
+      "label":     "Hera",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "Canadian AoE2 player. Entered Londinium as the dominant favorite and delivered: 3-0 in Group A, advancing as 1st seed. Analytically dismantled the new Mapuche civilization live on broadcast. Noted a concerning absence of competitive nerves — relying on crowd energy for peak performance.",
+      "metrics":   { "COUNTRY": "Canada", "GROUP": "A — 1st seed", "RECORD": "3-0", "GAME": "AoE2" }
+    },
+    {
+      "id":        "theviper",
+      "label":     "TheViper",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "Norwegian AoE2 player. Statistically the most decorated competitor in the game's 27-year history. Failed standard qualification. Entered via emergency Replacement Qualifier (2-0). Then defeated Liereyy in Group B upset, and Mr_Yo 4-2 in the Round of Six. The comeback story that defined the tournament.",
+      "metrics":   { "COUNTRY": "Norway", "PATH": "Emergency Replacement Qual", "REPL_QUAL": "2-0 (vs Lewis, Barles)", "GAME": "AoE2" }
+    },
+    {
+      "id":        "mr-yo",
+      "label":     "Mr_Yo",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "Chinese AoE2 strategist. Known for unconventional defensive boom tactics. Deployed the new Mapuche civilization against Hera. Built a central wall bisecting Loch Ness in a tactical desperation play that won him one game. Lost to score-victory timer in a controversial finish.",
+      "metrics":   { "COUNTRY": "China", "GROUP": "A — 3rd seed", "STYLE": "Defensive boom + improvisation", "GAME": "AoE2" }
+    },
+    {
+      "id":        "hearttt",
+      "label":     "Hearttt",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "AoE2 player. Group A 2nd seed. Advanced to playoffs where he faced Sebastian in a grueling 7-game series. His APM visibly deteriorated under extended pressure — lost 3-4.",
+      "metrics":   { "GROUP": "A — 2nd seed", "RECORD": "2-1", "PLAYOFF": "Lost 3-4 to Sebastian", "GAME": "AoE2" }
+    },
+    {
+      "id":        "mbl",
+      "label":     "MbL",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "Norwegian AoE2 veteran. Lost the LCQ tiebreaker to Vinchester for the last Londinium spot. Was eliminated in Group A 0-2. His LCQ loss directly set in motion the visa crisis chain that brought TheViper into the event.",
+      "metrics":   { "COUNTRY": "Norway", "GROUP": "A — eliminated", "LCQ": "Lost tiebreaker to Vinchester", "GAME": "AoE2" }
+    },
+    {
+      "id":        "liereyy",
+      "label":     "Liereyy",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "AoE2 mechanical prodigy known for exceptional micro-management. Group B 2nd seed. Suffered an upset loss to TheViper in Group B despite being heavily favored. Advanced via strong overall record.",
+      "metrics":   { "GROUP": "B — 2nd seed", "STYLE": "Mechanical micro", "NOTABLE": "Upset by TheViper", "GAME": "AoE2" }
+    },
+    {
+      "id":        "sebastian",
+      "label":     "Sebastian",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "AoE2 player known for strategic endurance. Defeated Hearttt 4-3 in a seven-game playoff marathon — Game 7 late-game macro execution while Hearttt's APM collapsed under pressure.",
+      "metrics":   { "GROUP": "B", "PLAYOFF": "Won 4-3 vs Hearttt (Bo7)", "STYLE": "Endurance macro", "GAME": "AoE2" }
+    },
+    {
+      "id":        "accm",
+      "label":     "ACCM",
+      "type":      "player",
+      "tier":      "secondary",
+      "sentiment": "neutral",
+      "description": "Vietnamese AoE2 player with heavily scripted build orders. Struggled to adapt to the custom map pool's non-standard resource layouts. Eliminated from Group B without a series win (0-3).",
+      "metrics":   { "COUNTRY": "Vietnam", "GROUP": "B — eliminated", "RECORD": "0-3", "GAME": "AoE2" }
+    },
+    {
+      "id":        "vinchester",
+      "label":     "Vinchester",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "Won a 97-player LCQ bloodbath — defeating MbL in a final tiebreaker to claim the last AoE2 Londinium spot. Was then denied a UK travel visa. His absence created the emergency qualifier that admitted TheViper.",
+      "metrics":   { "LCQ": "Won vs MbL tiebreaker", "STATUS": "UK visa denied", "CONSEQUENCE": "triggered Replacement Qual", "GAME": "AoE2" }
+    },
+    {
+      "id":        "barles",
+      "label":     "Barles",
+      "type":      "player",
+      "tier":      "secondary",
+      "sentiment": "neutral",
+      "description": "AoE2 player who participated in the Replacement Qualifier. Went 0-2 in the round-robin, losing to both TheViper and Lewis.",
+      "metrics":   { "REPL_QUAL": "0-2, eliminated", "GAME": "AoE2" }
+    },
+    {
+      "id":        "lewis",
+      "label":     "Lewis",
+      "type":      "player",
+      "tier":      "secondary",
+      "sentiment": "neutral",
+      "description": "AoE2 player who reached 1-1 in the Replacement Qualifier, defeating Barles 3-1 but losing to TheViper. Fell short of qualification on map differential.",
+      "metrics":   { "REPL_QUAL": "1-1, +1 map diff, 2nd place", "GAME": "AoE2" }
+    },
+    {
+      "id":        "marinelord",
+      "label":     "MarineLorD",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "French AoE4 player widely considered to have the most structurally perfect macro-management in the world. Defeated wildcard replacement 1puppypaw 3-1 in AoE4 Semifinals with clinical, adaptive play across four distinct maps.",
+      "metrics":   { "COUNTRY": "France", "RESULT": "AoE4 Grand Final", "STYLE": "Structural macro", "GAME": "AoE4" }
+    },
+    {
+      "id":        "wam01",
+      "label":     "Wam01",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "Canadian AoE4 champion. Highly methodical, risk-averse macro style. Advanced to AoE4 Semifinals against VortiX.",
+      "metrics":   { "COUNTRY": "Canada", "STYLE": "Risk-averse macro", "RESULT": "AoE4 Semifinal", "GAME": "AoE4" }
+    },
+    {
+      "id":        "vortix",
+      "label":     "VortiX",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "Spanish AoE4 veteran. Aggressive, micro-intensive momentum style. Advanced to AoE4 Semifinals against Wam01.",
+      "metrics":   { "COUNTRY": "Spain", "STYLE": "Aggressive micro-momentum", "RESULT": "AoE4 Semifinal", "GAME": "AoE4" }
+    },
+    {
+      "id":        "1puppypaw",
+      "label":     "1puppypaw",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "Canadian AoE4 replacement for visa-denied Anotand. Entered with civilisation preferences completely divergent from Anotand's — forcing established players to discard months of specific preparation. Lost 3-1 to MarineLorD in AoE4 Semifinals.",
+      "metrics":   { "COUNTRY": "Canada", "ROLE": "Emergency replacement", "RESULT": "Lost 3-1 to MarineLorD", "GAME": "AoE4" }
+    },
+    {
+      "id":        "anotand",
+      "label":     "Anotand",
+      "type":      "player",
+      "tier":      "primary",
+      "sentiment": "neutral",
+      "description": "Belarusian AoE4 player for Volda E-sport. Earned his Londinium spot through the Road to Wololo circuit. Denied UK travel visa weeks before the event, triggering the emergency substitution of 1puppypaw.",
+      "metrics":   { "COUNTRY": "Belarus", "TEAM": "Volda E-sport", "STATUS": "UK visa denied", "GAME": "AoE4" }
+    },
+    {
+      "id":        "civ-mapuche",
+      "label":     "Mapuche",
+      "type":      "civ",
+      "tier":      "secondary",
+      "sentiment": "neutral",
+      "description": "New AoE2 civilization from The Last Chieftains. Chile/Argentina theme. The Kona cavalry unit deals exponentially increasing damage to injured units — forcing opponents into micro-intensive triage. The Bolas Rider applies movement slow. Hera identified the Kona's critical weakness live: abysmally low pierce armor (3 base), poor late-game scaling.",
+      "metrics":   { "UNIQUE_UNITS": "Kona / Bolas Rider", "WEAKNESS": "3 pierce armor, poor scaling", "HERA_QUOTE": "unit's a bit too weak" }
+    },
+    {
+      "id":        "civ-muisca",
+      "label":     "Muisca",
+      "type":      "civ",
+      "tier":      "secondary",
+      "sentiment": "neutral",
+      "description": "New AoE2 civilization from The Last Chieftains. Colombia theme. Guecha Warriors heal nearby allies on death — sustained attrition specialists. Temple Guard gains increasing attack speed over time, punishing players who fail to decisively end engagements.",
+      "metrics":   { "UNIQUE_UNITS": "Guecha Warrior / Temple Guard", "STYLE": "Attrition / position hold" }
+    },
+    {
+      "id":        "civ-tupi",
+      "label":     "Tupi",
+      "type":      "civ",
+      "tier":      "secondary",
+      "sentiment": "neutral",
+      "description": "New AoE2 civilization from The Last Chieftains. Brazil theme. Blackwood Archers train in pairs — doubling production efficiency. Ibirapema Warriors deal frontal arc AoE cleave damage. Designed for aggressive early mass and numerical superiority.",
+      "metrics":   { "UNIQUE_UNITS": "Blackwood Archer (×2) / Ibirapema", "STYLE": "Swarm / early mass" }
+    },
+    {
+      "id":        "jin-dynasty",
+      "label":     "Jin Dynasty",
+      "type":      "civ",
+      "tier":      "secondary",
+      "sentiment": "positive",
+      "description": "Upcoming AoE4 civilization from the Yue Fei's Legacy DLC (May 19 2026). Horse Grasslands passive cavalry production, Emissary map-control mechanics, and advanced gunpowder units (Mounted Grenadier, Iron Pagoda). Not playable at Londinium but dominated discourse.",
+      "metrics":   { "RELEASE": "May 19 2026 (Yue Fei DLC)", "STATUS": "not yet playable", "PREVIEW": "dominated community discourse" }
+    },
+    {
+      "id":        "empire-wars",
+      "label":     "Empire Wars",
+      "type":      "concept",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "Red Bull Wololo's signature AoE2 format. Starts in the Feudal Age with an active economy — bypassing the 5-8 minute Dark Age setup entirely. Forces immediate aggression and multitasking. Includes a hard 75-minute real-time cap; if time expires, winner is decided by in-game score.",
+      "metrics":   { "START_AGE": "Feudal (pre-built economy)", "TIME_LIMIT": "75 min real-time", "TIEBREAK": "Score Victory" }
+    },
+    {
+      "id":        "captains-mode",
+      "label":     "Captains Mode",
+      "type":      "concept",
+      "tier":      "secondary",
+      "sentiment": "neutral",
+      "description": "Tournament draft format used at Londinium. Players alternate banning civilizations and maps, forcing opponents into unfavourable matchups. Strategic layer exists entirely before the first unit is produced.",
+      "metrics":   { "BANS": "alternating civ + map", "STRATEGIC_DEPTH": "pre-game metagame" }
+    },
+    {
+      "id":        "score-victory",
+      "label":     "Score Victory Controversy",
+      "type":      "conflict",
+      "tier":      "primary",
+      "sentiment": "negative",
+      "description": "Hera vs Mr_Yo, Game 4 of Group A. A Tatars/Magyars war on Stonefront that neither player could end militarily. When Hera recognised a decisive breakthrough was impossible, he systematically pivoted to score optimisation: exploration, building construction, controlled micro-skirmishes — all to manipulate the in-game score algorithm. The 75-minute timer expired. Hera won by score. The community divided sharply over whether this was tactical brilliance or the game eating itself.",
+      "metrics":   { "MAP": "Stonefront", "MATCHUP": "Tatars vs Magyars", "METHOD": "score algorithm manipulation", "REACTION": "community polarised" }
+    },
+    {
+      "id":        "visa-crisis",
+      "label":     "Visa & Logistics Crisis",
+      "type":      "conflict",
+      "tier":      "primary",
+      "sentiment": "negative",
+      "description": "Two qualified players from two different game titles denied UK travel visas in the same tournament. Vinchester (AoE2 LCQ winner) and Anotand (AoE4 Road to Wololo finisher) both unable to enter the UK. Emergency qualifiers deployed for both slots. The fact that emergency protocols now exist as standard practice confirms the problem is systemic.",
+      "metrics":   { "AFFECTED": "Vinchester (AoE2) + Anotand (AoE4)", "RESPONSE": "Emergency qualifier × 2", "CLASSIFICATION": "systemic, not accidental" }
+    },
+    {
+      "id":        "orchestra",
+      "label":     "Live 40-Piece Orchestra",
+      "type":      "milestone",
+      "tier":      "primary",
+      "sentiment": "positive",
+      "description": "A 40-piece live orchestra performed the Age of Empires II soundtrack in real time during the Grand Final at the Royal Albert Hall, dynamically responding to in-game events. When cavalry charged: brass swelled. When empires fell: strings. No esports event has ever been staged this way. It is not a gimmick — it is a cultural argument about what this activity is.",
+      "metrics":   { "VENUE": "Royal Albert Hall", "SIZE": "40 pieces", "FIRST": "live-orchestrated esports final in history" }
+    },
+    {
+      "id":        "t90official",
+      "label":     "T90Official",
+      "type":      "person",
+      "tier":      "secondary",
+      "sentiment": "positive",
+      "description": "AoE2 content creator and veteran caster. Part of the Londinium AoE2 broadcast team. Encyclopedic knowledge of the game's competitive history deployed as real-time context translation for audiences.",
+      "metrics":   { "ROLE": "AoE2 Caster", "KNOWN_FOR": "encyclopedic AoE2 knowledge" }
+    },
+    {
+      "id":        "nili",
+      "label":     "Nili",
+      "type":      "person",
+      "tier":      "secondary",
+      "sentiment": "positive",
+      "description": "AoE2 caster. Part of the Londinium AoE2 broadcast team alongside T90Official, MembTV, and Dave. Provides analytical depth on match strategy and civilization interactions.",
+      "metrics":   { "ROLE": "AoE2 Caster / Analyst" }
+    },
+    {
+      "id":        "rlyknght",
+      "label":     "Riley Knight (RLYKNGHT)",
+      "type":      "person",
+      "tier":      "secondary",
+      "sentiment": "positive",
+      "description": "Veteran esports host. Anchored the AoE4 broadcast desk at Londinium. Skilled at bridging technical AoE4 mechanics with mainstream narrative accessibility.",
+      "metrics":   { "ROLE": "AoE4 Host", "SKILL": "Technical-to-narrative bridge" }
+    },
+    {
+      "id":        "soembie",
+      "label":     "Soe Gschwind (Soembie)",
+      "type":      "person",
+      "tier":      "secondary",
+      "sentiment": "positive",
+      "description": "AoE4 floor reporter and presenter. Conducted continuous on-floor interviews at Londinium, capturing raw player reactions immediately after matches — adding journalistic depth to the broadcast narrative.",
+      "metrics":   { "ROLE": "AoE4 Floor Reporter", "KNOWN_FOR": "immediate post-match player access" }
+    }
+  ],
+
   "edges": [
+    { "from": "rbw-aoe2",        "to": "rbw-londinium",    "rel": "membership",  "label": "part of",                  "weight": 5, "directed": true },
+    { "from": "rbw-aoe4",        "to": "rbw-londinium",    "rel": "membership",  "label": "part of",                  "weight": 5, "directed": true },
+    { "from": "rbw-repl-qual",   "to": "rbw-aoe2",         "rel": "qualifies",   "label": "emergency qualifier for",  "weight": 4, "directed": true },
+    { "from": "road-to-wololo",  "to": "rbw-aoe4",         "rel": "qualifies",   "label": "qualifies for",            "weight": 4, "directed": true },
+    { "from": "rbw-londinium",   "to": "red-bull",         "rel": "ownership",   "label": "organised by",             "weight": 4, "directed": true },
+    { "from": "rbw-londinium",   "to": "worlds-edge",      "rel": "association", "label": "produced with",            "weight": 3, "directed": true },
+    { "from": "rbw-londinium",   "to": "agon-aoc",         "rel": "association", "label": "sponsored by",             "weight": 2, "directed": true },
 
-    { "from": "rbw-aoe2",       "to": "rbw-londinium",    "rel": "membership",  "label": "part of" },
-    { "from": "rbw-aoe4",       "to": "rbw-londinium",    "rel": "membership",  "label": "part of" },
-    { "from": "rbw-repl-qual",  "to": "rbw-aoe2",         "rel": "qualifies",   "label": "qualifies for" },
-    { "from": "road-to-wololo", "to": "rbw-aoe4",         "rel": "qualifies",   "label": "qualifies for" },
-    { "from": "rbw-londinium",  "to": "red-bull",         "rel": "ownership",   "label": "organized by" },
-    { "from": "rbw-londinium",  "to": "worlds-edge",      "rel": "association", "label": "produced with" },
-    { "from": "rbw-londinium",  "to": "agon-aoc",         "rel": "association", "label": "sponsored by" },
+    { "from": "rb-gaming-sphere","to": "rbw-londinium",    "rel": "location",    "label": "hosts groups Apr 1–3",     "weight": 3, "directed": true },
+    { "from": "odeon-luxe",      "to": "rbw-londinium",    "rel": "location",    "label": "hosts playoffs Apr 4–5",   "weight": 4, "directed": true },
+    { "from": "royal-albert-hall","to": "rbw-londinium",   "rel": "location",    "label": "hosts grand final Apr 6",  "weight": 5, "directed": true },
+    { "from": "rb-gaming-sphere","to": "odeon-luxe",       "rel": "precedes",    "label": "venue arc step 1→2",       "weight": 2, "directed": true },
+    { "from": "odeon-luxe",      "to": "royal-albert-hall","rel": "precedes",    "label": "venue arc step 2→3",       "weight": 2, "directed": true },
+    { "from": "royal-albert-hall","to": "orchestra",       "rel": "features",    "label": "features live",            "weight": 5, "directed": true },
 
-    { "from": "rbw-londinium",  "to": "rb-gaming-sphere", "rel": "location",    "label": "groups at" },
-    { "from": "rbw-londinium",  "to": "odeon-luxe",       "rel": "location",    "label": "playoffs at" },
-    { "from": "rbw-londinium",  "to": "royal-albert-hall","rel": "location",    "label": "grand final at" },
-    { "from": "royal-albert-hall","to": "orchestra",      "rel": "features",    "label": "features" },
+    { "from": "rbw-aoe2",        "to": "aoe2-de",          "rel": "features",    "label": "features",                 "weight": 4, "directed": true },
+    { "from": "rbw-aoe4",        "to": "aoe4",             "rel": "features",    "label": "features",                 "weight": 4, "directed": true },
+    { "from": "rbw-aoe2",        "to": "empire-wars",      "rel": "features",    "label": "uses format",              "weight": 4, "directed": true },
+    { "from": "rbw-aoe2",        "to": "captains-mode",    "rel": "features",    "label": "uses draft",               "weight": 3, "directed": true },
 
-    { "from": "rbw-aoe2",       "to": "aoe2-de",          "rel": "features",    "label": "features" },
-    { "from": "rbw-aoe4",       "to": "aoe4",             "rel": "features",    "label": "features" },
-    { "from": "rbw-aoe2",       "to": "empire-wars",      "rel": "features",    "label": "uses format" },
+    { "from": "last-chieftains", "to": "aoe2-de",          "rel": "creation",    "label": "DLC for",                  "weight": 4, "directed": true, "temporal": "Feb 17 2026" },
+    { "from": "naval-overhaul",  "to": "aoe2-de",          "rel": "creation",    "label": "patch for",                "weight": 3, "directed": true, "temporal": "Feb 17 2026" },
+    { "from": "yue-fei",         "to": "aoe4",             "rel": "creation",    "label": "DLC for",                  "weight": 4, "directed": true, "temporal": "May 19 2026" },
+    { "from": "jin-dynasty",     "to": "yue-fei",          "rel": "membership",  "label": "introduced in",            "weight": 3, "directed": true },
+    { "from": "last-chieftains", "to": "rbw-londinium",    "rel": "disrupts",    "label": "upended meta 8 wks before","weight": 5, "directed": true },
+    { "from": "yue-fei",         "to": "rbw-londinium",    "rel": "association", "label": "overshadowed during",      "weight": 3, "directed": true },
+    { "from": "naval-overhaul",  "to": "rbw-londinium",    "rel": "disrupts",    "label": "disrupted water meta",     "weight": 3, "directed": true },
 
-    { "from": "last-chieftains","to": "aoe2-de",          "rel": "creation",    "label": "released for" },
-    { "from": "naval-overhaul", "to": "aoe2-de",          "rel": "creation",    "label": "patch for" },
-    { "from": "yue-fei",        "to": "aoe4",             "rel": "creation",    "label": "released for" },
-    { "from": "last-chieftains","to": "rbw-londinium",    "rel": "causes",      "label": "reshaped meta" },
-    { "from": "yue-fei",        "to": "rbw-londinium",    "rel": "association", "label": "anticipated during" },
-    { "from": "naval-overhaul", "to": "rbw-londinium",    "rel": "causes",      "label": "disrupted water meta" },
+    { "from": "civ-mapuche",     "to": "last-chieftains",  "rel": "membership",  "label": "introduced in",            "weight": 3, "directed": true },
+    { "from": "civ-muisca",      "to": "last-chieftains",  "rel": "membership",  "label": "introduced in",            "weight": 3, "directed": true },
+    { "from": "civ-tupi",        "to": "last-chieftains",  "rel": "membership",  "label": "introduced in",            "weight": 3, "directed": true },
+    { "from": "civ-mapuche",     "to": "hera",             "rel": "association", "label": "analysed + countered by",  "weight": 4, "directed": true },
+    { "from": "civ-mapuche",     "to": "mr-yo",            "rel": "association", "label": "played by",                "weight": 3, "directed": true },
 
-    { "from": "civ-mapuche",    "to": "last-chieftains",  "rel": "membership",  "label": "introduced in" },
-    { "from": "civ-muisca",     "to": "last-chieftains",  "rel": "membership",  "label": "introduced in" },
-    { "from": "civ-tupi",       "to": "last-chieftains",  "rel": "membership",  "label": "introduced in" },
+    { "from": "hera",            "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group A 1st (3-0)", "weight": 4, "directed": true },
+    { "from": "theviper",        "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group B wildcard",  "weight": 4, "directed": true },
+    { "from": "mr-yo",           "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group A 3rd",       "weight": 3, "directed": true },
+    { "from": "hearttt",         "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group A 2nd",       "weight": 3, "directed": true },
+    { "from": "mbl",             "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group A elim",      "weight": 2, "directed": true },
+    { "from": "liereyy",         "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group B 2nd",       "weight": 3, "directed": true },
+    { "from": "sebastian",       "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group B",           "weight": 3, "directed": true },
+    { "from": "accm",            "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group B elim 0-3",  "weight": 2, "directed": true },
 
-    { "from": "hera",           "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group A 1st (3-0)" },
-    { "from": "theviper",       "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group B wildcard" },
-    { "from": "mr-yo",          "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group A 3rd" },
-    { "from": "hearttt",        "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group A 2nd" },
-    { "from": "mbl",            "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group A elim" },
-    { "from": "liereyy",        "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group B 2nd" },
-    { "from": "sebastian",      "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group B" },
-    { "from": "accm",           "to": "rbw-aoe2",         "rel": "competes",    "label": "competed — Group B elim (0-3)" },
+    { "from": "vinchester",      "to": "rbw-repl-qual",    "rel": "causes",      "label": "visa denial triggered",    "weight": 5, "directed": true },
+    { "from": "theviper",        "to": "rbw-repl-qual",    "rel": "competes",    "label": "won 2-0",                  "weight": 5, "directed": true },
+    { "from": "barles",          "to": "rbw-repl-qual",    "rel": "competes",    "label": "0-2 eliminated",           "weight": 2, "directed": true },
+    { "from": "lewis",           "to": "rbw-repl-qual",    "rel": "competes",    "label": "1-1 eliminated on diff",   "weight": 2, "directed": true },
+    { "from": "mbl",             "to": "vinchester",       "rel": "precedes",    "label": "LCQ tiebreaker loss to",   "weight": 3, "directed": true },
 
-    { "from": "vinchester",     "to": "rbw-repl-qual",    "rel": "causes",      "label": "triggered by visa denial" },
-    { "from": "theviper",       "to": "rbw-repl-qual",    "rel": "competes",    "label": "won qualifier 2-0" },
+    { "from": "marinelord",      "to": "rbw-aoe4",         "rel": "competes",    "label": "Grand Final",              "weight": 4, "directed": true },
+    { "from": "wam01",           "to": "rbw-aoe4",         "rel": "competes",    "label": "Semifinal",                "weight": 3, "directed": true },
+    { "from": "vortix",          "to": "rbw-aoe4",         "rel": "competes",    "label": "Semifinal",                "weight": 3, "directed": true },
+    { "from": "1puppypaw",       "to": "rbw-aoe4",         "rel": "competes",    "label": "replacement entry",        "weight": 3, "directed": true },
+    { "from": "anotand",         "to": "road-to-wololo",   "rel": "competes",    "label": "qualified via then denied","weight": 3, "directed": true },
+    { "from": "1puppypaw",       "to": "anotand",          "rel": "association", "label": "replaced",                 "weight": 4, "directed": true },
 
-    { "from": "marinelord",     "to": "rbw-aoe4",         "rel": "competes",    "label": "competed — Grand Final" },
-    { "from": "wam01",          "to": "rbw-aoe4",         "rel": "competes",    "label": "competed — Semifinal" },
-    { "from": "vortix",         "to": "rbw-aoe4",         "rel": "competes",    "label": "competed — Semifinal" },
-    { "from": "1puppypaw",      "to": "rbw-aoe4",         "rel": "competes",    "label": "competed — replacement entry" },
-    { "from": "anotand",        "to": "road-to-wololo",   "rel": "competes",    "label": "qualified but visa denied" },
-    { "from": "1puppypaw",      "to": "anotand",          "rel": "association", "label": "replaced" },
+    { "from": "visa-crisis",     "to": "vinchester",       "rel": "causes",      "label": "UK visa denied",           "weight": 5, "directed": true },
+    { "from": "visa-crisis",     "to": "anotand",          "rel": "causes",      "label": "UK visa denied",           "weight": 5, "directed": true },
+    { "from": "visa-crisis",     "to": "rbw-londinium",    "rel": "disrupts",    "label": "disrupted both brackets",  "weight": 4, "directed": true },
 
-    { "from": "visa-crisis",    "to": "vinchester",       "rel": "causes",      "label": "denied UK visa" },
-    { "from": "visa-crisis",    "to": "anotand",          "rel": "causes",      "label": "denied UK visa" },
+    { "from": "hera",            "to": "mr-yo",            "rel": "competes",    "label": "defeated 3-1 (Group A)",   "weight": 4, "directed": true },
+    { "from": "theviper",        "to": "liereyy",          "rel": "competes",    "label": "upset 3-1 (Group B)",      "weight": 5, "directed": true },
+    { "from": "theviper",        "to": "mr-yo",            "rel": "competes",    "label": "defeated 4-2 (R of 6)",    "weight": 4, "directed": true },
+    { "from": "sebastian",       "to": "hearttt",          "rel": "competes",    "label": "defeated 4-3 (Bo7 PO)",    "weight": 4, "directed": true },
+    { "from": "marinelord",      "to": "1puppypaw",        "rel": "competes",    "label": "defeated 3-1 (AoE4 SF)",   "weight": 4, "directed": true },
 
-    { "from": "hera",           "to": "mr-yo",            "rel": "competes",    "label": "defeated 3-1 (Group A)" },
-    { "from": "theviper",       "to": "liereyy",          "rel": "competes",    "label": "upset victory 3-1 (Group B)" },
-    { "from": "marinelord",     "to": "1puppypaw",        "rel": "competes",    "label": "defeated 3-1 (AoE4 SF)" },
-    { "from": "sebastian",      "to": "hearttt",          "rel": "competes",    "label": "defeated 4-3 (Bo7 Playoffs)" },
-    { "from": "theviper",       "to": "mr-yo",            "rel": "competes",    "label": "defeated 4-2 (Playoffs)" },
+    { "from": "score-victory",   "to": "hera",             "rel": "association", "label": "Hera exploited timer",     "weight": 5 },
+    { "from": "score-victory",   "to": "mr-yo",            "rel": "association", "label": "Yo denied military win",   "weight": 5 },
+    { "from": "score-victory",   "to": "empire-wars",      "rel": "reveals",     "label": "exposed 75-min flaw",      "weight": 5, "directed": true },
 
-    { "from": "score-victory",  "to": "hera",             "rel": "association", "label": "Hera score-gamed the timer" },
-    { "from": "score-victory",  "to": "mr-yo",            "rel": "association", "label": "Mr_Yo would have won militarily" },
-    { "from": "score-victory",  "to": "empire-wars",      "rel": "causes",      "label": "exposed 75-min flaw" },
-    { "from": "civ-mapuche",    "to": "hera",             "rel": "association", "label": "Hera exploited Kona weakness" },
-
-    { "from": "t90official",    "to": "rbw-aoe2",         "rel": "broadcasts",  "label": "cast AoE2" },
-    { "from": "rlyknght",       "to": "rbw-aoe4",         "rel": "broadcasts",  "label": "hosted AoE4 desk" }
-
+    { "from": "t90official",     "to": "rbw-aoe2",         "rel": "broadcasts",  "label": "cast AoE2",                "weight": 2, "directed": true },
+    { "from": "nili",            "to": "rbw-aoe2",         "rel": "broadcasts",  "label": "cast AoE2",                "weight": 2, "directed": true },
+    { "from": "rlyknght",        "to": "rbw-aoe4",         "rel": "broadcasts",  "label": "hosted AoE4 desk",         "weight": 2, "directed": true },
+    { "from": "soembie",         "to": "rbw-aoe4",         "rel": "broadcasts",  "label": "floor reporter AoE4",      "weight": 2, "directed": true }
   ]
 }

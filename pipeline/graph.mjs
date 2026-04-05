@@ -32,10 +32,16 @@ class Graph extends Emitter {
     return true;
   }
 
-  addEdge(from, to, pid, relLabel = '') {
+  addEdge(from, to, pid, relLabel = '', meta = {}) {
     const key = `${from}→${to}→${pid}`;
     if (this.edges.has(key)) return false;
-    const edge = { from, to, pid, relLabel, addedAt: Date.now() };
+    const edge = {
+      from, to, pid, relLabel,
+      weight:   meta.weight   ?? 1,
+      directed: meta.directed ?? false,
+      temporal: meta.temporal ?? null,
+      addedAt: Date.now(),
+    };
     this.edges.set(key, edge);
     this.emit('edge:added', edge);
     return true;

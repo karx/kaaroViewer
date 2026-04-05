@@ -25,10 +25,13 @@ export function addEdgeLine(edge) {
     toMesh.position.clone(),
   ]);
 
+  // weight 1→0.35  2→0.48  3→0.60  4→0.73  5→0.88
+  const opacity = 0.22 + (edge.weight ?? 1) * 0.13;
+
   const mat = new THREE.LineBasicMaterial({
     color:       style.color,
     transparent: true,
-    opacity:     0.65,
+    opacity,
     depthWrite:  false,
   });
 

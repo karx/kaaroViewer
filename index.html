@@ -28,9 +28,14 @@
       <div class="log-toggle" id="log-toggle" title="Toggle debug log">◎</div>
     </div>
 
-    <!-- ── Middle: canvas + detail panel ─────────────────────────────── -->
+    <!-- ── Middle: canvas + report + detail panel ────────────────────── -->
     <div class="middle">
       <div class="canvas-wrap" id="theScene"></div>
+
+      <!-- Report view (F9) -->
+      <div id="report-wrap" class="report-wrap">
+        <div id="report-inner" class="report-inner"></div>
+      </div>
 
       <!-- Detail panel -->
       <div class="detail-panel" id="detail-panel"></div>
@@ -51,6 +56,7 @@
       <button id="save-btn"  title="Save session">F2 SAVE</button>
       <button id="sessions-btn" title="Saved sessions">F8 SSNS</button>
       <button id="library-btn"  title="Load local document">F5 LIB</button>
+      <button id="report-btn"   title="Toggle report view">F9 RPT</button>
     </div>
 
     <!-- ── Function key hints ────────────────────────────────────────── -->

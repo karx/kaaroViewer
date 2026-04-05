@@ -22,7 +22,8 @@ import { initTooltip, showTooltip, hideTooltip }               from './canvas/to
 import { pushCrumb, getCrumbs, clearCrumbs }                   from './canvas/breadcrumb.mjs';
 import { log }                                                  from './logger.mjs';
 import { resolveEntityType }                                    from './ontology.mjs';
-import { loadLocalDoc, LIBRARY }                               from './pipeline/local-graph.mjs';
+import { loadLocalDoc, LIBRARY, getDocMeta }                   from './pipeline/local-graph.mjs';
+import { initReport, renderReport, showReport, hideReport, isReportVisible } from './canvas/report.mjs';
 import { sourceManager }                                       from './pipeline/sources/source-manager.mjs';
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
@@ -46,6 +47,7 @@ requestAnimationFrame(() => {
   initScene(container);
   initDetail();
   initTooltip();
+  initReport();
   initNarrative(focusEntity);
   updateFnBar();
   _renderSourceToggles();
@@ -410,8 +412,12 @@ function _renderLibrary() {
       btn.disabled = true;
       const meta = await loadLocalDoc(btn.dataset.path);
       if (meta) {
+        _lastLoadedDocId = meta.id;
         runForceRelax(160);
         toggleLibrary(false);
+        renderReport(meta);
+        showReport();
+        updateFnBar();
         log('SYSTEM', `loaded: ${meta.title}`);
       }
       btn.textContent = 'F5 LOAD';
@@ -519,7 +525,7 @@ export function updateFnBar() {
       <span class="fnk"><em>F5</em> Library</span>
       <span class="fnk"><em>F6</em> Tour</span>
       <span class="fnk"><em>F7</em> Causal</span>
-      <span class="fnk"><em>F9</em> Present</span>
+      <span class="fnk"><em>F9</em> Report</span>
       <span class="fnk"><em>F10</em> 📷</span>
       <span class="fnk fnk-right"><em>◎</em> Log</span>`;
   } else {
@@ -531,7 +537,7 @@ export function updateFnBar() {
       <span class="fnk fnk-ctx"><em>F</em> Frame all</span>
       <span class="fnk fnk-ctx"><em>R</em> Refetch</span>
       <span class="fnk fnk-ctx"><em>F7</em> ${isCausalMode() ? 'Force' : 'Causal'}</span>
-      <span class="fnk fnk-ctx"><em>F9</em> Present</span>
+      <span class="fnk fnk-ctx"><em>F9</em> Report</span>
       <span class="fnk fnk-ctx"><em>Esc</em> Deselect</span>
       <span class="fnk fnk-right fnk-selected">◉ ${_esc(label.toUpperCase())}</span>`;
   }
@@ -590,22 +596,41 @@ document.addEventListener('keydown', e => {
 
 // ── Report mode ───────────────────────────────────────────────────────────────
 
-let _reportMode = false;
+// Track the last loaded doc so F9 can render it
+let _lastLoadedDocId = null;
 
 function toggleReportMode() {
-  _reportMode = !_reportMode;
-  const shell = document.querySelector('.shell');
-  const overlay = document.getElementById('report-overlay');
-  if (_reportMode) {
-    shell?.classList.add('report-mode');
-    if (overlay) overlay.classList.remove('hidden');
-    log('SYSTEM', 'report mode ON');
-  } else {
-    shell?.classList.remove('report-mode');
-    if (overlay) overlay.classList.add('hidden');
+  if (isReportVisible()) {
+    hideReport();
     log('SYSTEM', 'report mode OFF');
+  } else {
+    // Render the last loaded doc, or the first available doc
+    const docId = _lastLoadedDocId;
+    const meta  = docId ? getDocMeta(docId) : null;
+    if (!meta) {
+      log('SYSTEM', 'no doc loaded — use F5 LIB to load a document first');
+      return;
+    }
+    renderReport(meta);
+    showReport();
+    log('SYSTEM', `report: ${meta.title}`);
   }
+  updateFnBar();
 }
+
+// Navigate from report pills/cards → focus node in graph
+document.addEventListener('report:navigate', e => {
+  const { qid } = e.detail ?? {};
+  if (!qid) return;
+  // Switch back to graph if the node is a Wikidata entity (Q-prefixed)
+  if (isReportVisible()) {
+    hideReport();
+    updateFnBar();
+  }
+  focusEntity(qid);
+});
+
+document.getElementById('report-btn')?.addEventListener('click', () => toggleReportMode());
 
 // ── PNG export ────────────────────────────────────────────────────────────────
 

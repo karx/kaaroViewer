@@ -53,6 +53,10 @@ export const ENTITY_TYPES = {
   tournament:   { color: 0xffdd00, radius: 0.65, label: 'Tournament',   code: 'TRNY' },
   civ:          { color: 0xcc8833, radius: 0.44, label: 'Civilization',  code: 'CIV'  },
   dlc:          { color: 0xee88ff, radius: 0.52, label: 'DLC',          code: 'DLC'  },
+  // ── Analytical / narrative types ──────────────────────────────────────────
+  insight:      { color: 0xffffff, radius: 0.62, label: 'Insight',      code: 'ISGT' },
+  milestone:    { color: 0xffee00, radius: 0.50, label: 'Milestone',    code: 'MLST' },
+  conflict:     { color: 0xff2244, radius: 0.56, label: 'Conflict',     code: 'CNFL' },
   default:      { color: 0x888866, radius: 0.48, label: 'Entity',       code: 'ENTY' },
 };
 
@@ -137,6 +141,11 @@ export const REL_TYPES = {
   qualifies:  { color: 0x00aaff, label: 'QUALIFIES FOR', code: 'QUAL' },
   features:   { color: 0xffcc00, label: 'FEATURES',    code: 'FEAT' },
   broadcasts: { color: 0x8899ff, label: 'BROADCASTS',  code: 'BCST' },
+  precedes:   { color: 0x888866, label: 'PRECEDES',    code: 'PRCD' },
+  enables:    { color: 0x44ff88, label: 'ENABLES',     code: 'ENBL' },
+  disrupts:   { color: 0xff6622, label: 'DISRUPTS',    code: 'DSRP' },
+  reveals:    { color: 0xeeeeff, label: 'REVEALS',     code: 'RVLS' },
+  opposes:    { color: 0xff2244, label: 'OPPOSES',     code: 'OPPS' },
   default:    { color: 0x446644, label: 'RELATED TO',  code: 'REL'  },
 };
 
