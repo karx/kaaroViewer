@@ -12,6 +12,7 @@ import { graph }                from './graph.mjs';
 import { fetchWikiSummary }     from './sources/wikipedia.mjs';
 import { geocode }              from './sources/locationHelper.mjs';
 import { log }                  from '../logger.mjs';
+import { refreshNodeVisual }    from '../canvas/nodes.mjs';
 
 // ── IndexedDB enrichment cache ────────────────────────────────────────────────
 
@@ -125,6 +126,8 @@ export async function enrichNode(nodeId) {
         wiki:  !!wiki,
         geo:   !!enrichment.geo,
       });
+      // Rebuild visual arcs + label now that temporal/metric/profile data may exist
+      refreshNodeVisual(nodeId, node);
     }
 
     return changed;

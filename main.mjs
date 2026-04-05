@@ -9,7 +9,8 @@
 
 import { initScene, onNodeClick, onNodeDblClick, onNodeHover,
          focusOn, frameNodes, getCamera, getControls, addTick, tickHover } from './canvas/scene.mjs';
-import { addNodeMesh, getNodeMesh, setNodeState, clearAllNodes, removeNodeMesh } from './canvas/nodes.mjs';
+import { addNodeMesh, getNodeMesh, setNodeState, clearAllNodes, removeNodeMesh,
+         updateNodeDegree } from './canvas/nodes.mjs';
 import { addEdgeLine, syncEdgePositions, clearAllEdges, clearEdgesFor }         from './canvas/edges.mjs';
 import { placeNode, runForceRelax, getPosition, setPosition, clearLayout } from './canvas/layout.mjs';
 import { graph }                                                from './pipeline/graph.mjs';
@@ -76,6 +77,9 @@ requestAnimationFrame(() => {
   graph.on('edge:added', edge => {
     addEdgeLine(edge);
     syncEdgePositions();
+    // Update glow-ring size for both endpoints to reflect degree centrality
+    updateNodeDegree(edge.from, graph.getEdgesFor(edge.from).length);
+    updateNodeDegree(edge.to,   graph.getEdgesFor(edge.to).length);
   });
 });
 
@@ -631,6 +635,31 @@ document.addEventListener('report:navigate', e => {
 });
 
 document.getElementById('report-btn')?.addEventListener('click', () => toggleReportMode());
+
+// Frame all nodes in a cluster in the canvas
+document.addEventListener('report:cluster-focus', e => {
+  const { nodeIds } = e.detail ?? {};
+  if (!nodeIds?.length) return;
+  hideReport();
+  updateFnBar();
+  const meshes = nodeIds.map(q => getNodeMesh(q)).filter(Boolean);
+  if (meshes.length) frameNodes(meshes);
+  // Focus highest-degree node in the cluster
+  const firstLoaded = nodeIds.find(q => graph.hasNode(q));
+  if (firstLoaded) focusEntity(firstLoaded);
+});
+
+// Fly camera to a story beat's node set
+document.addEventListener('report:beat-frame', e => {
+  const { nodeIds } = e.detail ?? {};
+  if (!nodeIds?.length) return;
+  hideReport();
+  updateFnBar();
+  const meshes = nodeIds.map(q => getNodeMesh(q)).filter(Boolean);
+  if (meshes.length) frameNodes(meshes);
+  const primaryQid = nodeIds.find(q => graph.hasNode(q));
+  if (primaryQid) focusEntity(primaryQid);
+});
 
 // ── PNG export ────────────────────────────────────────────────────────────────
 

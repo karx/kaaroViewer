@@ -896,6 +896,146 @@ html, body {
 }
 .rp-cl-node:hover { color: #ff6600; border-color: #ff3300; }
 
+/* ── Report: KPI strip ───────────────────────────────────────────────────── */
+
+.rp-kpi-strip {
+  display: flex; gap: 2px; flex-wrap: wrap; margin-bottom: 28px;
+  border: 1px solid #1a1a00; background: #030300;
+}
+.rp-kpi {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 10px 14px; flex: 1; min-width: 64px;
+  border-right: 1px solid #1a1a00;
+}
+.rp-kpi:last-child { border-right: none; }
+.rp-kpi-val {
+  font-size: 20px; font-weight: 700; color: #ffaa00;
+  letter-spacing: -0.02em; line-height: 1;
+}
+.rp-kpi-str { font-size: 12px; color: #00cccc; }
+.rp-kpi-lbl {
+  font-size: 7px; font-weight: 700; color: #2a2a10;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+/* ── Report: SVG tension arc chart ──────────────────────────────────────────── */
+
+.rp-tension-chart {
+  margin: 0 0 16px; padding: 8px 0 0;
+  border: 1px solid #1a1a00; background: #020200;
+}
+.rp-svg-arc {
+  display: block; width: 100%; height: auto;
+  overflow: visible;
+}
+.rp-arc-pt {
+  cursor: pointer; transition: r 0.1s;
+}
+.rp-arc-pt:hover { r: 7; }
+.rp-svg-lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 7px; fill: #2a2a10;
+}
+
+/* ── Report: analytics panel ─────────────────────────────────────────────── */
+
+.rp-analytics-sec { margin-bottom: 32px; }
+
+.rp-analytics-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+}
+
+.rp-chart-block {
+  background: #030300; border: 1px solid #1a1a00; padding: 12px 14px;
+}
+.rp-chart-title {
+  font-size: 7px; font-weight: 700; color: #2a2a10;
+  letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px;
+}
+
+/* Horizontal bar charts (centrality + rel-type) */
+.rp-cbar-chart { display: flex; flex-direction: column; gap: 5px; }
+.rp-cbar-row {
+  display: grid; grid-template-columns: 90px 1fr 36px; gap: 6px;
+  align-items: center; cursor: pointer;
+}
+.rp-cbar-row:hover .rp-cbar-lbl { color: #ff6600; }
+.rp-cbar-lbl {
+  font-size: 8px; color: #888877; letter-spacing: 0.04em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-align: right; transition: color 0.1s;
+}
+.rp-cbar-track {
+  height: 6px; background: #1a1a00; border-radius: 1px; overflow: hidden;
+}
+.rp-cbar-fill {
+  height: 100%; border-radius: 1px; opacity: 0.8;
+  transition: width 0.4s ease;
+}
+.rp-cbar-val {
+  font-size: 8px; font-weight: 700; color: #445544;
+  letter-spacing: 0.04em; text-align: right;
+}
+
+/* Sentiment stacked bar */
+.rp-sent-wrap { margin: 10px 0 4px; }
+.rp-sent-row {
+  display: flex; height: 18px; gap: 1px; overflow: hidden; border-radius: 1px;
+}
+.rp-sent-seg {
+  display: flex; align-items: center; justify-content: center;
+  min-width: 4px; opacity: 0.8; transition: opacity 0.15s;
+  cursor: default;
+}
+.rp-sent-seg:hover { opacity: 1; }
+.rp-sent-lbl {
+  font-size: 7px; font-weight: 700; color: #000000;
+  letter-spacing: 0.06em; white-space: nowrap; overflow: hidden;
+}
+.rp-sent-legend {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-top: 5px;
+}
+.rp-sent-legend-item {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 7px; color: #445544; letter-spacing: 0.08em;
+}
+.rp-sent-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Report: visual insight severity bar ─────────────────────────────────── */
+
+.rp-ins-sev-bar {
+  flex: 1; height: 4px; background: #1a1a00; border-radius: 1px;
+  overflow: hidden; margin: 0 6px; align-self: center;
+}
+.rp-ins-sev-fill { height: 100%; border-radius: 1px; opacity: 0.9; }
+
+/* ── Report: beat FRAME button ───────────────────────────────────────────── */
+
+.rp-beat-frame-btn {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', monospace; font-size: 7px; font-weight: 700;
+  letter-spacing: 0.1em; color: #334433; background: none;
+  border: 1px solid #1a2a1a; padding: 2px 6px; cursor: pointer;
+  transition: color 0.1s, border-color 0.1s;
+}
+.rp-beat-frame-btn:hover { color: #00ff88; border-color: #00ff88; }
+
+/* ── Report: cluster pct bar + focus button ──────────────────────────────── */
+
+.rp-cl-pct-bar {
+  flex: 0 0 50px; height: 3px; background: #1a1a00; border-radius: 1px;
+  overflow: hidden; align-self: center;
+}
+.rp-cl-pct-fill { height: 100%; opacity: 0.6; }
+.rp-cl-focus-btn {
+  display: block; width: 100%; margin-top: 8px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em; color: #334433; background: none;
+  border: 1px solid #1a2a1a; padding: 5px; cursor: pointer;
+  text-align: center; transition: color 0.1s, border-color 0.1s, background 0.1s;
+}
+.rp-cl-focus-btn:hover { color: #00cccc; border-color: #00cccc; background: #001a1a; }
+
 /* ── Report: footer ──────────────────────────────────────────────────────── */
 
 .rp-footer {
