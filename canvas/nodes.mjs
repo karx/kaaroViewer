@@ -32,6 +32,7 @@ const STATE_STYLE = {
   expanded:  { emissive: 0.22, opacity: 1.0,  scaleMult: 1.00 },
   focused:   { emissive: 0.55, opacity: 1.0,  scaleMult: 1.15 },
   pinned:    { emissive: 0.35, opacity: 1.0,  scaleMult: 1.10 },
+  dimmed:    { emissive: 0.03, opacity: 0.10, scaleMult: 0.88 },
 };
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -134,6 +135,28 @@ export function updateNodeDegree(qid, degree) {
   if (!glow) return;
   glow.scale.setScalar(1 + Math.min(degree / 10, 1.8));
   glow.material.opacity = Math.min(0.20 + degree * 0.018, 0.55);
+}
+
+// ── Cluster / focus isolation ─────────────────────────────────────────────────
+
+/**
+ * Dim all nodes whose qid is not in the provided set.
+ * Call clearDim() to restore all dimmed nodes to their previous state.
+ */
+export function dimAllExcept(qids) {
+  const keep = new Set(qids);
+  for (const [qid] of _meshes) {
+    if (!keep.has(qid)) setNodeState(qid, 'dimmed');
+  }
+}
+
+/**
+ * Restore all dimmed nodes to 'visited' state.
+ */
+export function clearDim() {
+  for (const [qid, state] of _states) {
+    if (state === 'dimmed') setNodeState(qid, 'visited');
+  }
 }
 
 // ── Post-enrichment visual refresh ───────────────────────────────────────────

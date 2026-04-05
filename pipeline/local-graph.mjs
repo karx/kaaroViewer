@@ -20,10 +20,16 @@ import { placeNode }       from '../canvas/layout.mjs';
 import { log }             from '../logger.mjs';
 
 // ── Story / report state (accessible by UI) ────────────────────────────────────
-const _docMeta = new Map(); // docId → enriched meta (includes story, report_card, clusters)
+const _docMeta       = new Map(); // docId → enriched meta
+const _wikidataIndex = new Map(); // wikidata QID → Set<docId>
 
 export function getDocMeta(docId) { return _docMeta.get(docId) ?? null; }
 export function getAllDocs()       { return [..._docMeta.values()]; }
+
+/** Returns all docIds that contain a node with this Wikidata QID. */
+export function getCrossDocEntities(wikidataQid) {
+  return [...(_wikidataIndex.get(wikidataQid) ?? [])];
+}
 
 /**
  * Fetch and load a library JSON file into the live graph.
@@ -111,6 +117,15 @@ export async function loadLocalDoc(path) {
         const w = ins.severity === 'high' ? 4 : ins.severity === 'medium' ? 2 : 1;
         graph.addEdge(ins.id, evidenceId, 'reveals', 'supports', { weight: w, directed: true });
       }
+    }
+  }
+
+  // ── Index wikidata QIDs for cross-document entity linking ──────────────────
+  for (const n of nodes) {
+    if (n.wikidata) {
+      const entry = _wikidataIndex.get(n.wikidata) ?? new Set();
+      entry.add(meta.id);
+      _wikidataIndex.set(n.wikidata, entry);
     }
   }
 

@@ -121,13 +121,13 @@ Tier controls initial placement and visual scale:
 | `spine` | 1.22× | The 1–3 central subjects | Wireframe shell + large |
 | `primary` | 1.0× | Named actors, key forces | Normal |
 | `secondary` | 0.88× | Supporting entities, context providers | Slightly smaller |
-| `context` | 0.72× | Background entities, reference anchors | Small, semi-transparent |
+| `anchor` | 0.72× | Geographic, temporal, or historical grounding nodes | Small, semi-transparent |
 
 **Rule of thumb:**
 - spine = the subject of the report
 - primary = anything with its own story beat or insight evidence role
 - secondary = anything mentioned in edges but not starring in a beat
-- context = geographic/temporal anchors, regulatory bodies, background companies
+- anchor = geographic/temporal anchors, background places, historical reference points
 
 ### 3.3 Sentiment assignment
 
@@ -458,7 +458,7 @@ export const LIBRARY = [
 |---|---|
 | `type` | Geometry shape (sphere/box/octahedron/etc.) |
 | `tier: "spine"` | 1.22× scale + wireframe shell |
-| `tier: "context"` | 0.72× scale + semi-transparent |
+| `tier: "anchor"` | 0.72× scale + semi-transparent |
 | `sentiment: "positive"` | Green aura ring at r×1.55 |
 | `sentiment: "negative"` | Red aura ring at r×1.55 |
 | `sentiment: "contested"` | Amber aura ring at r×1.55 |

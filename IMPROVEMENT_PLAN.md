@@ -2,7 +2,9 @@
 
 **Prepared**: 2026-04-06
 **Derived from**: `named-entity-detection-improvement.md` analysis + `library/poker-tooling-2026-retrospective.md` postmortem
-**Status**: Planning — not yet scheduled
+**Status**: Active implementation  
+**Last updated**: 2026-04-06  
+**Completed**: O-01–O-16, C-01, C-02, C-07, C-11, C-13, C-15, IA-01, IA-05, S-08
 
 This document captures four categories of planned improvements: UI/Canvas, Information Architecture, Ontology/Grammar, and Skill Workflow. Items within each category are ordered by effort-to-impact ratio. Implementation sequencing is in the Priority Matrix at the end.
 
@@ -612,7 +614,7 @@ This is already demonstrated in `sample-encoding.md` — the test should be expl
 
 ## Implementation notes
 
-**Breaking changes**: O-16 (`context` → `anchor`) and O-17 (tension model) affect all existing library JSONs. Both require a migration script or backward-compatible alias in the validator and loader before deployment.
+**Breaking changes**: O-16 (`context` → `anchor`) is done — migration complete, no alias needed. O-17 (tension model split) affects all existing library JSONs and remains pending.
 
 **Schema changes that are additive** (safe to add without migration): O-03, O-04, O-05, O-06, O-07, O-08, O-09, O-10, O-11, O-12, O-13, IA-03, IA-04.
 

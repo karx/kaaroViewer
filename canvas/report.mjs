@@ -152,9 +152,19 @@ function _storyArc(doc) {
     </div>`;
   }).join('');
 
+  const strip = doc.story.map((beat, i) => {
+    const allIds = [beat.node, ...(beat.nodes ?? [])].filter(Boolean);
+    return `<div class="rp-bs-block rp-bs-${_e(beat.tension ?? 'low')}"
+      title="${_e(beat.title)}"
+      data-beat-idx="${i}"
+      ${allIds.length ? `data-beat-nodes="${_e(allIds.join(','))}"` : ''}
+    ><span class="rp-bs-num">${i + 1}</span></div>`;
+  }).join('');
+
   return `
   <section class="rp-story">
     <div class="rp-sechdr">── STORY ────────────────────────────────────────────────────────────</div>
+    <div class="rp-beat-strip" id="rp-beat-strip">${strip}</div>
     ${_svgTensionArc(doc)}
     ${beats}
   </section>`;
@@ -339,11 +349,26 @@ function _insights(doc) {
   const SEV_PCT = { high: 100, medium: 66, low: 33 };
   const SEV_COL = { high: '#ff4400', medium: '#cc8800', low: '#334433' };
 
+  // Build filter pills only for types that actually exist in this document
+  const typesPresent = [...new Set(doc.insights.map(ins => ins.type).filter(Boolean))];
+  const filterPills  = typesPresent.length > 1
+    ? `<div class="rp-ins-filters">
+        <button class="rp-ins-filter rp-ins-f-active" data-filter="all">ALL</button>
+        ${typesPresent.map(t =>
+          `<button class="rp-ins-filter" data-filter="${_e(t)}">${_e(ICON[t] ?? '')} ${_e(t.toUpperCase())}</button>`
+        ).join('')}
+      </div>`
+    : '';
+
   const cards = doc.insights.map(ins => {
     const icon    = ICON[ins.type] ?? '◈';
     const sevPct  = SEV_PCT[ins.severity] ?? 66;
     const sevCol  = SEV_COL[ins.severity] ?? '#cc8800';
     const evidence = (ins.evidence ?? []).map(id => _pill(id, doc)).join('');
+    const evidenceIds = (ins.evidence ?? []).join(',');
+    const focusBtn = evidenceIds
+      ? `<button class="rp-ins-focus-btn" data-insight-qid="${_e(ins.id)}" data-insight-evidence="${_e(evidenceIds)}">◉ FOCUS EVIDENCE</button>`
+      : '';
     return `
     <div class="rp-insight rp-ins-${_e(ins.type)} rp-sev-${_e(ins.severity ?? 'medium')}">
       <div class="rp-ins-hdr">
@@ -355,12 +380,14 @@ function _insights(doc) {
       <blockquote class="rp-ins-quote">"${_e(ins.title)}"</blockquote>
       <p class="rp-ins-body">${_e(ins.body)}</p>
       ${evidence ? `<div class="rp-ins-evidence"><span class="rp-related-lbl">EVIDENCE ▸</span>${evidence}</div>` : ''}
+      ${focusBtn}
     </div>`;
   }).join('');
 
   return `
   <section class="rp-insights-sec">
     <div class="rp-sechdr">── ANALYTICAL INSIGHTS ──────────────────────────────────────────────</div>
+    ${filterPills}
     <div class="rp-insights-grid">${cards}</div>
   </section>`;
 }
@@ -507,6 +534,52 @@ function _bindClicks(root) {
       const nodeIds = btn.dataset.beatNodes.split(',').filter(Boolean);
       if (nodeIds.length)
         document.dispatchEvent(new CustomEvent('report:beat-frame', { detail: { nodeIds } }));
+    });
+  });
+
+  // Insight focus — fly camera to evidence set
+  root.querySelectorAll('.rp-ins-focus-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const qid         = btn.dataset.insightQid;
+      const highlightSet = btn.dataset.insightEvidence.split(',').filter(Boolean);
+      if (qid) document.dispatchEvent(new CustomEvent('report:insight-focus', { detail: { qid, highlightSet } }));
+    });
+  });
+
+  // Beat strip blocks — scroll to beat + optionally frame
+  root.querySelectorAll('.rp-bs-block').forEach(block => {
+    block.addEventListener('click', e => {
+      e.stopPropagation();
+      const idx = parseInt(block.dataset.beatIdx ?? '-1', 10);
+      if (idx < 0) return;
+      const beatEls = root.querySelectorAll('.rp-beat');
+      beatEls.forEach(b => b.classList.remove('rp-beat-active'));
+      if (beatEls[idx]) {
+        beatEls[idx].classList.add('rp-beat-active');
+        beatEls[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      // Also update active state on strip
+      root.querySelectorAll('.rp-bs-block').forEach(b => b.classList.remove('rp-bs-active'));
+      block.classList.add('rp-bs-active');
+      // Optionally frame those nodes
+      const nodeIds = block.dataset.beatNodes?.split(',').filter(Boolean) ?? [];
+      if (nodeIds.length)
+        document.dispatchEvent(new CustomEvent('report:beat-frame', { detail: { nodeIds } }));
+    });
+  });
+
+  // Insight type filter tabs
+  root.querySelectorAll('.rp-ins-filter').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const filter = btn.dataset.filter;
+      root.querySelectorAll('.rp-ins-filter').forEach(b => b.classList.remove('rp-ins-f-active'));
+      btn.classList.add('rp-ins-f-active');
+      root.querySelectorAll('.rp-insight').forEach(card => {
+        const show = filter === 'all' || card.classList.contains(`rp-ins-${filter}`);
+        card.style.display = show ? '' : 'none';
+      });
     });
   });
 }

@@ -11,6 +11,7 @@
  */
 
 import { getEntityStyle } from '../ontology.mjs';
+import { getCrossDocEntities, getDocMeta } from '../pipeline/local-graph.mjs';
 
 let _panel      = null;
 let _currentQid = null;
@@ -53,6 +54,21 @@ export function showDetail(node, edges, graphGetNode) {
       <span class="dp-key">Location</span>
       <span class="dp-val dp-val-dim">${node._geo.lat.toFixed(4)}, ${node._geo.lon.toFixed(4)}</span>
     </div>` : '';
+
+  // Cross-document entity occurrences (IA-01)
+  const crossDocIds  = node.wikidata ? getCrossDocEntities(node.wikidata) : [];
+  const otherDocIds  = crossDocIds.filter(id => id !== node._docId);
+  const crossDocHtml = otherDocIds.length
+    ? `<div class="dp-row">
+        <span class="dp-key">Also in</span>
+        <span class="dp-val dp-val-crossdoc">${
+          otherDocIds.map(id => {
+            const meta = getDocMeta(id);
+            return `<span class="dp-crossdoc-pill" data-action="navigate-doc" data-doc-id="${_esc(id)}">${_esc(meta?.title ?? id)}</span>`;
+          }).join('')
+        }</span>
+      </div>`
+    : '';
 
   // Wiki link
   const wikiHtml = node._wikiUrl ? `
@@ -103,6 +119,7 @@ export function showDetail(node, edges, graphGetNode) {
           <span class="dp-val dp-val-desc">${_esc(node.description)}</span>
         </div>` : ''}
         ${geoHtml}
+        ${crossDocHtml}
         ${wikiHtml}
         ${extHtml}
         <div class="dp-row">
@@ -151,6 +168,7 @@ function _handleClick(e) {
   if (a === 'expand')   return document.dispatchEvent(new CustomEvent('detail:expand',   { detail: { qid: _currentQid } }));
   if (a === 'pin')      return document.dispatchEvent(new CustomEvent('detail:pin',      { detail: { qid: _currentQid } }));
   if (a === 'navigate') return document.dispatchEvent(new CustomEvent('detail:navigate', { detail: { qid: t.dataset.qid } }));
+  if (a === 'navigate-doc') return document.dispatchEvent(new CustomEvent('detail:navigate-doc', { detail: { docId: t.dataset.docId } }));
 }
 
 function _esc(s) {

@@ -29,12 +29,12 @@ const TYPE_GEOMETRY = {
   // Institutional box
   organization: 'box', company: 'box', government: 'box', union: 'box',
   // Sharp/volatile octahedron
-  event: 'octahedron', conflict: 'octahedron', issue: 'octahedron',
+  event: 'octahedron', conflict: 'octahedron', issue: 'octahedron', ruling: 'octahedron',
   // Pointed/revelatory tetrahedron
-  insight: 'tetrahedron', concept: 'tetrahedron',
+  insight: 'tetrahedron', concept: 'tetrahedron', algorithm: 'tetrahedron',
   // Complex/natural icosahedron
   species: 'icosahedron', academic: 'icosahedron', language: 'icosahedron',
-  religion: 'icosahedron', law: 'icosahedron',
+  religion: 'icosahedron', law: 'icosahedron', regulation: 'icosahedron', standard: 'icosahedron',
   // Upward cone — achievement
   milestone: 'cone', award: 'cone',
   // Flat disc — territorial
@@ -45,8 +45,8 @@ const TYPE_GEOMETRY = {
   film: 'dodecahedron', book: 'dodecahedron', music: 'dodecahedron', artwork: 'dodecahedron',
   // Competitive/interlocked
   tournament: 'torusknot',
-  // Flat screen/media
-  video: 'plane', channel: 'plane', post: 'plane',
+  // Flat screen/media + data slabs
+  video: 'plane', channel: 'plane', post: 'plane', dataset: 'plane',
 };
 
 const FLAT_SHADED = new Set(['octahedron', 'tetrahedron', 'icosahedron', 'dodecahedron', 'box']);
@@ -69,7 +69,7 @@ function _buildCoreGeo(type, r) {
 
 // ── Tier base scales ──────────────────────────────────────────────────────────
 
-const TIER_SCALE = { spine: 1.22, primary: 1.0, secondary: 0.88, context: 0.72 };
+const TIER_SCALE = { spine: 1.22, primary: 1.0, secondary: 0.88, anchor: 0.72 };
 
 // ── Sentiment colours ─────────────────────────────────────────────────────────
 
@@ -121,7 +121,7 @@ export function buildNodeGroup(node) {
   );
   core.name         = 'core';
   core.userData.qid = node.qid;   // raycaster fallback
-  if (tier === 'context') {
+  if (tier === 'anchor') {
     core.material.opacity     = 0.48;
     core.material.transparent = true;
     core.material.emissiveIntensity = 0.07;

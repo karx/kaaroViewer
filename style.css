@@ -394,13 +394,40 @@ html, body {
 /* ── Tooltip ─────────────────────────────────────────────────────────────── */
 .node-tooltip {
   position: fixed; z-index: 200; pointer-events: none;
-  display: flex; flex-direction: column; gap: 2px;
+  display: block;
   background: #0a0a00; border: 1px solid #ff6600;
-  padding: 4px 8px;
-  box-shadow: 0 0 12px rgba(255,102,0,0.2);
+  padding: 6px 10px; max-width: 260px;
+  box-shadow: 0 0 16px rgba(255,102,0,0.25);
 }
-.tt-label { font-size: 11px; font-weight: 700; color: #e8e0c8; letter-spacing: 0.04em; }
-.tt-type  { font-size: 8px; color: #ff6600; letter-spacing: 0.1em; font-weight: 700; }
+.tt-top {
+  display: flex; align-items: center; gap: 5px; margin-bottom: 2px;
+}
+.tt-sent-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+.tt-label {
+  font-size: 11px; font-weight: 700; color: #e8e0c8;
+  letter-spacing: 0.04em; flex: 1; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tt-tier {
+  font-size: 7px; font-weight: 700; color: #555533;
+  letter-spacing: 0.12em; flex-shrink: 0;
+}
+.tt-type {
+  font-size: 8px; color: #ff6600; letter-spacing: 0.1em;
+  font-weight: 700; margin-bottom: 3px; display: block;
+}
+.tt-desc {
+  font-size: 9px; color: #778866; line-height: 1.5;
+  margin: 3px 0 0; max-width: 240px;
+}
+.tt-metric {
+  display: flex; gap: 6px; align-items: baseline;
+  margin-top: 4px; border-top: 1px solid #1a1a00; padding-top: 3px;
+}
+.tt-metric em  { font-size: 8px; color: #555533; font-style: normal; letter-spacing: 0.08em; }
+.tt-metric span { font-size: 10px; font-weight: 700; color: #ffee88; }
 
 /* ── Source toggles ─────────────────────────────────────────────────────── */
 .source-toggles {
@@ -1035,6 +1062,115 @@ html, body {
   text-align: center; transition: color 0.1s, border-color 0.1s, background 0.1s;
 }
 .rp-cl-focus-btn:hover { color: #00cccc; border-color: #00cccc; background: #001a1a; }
+
+/* ── Report: insight type filter tabs ───────────────────────────────────── */
+.rp-ins-filters {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 14px;
+}
+.rp-ins-filter {
+  font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em; color: #445544; background: none;
+  border: 1px solid #1a2a1a; padding: 4px 8px; cursor: pointer;
+  transition: color 0.1s, border-color 0.1s, background 0.1s;
+}
+.rp-ins-filter:hover       { color: #ccccaa; border-color: #334433; }
+.rp-ins-filter.rp-ins-f-active {
+  color: #ff6600; border-color: #ff6600; background: #110900;
+}
+
+/* ── Detail panel: cross-document entity linking (IA-01) ────────────────── */
+.dp-val-crossdoc { display: flex; flex-wrap: wrap; gap: 4px; }
+.dp-crossdoc-pill {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.06em;
+  padding: 2px 7px; cursor: pointer;
+  color: #00cccc; border: 1px solid #00cccc44; background: #001a1a;
+  transition: color 0.1s, background 0.1s, border-color 0.1s;
+}
+.dp-crossdoc-pill:hover { color: #00ffff; background: #003333; border-color: #00ffff; }
+
+/* ── Report: beat progress strip ────────────────────────────────────────── */
+.rp-beat-strip {
+  display: flex; gap: 3px; margin-bottom: 12px;
+  padding: 8px 0 6px;
+  border-bottom: 1px solid #1e1e00;
+  overflow-x: auto; scrollbar-width: none;
+}
+.rp-beat-strip::-webkit-scrollbar { display: none; }
+.rp-bs-block {
+  flex: 1; min-width: 22px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border-radius: 1px; opacity: 0.55;
+  transition: opacity 0.12s, transform 0.1s;
+  border: 1px solid transparent;
+  position: relative;
+}
+.rp-bs-block:hover, .rp-bs-active { opacity: 1; transform: scaleY(1.12); border-color: #ccccaa44; }
+.rp-bs-low    { background: #1a2e1a; }
+.rp-bs-medium { background: #3d2800; }
+.rp-bs-high   { background: #5c1800; }
+.rp-bs-climax { background: #8b0020; }
+.rp-bs-num {
+  font-size: 7px; font-weight: 700; letter-spacing: 0.06em;
+  color: #ccccaa88; pointer-events: none; user-select: none;
+}
+.rp-beat-active { outline: 1px solid #ff6600; }
+
+/* ── Report: insight focus button ───────────────────────────────────────── */
+.rp-ins-focus-btn {
+  display: block; width: 100%; margin-top: 8px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em; color: #334433; background: none;
+  border: 1px solid #1a2a1a; padding: 5px; cursor: pointer;
+  text-align: center; transition: color 0.1s, border-color 0.1s, background 0.1s;
+}
+.rp-ins-focus-btn:hover { color: #bb88ff; border-color: #bb88ff; background: #0e001e; }
+
+/* ── Library: preview card ───────────────────────────────────────────────── */
+.lib-item { cursor: default; }
+.lib-preview-btn {
+  font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em; color: #445544; background: none;
+  border: 1px solid #1e1e00; padding: 3px 8px; cursor: pointer;
+  flex-shrink: 0; white-space: nowrap;
+  transition: color 0.1s, border-color 0.1s;
+}
+.lib-preview-btn:hover { color: #ff6600; border-color: #ff6600; }
+.lib-item-expanded .lib-preview-btn { color: #ff6600; border-color: #ff6600; }
+.lib-preview {
+  padding: 10px 0 6px;
+  border-top: 1px solid #1e1e00;
+  margin-top: 8px;
+}
+.lib-pv-loading { font-size: 9px; color: #334433; letter-spacing: 0.1em; }
+.lib-pv-summary {
+  font-size: 9px; color: #ccccaa; line-height: 1.55;
+  margin-bottom: 10px; opacity: 0.85;
+}
+.lib-pv-stats {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 8px;
+}
+.lib-pv-stat { display: flex; flex-direction: column; gap: 1px; }
+.lib-pv-val { font-size: 11px; font-weight: 700; color: #e8e000; letter-spacing: 0.04em; }
+.lib-pv-lbl { font-size: 7px; color: #445544; letter-spacing: 0.1em; text-transform: uppercase; }
+.lib-pv-counts {
+  font-size: 8px; color: #334433; letter-spacing: 0.08em; margin-bottom: 8px;
+}
+.lib-pv-actors { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.lib-pv-actor {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.08em;
+  padding: 2px 7px; border-radius: 1px;
+}
+.lib-pv-pro { color: #00ff88; border: 1px solid #00ff8844; background: #001a09; }
+.lib-pv-ant { color: #ff4444; border: 1px solid #ff444433; background: #1a0000; }
+.lib-pv-load {
+  display: block; width: 100%; margin-top: 4px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.12em; color: #ff6600; background: #110900;
+  border: 1px solid #ff6600; padding: 7px; cursor: pointer;
+  text-align: center; transition: background 0.1s, color 0.1s;
+}
+.lib-pv-load:hover { background: #ff6600; color: #000000; }
 
 /* ── Report: footer ──────────────────────────────────────────────────────── */
 

@@ -10,7 +10,7 @@
 import { initScene, onNodeClick, onNodeDblClick, onNodeHover,
          focusOn, frameNodes, getCamera, getControls, addTick, tickHover } from './canvas/scene.mjs';
 import { addNodeMesh, getNodeMesh, setNodeState, clearAllNodes, removeNodeMesh,
-         updateNodeDegree } from './canvas/nodes.mjs';
+         updateNodeDegree, dimAllExcept, clearDim } from './canvas/nodes.mjs';
 import { addEdgeLine, syncEdgePositions, clearAllEdges, clearEdgesFor }         from './canvas/edges.mjs';
 import { placeNode, runForceRelax, getPosition, setPosition, clearLayout } from './canvas/layout.mjs';
 import { graph }                                                from './pipeline/graph.mjs';
@@ -64,7 +64,7 @@ requestAnimationFrame(() => {
     if (!node) return;
     const rect = container.getBoundingClientRect();
     // position is approximate — tooltip follows pointermove anyway
-    showTooltip(node.label, node.instanceofLabel || node.type, rect.left + rect.width / 2, rect.top + 40);
+    showTooltip(node, rect.left + rect.width / 2, rect.top + 40);
   });
 
   // ── Graph → canvas ──────────────────────────────────────────────────────────
@@ -184,7 +184,7 @@ async function loadEntity(qid) {
 
 // ── Interactions ──────────────────────────────────────────────────────────────
 
-onNodeClick(qid    => focusEntity(qid));
+onNodeClick(qid    => { clearDim(); focusEntity(qid); });
 onNodeDblClick(qid => expandEntity(qid));
 
 // Detail panel events
@@ -400,32 +400,73 @@ function _renderLibrary() {
   const drawer = document.getElementById('library-drawer');
   if (!drawer) return;
   drawer.innerHTML = LIBRARY.map(doc => `
-    <div class="lib-item">
+    <div class="lib-item" data-path="${_esc(doc.path)}">
       <div class="lib-meta">
         <span class="lib-title">${_esc(doc.title)}</span>
         <span class="lib-domain">${_esc(doc.domain)}</span>
         <span class="lib-year">${_esc(doc.year)}</span>
       </div>
-      <button class="lib-load" data-path="${_esc(doc.path)}">F5 LOAD</button>
+      <button class="lib-preview-btn">PREVIEW ▾</button>
     </div>
   `).join('');
 
-  drawer.querySelectorAll('.lib-load').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      btn.textContent = 'LOADING…';
-      btn.disabled = true;
-      const meta = await loadLocalDoc(btn.dataset.path);
-      if (meta) {
-        _lastLoadedDocId = meta.id;
-        runForceRelax(160);
-        toggleLibrary(false);
-        renderReport(meta);
-        showReport();
-        updateFnBar();
-        log('SYSTEM', `loaded: ${meta.title}`);
+  drawer.querySelectorAll('.lib-item').forEach(item => {
+    const path = item.dataset.path;
+
+    // Preview toggle — fetches doc summary, shows inline
+    item.querySelector('.lib-preview-btn')?.addEventListener('click', async () => {
+      const existing = item.querySelector('.lib-preview');
+      if (existing) { existing.remove(); item.classList.remove('lib-item-expanded'); return; }
+
+      drawer.querySelectorAll('.lib-preview').forEach(p => { p.remove(); p.closest('.lib-item')?.classList.remove('lib-item-expanded'); });
+      item.classList.add('lib-item-expanded');
+      const pv = document.createElement('div');
+      pv.className = 'lib-preview';
+      pv.innerHTML = '<span class="lib-pv-loading">LOADING…</span>';
+      item.appendChild(pv);
+
+      try {
+        const res = await fetch(path);
+        const doc = await res.json();
+        const rc  = doc.report_card ?? {};
+        const nc  = doc.nodes?.length ?? 0;
+        const ec  = doc.edges?.length ?? 0;
+        const bc  = doc.story?.length  ?? 0;
+        const stats = (rc.key_stats ?? []).slice(0, 4).map(s =>
+          `<div class="lib-pv-stat"><span class="lib-pv-val">${_esc(String(s.value))}</span><span class="lib-pv-lbl">${_esc(s.label)}</span></div>`
+        ).join('');
+        const protas = (rc.protagonists ?? []).map(id => {
+          const n = (doc.nodes ?? []).find(n => n.id === id);
+          return `<span class="lib-pv-actor lib-pv-pro">${_esc(n?.label ?? id)}</span>`;
+        }).join('');
+        const antags = (rc.antagonists ?? []).map(id => {
+          const n = (doc.nodes ?? []).find(n => n.id === id);
+          return `<span class="lib-pv-actor lib-pv-ant">${_esc(n?.label ?? id)}</span>`;
+        }).join('');
+
+        pv.innerHTML = `
+          <p class="lib-pv-summary">${_esc(rc.summary ?? '')}</p>
+          ${stats ? `<div class="lib-pv-stats">${stats}</div>` : ''}
+          <div class="lib-pv-counts">${nc} entities · ${ec} relations · ${bc} beats</div>
+          ${protas || antags ? `<div class="lib-pv-actors">${protas}${antags}</div>` : ''}
+          <button class="lib-pv-load">▶ LOAD GRAPH</button>`;
+
+        pv.querySelector('.lib-pv-load')?.addEventListener('click', async () => {
+          pv.querySelector('.lib-pv-load').textContent = 'LOADING…';
+          const meta = await loadLocalDoc(path);
+          if (meta) {
+            _lastLoadedDocId = meta.id;
+            runForceRelax(160);
+            toggleLibrary(false);
+            renderReport(meta);
+            showReport();
+            updateFnBar();
+            log('SYSTEM', `loaded: ${meta.title}`);
+          }
+        });
+      } catch {
+        pv.innerHTML = '<span class="lib-pv-loading">LOAD FAILED</span>';
       }
-      btn.textContent = 'F5 LOAD';
-      btn.disabled = false;
     });
   });
 }
@@ -538,7 +579,7 @@ export function updateFnBar() {
       <span class="fnk fnk-ctx"><em>E</em> Expand</span>
       <span class="fnk fnk-ctx"><em>I</em> Enrich</span>
       <span class="fnk fnk-ctx"><em>N</em> Next neighbor</span>
-      <span class="fnk fnk-ctx"><em>F</em> Frame all</span>
+      <span class="fnk fnk-ctx"><em>F</em> Ego-graph</span>
       <span class="fnk fnk-ctx"><em>R</em> Refetch</span>
       <span class="fnk fnk-ctx"><em>F7</em> ${isCausalMode() ? 'Force' : 'Causal'}</span>
       <span class="fnk fnk-ctx"><em>F9</em> Report</span>
@@ -587,10 +628,15 @@ document.addEventListener('keydown', e => {
     case 'e': case 'E': e.preventDefault(); expandEntity(qid);          break;
     case 'i': case 'I': e.preventDefault(); enrichEntity(qid);          break;
     case 'n': case 'N': e.preventDefault(); focusNeighbor(qid, e.shiftKey ? -1 : 1); break;
-    case 'f': case 'F': e.preventDefault(); frameNeighbors(qid);        break;
+    case 'f': case 'F':
+      e.preventDefault();
+      frameNeighbors(qid);
+      dimAllExcept([qid, ...graph.getNeighborQids(qid)]);
+      break;
     case 'r': case 'R': e.preventDefault(); refetchEntity(qid);         break;
     case 'x': case 'X': e.preventDefault(); setNodeState(qid, 'pinned'); break;
     case 'Escape':
+      clearDim();
       hideDetail();
       setNodeState(qid, _expanded.has(qid) ? 'expanded' : 'visited');
       updateFnBar();
@@ -622,6 +668,19 @@ function toggleReportMode() {
   updateFnBar();
 }
 
+// Cross-document navigation from detail panel (IA-01)
+document.addEventListener('detail:navigate-doc', e => {
+  const { docId } = e.detail ?? {};
+  if (!docId) return;
+  const meta = getDocMeta(docId);
+  if (!meta) { log('SYSTEM', `doc ${docId} not yet loaded`); return; }
+  _lastLoadedDocId = docId;
+  renderReport(meta);
+  showReport();
+  updateFnBar();
+  log('SYSTEM', `cross-doc: switched to ${meta.title}`);
+});
+
 // Navigate from report pills/cards → focus node in graph
 document.addEventListener('report:navigate', e => {
   const { qid } = e.detail ?? {};
@@ -636,25 +695,42 @@ document.addEventListener('report:navigate', e => {
 
 document.getElementById('report-btn')?.addEventListener('click', () => toggleReportMode());
 
-// Frame all nodes in a cluster in the canvas
+// Frame all nodes in a cluster — dim non-members so the cluster reads clearly
 document.addEventListener('report:cluster-focus', e => {
   const { nodeIds } = e.detail ?? {};
   if (!nodeIds?.length) return;
   hideReport();
   updateFnBar();
+  clearDim();
+  dimAllExcept(nodeIds);
   const meshes = nodeIds.map(q => getNodeMesh(q)).filter(Boolean);
   if (meshes.length) frameNodes(meshes);
-  // Focus highest-degree node in the cluster
   const firstLoaded = nodeIds.find(q => graph.hasNode(q));
   if (firstLoaded) focusEntity(firstLoaded);
 });
 
-// Fly camera to a story beat's node set
+// Focus an insight node + highlight all evidence nodes simultaneously
+document.addEventListener('report:insight-focus', e => {
+  const { qid, highlightSet } = e.detail ?? {};
+  if (!qid) return;
+  hideReport();
+  updateFnBar();
+  clearDim();
+  const all = [qid, ...(highlightSet ?? [])].filter(Boolean);
+  dimAllExcept(all);
+  const meshes = all.map(q => getNodeMesh(q)).filter(Boolean);
+  if (meshes.length) frameNodes(meshes);
+  focusEntity(qid);
+});
+
+// Fly camera to a story beat's node set — dim all non-beat nodes
 document.addEventListener('report:beat-frame', e => {
   const { nodeIds } = e.detail ?? {};
   if (!nodeIds?.length) return;
   hideReport();
   updateFnBar();
+  clearDim();
+  dimAllExcept(nodeIds);
   const meshes = nodeIds.map(q => getNodeMesh(q)).filter(Boolean);
   if (meshes.length) frameNodes(meshes);
   const primaryQid = nodeIds.find(q => graph.hasNode(q));
