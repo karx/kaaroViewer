@@ -1,64 +1,106 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <!-- <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script> -->
-    <script src="components/rain-of-entities.js"></script>
-    <script src="components/rain-of-posts.js"></script>
-    <script src="components/sky-canvas.js"></script>
-    <script src="./components/alongpath.js"></script>
-    <script src="components/tcgcard.js"></script>
-    <script src="components/wikidata-entity.js"></script>
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kaaroViewer</title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.js"></script>
-    <script type=module src="https://unpkg.com/@google-web-components/google-chart@3.0.0/google-chart.js?module"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three":         "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"
+    }
+  }
+  </script>
 
-    <style>
-        #gchart-word {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="full-info-screen">
-        <div class="data-in-raw section" id="logger">
-            <div class="to-connect-div">
-                <div aria-label="Connection Code" id="connection_code"></div>
+  <div class="shell">
 
-                <button
-                  aria-label="Click to initate"
-                  class="btn"
-                  id="init-btn"
-                >
-                  Reveal Controller Code
-                </button>
-              </div>
-              <div class="direct-input-box" id="direct-input-box-id">
-                  <input type="text" id="secret-text-box">
-              </div>
-        </div>
-
-        <div class="threed-viz section" id="theScene">
-        </div>
-<!--
-        <div class="location-map section">
-        </div> -->
-
-        <!-- <div class="word-map section">
-            <div id="wordtree_basic"></div>
-        </div> -->
+    <!-- ── Breadcrumb ─────────────────────────────────────────────────── -->
+    <div class="top-bar">
+      <div id="breadcrumb" class="breadcrumb">
+        <span class="bc-empty">explore something…</span>
+      </div>
+      <div class="log-toggle" id="log-toggle" title="Toggle debug log">◎</div>
     </div>
 
-    <div class="session-manager">
+    <!-- ── Middle: canvas + detail panel ─────────────────────────────── -->
+    <div class="middle">
+      <div class="canvas-wrap" id="theScene"></div>
 
+      <!-- Detail panel -->
+      <div class="detail-panel" id="detail-panel"></div>
     </div>
 
-    <script  src="./kaaro.js" type="module"></script>
+    <!-- ── Command bar ───────────────────────────────────────────────── -->
+    <div class="input-bar">
+      <span class="cmd-prompt">&gt;</span>
+      <input
+        id="main-input"
+        type="text"
+        placeholder="ENTITY / QID / lp:player / yt:video / r/sub query"
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <div id="source-toggles" class="source-toggles"></div>
+      <button id="voice-btn" title="Start voice">F1 MIC</button>
+      <button id="save-btn"  title="Save session">F2 SAVE</button>
+      <button id="sessions-btn" title="Saved sessions">F8 SSNS</button>
+      <button id="library-btn"  title="Load local document">F5 LIB</button>
+    </div>
+
+    <!-- ── Function key hints ────────────────────────────────────────── -->
+    <div class="fnkey-bar">
+      <span class="fnk"><em>F1</em> VOICE</span>
+      <span class="fnk"><em>F2</em> SAVE</span>
+      <span class="fnk"><em>F3</em> EXPAND</span>
+      <span class="fnk"><em>F4</em> CLEAR</span>
+      <span class="fnk"><em>DBL-CLICK</em> EXPAND NODE</span>
+      <span class="fnk"><em>CLICK</em> DETAIL</span>
+      <span class="fnk"><em>F5</em> LIBRARY</span>
+      <span class="fnk"><em>F8</em> SESSIONS</span>
+      <span class="fnk fnk-right"><em>◎</em> LOG</span>
+    </div>
+
+  </div>
+
+  <!-- ── Library drawer ──────────────────────────────────────────────── -->
+  <div id="library-wrap" class="library-wrap">
+    <div class="library-header">
+      <span>◆ LOCAL LIBRARY</span>
+      <button id="library-close">✕</button>
+    </div>
+    <div id="library-drawer" class="library-drawer"></div>
+  </div>
+
+  <!-- ── Sessions drawer (overlay) ───────────────────────────────────── -->
+  <div id="sessions-wrap" class="sessions-wrap">
+    <div class="sessions-header">
+      <span>Saved Explorations</span>
+      <button id="sessions-close">✕</button>
+    </div>
+    <div id="sessions-drawer" class="sessions-drawer"></div>
+  </div>
+
+  <!-- ── Debug log (hidden by default) ───────────────────────────────── -->
+  <div id="log-bar" class="log-bar hidden">
+    <div id="logger" class="log-inner"></div>
+  </div>
+
+  <script type="module" src="./main.mjs"></script>
+  <script>
+    // Sessions close button (non-module)
+    document.getElementById('sessions-close')?.addEventListener('click', () => {
+      document.getElementById('sessions-wrap')?.classList.remove('open');
+    });
+    // Log toggle
+    document.getElementById('log-toggle')?.addEventListener('click', () => {
+      document.getElementById('log-bar')?.classList.toggle('hidden');
+    });
+  </script>
 </body>
-
 </html>

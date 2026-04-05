@@ -1,0 +1,233 @@
+{
+  "meta": {
+    "id": "gig-worker-projects",
+    "title": "Algorithmic Panopticon: Gig Economy & Delivery Workers in India",
+    "source": "gig-worker-projects.md",
+    "domain": "Labour / Technology / India",
+    "year": "2025"
+  },
+  "nodes": [
+    {
+      "id": "qcommerce",
+      "label": "Quick Commerce",
+      "type": "concept",
+      "description": "10-minute delivery sector. Valued at $5B+. Dominant model in Indian urban logistics 2021-2025.",
+      "metrics": { "VALUE": "$5B+", "WORKERS_2024": "10M", "WORKERS_2030": "23.5M" }
+    },
+    {
+      "id": "blinkit",
+      "label": "Blinkit",
+      "type": "platform",
+      "description": "Formerly Grofers. India's largest Q-Commerce platform. Acquired by Zomato 2022.",
+      "metrics": { "SHARE": "50%", "STORES": "1000+", "ORDERS/DAY": "600K+", "VALUATION": "$13B" },
+      "wikidata": "Q106547700"
+    },
+    {
+      "id": "zepto",
+      "label": "Zepto",
+      "type": "platform",
+      "description": "Founded by 19-year-old Stanford dropouts. Aggressive supply chain expansion.",
+      "metrics": { "SHARE": "30%", "STORES": "700+", "ORDERS/DAY": "500K+", "VALUATION": "$5B" }
+    },
+    {
+      "id": "swiggy-instamart",
+      "label": "Swiggy Instamart",
+      "type": "platform",
+      "description": "Q-Commerce arm of Swiggy. Negative margins as of 2025.",
+      "metrics": { "SHARE": "25%", "STORES": "557+", "ORDERS/DAY": "450K+", "VALUATION": "$11-12B" }
+    },
+    {
+      "id": "zomato",
+      "label": "Zomato",
+      "type": "platform",
+      "description": "Food delivery super-app. Parent company of Blinkit.",
+      "metrics": { "BASE_PAY": "₹40-50", "INCENTIVES": "up to ₹90" },
+      "wikidata": "Q56286234"
+    },
+    {
+      "id": "grofers",
+      "label": "Grofers",
+      "type": "platform",
+      "description": "Grocery marketplace founded 2013. Pivoted to Blinkit in 2021 under existential pressure."
+    },
+    {
+      "id": "dark-store",
+      "label": "Dark Store",
+      "type": "concept",
+      "description": "Micro-warehouse in residential areas (~2,000 sq ft). Optimised for speed, not worker welfare. No public access.",
+      "metrics": { "PICK_TARGET": "60 sec PPB" }
+    },
+    {
+      "id": "algo-management",
+      "label": "Algorithmic Management",
+      "type": "concept",
+      "description": "Invisible black-box boss. Assigns orders, sets pay, disciplines — no human oversight, no appeals process.",
+      "metrics": { "SCAN_TARGET": "1200 items/hr", "ACCEPT_WINDOW": "10 sec" }
+    },
+    {
+      "id": "10min-promise",
+      "label": "10-Minute Promise",
+      "type": "concept",
+      "description": "Marketing and operational commitment driving the entire Q-Commerce arms race. Achieved via store density, not faster riding."
+    },
+    {
+      "id": "gig-worker",
+      "label": "Gig Worker",
+      "type": "person",
+      "description": "Delivery partner archetype. Works 10-16 hrs/day. 43% earn < ₹500/day net after expenses.",
+      "metrics": { "NET_PAY/HR": "₹75-115", "HOURS/DAY": "10-16", "EXPENSE_RATIO": "32%" }
+    },
+    {
+      "id": "earnings-erosion",
+      "label": "Earnings Erosion",
+      "type": "issue",
+      "description": "Platform payouts have dropped 50%+ in 3 years. 43% of workers earn less than ₹500/day.",
+      "metrics": { "DROP": "50%+", "PCT_BELOW_500": "43%", "PREV_PROMISE": "₹100K/mo" }
+    },
+    {
+      "id": "msd",
+      "label": "Musculoskeletal Disorders",
+      "type": "issue",
+      "description": "Chronic MSDs from repetitive riding posture, heavy loads, and whole-body vibration.",
+      "metrics": { "SHOULDER_PAIN": "39.2%", "NECK_PAIN": "38.1%", "EYE_PROBLEMS": "45.1%" }
+    },
+    {
+      "id": "chemical-hazard",
+      "label": "Chemical Exposure",
+      "type": "issue",
+      "description": "Chronic urban air pollution exposure. Exhaust smoke and PM2.5 causing respiratory and cardiovascular damage.",
+      "metrics": { "EXHAUST_EXPOSURE": "90.1%", "PM_EXPOSURE": "86.1%" }
+    },
+    {
+      "id": "psych-stress",
+      "label": "Psychological Stress",
+      "type": "issue",
+      "description": "Perpetual anxiety from algorithmic pressure, IVR harassment, language barriers, and income uncertainty.",
+      "metrics": { "DEPRESSION_ODDS_RATIO": "2.85x" }
+    },
+    {
+      "id": "road-safety",
+      "label": "Road Safety Risk",
+      "type": "issue",
+      "description": "Riders forced to speed, jump red lights, ride on pavements to meet algorithmic timers. Leads to accidents.",
+      "metrics": { "RISKY_RIDING": "documented" }
+    },
+    {
+      "id": "throttle-assist",
+      "label": "Throttle Assist",
+      "type": "solution",
+      "description": "Paddle-shaped clip that reduces grip force. PETG or ASA filament. Lowers tendonitis and carpal tunnel risk.",
+      "metrics": { "MATERIAL": "PETG/ASA", "PRINT_COST": "low" }
+    },
+    {
+      "id": "tpu-grips",
+      "label": "Ergonomic TPU Grips",
+      "type": "solution",
+      "description": "Custom grips with palm swell and gyroid infill (15-25%) for vibration dampening. Reduces hand numbness.",
+      "metrics": { "MATERIAL": "TPU", "INFILL": "15-25% gyroid" }
+    },
+    {
+      "id": "phone-sun-hood",
+      "label": "Phone Sun Hood",
+      "type": "solution",
+      "description": "3D-printed screen visor + rain shield. Prevents thermal throttling and app crashes.",
+      "metrics": { "MATERIAL": "PETG/ASA" }
+    },
+    {
+      "id": "visor-wiper",
+      "label": "Visor Wiper",
+      "type": "solution",
+      "description": "TPU squeegee worn on index finger. Clears helmet visor in rain without stopping.",
+      "metrics": { "MATERIAL": "TPU" }
+    },
+    {
+      "id": "bag-stabilizer",
+      "label": "Bag Stabilizer",
+      "type": "solution",
+      "description": "Pannier hooks and saddle bag locks. Prevents pendulum effect during cornering. Reduces spinal strain.",
+      "metrics": { "MATERIAL": "PETG" }
+    },
+    {
+      "id": "backpack-chest-clip",
+      "label": "Backpack Chest Clip",
+      "type": "solution",
+      "description": "Distributes backpack weight across chest. Prevents forward-lean posture causing lower back pain.",
+      "metrics": { "MATERIAL": "PLA/PETG" }
+    },
+    {
+      "id": "tgpwu",
+      "label": "TGPWU",
+      "type": "union",
+      "description": "Telangana Gig and Platform Workers Union. Organised Dec 25 and Dec 31 2025 nationwide strikes."
+    },
+    {
+      "id": "dec31-strike",
+      "label": "Dec 31 Strike 2025",
+      "type": "event",
+      "description": "Nationwide delivery worker strike protesting 10-min model and Gig Worker Brutality. Metro cities."
+    },
+    {
+      "id": "social-security-code",
+      "label": "Social Security Code 2020",
+      "type": "law",
+      "description": "Mandates platforms contribute 1-2% annual turnover to worker social security fund. First federal recognition of gig workers.",
+      "metrics": { "PLATFORM_LEVY": "1-2% turnover" }
+    },
+    {
+      "id": "rajasthan-act",
+      "label": "Rajasthan Gig Workers Act 2023",
+      "type": "law",
+      "description": "First state-level legislation. Proposes Welfare Board and portable worker ID. Rules not yet notified as of 2026.",
+      "metrics": { "STATUS": "rules pending" }
+    },
+    {
+      "id": "3d-printing",
+      "label": "3D Printing",
+      "type": "concept",
+      "description": "Additive manufacturing as bottom-up mitigation tool. PETG, TPU, ASA filaments used for rider ergonomic accessories.",
+      "metrics": { "KEY_MATERIALS": "PETG, TPU, ASA" }
+    }
+  ],
+  "edges": [
+    { "from": "blinkit",           "to": "qcommerce",        "rel": "membership",  "label": "operates in" },
+    { "from": "zepto",             "to": "qcommerce",        "rel": "membership",  "label": "operates in" },
+    { "from": "swiggy-instamart",  "to": "qcommerce",        "rel": "membership",  "label": "operates in" },
+    { "from": "zomato",            "to": "blinkit",          "rel": "ownership",   "label": "acquired" },
+    { "from": "grofers",           "to": "blinkit",          "rel": "temporal",    "label": "became" },
+    { "from": "blinkit",           "to": "dark-store",       "rel": "membership",  "label": "operates" },
+    { "from": "zepto",             "to": "dark-store",       "rel": "membership",  "label": "operates" },
+    { "from": "swiggy-instamart",  "to": "dark-store",       "rel": "membership",  "label": "operates" },
+    { "from": "qcommerce",         "to": "10min-promise",    "rel": "association", "label": "defined by" },
+    { "from": "qcommerce",         "to": "algo-management",  "rel": "association", "label": "enforced via" },
+    { "from": "qcommerce",         "to": "gig-worker",       "rel": "employment",  "label": "employs" },
+    { "from": "algo-management",   "to": "gig-worker",       "rel": "governs",     "label": "controls" },
+    { "from": "algo-management",   "to": "psych-stress",     "rel": "causes",      "label": "causes" },
+    { "from": "algo-management",   "to": "road-safety",      "rel": "causes",      "label": "causes" },
+    { "from": "algo-management",   "to": "earnings-erosion", "rel": "causes",      "label": "enforces" },
+    { "from": "10min-promise",     "to": "road-safety",      "rel": "causes",      "label": "causes" },
+    { "from": "gig-worker",        "to": "msd",              "rel": "causes",      "label": "suffers" },
+    { "from": "gig-worker",        "to": "chemical-hazard",  "rel": "causes",      "label": "exposed to" },
+    { "from": "gig-worker",        "to": "psych-stress",     "rel": "causes",      "label": "experiences" },
+    { "from": "gig-worker",        "to": "earnings-erosion", "rel": "causes",      "label": "experiences" },
+    { "from": "throttle-assist",   "to": "msd",              "rel": "mitigates",   "label": "mitigates" },
+    { "from": "tpu-grips",         "to": "msd",              "rel": "mitigates",   "label": "mitigates" },
+    { "from": "phone-sun-hood",    "to": "road-safety",      "rel": "mitigates",   "label": "improves" },
+    { "from": "visor-wiper",       "to": "road-safety",      "rel": "mitigates",   "label": "improves" },
+    { "from": "bag-stabilizer",    "to": "msd",              "rel": "mitigates",   "label": "mitigates" },
+    { "from": "backpack-chest-clip","to": "msd",             "rel": "mitigates",   "label": "mitigates" },
+    { "from": "3d-printing",       "to": "throttle-assist",  "rel": "creation",    "label": "produces" },
+    { "from": "3d-printing",       "to": "tpu-grips",        "rel": "creation",    "label": "produces" },
+    { "from": "3d-printing",       "to": "phone-sun-hood",   "rel": "creation",    "label": "produces" },
+    { "from": "3d-printing",       "to": "visor-wiper",      "rel": "creation",    "label": "produces" },
+    { "from": "3d-printing",       "to": "bag-stabilizer",   "rel": "creation",    "label": "produces" },
+    { "from": "3d-printing",       "to": "backpack-chest-clip","rel": "creation",  "label": "produces" },
+    { "from": "tgpwu",             "to": "dec31-strike",     "rel": "creation",    "label": "organised" },
+    { "from": "dec31-strike",      "to": "10min-promise",    "rel": "association", "label": "protests" },
+    { "from": "social-security-code","to": "blinkit",        "rel": "governs",     "label": "regulates" },
+    { "from": "social-security-code","to": "zepto",          "rel": "governs",     "label": "regulates" },
+    { "from": "social-security-code","to": "swiggy-instamart","rel": "governs",    "label": "regulates" },
+    { "from": "rajasthan-act",     "to": "gig-worker",       "rel": "governs",     "label": "protects" },
+    { "from": "blinkit",           "to": "zepto",            "rel": "competes",    "label": "competes with" },
+    { "from": "zepto",             "to": "swiggy-instamart", "rel": "competes",    "label": "competes with" }
+  ]
+}

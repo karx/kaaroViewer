@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git config:*)",
+      "Read(//c/Users/karx0/.claude/skills/**)",
+      "Read(//c/Users/karx0/.claude/**)",
+      "Bash(ls *.mjs *.js)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge kaaro/stream --no-ff -m ':*)"
+    ]
+  }
+}

@@ -130,3 +130,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 document.getElementById('init-btn').addEventListener('click', (e) => {beginTheThing();});
+
+function show_secret_input(visible = true) {
+  document.getElementById('direct-input-box-id').style.visibility = visible ? 'visible' : 'hidden';
+}
