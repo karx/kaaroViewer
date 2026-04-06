@@ -1079,6 +1079,94 @@ html, body {
   color: #ff6600; border-color: #ff6600; background: #110900;
 }
 
+/* ── Canvas: cluster isolation pills overlay (C-03 / IA-06) ─────────────── */
+.cluster-pills {
+  position: absolute; top: 10px; left: 10px; z-index: 10;
+  display: flex; flex-direction: column; gap: 4px;
+  pointer-events: all;
+}
+.cluster-pills.hidden { display: none; }
+.cl-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 8px 4px 6px;
+  background: rgba(0,0,0,0.75); border: 1px solid #1e1e0088;
+  cursor: pointer; font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px; font-weight: 700; letter-spacing: 0.08em;
+  color: #667755; transition: color 0.1s, border-color 0.1s, background 0.1s;
+  backdrop-filter: blur(4px);
+}
+.cl-pill:hover { color: #ccccaa; border-color: #334433; background: rgba(0,0,0,0.9); }
+.cl-pill.cl-pill-active {
+  color: #ffffff; border-color: var(--cl-col); background: rgba(0,0,0,0.92);
+}
+.cl-pill-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  background: var(--cl-col); opacity: 0.8;
+}
+.cl-pill.cl-pill-active .cl-pill-dot { opacity: 1; box-shadow: 0 0 4px var(--cl-col); }
+.cl-pill-lbl { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+.cl-pill-key {
+  font-size: 7px; color: #334433; border: 1px solid #1e1e00;
+  padding: 1px 3px; line-height: 1; flex-shrink: 0;
+}
+
+/* ── Canvas: sentiment / tier overlay buttons (C-06) ─────────────────────── */
+.canvas-overlays {
+  position: absolute; top: 10px; right: 10px; z-index: 10;
+  display: flex; gap: 4px; pointer-events: all;
+}
+.overlay-btn {
+  font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em; color: #334433; background: rgba(0,0,0,0.75);
+  border: 1px solid #1e1e00; padding: 4px 8px; cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: color 0.1s, border-color 0.1s, background 0.1s;
+}
+.overlay-btn:hover  { color: #ccccaa; border-color: #334433; }
+.overlay-btn.overlay-active { color: #ff6600; border-color: #ff6600; background: rgba(17,9,0,0.9); }
+
+/* ── Canvas: key stats persistent strip (C-12) ───────────────────────────── */
+.stats-strip {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+  display: flex; align-items: center; gap: 0;
+  padding: 0 12px; height: 24px;
+  background: rgba(0,0,0,0.82); border-top: 1px solid #1e1e00;
+  overflow: hidden; pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+.stats-strip.hidden { display: none; }
+.ss-title {
+  font-size: 8px; font-weight: 700; color: #ff6600; letter-spacing: 0.1em;
+  white-space: nowrap; margin-right: 10px; flex-shrink: 0;
+  text-transform: uppercase;
+}
+.ss-sep { color: #1e1e00; padding: 0 8px; flex-shrink: 0; }
+.ss-stat { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; }
+.ss-val { font-size: 10px; font-weight: 700; color: #e8e000; letter-spacing: 0.04em; }
+.ss-lbl { font-size: 7px; color: #445544; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ── Library: tag bar (IA-02) ────────────────────────────────────────────── */
+.lib-tag-bar-wrap { padding: 6px 12px 0; border-bottom: 1px solid #1e1e00; }
+.lib-tag-bar { display: flex; flex-wrap: wrap; gap: 4px; padding-bottom: 6px; }
+.lib-tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em; color: #445544; background: none;
+  border: 1px solid #1e1e00; padding: 3px 7px; cursor: pointer;
+  transition: color 0.1s, border-color 0.1s;
+}
+.lib-tag:hover    { color: #ccccaa; border-color: #334433; }
+.lib-tag-active   { color: #ff6600; border-color: #ff6600; background: #110900; }
+
+/* ── Library: upgraded item rows (C-14) ──────────────────────────────────── */
+.lib-meta-row { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+.lib-counts { font-size: 8px; color: #334433; letter-spacing: 0.06em; }
+.lib-spine  { font-size: 8px; color: #445544; letter-spacing: 0.06em; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lib-item-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+.lib-item-tag {
+  font-size: 7px; color: #334433; border: 1px solid #1a1a00;
+  padding: 1px 5px; letter-spacing: 0.06em;
+}
+
 /* ── Detail panel: cross-document entity linking (IA-01) ────────────────── */
 .dp-val-crossdoc { display: flex; flex-wrap: wrap; gap: 4px; }
 .dp-crossdoc-pill {

@@ -159,6 +159,34 @@ export function clearDim() {
   }
 }
 
+// ── Sentiment / tier overlay ──────────────────────────────────────────────────
+
+/**
+ * Temporarily override a node's core color for overlay modes (sentiment / tier).
+ * Stores the original color on first call so clearNodeColorOverrides can restore it.
+ */
+export function setNodeColorOverride(qid, hexColor) {
+  const group = _meshes.get(qid);
+  const core  = group?.getObjectByName('core');
+  if (!core?.material) return;
+  if (core.userData._origColor == null)
+    core.userData._origColor = core.material.color.getHex();
+  core.material.color.setHex(hexColor);
+  core.material.emissiveIntensity = Math.max(
+    core.material.emissiveIntensity, 0.20
+  );
+}
+
+/** Restore all nodes to their original entity-type colors. */
+export function clearNodeColorOverrides() {
+  for (const [, group] of _meshes) {
+    const core = group.getObjectByName('core');
+    if (!core?.material || core.userData._origColor == null) continue;
+    core.material.color.setHex(core.userData._origColor);
+    delete core.userData._origColor;
+  }
+}
+
 // ── Post-enrichment visual refresh ───────────────────────────────────────────
 
 /**

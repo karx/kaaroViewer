@@ -41,6 +41,11 @@ export function showReport()        { _wrap?.classList.add('rp-visible'); }
 export function hideReport()        { _wrap?.classList.remove('rp-visible'); }
 export function isReportVisible()   { return !!_wrap?.classList.contains('rp-visible'); }
 
+export function scrollToCluster(clusterId) {
+  const el = document.getElementById(`rp-cl-${clusterId}`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 // ── Section renderers ─────────────────────────────────────────────────────────
 
 function _header(doc) {
@@ -98,12 +103,13 @@ function _kpiStrip(doc) {
 
 function _briefing(doc) {
   const rc     = doc.report_card ?? {};
-  const stats  = (rc.key_stats ?? []).map(s =>
-    `<div class="rp-stat">
-      <span class="rp-stat-val">${_e(s.value)}</span>
-      <span class="rp-stat-lbl">${_e(s.label)}</span>
-    </div>`
-  ).join('');
+  const stats  = (rc.key_stats ?? []).map(s => {
+    const { label, value } = _parseStat(s);
+    return `<div class="rp-stat">
+      <span class="rp-stat-val">${_e(value)}</span>
+      ${label ? `<span class="rp-stat-lbl">${_e(label)}</span>` : ''}
+    </div>`;
+  }).join('');
 
   const prota  = (rc.protagonists ?? []).map(id => _pill(id, doc)).join('');
   const antag  = (rc.antagonists  ?? []).map(id => _pill(id, doc, 'neg')).join('');
@@ -458,7 +464,7 @@ function _clusters(doc) {
     }).join('');
 
     return `
-    <div class="rp-cl-card" style="--cl-color:${_e(col)}">
+    <div class="rp-cl-card" id="rp-cl-${_e(cl.id)}" style="--cl-color:${_e(col)}">
       <div class="rp-cl-hdr">
         <span class="rp-cl-dot" style="background:${_e(col)}"></span>
         <span class="rp-cl-lbl">${_e(cl.label)}</span>
@@ -586,4 +592,15 @@ function _bindClicks(root) {
 
 function _e(s) {
   return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/** Normalise a key_stat entry — handles both plain strings and {label,value} objects. */
+function _parseStat(s) {
+  if (typeof s === 'string') {
+    const sep = s.indexOf(': ');
+    return sep > 0
+      ? { label: s.slice(0, sep), value: s.slice(sep + 2) }
+      : { label: '', value: s };
+  }
+  return { label: s.label ?? '', value: s.value ?? '' };
 }

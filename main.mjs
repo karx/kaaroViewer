@@ -10,7 +10,8 @@
 import { initScene, onNodeClick, onNodeDblClick, onNodeHover,
          focusOn, frameNodes, getCamera, getControls, addTick, tickHover } from './canvas/scene.mjs';
 import { addNodeMesh, getNodeMesh, setNodeState, clearAllNodes, removeNodeMesh,
-         updateNodeDegree, dimAllExcept, clearDim } from './canvas/nodes.mjs';
+         updateNodeDegree, dimAllExcept, clearDim,
+         setNodeColorOverride, clearNodeColorOverrides } from './canvas/nodes.mjs';
 import { addEdgeLine, syncEdgePositions, clearAllEdges, clearEdgesFor }         from './canvas/edges.mjs';
 import { placeNode, runForceRelax, getPosition, setPosition, clearLayout } from './canvas/layout.mjs';
 import { graph }                                                from './pipeline/graph.mjs';
@@ -24,7 +25,8 @@ import { pushCrumb, getCrumbs, clearCrumbs }                   from './canvas/br
 import { log }                                                  from './logger.mjs';
 import { resolveEntityType }                                    from './ontology.mjs';
 import { loadLocalDoc, LIBRARY, getDocMeta }                   from './pipeline/local-graph.mjs';
-import { initReport, renderReport, showReport, hideReport, isReportVisible } from './canvas/report.mjs';
+import { initReport, renderReport, showReport, hideReport, isReportVisible,
+         scrollToCluster } from './canvas/report.mjs';
 import { sourceManager }                                       from './pipeline/sources/source-manager.mjs';
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
@@ -52,6 +54,9 @@ requestAnimationFrame(() => {
   initNarrative(focusEntity);
   updateFnBar();
   _renderSourceToggles();
+
+  document.getElementById('overlay-sent-btn')?.addEventListener('click', () => _applyOverlay('sentiment'));
+  document.getElementById('overlay-tier-btn')?.addEventListener('click', () => _applyOverlay('tier'));
 
   // Hover → tooltip
   let _hoveredQid = null;
@@ -360,6 +365,8 @@ async function _restoreSession(id) {
   graph.clear();
   clearCrumbs();
   clearLayout();
+  clearNodeColorOverrides();
+  _overlayMode = null;
 
   for (const n of session.nodes) {
     setPosition(n.qid, n.position ?? [0, 0, 0]);
@@ -396,19 +403,75 @@ document.getElementById('sessions-btn')?.addEventListener('click', () => toggleS
 
 // ── Library ───────────────────────────────────────────────────────────────────
 
-function _renderLibrary() {
+function _renderLibrary(tagFilter = null) {
+  const wrap   = document.getElementById('library-wrap');
   const drawer = document.getElementById('library-drawer');
   if (!drawer) return;
-  drawer.innerHTML = LIBRARY.map(doc => `
+
+  // Collect all tags across all loaded docs (IA-02)
+  const allTags = new Set();
+  for (const doc of LIBRARY) {
+    const meta = getDocMeta(doc.id);
+    if (meta?.tags) meta.tags.forEach(t => allTags.add(t));
+  }
+  const tagBar = allTags.size
+    ? `<div class="lib-tag-bar">
+        <button class="lib-tag${!tagFilter ? ' lib-tag-active' : ''}" data-tag="">ALL</button>
+        ${[...allTags].sort().map(t =>
+          `<button class="lib-tag${tagFilter === t ? ' lib-tag-active' : ''}" data-tag="${_esc(t)}">${_esc(t)}</button>`
+        ).join('')}
+      </div>`
+    : '';
+
+  // Filter docs by tag
+  const visible = LIBRARY.filter(doc => {
+    if (!tagFilter) return true;
+    const meta = getDocMeta(doc.id);
+    return meta?.tags?.includes(tagFilter);
+  });
+
+  // Build doc list with counts from loaded docs (C-14)
+  const items = visible.map(doc => {
+    const meta  = getDocMeta(doc.id);
+    const nc    = meta?.nodes?.length ?? '—';
+    const ec    = meta ? Object.values(meta.analytics?.relTypeDist ?? {}).reduce((a, b) => a + b, 0) : '—';
+    const bc    = meta?.story?.length ?? '—';
+    const spine = meta?.report_card?.spine?.map(id => meta.nodeLookup?.[id]?.label ?? id).join(', ') ?? '';
+    const tags  = (meta?.tags ?? doc.tags ?? []).map(t =>
+      `<span class="lib-item-tag">${_esc(t)}</span>`
+    ).join('');
+    return `
     <div class="lib-item" data-path="${_esc(doc.path)}">
       <div class="lib-meta">
         <span class="lib-title">${_esc(doc.title)}</span>
-        <span class="lib-domain">${_esc(doc.domain)}</span>
-        <span class="lib-year">${_esc(doc.year)}</span>
+        <div class="lib-meta-row">
+          <span class="lib-domain">${_esc(doc.domain)}</span>
+          <span class="lib-year">${_esc(doc.year)}</span>
+          ${nc !== '—' ? `<span class="lib-counts">${nc}N · ${ec}E · ${bc}B</span>` : ''}
+        </div>
+        ${spine ? `<div class="lib-spine">⬡ ${_esc(spine)}</div>` : ''}
+        ${tags ? `<div class="lib-item-tags">${tags}</div>` : ''}
       </div>
-      <button class="lib-preview-btn">PREVIEW ▾</button>
-    </div>
-  `).join('');
+      <button class="lib-preview-btn">▾</button>
+    </div>`;
+  }).join('');
+
+  // Build header area (tag bar goes in library-header if it exists)
+  let headerEl = wrap?.querySelector('.lib-tag-bar-wrap');
+  if (!headerEl && wrap && allTags.size) {
+    headerEl = document.createElement('div');
+    headerEl.className = 'lib-tag-bar-wrap';
+    const header = wrap.querySelector('.library-header');
+    if (header) header.insertAdjacentElement('afterend', headerEl);
+  }
+  if (headerEl) {
+    headerEl.innerHTML = tagBar;
+    headerEl.querySelectorAll('.lib-tag').forEach(btn => {
+      btn.addEventListener('click', () => _renderLibrary(btn.dataset.tag || null));
+    });
+  }
+
+  drawer.innerHTML = items || '<p class="sd-empty">No documents match this tag.</p>';
 
   drawer.querySelectorAll('.lib-item').forEach(item => {
     const path = item.dataset.path;
@@ -432,9 +495,15 @@ function _renderLibrary() {
         const nc  = doc.nodes?.length ?? 0;
         const ec  = doc.edges?.length ?? 0;
         const bc  = doc.story?.length  ?? 0;
-        const stats = (rc.key_stats ?? []).slice(0, 4).map(s =>
-          `<div class="lib-pv-stat"><span class="lib-pv-val">${_esc(String(s.value))}</span><span class="lib-pv-lbl">${_esc(s.label)}</span></div>`
-        ).join('');
+        const stats = (rc.key_stats ?? []).slice(0, 4).map(s => {
+          const label = typeof s === 'string'
+            ? (s.indexOf(': ') > 0 ? s.slice(0, s.indexOf(': ')) : '')
+            : (s.label ?? '');
+          const value = typeof s === 'string'
+            ? (s.indexOf(': ') > 0 ? s.slice(s.indexOf(': ') + 2) : s)
+            : (s.value ?? '');
+          return `<div class="lib-pv-stat"><span class="lib-pv-val">${_esc(value)}</span>${label ? `<span class="lib-pv-lbl">${_esc(label)}</span>` : ''}</div>`;
+        }).join('');
         const protas = (rc.protagonists ?? []).map(id => {
           const n = (doc.nodes ?? []).find(n => n.id === id);
           return `<span class="lib-pv-actor lib-pv-pro">${_esc(n?.label ?? id)}</span>`;
@@ -456,10 +525,13 @@ function _renderLibrary() {
           const meta = await loadLocalDoc(path);
           if (meta) {
             _lastLoadedDocId = meta.id;
+            _currentDocMeta  = meta;
             runForceRelax(160);
             toggleLibrary(false);
             renderReport(meta);
             showReport();
+            _renderClusterPills(meta);
+            _updateStatsStrip(meta);
             updateFnBar();
             log('SYSTEM', `loaded: ${meta.title}`);
           }
@@ -482,6 +554,110 @@ function toggleLibrary(force) {
 
 document.getElementById('library-btn')?.addEventListener('click', () => toggleLibrary());
 document.getElementById('library-close')?.addEventListener('click', () => toggleLibrary(false));
+
+// ── Cluster pills overlay (C-03 / IA-06) ──────────────────────────────────────
+
+let _currentDocMeta = null;
+
+function _focusCluster(cl) {
+  if (!cl) return;
+  const nodeIds = cl.nodes ?? [];
+  clearDim();
+  dimAllExcept(nodeIds);
+  const meshes = nodeIds.map(q => getNodeMesh(q)).filter(Boolean);
+  if (meshes.length) frameNodes(meshes);
+  const first = nodeIds.find(q => graph.hasNode(q));
+  if (first) focusEntity(first);
+  // Scroll report panel to cluster section if report is visible
+  if (isReportVisible()) scrollToCluster(cl.id);
+}
+
+function _renderClusterPills(meta) {
+  const el = document.getElementById('cluster-pills');
+  if (!el) return;
+  const clusters = meta?.clusters ?? [];
+  if (!clusters.length) { el.classList.add('hidden'); return; }
+
+  el.innerHTML = clusters.map((cl, i) => `
+    <button class="cl-pill" data-cluster-idx="${i}" title="${_esc(cl.description ?? cl.label)}"
+            style="--cl-col:${_esc(cl.color ?? '#666')}">
+      <span class="cl-pill-dot"></span>
+      <span class="cl-pill-lbl">${_esc(cl.label)}</span>
+      <span class="cl-pill-key">${i + 1}</span>
+    </button>`
+  ).join('');
+
+  el.querySelectorAll('.cl-pill').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.clusterIdx, 10);
+      const cl  = clusters[idx];
+      if (!cl) return;
+      const active = btn.classList.contains('cl-pill-active');
+      el.querySelectorAll('.cl-pill').forEach(b => b.classList.remove('cl-pill-active'));
+      if (active) { clearDim(); return; }
+      btn.classList.add('cl-pill-active');
+      _focusCluster(cl);
+    });
+  });
+
+  el.classList.remove('hidden');
+}
+
+// ── Key stats strip (C-12) ────────────────────────────────────────────────────
+
+function _updateStatsStrip(meta) {
+  const el = document.getElementById('stats-strip');
+  if (!el) return;
+  const stats = meta?.report_card?.key_stats ?? [];
+  if (!stats.length) { el.classList.add('hidden'); return; }
+  el.innerHTML = `
+    <span class="ss-title">${_esc(meta.title ?? '')}</span>
+    <span class="ss-sep">·</span>
+    ${stats.slice(0, 7).map(s => {
+      const label = typeof s === 'string'
+        ? (s.indexOf(': ') > 0 ? s.slice(0, s.indexOf(': ')) : '')
+        : (s.label ?? '');
+      const value = typeof s === 'string'
+        ? (s.indexOf(': ') > 0 ? s.slice(s.indexOf(': ') + 2) : s)
+        : (s.value ?? '');
+      return `<span class="ss-stat"><span class="ss-val">${_esc(value)}</span>${label ? `<span class="ss-lbl">${_esc(label)}</span>` : ''}</span>`;
+    }).join('<span class="ss-sep">·</span>')}
+  `;
+  el.classList.remove('hidden');
+}
+
+// ── Sentiment / tier overlay (C-06) ───────────────────────────────────────────
+
+let _overlayMode = null; // null | 'sentiment' | 'tier'
+
+const OVERLAY_SENT = { positive: 0x00ff88, negative: 0xff2244, contested: 0xffaa00, neutral: 0x334433 };
+const OVERLAY_TIER = { spine: 0xffffff, primary: 0xff6600, secondary: 0x667755, anchor: 0x334433 };
+
+function _applyOverlay(mode) {
+  if (_overlayMode === mode) {
+    clearNodeColorOverrides();
+    _overlayMode = null;
+    _updateOverlayBtns();
+    return;
+  }
+  clearNodeColorOverrides();
+  _overlayMode = mode;
+  const colorMap = mode === 'sentiment' ? OVERLAY_SENT : OVERLAY_TIER;
+  for (const [qid] of graph.nodes) {
+    const node = graph.getNode(qid);
+    if (!node) continue;
+    const key   = mode === 'sentiment' ? (node.sentiment ?? 'neutral') : (node.tier ?? 'primary');
+    const color = colorMap[key] ?? 0x334433;
+    setNodeColorOverride(qid, color);
+  }
+  _updateOverlayBtns();
+}
+
+function _updateOverlayBtns() {
+  document.getElementById('overlay-sent-btn')?.classList.toggle('overlay-active', _overlayMode === 'sentiment');
+  document.getElementById('overlay-tier-btn')?.classList.toggle('overlay-active', _overlayMode === 'tier');
+}
 
 // ── Source toggles ────────────────────────────────────────────────────────────
 
@@ -599,6 +775,22 @@ document.addEventListener('keydown', e => {
     case 'F10': e.preventDefault(); exportCanvasPNG();      return;
   }
 
+  // Cluster shortcuts: digits 1–6
+  if (/^[1-6]$/.test(e.key) && !e.ctrlKey && !e.altKey && !e.metaKey) {
+    const idx = parseInt(e.key, 10) - 1;
+    const cl  = _currentDocMeta?.clusters?.[idx];
+    if (cl) {
+      e.preventDefault();
+      const pill = document.querySelector(`.cl-pill[data-cluster-idx="${idx}"]`);
+      const active = pill?.classList.contains('cl-pill-active');
+      document.querySelectorAll('.cl-pill').forEach(b => b.classList.remove('cl-pill-active'));
+      if (active) { clearDim(); return; }
+      pill?.classList.add('cl-pill-active');
+      _focusCluster(cl);
+    }
+    return;
+  }
+
   // Narrative arrow keys
   if (isNarrativeActive()) {
     if (e.key === 'ArrowRight') { e.preventDefault(); narrativeNext(); return; }
@@ -633,10 +825,16 @@ document.addEventListener('keydown', e => {
       frameNeighbors(qid);
       dimAllExcept([qid, ...graph.getNeighborQids(qid)]);
       break;
+    case 's': case 'S': e.preventDefault(); _applyOverlay('sentiment'); break;
+    case 't': case 'T': e.preventDefault(); _applyOverlay('tier');      break;
     case 'r': case 'R': e.preventDefault(); refetchEntity(qid);         break;
     case 'x': case 'X': e.preventDefault(); setNodeState(qid, 'pinned'); break;
     case 'Escape':
       clearDim();
+      clearNodeColorOverrides();
+      _overlayMode = null;
+      _updateOverlayBtns();
+      document.querySelectorAll('.cl-pill').forEach(b => b.classList.remove('cl-pill-active'));
       hideDetail();
       setNodeState(qid, _expanded.has(qid) ? 'expanded' : 'visited');
       updateFnBar();
