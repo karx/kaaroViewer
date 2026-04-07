@@ -291,4 +291,11 @@ export const LIBRARY = [
     domain: 'Gaming / Technology',
     year:   '2026',
   },
+  {
+    id:     'art-of-intent',
+    title:  'Art of Intent: Codebase Intelligence Brief',
+    path:   './library/art-of-intent.json',
+    domain: 'Software / Game Design',
+    year:   '2024',
+  },
 ];

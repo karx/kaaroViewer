@@ -655,8 +655,12 @@ function _applyOverlay(mode) {
 }
 
 function _updateOverlayBtns() {
-  document.getElementById('overlay-sent-btn')?.classList.toggle('overlay-active', _overlayMode === 'sentiment');
-  document.getElementById('overlay-tier-btn')?.classList.toggle('overlay-active', _overlayMode === 'tier');
+  const sentBtn = document.getElementById('overlay-sent-btn');
+  const tierBtn = document.getElementById('overlay-tier-btn');
+  sentBtn?.classList.toggle('overlay-active', _overlayMode === 'sentiment');
+  tierBtn?.classList.toggle('overlay-active', _overlayMode === 'tier');
+  sentBtn?.setAttribute('aria-pressed', String(_overlayMode === 'sentiment'));
+  tierBtn?.setAttribute('aria-pressed', String(_overlayMode === 'tier'));
 }
 
 // ── Source toggles ────────────────────────────────────────────────────────────
@@ -848,8 +852,10 @@ document.addEventListener('keydown', e => {
 let _lastLoadedDocId = null;
 
 function toggleReportMode() {
+  const reportBtn = document.getElementById('report-btn');
   if (isReportVisible()) {
     hideReport();
+    reportBtn?.setAttribute('aria-expanded', 'false');
     log('SYSTEM', 'report mode OFF');
   } else {
     // Render the last loaded doc, or the first available doc
@@ -861,6 +867,7 @@ function toggleReportMode() {
     }
     renderReport(meta);
     showReport();
+    reportBtn?.setAttribute('aria-expanded', 'true');
     log('SYSTEM', `report: ${meta.title}`);
   }
   updateFnBar();
