@@ -1225,6 +1225,12 @@ html, body {
 }
 .lib-preview-btn:hover { color: #ff6600; border-color: #ff6600; }
 .lib-item-expanded .lib-preview-btn { color: #ff6600; border-color: #ff6600; }
+.lib-link-btn {
+  font-size: 12px; background: none; border: none; cursor: pointer;
+  color: #445544; padding: 3px 4px; flex-shrink: 0;
+  opacity: 0.5; transition: opacity 0.1s;
+}
+.lib-link-btn:hover { opacity: 1; }
 .lib-preview {
   padding: 10px 0 6px;
   border-top: 1px solid #1e1e00;

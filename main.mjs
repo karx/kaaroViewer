@@ -86,6 +86,28 @@ requestAnimationFrame(() => {
     updateNodeDegree(edge.from, graph.getEdgesFor(edge.from).length);
     updateNodeDegree(edge.to,   graph.getEdgesFor(edge.to).length);
   });
+
+  // ── Deeplink: ?lib=<doc-id> ─────────────────────────────────────────────────
+  const _deeplinkId = new URLSearchParams(location.search).get('lib');
+  if (_deeplinkId) {
+    const _deeplinkEntry = LIBRARY.find(d => d.id === _deeplinkId);
+    if (_deeplinkEntry) {
+      loadLocalDoc(_deeplinkEntry.path).then(meta => {
+        if (!meta) return;
+        _lastLoadedDocId = meta.id;
+        _currentDocMeta  = meta;
+        runForceRelax(160);
+        renderReport(meta);
+        showReport();
+        _renderClusterPills(meta);
+        _updateStatsStrip(meta);
+        updateFnBar();
+        log('SYSTEM', `deeplink loaded: ${meta.title}`);
+      });
+    } else {
+      log('SYSTEM', `deeplink: unknown lib id "${_deeplinkId}"`);
+    }
+  }
 });
 
 // ── Loading state ─────────────────────────────────────────────────────────────
@@ -453,6 +475,7 @@ function _renderLibrary(tagFilter = null) {
         ${tags ? `<div class="lib-item-tags">${tags}</div>` : ''}
       </div>
       <button class="lib-preview-btn">▾</button>
+      <button class="lib-link-btn" title="Copy deeplink" data-id="${_esc(doc.id)}">🔗</button>
     </div>`;
   }).join('');
 
@@ -475,6 +498,19 @@ function _renderLibrary(tagFilter = null) {
 
   drawer.querySelectorAll('.lib-item').forEach(item => {
     const path = item.dataset.path;
+
+    // Copy deeplink button
+    item.querySelector('.lib-link-btn')?.addEventListener('click', e => {
+      e.stopPropagation();
+      const id  = e.currentTarget.dataset.id;
+      const url = `${location.origin}${location.pathname}?lib=${encodeURIComponent(id)}`;
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = e.currentTarget;
+        const orig = btn.textContent;
+        btn.textContent = '✓';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+      });
+    });
 
     // Preview toggle — fetches doc summary, shows inline
     item.querySelector('.lib-preview-btn')?.addEventListener('click', async () => {
@@ -533,6 +569,7 @@ function _renderLibrary(tagFilter = null) {
             _renderClusterPills(meta);
             _updateStatsStrip(meta);
             updateFnBar();
+            history.replaceState(null, '', `?lib=${encodeURIComponent(meta.id)}`);
             log('SYSTEM', `loaded: ${meta.title}`);
           }
         });
