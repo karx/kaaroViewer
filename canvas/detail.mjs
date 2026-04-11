@@ -26,6 +26,11 @@ export function showDetail(node, edges, graphGetNode) {
   if (!_panel) return;
   _currentQid = node.qid;
 
+  // Vault notes get their own panel layout
+  if (node.type === 'vault-note') {
+    return _showVaultDetail(node, edges, graphGetNode);
+  }
+
   const typeLabel = getEntityStyle(node.type ?? 'default').label;
   const ts        = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
@@ -146,6 +151,91 @@ export function showDetail(node, edges, graphGetNode) {
       ` : `<div class="dp-empty-msg">&gt; No connections loaded yet<br>&gt; Press F3 XPND to expand</div>`}
 
       <div class="dp-footer">kaaroViewer  ·  ${_esc(srcLabel)}  ·  ${_esc(node.qid)}</div>
+    </div>
+  `;
+
+  _panel.classList.add('open');
+}
+
+// ── Vault note panel ─────────────────────────────────────────────────────────
+
+function _showVaultDetail(node, edges, graphGetNode) {
+  const connections = edges
+    .map(e => {
+      const nId      = e.from === node.qid ? e.to : e.from;
+      const neighbor = graphGetNode(nId);
+      return { id: nId, label: neighbor?.label ?? nId };
+    })
+    .filter(c => c.label);
+
+  const tagsHtml = (node.tags ?? []).length
+    ? `<div class="dp-row">
+        <span class="dp-key">Tags</span>
+        <span class="dp-val">${node.tags.map(t =>
+          `<span class="dp-tag-pill">${_esc(t)}</span>`
+        ).join(' ')}</span>
+      </div>`
+    : '';
+
+  const dateHtml = node.date
+    ? `<div class="dp-row">
+        <span class="dp-key">Updated</span>
+        <span class="dp-val dp-val-dim">${_esc(node.date)}</span>
+      </div>`
+    : '';
+
+  _panel.innerHTML = `
+    <div class="dp-terminal dp-vault">
+
+      <div class="dp-header">
+        <span class="dp-qid-code">${_esc(node.id)}</span>
+        <span class="dp-type-label">garden note</span>
+        <span class="dp-source-badge" data-src="vault">◈ GARDEN</span>
+        <div class="dp-header-actions">
+          <button class="dp-key-btn" data-action="pin"   title="Pin">F2 PIN</button>
+          <button class="dp-key-btn dp-close-btn" data-action="close">F4 CLR</button>
+        </div>
+      </div>
+
+      <div class="dp-entity-title">${_esc((node.label ?? node.id).toUpperCase())}</div>
+
+      ${node.image
+        ? `<div class="dp-img-wrap"><img class="dp-img" src="${_esc(node.image)}" alt="" loading="lazy"></div>`
+        : ''}
+
+      <div class="dp-rows">
+        ${node.description ? `
+        <div class="dp-row">
+          <span class="dp-key">About</span>
+          <span class="dp-val dp-val-desc">${_esc(node.description)}</span>
+        </div>` : ''}
+        ${tagsHtml}
+        ${dateHtml}
+        <div class="dp-row">
+          <span class="dp-key">Connections</span>
+          <span class="dp-val dp-val-orange">${connections.length}</span>
+        </div>
+      </div>
+
+      ${connections.length ? `
+        <div class="dp-section-hdr">─── linked notes ───────────────</div>
+        <ul class="dp-conn-list">
+          ${connections.map(c => `
+            <li class="dp-conn" data-action="navigate" data-qid="${_esc(c.id)}">
+              <span class="dp-conn-rel">→</span>
+              <span class="dp-conn-label">${_esc(c.label)}</span>
+            </li>
+          `).join('')}
+        </ul>
+      ` : `<div class="dp-empty-msg">&gt; No linked notes<br>&gt; Add [[WikiLinks]] in the vault</div>`}
+
+      ${node.noteUrl ? `
+        <div class="dp-vault-cta">
+          <a href="${_esc(node.noteUrl)}" target="_blank" class="dp-read-link">Read full note ↗</a>
+        </div>
+      ` : ''}
+
+      <div class="dp-footer">garden  ·  ${_esc(node.id)}</div>
     </div>
   `;
 
