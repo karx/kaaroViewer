@@ -66,6 +66,11 @@
       <div class="canvas-wrap" id="theScene" role="application" aria-label="3D knowledge graph of garden notes — click nodes to inspect, drag to rotate">
         <!-- Key stats strip -->
         <div id="stats-strip" class="stats-strip hidden" role="status" aria-label="Garden statistics" aria-live="polite"></div>
+        <!-- Mobile cycling buttons (hidden on desktop) -->
+        <div id="mobile-nav" class="mobile-nav" aria-label="Navigate notes" hidden>
+          <button id="cycle-prev" class="mobile-nav-btn" aria-label="Previous note">‹</button>
+          <button id="cycle-next" class="mobile-nav-btn" aria-label="Next note">›</button>
+        </div>
       </div>
 
       <!-- Detail panel -->
@@ -75,6 +80,8 @@
 
     <!-- ── Command bar ───────────────────────────────────────────────────── -->
     <div class="input-bar" role="search">
+      <!-- Autocomplete dropdown (floats above via CSS) -->
+      <div id="search-ac" class="search-ac" role="listbox" aria-label="Search suggestions" hidden></div>
       <label for="main-input" class="cmd-prompt" aria-label="Search prompt">›</label>
       <input
         id="main-input"
@@ -91,11 +98,11 @@
 
     <!-- ── Keyboard hints ───────────────────────────────────────────────── -->
     <div class="fnkey-bar" id="fnkey-bar" role="status" aria-label="Available keyboard shortcuts" aria-live="polite">
-      <span class="fnk"><em>CLICK</em> DETAIL</span>
-      <span class="fnk"><em>DRAG</em> ROTATE</span>
-      <span class="fnk"><em>SCROLL</em> ZOOM</span>
-      <span class="fnk"><em>#tag</em> ISOLATE CLUSTER</span>
-      <span class="fnk fnk-right"><em>◎</em> LOG</span>
+      <span class="fnk"><em>Click</em> Detail</span>
+      <span class="fnk"><em>Tab</em> Cycle notes</span>
+      <span class="fnk"><em>Drag</em> Rotate</span>
+      <span class="fnk"><em>#tag</em> Isolate cluster</span>
+      <span class="fnk fnk-right"><em>◎</em> Log</span>
     </div>
 
   </div>

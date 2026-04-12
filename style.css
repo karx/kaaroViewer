@@ -75,6 +75,7 @@ html, body {
 .canvas-wrap {
   flex: 1; position: relative; overflow: hidden;
   background: #000000; min-width: 0;
+  transition: flex 0.22s ease;
 }
 .canvas-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
 
@@ -469,18 +470,18 @@ html, body {
 }
 
 .report-wrap {
-  flex: 0;
-  width: 0;
+  flex: 0 0 0;
+  min-width: 0;
   overflow: hidden;
   background: #000000;
-  transition: flex 0.22s ease, width 0.22s ease;
+  transition: flex 0.22s ease;
 }
 
 .report-wrap.rp-visible {
-  flex: 1;
-  width: auto;
+  flex: 1 1 auto;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: #1e1e00 transparent;
 }
@@ -1482,6 +1483,95 @@ html, body {
   .rp-kpi-strip { grid-template-columns: repeat(2, 1fr); }
   .rp-bs-block  { min-width: 16px; height: 24px; }
   .rp-ins-hdr   { flex-wrap: wrap; gap: 4px; }
+}
+
+/* ── Garden: search autocomplete ────────────────────────────────────────── */
+
+.input-bar { position: relative; }
+
+.search-ac {
+  position: absolute;
+  bottom: 100%; left: 0; right: 0;
+  background: #080800;
+  border: 1px solid #2a2a00;
+  border-bottom: none;
+  z-index: 110;
+  max-height: 220px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #1e1e00 transparent;
+}
+
+.search-ac-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #111100;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 11px;
+  color: #b8b090;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+.search-ac-item:hover,
+.search-ac-item[aria-selected="true"] { background: #121200; color: #ff6600; }
+
+.search-ac-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.search-ac-tag {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: #0a150a;
+  border: 1px solid #1a3a1a;
+  color: #6fcf6f;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+}
+
+/* ── Garden: mobile cycling buttons ─────────────────────────────────────── */
+
+.mobile-nav {
+  display: none;           /* hidden on desktop */
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 50;
+  gap: 8px;
+}
+
+.mobile-nav-btn {
+  background: rgba(4, 4, 0, 0.82);
+  border: 1px solid #2a2a00;
+  color: #667755;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.1s, border-color 0.1s, background 0.1s;
+}
+.mobile-nav-btn:active {
+  color: #ff6600;
+  border-color: #ff6600;
+  background: rgba(20, 8, 0, 0.92);
+}
+
+@media (max-width: 768px) {
+  .mobile-nav[data-visible] { display: flex; }
 }
 
 /* ── 7. Reduced motion ───────────────────────────────────────────────────── */

@@ -110,7 +110,7 @@ No secondary fetch — all data comes from the graph JSON.
 
 ---
 
-## 5. Search and filter ~ partial
+## 5. Search and filter ✓
 
 **Implemented:**
 
@@ -118,12 +118,9 @@ No secondary fetch — all data comes from the graph JSON.
 - Tag isolation: `#tag` or `tag:name` prefix in the command bar → `_isolateTag()` → dims non-matching nodes, frames the cluster
 - First search result gets focused + detail panel opened
 - Multiple results dim all non-matching nodes
-
-**Not yet implemented:**
-
-- Autocomplete dropdown while typing (show top 5 matching titles)
-- Keyboard navigation through search results (↑↓ to cycle, Enter to focus)
-- Clear search / reset dim state from keyboard (currently needs F4 from main.mjs — not wired in garden-main.mjs)
+- **Autocomplete dropdown** while typing — `VaultSource.suggest()` (sync) feeds a `#search-ac` dropdown above the command bar; click or ↑↓/Enter to navigate; Esc to dismiss
+- Keyboard navigation through autocomplete results (↑↓ cycle, Enter focus, Esc dismiss)
+- Clear search / reset dim state from keyboard: `Esc` clears dim + detail in `garden-main.mjs`
 
 ---
 
@@ -203,12 +200,13 @@ Phase 0–1 shipped. Phase 2 improves the experience. Phase 3–4 are architectu
 
 | # | Item | Priority |
 |---|------|----------|
-| O-1 | Autocomplete dropdown in garden command bar | Medium |
+| O-1 | ~~Autocomplete dropdown in garden command bar~~ ✓ | Done |
 | O-2 | Tag cluster layout as proper layout.mjs mode | Medium |
-| O-3 | F4 clear-dim wired in garden-main.mjs | Low |
+| O-3 | ~~F4 clear-dim wired in garden-main.mjs~~ ✓ (Esc) | Done |
 | O-4 | `qid` → `id` rename across codebase | Low |
 | O-5 | Sparse checkout for vault submodule (disk space) | Infra |
 | O-6 | Mixed vault + Wikidata graph | Future |
+| O-7 | Mobile cycling buttons (‹ › for Tab equivalent) ✓ | Done |
 
 ---
 

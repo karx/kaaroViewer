@@ -144,5 +144,26 @@ export class VaultSource extends ContentSource {
   /** Returns the full node list (for layout seeding). */
   get allNodes() { return this._data?.nodes ?? []; }
 
+  /**
+   * Synchronous autocomplete — returns up to `limit` index entries whose
+   * title, id, or tags contain `query`. Requires `load()` to have been called.
+   *
+   * @param {string} query
+   * @param {number} [limit=5]
+   * @returns {{ id: string, title: string, tags: string[] }[]}
+   */
+  suggest(query, limit = 5) {
+    if (!this._data || !query) return [];
+    const q = query.toLowerCase().trim();
+    if (!q) return [];
+    return this._data.index
+      .filter(e =>
+        e.title.toLowerCase().includes(q) ||
+        e.id.includes(q) ||
+        e.tags.some(t => t.toLowerCase().includes(q))
+      )
+      .slice(0, limit);
+  }
+
   describe() { return 'Local digital garden — published notes from the vault'; }
 }

@@ -30,6 +30,10 @@ const GRAPH_URL = params.get('graph') ?? '/assets/garden/garden-graph.json';
 
 const vault = new VaultSource(GRAPH_URL);
 
+// ── UI state ──────────────────────────────────────────────────────────────────
+
+let _isDimmed = false;
+
 // ── Tag cluster centroids ─────────────────────────────────────────────────────
 // Tags become spatial regions. Centroids are placed on a circle in XZ plane.
 
@@ -112,7 +116,7 @@ requestAnimationFrame(async () => {
 // ── Node interactions ─────────────────────────────────────────────────────────
 
 onNodeClick(qid => {
-  clearDim();
+  clearDim(); _isDimmed = false;
   const node = graph.getNode(qid);
   if (!node) return;
   const prev = getCurrentQid();
@@ -122,6 +126,7 @@ onNodeClick(qid => {
   const mesh = getNodeMesh(qid);
   if (mesh) focusOn(mesh.position.toArray(), 12);
   showDetail(node, graph.getEdgesFor(qid), id => graph.getNode(id));
+  _updateFnBar();
 });
 
 document.addEventListener('detail:navigate', e => {
@@ -136,6 +141,83 @@ document.addEventListener('detail:navigate', e => {
 document.addEventListener('detail:pin', e => setNodeState(e.detail.qid, 'pinned'));
 document.getElementById('breadcrumb')?.addEventListener('bc:navigate',
   e => document.dispatchEvent(new CustomEvent('detail:navigate', { detail: { qid: e.detail.qid } })));
+
+// ── Search autocomplete ───────────────────────────────────────────────────────
+
+const _inputEl = document.getElementById('main-input');
+const _acEl    = document.getElementById('search-ac');
+let _acItems   = [];
+let _acActive  = -1;
+
+_inputEl?.addEventListener('input', () => {
+  const text = _inputEl.value.trim();
+  // Don't show autocomplete for tag shortcuts or empty
+  if (!text || /^(?:tag:|#)/i.test(text)) { _hideAc(); return; }
+  const results = vault.suggest(text, 6);
+  if (!results.length) { _hideAc(); return; }
+  _acItems = results;
+  _acActive = -1;
+  _renderAc();
+});
+
+_inputEl?.addEventListener('blur', () => setTimeout(_hideAc, 160));
+
+_inputEl?.addEventListener('keydown', e => {
+  if (!_acItems.length || _acEl?.hidden) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    _acActive = (_acActive + 1) % _acItems.length;
+    _renderAc();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    _acActive = (_acActive - 1 + _acItems.length) % _acItems.length;
+    _renderAc();
+  } else if (e.key === 'Enter' && _acActive >= 0) {
+    e.preventDefault();
+    e.stopImmediatePropagation();  // prevent inputBus from also firing
+    _selectAcItem(_acActive);
+  } else if (e.key === 'Escape') {
+    _hideAc();
+  }
+});
+
+_acEl?.addEventListener('mousedown', e => {
+  const item = e.target.closest('.search-ac-item');
+  if (!item) return;
+  e.preventDefault();  // prevent blur on input before click fires
+  _selectAcItem(parseInt(item.dataset.idx, 10));
+});
+
+function _renderAc() {
+  if (!_acEl) return;
+  _acEl.innerHTML = _acItems.map((item, i) => `
+    <div class="search-ac-item" role="option" data-idx="${i}" aria-selected="${i === _acActive}">
+      <span class="search-ac-title">${_esc(item.title)}</span>
+      ${item.tags.slice(0, 2).map(t => `<span class="search-ac-tag">${_esc(t)}</span>`).join('')}
+    </div>`).join('');
+  _acEl.removeAttribute('hidden');
+}
+
+function _hideAc() {
+  _acEl?.setAttribute('hidden', '');
+  _acItems = []; _acActive = -1;
+}
+
+function _selectAcItem(idx) {
+  const item = _acItems[idx];
+  if (!item) return;
+  _hideAc();
+  if (_inputEl) _inputEl.value = '';
+  const node = graph.getNode(item.id);
+  if (!node) return;
+  clearDim(); _isDimmed = false;
+  setNodeState(item.id, 'focused');
+  pushCrumb(item.id, node.label);
+  const mesh = getNodeMesh(item.id);
+  if (mesh) focusOn(mesh.position.toArray(), 12);
+  showDetail(node, graph.getEdgesFor(item.id), id => graph.getNode(id));
+  _updateFnBar();
+}
 
 // ── Search input ──────────────────────────────────────────────────────────────
 
@@ -160,7 +242,7 @@ inputBus.addEventListener('intent', async e => {
 
   // Focus the first match; dim others
   const firstId = results.nodes[0].id;
-  dimAllExcept(results.nodes.map(n => n.id));
+  dimAllExcept(results.nodes.map(n => n.id)); _isDimmed = true; _updateFnBar();
   const node = graph.getNode(firstId);
   if (!node) return;
   setNodeState(firstId, 'focused');
@@ -175,7 +257,7 @@ function _isolateTag(tag) {
     log('GARDEN', `no notes tagged "${tag}"`);
     return;
   }
-  dimAllExcept(matching);
+  dimAllExcept(matching); _isDimmed = true; _updateFnBar();
   // Frame all matching nodes
   const meshes = matching.map(id => getNodeMesh(id)).filter(Boolean);
   if (meshes.length) {
@@ -252,3 +334,88 @@ function _updateStatsLabel() {
   strip.textContent = `${nodes} notes · ${edges} links`;
   strip.classList.remove('hidden');
 }
+
+// ── Fnkey bar ─────────────────────────────────────────────────────────────────
+
+function _updateFnBar() {
+  const bar    = document.getElementById('fnkey-bar');
+  const mbnav  = document.getElementById('mobile-nav');
+  const qid    = getCurrentQid();
+
+  // Mobile cycling buttons: show when a node is focused
+  if (mbnav) {
+    if (qid) { mbnav.setAttribute('data-visible', ''); mbnav.removeAttribute('hidden'); }
+    else     { mbnav.removeAttribute('data-visible'); mbnav.setAttribute('hidden', ''); }
+  }
+
+  if (!bar) return;
+  if (qid) {
+    const label = graph.getNode(qid)?.label ?? qid;
+    bar.innerHTML = `
+      <span class="fnk fnk-ctx"><em>Tab</em> Next note</span>
+      <span class="fnk fnk-ctx"><em>Esc</em> Clear &amp; deselect</span>
+      <span class="fnk fnk-right fnk-selected">◉ ${_esc(label.toUpperCase())}</span>`;
+  } else if (_isDimmed) {
+    bar.innerHTML = `
+      <span class="fnk fnk-ctx"><em>Esc</em> Clear filter</span>
+      <span class="fnk"><em>Drag</em> Rotate</span>
+      <span class="fnk"><em>#tag</em> Isolate</span>
+      <span class="fnk fnk-right"><em>◎</em> Log</span>`;
+  } else {
+    bar.innerHTML = `
+      <span class="fnk"><em>Click</em> Detail</span>
+      <span class="fnk"><em>Tab</em> Cycle notes</span>
+      <span class="fnk"><em>Drag</em> Rotate</span>
+      <span class="fnk"><em>#tag</em> Isolate cluster</span>
+      <span class="fnk fnk-right"><em>◎</em> Log</span>`;
+  }
+}
+
+function _esc(s) {
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// ── Keyboard shortcuts ────────────────────────────────────────────────────────
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+  switch (e.key) {
+    case 'Escape': {
+      e.preventDefault();
+      clearDim(); _isDimmed = false;
+      hideDetail();
+      const input = document.getElementById('main-input');
+      if (input) input.value = '';
+      _updateFnBar();
+      break;
+    }
+    case 'Tab': {
+      e.preventDefault();
+      _cycleNode(e.shiftKey ? -1 : 1);
+      break;
+    }
+  }
+});
+
+function _cycleNode(dir) {
+  const nodes = [...graph.nodes.values()];
+  if (!nodes.length) return;
+  const cur = getCurrentQid();
+  const idx = cur ? nodes.findIndex(n => n.qid === cur) : -1;
+  const next = nodes[((idx + dir) + nodes.length) % nodes.length];
+  if (!next) return;
+  if (cur && cur !== next.qid) setNodeState(cur, 'visited');
+  clearDim(); _isDimmed = false;
+  setNodeState(next.qid, 'focused');
+  pushCrumb(next.qid, next.label);
+  const mesh = getNodeMesh(next.qid);
+  if (mesh) focusOn(mesh.position.toArray(), 12);
+  showDetail(next, graph.getEdgesFor(next.qid), id => graph.getNode(id));
+  _updateFnBar();
+}
+
+// ── Mobile cycling buttons ────────────────────────────────────────────────────
+
+document.getElementById('cycle-prev')?.addEventListener('click', () => _cycleNode(-1));
+document.getElementById('cycle-next')?.addEventListener('click', () => _cycleNode(1));
