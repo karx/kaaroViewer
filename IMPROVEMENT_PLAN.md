@@ -4,7 +4,7 @@
 **Derived from**: `named-entity-detection-improvement.md` analysis + `library/poker-tooling-2026-retrospective.md` postmortem
 **Status**: Active implementation  
 **Last updated**: 2026-04-06  
-**Completed**: O-01–O-16, C-01–C-03, C-06–C-07, C-11, C-13, C-15, IA-01–IA-02, IA-05–IA-06, S-01–S-09, S-08, C-12, C-14
+**Completed**: O-01–O-16, C-01–C-03, C-06–C-07, C-10–C-13, C-15, IA-01–IA-02, IA-05–IA-07, S-01–S-09, S-08, C-12, C-14
 
 This document captures four categories of planned improvements: UI/Canvas, Information Architecture, Ontology/Grammar, and Skill Workflow. Items within each category are ordered by effort-to-impact ratio. Implementation sequencing is in the Priority Matrix at the end.
 

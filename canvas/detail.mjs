@@ -14,12 +14,16 @@ import { getEntityStyle } from '../ontology.mjs';
 import { getCrossDocEntities, getDocMeta } from '../pipeline/local-graph.mjs';
 
 let _panel      = null;
+let _backdrop   = null;
 let _currentQid = null;
 
 export function initDetail() {
-  _panel = document.getElementById('detail-panel');
+  _panel    = document.getElementById('detail-panel');
+  _backdrop = document.getElementById('detail-backdrop');
   if (!_panel) return;
   _panel.addEventListener('click', _handleClick);
+  // Tap backdrop to dismiss on mobile
+  _backdrop?.addEventListener('click', hideDetail);
 }
 
 export function showDetail(node, edges, graphGetNode) {
@@ -155,6 +159,7 @@ export function showDetail(node, edges, graphGetNode) {
   `;
 
   _panel.classList.add('open');
+  _backdrop?.classList.add('open');
 }
 
 // ── Vault note panel ─────────────────────────────────────────────────────────
@@ -240,11 +245,13 @@ function _showVaultDetail(node, edges, graphGetNode) {
   `;
 
   _panel.classList.add('open');
+  _backdrop?.classList.add('open');
 }
 
 export function hideDetail() {
   if (!_panel) return;
   _panel.classList.remove('open');
+  _backdrop?.classList.remove('open');
   _currentQid = null;
 }
 

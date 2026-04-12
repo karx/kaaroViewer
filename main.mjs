@@ -8,7 +8,8 @@
  */
 
 import { initScene, onNodeClick, onNodeDblClick, onNodeHover,
-         focusOn, frameNodes, getCamera, getControls, addTick, tickHover } from './canvas/scene.mjs';
+         focusOn, frameNodes, getCamera, getRenderer, getScene,
+         getControls, addTick, tickHover } from './canvas/scene.mjs';
 import { addNodeMesh, getNodeMesh, setNodeState, clearAllNodes, removeNodeMesh,
          updateNodeDegree, dimAllExcept, clearDim,
          setNodeColorOverride, clearNodeColorOverrides } from './canvas/nodes.mjs';
@@ -57,6 +58,7 @@ requestAnimationFrame(() => {
 
   document.getElementById('overlay-sent-btn')?.addEventListener('click', () => _applyOverlay('sentiment'));
   document.getElementById('overlay-tier-btn')?.addEventListener('click', () => _applyOverlay('tier'));
+  document.getElementById('screenshot-btn')?.addEventListener('click', _takeScreenshot);
 
   // Hover → tooltip
   let _hoveredQid = null;
@@ -698,6 +700,21 @@ function _updateOverlayBtns() {
   tierBtn?.classList.toggle('overlay-active', _overlayMode === 'tier');
   sentBtn?.setAttribute('aria-pressed', String(_overlayMode === 'sentiment'));
   tierBtn?.setAttribute('aria-pressed', String(_overlayMode === 'tier'));
+}
+
+// ── Screenshot export (C-10) ─────────────────────────────────────────────────
+
+function _takeScreenshot() {
+  const r = getRenderer();
+  if (!r) return;
+  r.render(getScene(), getCamera());
+  const url = r.domElement.toDataURL('image/png');
+  const a   = document.createElement('a');
+  a.href     = url;
+  a.download = `kaaroViewer-${new Date().toISOString().slice(0, 10)}.png`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 // ── Source toggles ────────────────────────────────────────────────────────────

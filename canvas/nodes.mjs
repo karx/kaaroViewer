@@ -26,13 +26,15 @@ const _states = new Map();   // qid → state string
 // ── State styles ──────────────────────────────────────────────────────────────
 
 const STATE_STYLE = {
-  seed:      { emissive: 0.35, opacity: 1.0,  scaleMult: 1.20 },
-  unvisited: { emissive: 0.06, opacity: 0.42, scaleMult: 1.00 },
-  visited:   { emissive: 0.18, opacity: 1.0,  scaleMult: 1.00 },
-  expanded:  { emissive: 0.22, opacity: 1.0,  scaleMult: 1.00 },
-  focused:   { emissive: 0.55, opacity: 1.0,  scaleMult: 1.15 },
-  pinned:    { emissive: 0.35, opacity: 1.0,  scaleMult: 1.10 },
-  dimmed:    { emissive: 0.03, opacity: 0.10, scaleMult: 0.88 },
+  seed:        { emissive: 0.35, opacity: 1.0,  scaleMult: 1.20 },
+  unvisited:   { emissive: 0.06, opacity: 0.42, scaleMult: 1.00 },
+  visited:     { emissive: 0.18, opacity: 1.0,  scaleMult: 1.00 },
+  expanded:    { emissive: 0.22, opacity: 1.0,  scaleMult: 1.00 },
+  focused:     { emissive: 0.55, opacity: 1.0,  scaleMult: 1.15 },
+  pinned:      { emissive: 0.35, opacity: 1.0,  scaleMult: 1.10 },
+  dimmed:      { emissive: 0.03, opacity: 0.10, scaleMult: 0.88 },
+  // Spine nodes use a softer dim so they remain navigable anchors (IA-07)
+  'spine-dim': { emissive: 0.14, opacity: 0.38, scaleMult: 1.00 },
 };
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -145,8 +147,11 @@ export function updateNodeDegree(qid, degree) {
  */
 export function dimAllExcept(qids) {
   const keep = new Set(qids);
-  for (const [qid] of _meshes) {
-    if (!keep.has(qid)) setNodeState(qid, 'dimmed');
+  for (const [qid, mesh] of _meshes) {
+    if (keep.has(qid)) continue;
+    // Spine nodes stay partially visible as structural anchors (IA-07)
+    const newState = mesh.userData.tier === 'spine' ? 'spine-dim' : 'dimmed';
+    setNodeState(qid, newState);
   }
 }
 
@@ -155,7 +160,7 @@ export function dimAllExcept(qids) {
  */
 export function clearDim() {
   for (const [qid, state] of _states) {
-    if (state === 'dimmed') setNodeState(qid, 'visited');
+    if (state === 'dimmed' || state === 'spine-dim') setNodeState(qid, 'visited');
   }
 }
 

@@ -38,6 +38,7 @@
         <div class="canvas-overlays" role="group" aria-label="Visual overlay modes">
           <button id="overlay-sent-btn" class="overlay-btn" aria-label="Toggle sentiment colour mode (S key)" aria-pressed="false" title="S — Sentiment colour mode">SENT</button>
           <button id="overlay-tier-btn" class="overlay-btn" aria-label="Toggle tier size mode (T key)" aria-pressed="false" title="T — Tier size mode">TIER</button>
+          <button id="screenshot-btn"   class="overlay-btn" aria-label="Save canvas as PNG (C-10)" title="Save canvas as PNG">SNAP</button>
         </div>
         <!-- Key stats strip (C-12) -->
         <div id="stats-strip" class="stats-strip hidden" role="status" aria-label="Document key statistics" aria-live="polite"></div>
@@ -50,6 +51,8 @@
 
       <!-- Detail panel -->
       <aside class="detail-panel" id="detail-panel" role="complementary" aria-label="Entity detail panel" aria-live="polite"></aside>
+      <!-- Mobile bottom-sheet backdrop -->
+      <div id="detail-backdrop" class="detail-backdrop" aria-hidden="true"></div>
 
     </main>
 

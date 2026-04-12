@@ -167,7 +167,7 @@ export function buildNodeGroup(node) {
     group.add(aura);
   }
 
-  // ── Stage 6: Tier wireframe — marks spine/hub nodes ───────────────────────
+  // ── Stage 6: Tier wireframe + anchor halo — marks spine nodes ────────────
   if (tier === 'spine') {
     const wire = new THREE.Mesh(
       geo.clone(),
@@ -176,6 +176,19 @@ export function buildNodeGroup(node) {
     wire.name = 'tier-wireframe';
     wire.scale.setScalar(1.10);
     group.add(wire);
+
+    // Anchor halo: persistent outer ring that marks structural spine nodes.
+    // Remains visible even when the node is dimmed (IA-07).
+    const halo = new THREE.Mesh(
+      new THREE.RingGeometry(r * 1.80, r * 1.96, 48),
+      new THREE.MeshBasicMaterial({
+        color: style.color, side: THREE.DoubleSide,
+        transparent: true, opacity: 0.22, depthWrite: false,
+      })
+    );
+    halo.name = 'anchor-halo';
+    halo.rotation.x = Math.PI / 2;
+    group.add(halo);
   }
 
   // ── Stage 7: Local-source ring ─────────────────────────────────────────────
