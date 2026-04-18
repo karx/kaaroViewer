@@ -312,4 +312,11 @@ export const LIBRARY = [
     domain: 'Technology / Game Engineering',
     year:   '2025',
   },
+  {
+    id:     'kaaro-viewer',
+    title:  'KaaroViewer: An Immersive Cognitive Interface',
+    path:   './library/kaaro-viewer.json',
+    domain: 'Software / Data Visualization',
+    year:   '2024',
+  },
 ];
