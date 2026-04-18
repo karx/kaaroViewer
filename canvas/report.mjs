@@ -297,10 +297,33 @@ function _relTypeBars(doc) {
   const max = sorted[0][1];
 
   const REL_COL = {
-    causes: '#ff4400', membership: '#00cccc', creation: '#ff6600',
-    opposition: '#ff2222', location: '#00ff88', leadership: '#ffcc00',
-    collaboration: '#4488ff', conflict: '#ff0044', reveals: '#cc44ff',
-    default: '#334433',
+    // Core Wikidata rels
+    causes:        '#ff4400',
+    membership:    '#00cccc',
+    creation:      '#ff6600',
+    opposition:    '#ff2222',
+    location:      '#00ff88',
+    leadership:    '#ffcc00',
+    collaboration: '#4488ff',
+    conflict:      '#ff0044',
+    reveals:       '#cc44ff',
+    // Structural / local-doc rels
+    enables:       '#00ff88',
+    precedes:      '#888899',
+    implements:    '#00ccee',
+    achieves:      '#ffee00',
+    governs:       '#ffaa00',
+    permits:       '#44ff88',
+    prohibits:     '#ff2244',
+    mitigates:     '#00ff66',
+    disrupts:      '#ff6622',
+    features:      '#cc8800',
+    association:   '#aa88ff',
+    employment:    '#00ccff',
+    competes:      '#ff3366',
+    supersedes:    '#cc9900',
+    derives_from:  '#aa88ff',
+    default:       '#334433',
   };
 
   return `<div class="rp-cbar-chart">${

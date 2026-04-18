@@ -57,6 +57,13 @@ export async function loadLocalDoc(path) {
     clusters   = [],
   } = doc;
 
+  // ── Auto-derive tour from story beats if no explicit tour is provided ────────
+  // Enables F6 narrative mode to follow the authored story arc without requiring
+  // a separate "tour" field in the library JSON.
+  const tour = Array.isArray(doc.tour) && doc.tour.length
+    ? doc.tour
+    : story.filter(b => b.node).map(b => ({ node: b.node, narration: b.narration ?? b.title ?? '' }));
+
   log('SYSTEM', `doc "${meta.title}" — ${nodes.length} nodes, ${edges.length} edges, ${insights.length} insights, ${story.length} story beats`);
 
   // ── Determine spine for placement hints ────────────────────────────────────
@@ -141,7 +148,7 @@ export async function loadLocalDoc(path) {
     };
   }
   const analytics = _deriveAnalytics(nodes, edges, clusters, insights, story);
-  const enrichedMeta = { ...meta, story, report_card, clusters, insights, nodes, nodeLookup, analytics };
+  const enrichedMeta = { ...meta, story, tour, report_card, clusters, insights, nodes, nodeLookup, analytics };
   _docMeta.set(meta.id, enrichedMeta);
 
   log('SYSTEM', `doc loaded — graph now ${graph.stats().nodes} nodes, ${graph.stats().edges} edges, analytics derived`);
@@ -297,5 +304,12 @@ export const LIBRARY = [
     path:   './library/art-of-intent.json',
     domain: 'Software / Game Design',
     year:   '2024',
+  },
+  {
+    id:     'minecraft-redstone-computation',
+    title:  'The Digital Bedrock: Minecraft Redstone Computation',
+    path:   './library/minecraft-redstone-computation.json',
+    domain: 'Technology / Game Engineering',
+    year:   '2025',
   },
 ];

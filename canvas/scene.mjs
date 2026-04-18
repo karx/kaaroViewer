@@ -33,7 +33,7 @@ export function initScene(container) {
   const H = container.clientHeight || window.innerHeight;
 
   // Renderer
-  _renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  _renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true });
   _renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   _renderer.setSize(W, H);
   _renderer.setClearColor(0x000000, 1);
@@ -90,6 +90,7 @@ export function initScene(container) {
 
 export function getScene()    { return _scene; }
 export function getCamera()   { return _camera; }
+export function getRenderer() { return _renderer; }
 export function getControls() { return _controls; }
 
 /** Smoothly frame a set of meshes — animates camera to encompass all of them. */
