@@ -104,6 +104,7 @@ requestAnimationFrame(() => {
         _renderClusterPills(meta);
         _updateStatsStrip(meta);
         updateFnBar();
+        if (meta.tour?.length) loadTour(meta.tour);
         log('SYSTEM', `deeplink loaded: ${meta.title}`);
       });
     } else {
@@ -571,6 +572,7 @@ function _renderLibrary(tagFilter = null) {
             _renderClusterPills(meta);
             _updateStatsStrip(meta);
             updateFnBar();
+            if (meta.tour?.length) loadTour(meta.tour);
             history.replaceState(null, '', `?lib=${encodeURIComponent(meta.id)}`);
             log('SYSTEM', `loaded: ${meta.title}`);
           }

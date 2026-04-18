@@ -127,6 +127,13 @@ export function showDetail(node, edges, graphGetNode) {
           <span class="dp-key">About</span>
           <span class="dp-val dp-val-desc">${_esc(node.description)}</span>
         </div>` : ''}
+        ${node.metrics && Object.keys(node.metrics).length ? `
+        <div class="dp-section-hdr">─── metrics ───────────────</div>
+        ${Object.entries(node.metrics).slice(0, 6).map(([k, v]) => `
+        <div class="dp-row">
+          <span class="dp-key">${_esc(k)}</span>
+          <span class="dp-val dp-val-orange">${_esc(String(v))}</span>
+        </div>`).join('')}` : ''}
         ${geoHtml}
         ${crossDocHtml}
         ${wikiHtml}

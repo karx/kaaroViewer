@@ -28,6 +28,8 @@ const TYPE_GEOMETRY = {
   person: 'sphere', player: 'sphere',
   // Institutional box
   organization: 'box', company: 'box', government: 'box', union: 'box',
+  // Technical/mechanical box — software products and game components
+  software: 'box',
   // Sharp/volatile octahedron
   event: 'octahedron', conflict: 'octahedron', issue: 'octahedron', ruling: 'octahedron',
   // Pointed/revelatory tetrahedron
@@ -47,6 +49,8 @@ const TYPE_GEOMETRY = {
   tournament: 'torusknot',
   // Flat screen/media + data slabs
   video: 'plane', channel: 'plane', post: 'plane', dataset: 'plane',
+  // Explicit sphere fallbacks (intentional, not default)
+  metric: 'sphere', solution: 'sphere', sport: 'sphere', model: 'sphere',
 };
 
 const FLAT_SHADED = new Set(['octahedron', 'tetrahedron', 'icosahedron', 'dodecahedron', 'box']);
@@ -264,7 +268,17 @@ function _buildTemporalArc(temporal, r) {
  */
 function _buildMetricArc(metrics, r) {
   if (!metrics) return null;
-  const val = metrics.population ?? metrics.employees ?? metrics.area ?? null;
+  // Primary: well-known Wikidata numeric keys
+  let val = metrics.population ?? metrics.employees ?? metrics.area ?? null;
+  // Fallback: scan all metric values for the first that parses as a positive number.
+  // This makes arcs visible for local-doc nodes whose metrics are descriptive strings
+  // like "2 blocks", "20 ticks/second", "40×40×35 blocks", etc.
+  if (val == null) {
+    for (const v of Object.values(metrics)) {
+      const n = parseFloat(String(v).replace(/[^0-9.]/g, ''));
+      if (!isNaN(n) && n > 0) { val = n; break; }
+    }
+  }
   if (!val || val <= 0) return null;
 
   // log₁₀ scale: 1→0%, 1 000→30%, 1 000 000→60%, 1 000 000 000→90%
@@ -317,6 +331,27 @@ function _buildTagDots(profile, r) {
   });
 }
 
+// ── Label helpers (pre-render) ────────────────────────────────────────────────
+
+/**
+ * Shorten a label for the sprite canvas (24-char effective limit).
+ * Preserves trailing parenthetical acronyms like "(BPE)", "(ALU)", "(QC)".
+ *   "BLOCK SPACE EFFICIENCY (BPE)" → "BLOCK SPACE EFF… (BPE)"
+ *   "ARITHMETIC LOGIC UNIT (ALU)"  → "ARITHMETIC LOGI… (ALU)"
+ *   "THEINTERNETFTW"               → "THEINTERNETFTW"   (≤24, pass through)
+ */
+function _shortenLabel(display) {
+  if (display.length <= 24) return display;
+  const acronymMatch = display.match(/\(([A-Z0-9][A-Z0-9\-]*)\)$/);
+  if (acronymMatch) {
+    const suffix = acronymMatch[0];                              // "(BPE)"
+    const base   = display.slice(0, display.length - suffix.length - 1).trim();
+    const baseShort = base.length > 14 ? base.slice(0, 13) + '…' : base;
+    return `${baseShort} ${suffix}`;
+  }
+  return display.slice(0, 23) + '…';
+}
+
 // ── Label sprite ──────────────────────────────────────────────────────────────
 //
 //  Canvas layout (512 × 208):
@@ -361,7 +396,7 @@ function _buildLabel(node, style, tier, r) {
 
   // Row 2 — entity name
   const display = (node.label ?? node.qid ?? '').toUpperCase();
-  const short   = display.length > 20 ? display.slice(0, 19) + '…' : display;
+  const short   = _shortenLabel(display);
   ctx.font        = 'bold 30px "Courier New", monospace';
   ctx.shadowColor = '#000';
   ctx.shadowBlur  = 10;
