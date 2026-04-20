@@ -319,4 +319,11 @@ export const LIBRARY = [
     domain: 'Software / Data Visualization',
     year:   '2024',
   },
+  {
+    id:     'advanced-git-workflows',
+    title:  'Advanced Version Control Dynamics',
+    path:   './library/advanced-git-workflows.json',
+    domain: 'Software Engineering / DevOps',
+    year:   '2026',
+  },
 ];

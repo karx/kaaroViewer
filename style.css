@@ -710,6 +710,29 @@ html, body {
   letter-spacing: 0.1em; flex-shrink: 0;
 }
 
+/* ── Report: beat diagrams ───────────────────────────────────────────────── */
+
+.rp-beat-diagram { margin: 8px 0 6px; }
+
+.rp-diagram-toggle {
+  background: none; border: 1px solid #2a2a10; color: #444433;
+  font-size: 8px; font-weight: 700; letter-spacing: 0.12em;
+  padding: 2px 8px; cursor: pointer; transition: color 0.15s, border-color 0.15s;
+}
+.rp-diagram-toggle:hover { color: #00ff88; border-color: #00ff88; }
+
+.rp-diagram-panel {
+  margin-top: 8px;
+  border: 1px solid #1a1a00;
+  background: #ffffff;
+  overflow: auto; max-height: 420px;
+}
+
+.rp-diagram-img {
+  display: block; width: 100%; height: auto;
+  object-fit: contain;
+}
+
 /* ── Report: insights ────────────────────────────────────────────────────── */
 
 .rp-insights-sec { margin-bottom: 32px; }

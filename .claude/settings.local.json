@@ -15,7 +15,10 @@
       "Read(//tmp/**)",
       "Bash(curl:*)",
       "Bash(python3:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Skill(visualize)",
+      "Bash(npx tsx *)",
+      "Bash(py .claude/hooks/validate-library-json.py library/advanced-git-workflows.json)"
     ]
   }
 }

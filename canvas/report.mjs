@@ -153,6 +153,12 @@ function _storyArc(doc) {
         </div>
         ${primary ? _entityBadge(primary) : ''}
         <p class="rp-beat-narration">${_e(beat.narration)}</p>
+        ${beat.diagram ? `<div class="rp-beat-diagram">
+          <button class="rp-diagram-toggle" data-target="rp-diag-${i}">▶ DIAGRAM</button>
+          <div class="rp-diagram-panel" id="rp-diag-${i}" hidden>
+            <img class="rp-diagram-img" src="${_e(beat.diagram)}" alt="${_e(beat.title)}" loading="lazy">
+          </div>
+        </div>` : ''}
         ${related ? `<div class="rp-beat-related"><span class="rp-related-lbl">ALSO ▸</span>${related}</div>` : ''}
       </div>
     </div>`;
@@ -595,6 +601,18 @@ function _bindClicks(root) {
       const nodeIds = block.dataset.beatNodes?.split(',').filter(Boolean) ?? [];
       if (nodeIds.length)
         document.dispatchEvent(new CustomEvent('report:beat-frame', { detail: { nodeIds } }));
+    });
+  });
+
+  // Diagram expand/collapse toggles
+  root.querySelectorAll('.rp-diagram-toggle').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const panel = document.getElementById(btn.dataset.target);
+      if (!panel) return;
+      const open = !panel.hidden;
+      panel.hidden = open;
+      btn.textContent = open ? '▶ DIAGRAM' : '▼ DIAGRAM';
     });
   });
 
