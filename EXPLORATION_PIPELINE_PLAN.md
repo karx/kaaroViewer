@@ -309,18 +309,20 @@ kaaroViewer/
 ### Phase 3 — Enrichment Coordinator + High-Signal Adapters
 *Fan-out, merge, delta detection, UI controls*
 
-- [ ] **EC-01** Create `pipeline/enrichment-coordinator.mjs` — takes ID map array, fans out to adapters in parallel
-- [ ] **EC-02** Merge logic — combine adapter results into enriched node objects by priority rules
-- [ ] **EC-03** Delta classification:
-  - [ ] **EC-03a** Node-level patch: metrics/description changed → silent update
-  - [ ] **EC-03b** Structural delta: new high-weight entity found OR spine entity unresolvable → flag
-  - [ ] **EC-03c** Sentiment flip: Stage 1 sentiment contradicted by adapter signal → flag
-- [ ] **EC-04** Incremental canvas stream — emit node updates via `CustomEvent('explore:node-update')` as adapters resolve
-- [ ] **EC-05** Create `enrichers/youtube.mjs` — YouTube Data API v3 (channels + videos endpoint)
-- [ ] **EC-06** Create `enrichers/reddit.mjs` — Reddit public JSON API (no auth, `/r/{name}/about.json` + `/hot.json`)
-- [ ] **EC-07** Create `enrichers/github.mjs` — GitHub REST API `/repos/{owner}/{repo}` (public, no auth required for basic stats)
-- [ ] **EC-08** Create `canvas/explore-ui.mjs`:
-  - Seed input field (text box + submit, reuses hotkey G)
+- [x] **EC-01** Create `pipeline/enrichment-coordinator.mjs` — takes ID map array, fans out to adapters in parallel
+- [x] **EC-02** Merge logic — combine adapter results into enriched node objects by priority rules
+- [x] **EC-03** Delta classification:
+  - [x] **EC-03a** Node-level patch: metrics/description changed → silent update
+  - [x] **EC-03b** Structural delta: new high-weight entity found OR spine entity unresolvable → flag
+  - [x] **EC-03c** Sentiment flip: Stage 1 sentiment contradicted by adapter signal → flag
+- [x] **EC-04** Incremental canvas stream — emit node updates via `CustomEvent('explore:node-update')` as adapters resolve
+- [x] **EC-05** `enrichers/youtube.mjs` — YouTube Data API v3 (channels + videos endpoint)
+- [x] **EC-06** `enrichers/reddit.mjs` — Reddit public JSON API (no auth, `/r/{name}/about.json` + `/hot.json`)
+- [x] **EC-07** `enrichers/github.mjs` — GitHub REST API `/repos/{owner}/{repo}`
+- [x] **EC-07b** `enrichers/npm.mjs` — npm registry + downloads API (free, no auth) *(added)*
+- [x] **EC-07c** `enrichers/hackernews.mjs` — Hacker News Algolia API, story count + top score *(added)*
+- [x] **EC-08** Create `canvas/explore-ui.mjs`:
+  - Seed input field (text box + submit, hotkey G)
   - `[ EXPAND ]` button (hidden by default, shown on structural delta)
   - `[ RETHINK ]` button (hidden by default, shown on structural delta or sentiment flip)
   - Delta callout panel (shows what enrichment found that changed the story)
@@ -332,16 +334,16 @@ kaaroViewer/
 ### Phase 4 — Stage 1 LLM Exploration Prompt + Completion Pass
 *The narrative generation entry point*
 
-- [ ] **EX-01** Create `pipeline/explore.mjs` — main Stage 1 entry point
-- [ ] **EX-02** LLM exploration prompt: structured output → nodes + edges + story + insights + clusters + layout_hints + enrichment_targets
-- [ ] **EX-03** Confidence scoring per entity in prompt instruction
-- [ ] **EX-04** Layout hints schema: `oppose`, `anchor`, `timeline_axis`, `push_peripheral`
-- [ ] **EX-05** Working brief validation — ensure minimum: id, ≥1 node, valid meta. No quality gate on content.
-- [ ] **EX-06** Create `pipeline/completion.mjs` — Stage 4a–4c:
-  - [ ] **EX-06a** 4a: scan story beats for node references; add missing nodes as secondary stubs
-  - [ ] **EX-06b** 4b: attach enriched adapter data to matching nodes (merge into metrics, description, links)
-  - [ ] **EX-06c** 4c: compare enriched `related_ids` from adapters against edges; add missing edge stubs
-- [ ] **EX-07** `[ RETHINK ]` flow: pass enriched node data as context to Stage 1, regenerate full brief
+- [x] **EX-01** Create `pipeline/explore.mjs` — main Stage 1 entry point
+- [x] **EX-02** LLM exploration prompt: structured output → nodes + edges + story + insights + clusters + layout_hints + enrichment_targets
+- [x] **EX-03** Confidence scoring per entity in prompt instruction
+- [x] **EX-04** Layout hints schema: `oppose`, `anchor`, `timeline_axis`, `push_peripheral`
+- [x] **EX-05** Working brief validation — ensure minimum: id, ≥1 node, valid meta. No quality gate on content.
+- [x] **EX-06** Create `pipeline/completion.mjs` — Stage 4a–4c:
+  - [x] **EX-06a** 4a: scan story beats for node references; add missing nodes as secondary stubs
+  - [x] **EX-06b** 4b: attach enriched adapter data to matching nodes (merge into metrics, description, links)
+  - [x] **EX-06c** 4c: compare enriched `related_ids` from adapters against edges; add missing edge stubs
+- [x] **EX-07** `[ RETHINK ]` flow: pass enriched node data as context to Stage 1, regenerate full brief
 
 **Acceptance criteria**: Seeding "Trunk-Based Development" produces a working brief with ≥ 5 nodes, ≥ 1 climax beat, ≥ 1 insight. Canvas renders within 3s of seed submission. Completion pass adds GitHub node if enrichment found a related repo not in Stage 1 output.
 
@@ -399,10 +401,10 @@ YouTube and LLM require API keys. Store in `.env` (already gitignored). Reddit a
 |---|---|---|---|
 | Phase 1 — Adapter Foundation | ✅ 5/6 done (EF-06 pending tests) | 5 | 6 |
 | Phase 2 — NED++ Resolution | ✅ 5/7 done (NE-05 Path C hook, NE-07 tests pending) | 5 | 7 |
-| Phase 3 — Enrichment Coordinator | Not started | 0 | 8 |
-| Phase 4 — Exploration Prompt + Completion | Not started | 0 | 7 |
+| Phase 3 — Enrichment Coordinator | ✅ Done (+npm, +HN adapters) | 10 | 10 |
+| Phase 4 — Exploration Prompt + Completion | ✅ Done | 7 | 7 |
 | Phase 5 — Layout Engine | Not started | 0 | 8 |
-| **Total** | | **10** | **36** |
+| **Total** | | **27** | **38** |
 
 ---
 

@@ -326,4 +326,11 @@ export const LIBRARY = [
     domain: 'Software Engineering / DevOps',
     year:   '2026',
   },
+  {
+    id:     'what-are-agents-teaching-us',
+    title:  'What Are Agents Teaching Us?',
+    path:   './library/what-are-agents-teaching-us.json',
+    domain: 'AI / Reflection',
+    year:   '2026',
+  },
 ];

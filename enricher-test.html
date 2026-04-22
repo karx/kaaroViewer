@@ -60,7 +60,8 @@
     .badge-wikipedia { background: #2d4a3e; color: #7ee787; }
     .badge-youtube   { background: #5b1a1a; color: #ff7b72; }
     .badge-reddit    { background: #3d2b1a; color: #ffa657; }
-    .badge-github    { background: #2b2b40; color: #d2a8ff; }
+    .badge-npm        { background: #2b1c10; color: #ff6b3d; }
+    .badge-hackernews { background: #2b1a10; color: #ff9a3c; }
     .badge-PASS      { background: #0f2d1f; color: #3fb950; }
     .badge-FAIL      { background: #3d1114; color: #ff7b72; }
     .badge-SKIP      { background: #21262d; color: #8b949e; }
@@ -76,7 +77,7 @@
     }
     .summary-text {
       color: #8b949e; margin-bottom: 8px; line-height: 1.5;
-      display: -webkit-box; -webkit-line-clamp: 3;
+      display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3;
       -webkit-box-orient: vertical; overflow: hidden;
     }
     .metric-row {
@@ -123,6 +124,8 @@
   <label><input type="checkbox" id="cb-wikipedia" checked> Wikipedia</label>
   <label><input type="checkbox" id="cb-github"    checked> GitHub</label>
   <label><input type="checkbox" id="cb-reddit"    checked> Reddit</label>
+  <label><input type="checkbox" id="cb-npm"       checked> npm</label>
+  <label><input type="checkbox" id="cb-hackernews" checked> Hacker News</label>
   <label><input type="checkbox" id="cb-youtube"> YouTube (needs API key)</label>
   <button id="run-btn">▶ Run Tests</button>
   <button class="danger" id="clear-btn">✕ Clear</button>
@@ -150,31 +153,35 @@ import { register, runAdapters, mergeResults, makeResult, nullResult } from './e
 import * as wikidataAdapter  from './enrichers/wikidata.mjs';
 import * as wikipediaAdapter from './enrichers/wikipedia.mjs';
 import * as githubAdapter    from './enrichers/github.mjs';
+import * as npmAdapter       from './enrichers/npm.mjs';
+import * as hnAdapter        from './enrichers/hackernews.mjs';
 import * as redditAdapter    from './enrichers/reddit.mjs';
 
 // Register all available adapters
-register('wikidata',  wikidataAdapter.enrich);
-register('wikipedia', wikipediaAdapter.enrich);
-register('github',    githubAdapter.enrich);
-register('reddit',    redditAdapter.enrich);
+register('wikidata',   wikidataAdapter.enrich);
+register('wikipedia',  wikipediaAdapter.enrich);
+register('github',     githubAdapter.enrich);
+register('npm',        npmAdapter.enrich);
+register('hackernews', hnAdapter.enrich);
+register('reddit',     redditAdapter.enrich);
 
 // ── Test cases (hardcoded fixtures) ─────────────────────────────────────────
 
 const TESTS = [
   {
     label: 'Git',
-    ids:   { wikidata: 'Q186055', github: 'git/git', reddit: 'git' },
-    adapters: ['wikidata', 'wikipedia', 'github', 'reddit'],
+    ids:   { wikidata: 'Q186055', github: 'git/git', reddit: 'git', npm: null },
+    adapters: ['wikidata', 'wikipedia', 'github', 'reddit', 'npm', 'hackernews'],
   },
   {
     label: 'Python (programming language)',
-    ids:   { wikidata: 'Q28865', github: 'python/cpython', reddit: 'Python' },
-    adapters: ['wikidata', 'wikipedia', 'github', 'reddit'],
+    ids:   { wikidata: 'Q28865', github: 'python/cpython', reddit: 'Python', npm: null },
+    adapters: ['wikidata', 'wikipedia', 'github', 'reddit', 'npm', 'hackernews'],
   },
   {
     label: 'Linux',
-    ids:   { wikidata: 'Q388', github: 'torvalds/linux', reddit: 'linux' },
-    adapters: ['wikidata', 'wikipedia', 'github', 'reddit'],
+    ids:   { wikidata: 'Q388', github: 'torvalds/linux', reddit: 'linux', npm: null },
+    adapters: ['wikidata', 'wikipedia', 'github', 'reddit', 'npm', 'hackernews'],
   },
 ];
 
@@ -257,7 +264,7 @@ async function runCustomTest() {
   const ghSlug = document.getElementById('gh-input').value.trim()  || null;
   const sub    = document.getElementById('sub-input').value.trim() || null;
 
-  const activeAdapters = ['wikidata','wikipedia','github','reddit','youtube']
+  const activeAdapters = ['wikidata','wikipedia','github','reddit','npm','hackernews','youtube']
     .filter(s => document.getElementById(`cb-${s}`)?.checked);
 
   if (!activeAdapters.length) { setStatus('Select at least one adapter.'); return; }
@@ -275,7 +282,8 @@ async function runCustomTest() {
 
   for (const source of activeAdapters) {
     const adapterFn = { wikidata: wikidataAdapter.enrich, wikipedia: wikipediaAdapter.enrich,
-                        github: githubAdapter.enrich,    reddit: redditAdapter.enrich }[source];
+                        github: githubAdapter.enrich,    reddit: redditAdapter.enrich,
+                        npm: npmAdapter.enrich,          hackernews: hnAdapter.enrich }[source];
     if (!adapterFn) continue;
 
     const t0 = performance.now();
@@ -298,7 +306,8 @@ async function runFixtureTests() {
   for (const tc of TESTS) {
     for (const source of tc.adapters) {
       const adapterFn = { wikidata: wikidataAdapter.enrich, wikipedia: wikipediaAdapter.enrich,
-                          github: githubAdapter.enrich,    reddit: redditAdapter.enrich }[source];
+                          github: githubAdapter.enrich,    reddit: redditAdapter.enrich,
+                          npm: npmAdapter.enrich,          hackernews: hnAdapter.enrich }[source];
       if (!adapterFn) continue;
 
       const t0 = performance.now();

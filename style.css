@@ -1675,3 +1675,82 @@ html, body {
   .report-inner { padding: 20px; max-width: 100%; color: #000; background: #fff; }
 }
 
+/* ── Explore UI ───────────────────────────────────────────────────────────── */
+
+#explore-ui {
+  position: fixed; bottom: 54px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 120; display: flex; flex-direction: column; align-items: center;
+  gap: 6px; width: min(680px, 96vw);
+  pointer-events: none; /* children opt-in */
+}
+
+.explore-bar {
+  display: flex; align-items: center; gap: 0;
+  background: #080800; border: 1px solid #ff6600;
+  box-shadow: 0 0 24px rgba(255,102,0,0.18);
+  pointer-events: all; width: 100%;
+}
+
+.explore-prompt {
+  font-size: 11px; font-weight: 700; color: #ff6600;
+  padding: 0 10px; letter-spacing: 0.1em; flex-shrink: 0;
+}
+
+.explore-input {
+  flex: 1; background: transparent; border: none;
+  color: #e8e0c8; font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; font-weight: 600; padding: 8px 6px;
+  outline: none; letter-spacing: 0.04em;
+}
+.explore-input::placeholder { color: #334433; letter-spacing: 0.06em; }
+
+.explore-submit {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+  background: #1a0800; border: none; border-left: 1px solid #ff6600;
+  color: #ff6600; padding: 8px 14px; cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  flex-shrink: 0;
+}
+.explore-submit:hover { background: #ff6600; color: #000; }
+
+/* Delta bar — appears above the explore bar when enrichment finds something */
+.explore-delta-bar {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  background: #050500; border: 1px solid #ff4400;
+  padding: 6px 10px; pointer-events: all; width: 100%;
+  box-shadow: 0 0 16px rgba(255,68,0,0.15);
+  transition: opacity 0.15s;
+}
+.explore-delta-bar.hidden { display: none; }
+
+.explore-delta-callout {
+  flex: 1; font-size: 9px; color: #cc8844; letter-spacing: 0.04em; line-height: 1.5;
+}
+
+.explore-delta-actions {
+  display: flex; gap: 6px; flex-shrink: 0; align-items: center;
+}
+
+.explore-action-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  padding: 4px 10px; cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  border: 1px solid;
+}
+.explore-action-btn.hidden { display: none; }
+
+.expand-btn  { background: #001a0a; border-color: #00ff66; color: #00ff66; }
+.expand-btn:hover  { background: #00ff66; color: #000; }
+
+.rethink-btn { background: #1a0800; border-color: #ff6600; color: #ff6600; }
+.rethink-btn:hover { background: #ff6600; color: #000; }
+
+.explore-dismiss-btn {
+  background: none; border: none; color: #445544; font-size: 11px;
+  cursor: pointer; padding: 2px 4px; transition: color 0.1s;
+}
+.explore-dismiss-btn:hover { color: #ff4444; }
+
