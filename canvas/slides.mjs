@@ -27,19 +27,22 @@ let _wrap   = null;   // #slides-wrap
 let _track  = null;   // .sl-track
 let _index  = null;   // .sl-index
 let _title  = null;   // .sl-topbar-title
+let _progress = null; // .sl-progress-fill
 let _slides = [];     // Slide[]
 let _active = 0;
 let _observer = null;
 let _currentDoc = null;
+let _suppressObserverUntil = 0;   // ms timestamp; observer ignores entries before this
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
 export function initSlides() {
   if (document.getElementById('slides-wrap')) {
-    _wrap  = document.getElementById('slides-wrap');
-    _track = _wrap.querySelector('.sl-track');
-    _index = _wrap.querySelector('.sl-index');
-    _title = _wrap.querySelector('.sl-topbar-title');
+    _wrap     = document.getElementById('slides-wrap');
+    _track    = _wrap.querySelector('.sl-track');
+    _index    = _wrap.querySelector('.sl-index');
+    _title    = _wrap.querySelector('.sl-topbar-title');
+    _progress = _wrap.querySelector('.sl-progress-fill');
     return;
   }
 
@@ -61,6 +64,7 @@ export function initSlides() {
         <button class="sl-close" aria-label="Close slides (F9)" title="Close (F9)">✕</button>
       </div>
     </div>
+    <div class="sl-progress" aria-hidden="true"><div class="sl-progress-fill"></div></div>
     <div class="sl-track" aria-label="Slide track"></div>
     <div class="sl-dots" aria-hidden="true"></div>
   `;
@@ -68,9 +72,10 @@ export function initSlides() {
   const middle = document.querySelector('.middle') ?? document.body;
   middle.appendChild(_wrap);
 
-  _track = _wrap.querySelector('.sl-track');
-  _index = _wrap.querySelector('.sl-index');
-  _title = _wrap.querySelector('.sl-topbar-title');
+  _track    = _wrap.querySelector('.sl-track');
+  _index    = _wrap.querySelector('.sl-index');
+  _title    = _wrap.querySelector('.sl-topbar-title');
+  _progress = _wrap.querySelector('.sl-progress-fill');
 
   _wrap.querySelector('.sl-prev').addEventListener('click', prevSlide);
   _wrap.querySelector('.sl-next').addEventListener('click', nextSlide);
@@ -124,7 +129,14 @@ export function goToSlide(idx, behavior = 'smooth') {
   const n  = Math.max(0, Math.min(_slides.length - 1, idx));
   const el = _track.querySelector(`[data-slide-idx="${n}"]`);
   if (!el) return;
-  el.scrollIntoView({ behavior, inline: 'center', block: 'nearest' });
+  // Compute scroll-left that centres the slide inside the track. Explicit math
+  // beats scrollIntoView here because scroll-snap-type:mandatory can round a
+  // near-miss to the next snap point and skip a slide.
+  const target = el.offsetLeft + el.offsetWidth / 2 - _track.clientWidth / 2;
+  // Gag the IntersectionObserver during this programmatic scroll so mid-animation
+  // ratios don't flip _active to an off-target neighbour.
+  _suppressObserverUntil = Date.now() + 600;
+  _track.scrollTo({ left: target, behavior });
   _setActive(n);
 }
 
@@ -522,6 +534,7 @@ function _bindIntersection() {
   if (!_track) return;
 
   _observer = new IntersectionObserver((entries) => {
+    if (Date.now() < _suppressObserverUntil) return;
     // Pick the entry with the greatest intersection ratio
     let best = null;
     for (const e of entries) {
@@ -561,8 +574,13 @@ function _setActive(n) {
 }
 
 function _updateIndex() {
-  if (!_index) return;
-  _index.textContent = `${String(_active + 1).padStart(2, '0')} / ${String(_slides.length).padStart(2, '0')}`;
+  if (_index) {
+    _index.textContent = `${String(_active + 1).padStart(2, '0')} / ${String(_slides.length).padStart(2, '0')}`;
+  }
+  if (_progress) {
+    const pct = _slides.length > 1 ? (_active / (_slides.length - 1)) * 100 : 100;
+    _progress.style.width = `${pct.toFixed(1)}%`;
+  }
 }
 
 function _renderDots() {

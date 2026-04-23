@@ -67,7 +67,6 @@ requestAnimationFrame(() => {
   // ── Mount explore UI ──────────────────────────────────────────────────────
   mountExploreUI({
     container: 'body',
-    onSeed:    seed => _runExploration(seed),
     onExpand:  deltas => _runExpand(deltas),
     onRethink: deltas => _runRethink(deltas),
   });
@@ -256,7 +255,7 @@ const REDDIT_PREFIX_RE = /^r\/\w+\s+.+$/i;
 inputBus.addEventListener('intent', async e => {
   const text = e.detail.text;
 
-  // Check for source prefix commands
+  // 1. Source prefix commands — deterministic, no fallback needed
   const srcMatch = text.match(SOURCE_PREFIX_RE);
   if (srcMatch) {
     const prefix = srcMatch[1].toLowerCase();
@@ -268,17 +267,22 @@ inputBus.addEventListener('intent', async e => {
       return;
     }
   }
-
-  // Reddit prefix: r/subreddit query
   if (REDDIT_PREFIX_RE.test(text)) {
     const result = await sourceManager.searchSource('reddit', text);
     loadSourceResults(result);
     return;
   }
 
-  // Default: Wikidata entity resolution
+  // 2. Deterministic: Wikidata entity resolution (QID, wd:QID, or label match)
   const qids = await resolve(text);
-  for (const qid of qids) await loadEntity(qid);
+  if (qids.length > 0) {
+    for (const qid of qids) await loadEntity(qid);
+    return;
+  }
+
+  // 3. Fallback: no deterministic match — hand off to LLM exploration pipeline
+  log('SYSTEM', `no wikidata match for "${text}" — launching exploration`);
+  _runExploration(text);
 });
 
 // ── Load source results into graph ────────────────────────────────────────────
@@ -322,8 +326,9 @@ function loadSourceResults({ nodes = [], edges = [] }) {
   }
 }
 
-const textInput = document.getElementById('main-input');
-if (textInput) inputBus.bindTextInput(textInput);
+// Text input surface lives in the hovering Explore UI (canvas/explore-ui.mjs),
+// which pushes into inputBus directly. The legacy bottom-bar #main-input has
+// been removed — the action bar now holds only chrome (source toggles, F-keys).
 
 const voiceBtn = document.getElementById('voice-btn');
 if (voiceBtn) {
@@ -880,7 +885,12 @@ document.addEventListener('keydown', e => {
   if (isSlidesVisible()) {
     if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); return; }
     if (e.key === 'ArrowLeft')  { e.preventDefault(); prevSlide(); return; }
-    if (e.key === 'Escape')     { e.preventDefault(); hideSlides(); updateFnBar(); return; }
+    if (e.key === 'Escape')     {
+      e.preventDefault();
+      hideSlides();
+      document.dispatchEvent(new CustomEvent('slides:closed'));
+      return;
+    }
   }
 
   // Tab always cycles nodes
@@ -991,6 +1001,23 @@ document.addEventListener('slides:mode', e => {
   log('SYSTEM', `brief mode → ${requested}`);
 });
 
+// Reader → slides (or close) via the reader's sticky toggle bar
+document.addEventListener('report:mode', e => {
+  const mode = e.detail?.mode;
+  if (mode === 'close') {
+    _hideBrief();
+    updateFnBar();
+    log('SYSTEM', 'brief OFF');
+    return;
+  }
+  const docId = _lastLoadedDocId;
+  const meta  = docId ? getDocMeta(docId) : null;
+  if (!meta) return;
+  _setBriefMode('slides');
+  _showBrief(meta);
+  log('SYSTEM', 'brief mode → slides');
+});
+
 // Slides closed via the ✕ button → refresh fn-bar + log a hint so the user
 // knows how to reopen
 document.addEventListener('slides:closed', () => {
@@ -1009,12 +1036,11 @@ document.addEventListener('slides:frame', e => {
   if (meshes.length) frameNodes(meshes);
 });
 
-// Entity pill clicked inside a slide → leave slides + focus the entity
+// Entity pill clicked inside a slide → focus the entity in canvas but keep
+// slides open so narrative context stays on screen.
 document.addEventListener('slides:navigate', e => {
   const { qid } = e.detail ?? {};
   if (!qid) return;
-  hideSlides();
-  updateFnBar();
   focusEntity(qid);
 });
 

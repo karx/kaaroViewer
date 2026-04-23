@@ -19,6 +19,25 @@ let _inner = null;
 export function initReport() {
   _wrap  = document.getElementById('report-wrap');
   _inner = document.getElementById('report-inner');
+
+  // Sticky toggle bar at the top of the reader — lets the user flip back to
+  // slides without exiting and re-entering brief mode.
+  if (_wrap && !_wrap.querySelector('.rp-toggle-bar')) {
+    const bar = document.createElement('div');
+    bar.className = 'rp-toggle-bar';
+    bar.innerHTML = `
+      <button class="rp-toggle-btn" data-mode="slides" title="Back to slides view">◂ SLIDES</button>
+      <span class="rp-toggle-label">READER VIEW</span>
+      <button class="rp-toggle-close" title="Close brief (F9)">✕</button>
+    `;
+    _wrap.insertBefore(bar, _inner);
+    bar.querySelector('.rp-toggle-btn').addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('report:mode', { detail: { mode: 'slides' } }));
+    });
+    bar.querySelector('.rp-toggle-close').addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('report:mode', { detail: { mode: 'close' } }));
+    });
+  }
 }
 
 export function renderReport(docMeta) {

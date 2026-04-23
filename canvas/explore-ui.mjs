@@ -1,23 +1,24 @@
 /**
- * canvas/explore-ui.mjs — Seed input + exploration controls.
+ * canvas/explore-ui.mjs — Unified input + exploration controls.
  *
  * Provides:
- *   • Seed input field (text box + submit), wired to hotkey G
- *   • [ EXPAND ] button — shown when structural delta detected
- *   • [ RETHINK ] button — shown when sentiment flip detected
+ *   • The single text input (hovering bar, hotkey G). Submissions push into
+ *     inputBus, so the intent handler routes them: source prefixes → Wikidata
+ *     deterministic resolve → LLM exploration fallback.
+ *   • [ EXPAND ] button — shown when structural delta detected post-enrichment
+ *   • [ RETHINK ] button — shown when sentiment flip detected post-enrichment
  *   • Delta callout panel — explains what enrichment found that changed the story
  *
  * Events emitted:
- *   explore:seed-submit   — { seed: string }
  *   explore:expand        — user confirmed EXPAND
  *   explore:rethink       — user confirmed RETHINK
  *
  * Events listened to:
  *   explore:delta         — from enrichment-coordinator (shows/hides controls)
- *   explore:node-update   — (optional) forwarded to canvas for live updates
  */
 
-import { log } from '../logger.mjs';
+import { log }       from '../logger.mjs';
+import { inputBus }  from '../pipeline/input.mjs';
 
 // ── State ─────────────────────────────────────────────────────────────────────
 
@@ -37,7 +38,7 @@ let _rethinkVisible = false;
  * @param {Function} [opts.onExpand] — async () → void
  * @param {Function} [opts.onRethink] — async () → void
  */
-export function mountExploreUI({ container = 'body', onSeed, onExpand, onRethink } = {}) {
+export function mountExploreUI({ container = 'body', onExpand, onRethink } = {}) {
   const parent = typeof container === 'string'
     ? document.querySelector(container)
     : container;
@@ -53,13 +54,13 @@ export function mountExploreUI({ container = 'body', onSeed, onExpand, onRethink
         id="explore-input"
         type="text"
         class="explore-input"
-        placeholder="explore a topic, person, or URL…"
+        placeholder="entity, QID, lp:player, yt:video, or topic to explore…"
         autocomplete="off"
         spellcheck="false"
-        aria-label="Exploration seed — enter a topic to generate a knowledge graph"
+        aria-label="Entity lookup or topic exploration — tries Wikidata first, falls back to LLM"
       >
-      <button id="explore-submit" class="explore-submit" aria-label="Start exploration">
-        ▶ EXPLORE
+      <button id="explore-submit" class="explore-submit" aria-label="Submit — Wikidata first, LLM fallback">
+        ▶ GO
       </button>
     </div>
 
@@ -86,10 +87,11 @@ export function mountExploreUI({ container = 'body', onSeed, onExpand, onRethink
   function _submit() {
     const seed = input.value.trim();
     if (!seed) return;
-    log('INPUT', `[ExploreUI] seed submitted: "${seed}"`);
+    log('INPUT', `[ExploreUI] submit: "${seed}"`);
     _hideDeltaBar();
-    document.dispatchEvent(new CustomEvent('explore:seed-submit', { detail: { seed }, bubbles: true }));
-    if (typeof onSeed === 'function') onSeed(seed);
+    // Route through the unified input bus. The 'intent' handler in main.mjs
+    // tries source prefixes → Wikidata resolve → LLM exploration fallback.
+    inputBus.push(seed, 'explore-ui');
     input.value = '';
     input.blur();
   }

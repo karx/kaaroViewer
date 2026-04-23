@@ -239,6 +239,10 @@ html, body {
 .input-bar button:hover  { color: #ff6600; border-color: #ff6600; }
 #voice-btn.active        { color: #ff6600; border-color: #ff6600; background: #1a0800; }
 
+/* Action bar layout — text input lives in the hovering Explore UI now, so
+   the source toggles grow to push control buttons to the right edge. */
+.input-bar > #source-toggles { flex: 1 1 auto; }
+
 /* ── Function key bar ────────────────────────────────────────────────────── */
 .fnkey-bar {
   display: flex; align-items: center; gap: 0;
@@ -490,6 +494,40 @@ html, body {
   max-width: 960px;
   margin: 0 auto;
   padding: 24px 32px 64px;
+}
+
+/* Reader's sticky toggle bar — swap back to slides or close the brief */
+.rp-toggle-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 18px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.72) 100%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #1e1e00;
+}
+.rp-toggle-btn, .rp-toggle-close {
+  background: rgba(8, 8, 0, 0.9);
+  color: #ccccaa;
+  border: 1px solid #2a2a00;
+  font: 700 10px "Courier New", monospace;
+  letter-spacing: 0.12em;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.rp-toggle-btn:hover, .rp-toggle-close:hover {
+  color: #ff8800; border-color: #663300; background: #1a0800;
+}
+.rp-toggle-close { margin-left: auto; color: #886644; padding: 6px 10px; }
+.rp-toggle-label {
+  font: 700 9px "Courier New", monospace;
+  letter-spacing: 0.18em;
+  color: #665544;
 }
 
 /* ── Report: common ──────────────────────────────────────────────────────── */
@@ -1361,6 +1399,22 @@ html, body {
 }
 .sl-close { color: #886644; }
 
+.sl-progress {
+  flex: 0 0 auto;
+  height: 2px;
+  margin: 0 18px 6px;
+  background: rgba(40, 24, 0, 0.75);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.sl-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, #ff6600, #ffaa00);
+  box-shadow: 0 0 6px rgba(255, 136, 0, 0.5);
+  transition: width 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
 .sl-track {
   flex: 1 1 auto;
   display: flex;
@@ -1384,7 +1438,7 @@ html, body {
   -webkit-backdrop-filter: blur(14px) saturate(1.1);
   backdrop-filter: blur(14px) saturate(1.1);
   border: 1px solid #1e1e00;
-  border-left: 3px solid #3a2200;
+  border-left: 5px solid #3a2200;
   border-radius: 2px 4px 4px 2px;
   padding: 16px 22px 20px;
   display: flex;
@@ -1392,13 +1446,23 @@ html, body {
   color: #e8e0c8;
   overflow-y: auto;
   box-shadow: 0 -4px 28px rgba(0, 0, 0, 0.7);
-  transition: border-left-color 0.2s, box-shadow 0.2s;
+  opacity: 0.55;
+  transform: scale(0.97);
+  transform-origin: center bottom;
+  transition: opacity 0.22s ease,
+              transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1),
+              border-left-color 0.22s ease,
+              box-shadow 0.22s ease;
   scrollbar-width: thin;
   scrollbar-color: #2a1a00 transparent;
 }
 .sl-slide.sl-active {
-  border-left-color: #ff8800;
-  box-shadow: 0 -4px 32px rgba(255, 136, 0, 0.22);
+  border-left-color: #ff6600;
+  box-shadow:
+    0 -6px 36px rgba(255, 102, 0, 0.32),
+    inset 3px 0 0 rgba(255, 170, 0, 0.15);
+  opacity: 1;
+  transform: scale(1);
 }
 
 .sl-slide-marker {
