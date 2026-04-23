@@ -1955,7 +1955,8 @@ html, body {
 /* ── 5. Responsive drawer widths ─────────────────────────────────────────── */
 
 .library-wrap,
-.sessions-wrap { width: min(360px, calc(100vw - 24px)); }
+.sessions-wrap,
+.settings-wrap { width: min(400px, calc(100vw - 24px)); }
 
 /* ── 6. Media queries ────────────────────────────────────────────────────── */
 
@@ -2303,4 +2304,84 @@ html, body {
   cursor: pointer; padding: 2px 4px; transition: color 0.1s;
 }
 .explore-dismiss-btn:hover { color: #ff4444; }
+
+/* ── Settings drawer ─────────────────────────────────────────────────────── */
+
+.settings-wrap {
+  position: fixed; bottom: 54px; right: 0;
+  width: min(400px, calc(100vw - 24px));
+  background: #080800;
+  border: 1px solid #1e1e00;
+  box-shadow: -4px 0 24px rgba(0,0,0,0.8);
+  transform: translateX(100%);
+  transition: transform 0.18s ease;
+  z-index: 110;
+  display: flex; flex-direction: column;
+  max-height: 80vh; overflow-y: auto;
+}
+.settings-wrap.open { transform: translateX(0); }
+
+.settings-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 12px;
+  border-bottom: 1px solid #1e1e00;
+  font-size: 9px; font-weight: 700; color: #667755; letter-spacing: 0.1em;
+  position: sticky; top: 0; background: #080800; z-index: 1;
+}
+.settings-header button {
+  background: none; border: none; color: #445544; cursor: pointer;
+  font-family: inherit; font-size: 11px;
+}
+.settings-header button:hover { color: #ff4444; }
+
+.settings-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+
+.set-row {
+  display: flex; flex-direction: column; gap: 3px;
+}
+.set-row label {
+  font-size: 9px; font-weight: 700; color: #667755; letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.set-opt { font-weight: 400; text-transform: none; color: #445544; }
+
+.set-row input,
+.set-row select {
+  background: #0d0d00; border: 1px solid #2a2a00; color: #cccc88;
+  font-family: inherit; font-size: 11px; padding: 5px 8px;
+  outline: none; border-radius: 2px; width: 100%; box-sizing: border-box;
+}
+.set-row input:focus,
+.set-row select:focus { border-color: #66ff66; }
+.set-row select { cursor: pointer; }
+.set-row select option { background: #0d0d00; }
+
+.set-help {
+  font-size: 9px; color: #445544; line-height: 1.4;
+}
+
+.set-actions {
+  display: flex; gap: 6px; flex-wrap: wrap; padding-top: 4px;
+}
+
+.set-btn {
+  background: #0d0d00; border: 1px solid #2a2a00; color: #aabb88;
+  font-family: inherit; font-size: 10px; font-weight: 700;
+  padding: 5px 12px; cursor: pointer; letter-spacing: 0.05em;
+  transition: background 0.1s, color 0.1s;
+}
+.set-btn:hover            { background: #1e1e00; color: #ddee99; }
+.set-btn:disabled         { opacity: 0.4; cursor: not-allowed; }
+.set-btn-primary          { border-color: #66ff66; color: #66ff66; }
+.set-btn-primary:hover    { background: #66ff66; color: #000; }
+.set-btn-danger           { border-color: #ff4444; color: #ff4444; }
+.set-btn-danger:hover     { background: #ff4444; color: #000; }
+
+.set-status {
+  font-size: 10px; min-height: 16px; padding: 2px 0;
+}
+.set-status-ok   { color: #66ff66; }
+.set-status-warn { color: #ffaa33; }
+.set-status-error{ color: #ff4444; }
+.set-status-info { color: #aabb88; }
 

@@ -65,7 +65,8 @@
       <button id="save-btn"  aria-label="Save current session (F2)" title="Save session">F2 SAVE</button>
       <button id="sessions-btn" aria-label="Open saved sessions (F8)" title="Saved sessions">F8 SSNS</button>
       <button id="library-btn"  aria-label="Open local document library (F5)" title="Load local document" aria-haspopup="dialog">F5 LIB</button>
-      <button id="report-btn"   aria-label="Toggle intelligence brief (F9)" title="Toggle brief view" aria-expanded="false">F9 BRIEF</button>
+      <button id="report-btn"    aria-label="Toggle intelligence brief (F9)" title="Toggle brief view" aria-expanded="false">F9 BRIEF</button>
+      <button id="settings-btn"  aria-label="Open model settings" title="LLM / BYOM settings" aria-haspopup="dialog">⚙ MODEL</button>
     </div>
 
     <!-- ── Function key hints ────────────────────────────────────────── -->
@@ -99,6 +100,11 @@
       <button id="sessions-close" aria-label="Close sessions panel">✕</button>
     </div>
     <div id="sessions-drawer" class="sessions-drawer" role="list" aria-labelledby="sessions-title"></div>
+  </div>
+
+  <!-- ── Settings drawer ────────────────────────────────────────────── -->
+  <div id="settings-wrap" class="settings-wrap" role="dialog" aria-modal="true"
+       aria-label="Model settings" aria-hidden="true">
   </div>
 
   <!-- ── Debug log (hidden by default) ───────────────────────────────── -->

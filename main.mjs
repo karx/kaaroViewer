@@ -44,6 +44,7 @@ import { explore, rethink, registerLLM,
 import { runCompletion }                                       from './pipeline/completion.mjs';
 import { runEnrichment, applyPatches }                        from './pipeline/enrichment-coordinator.mjs';
 import { mountExploreUI }                                     from './canvas/explore-ui.mjs';
+import { mountSettings, toggleSettings }                      from './canvas/settings.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -70,6 +71,11 @@ requestAnimationFrame(() => {
     onExpand:  deltas => _runExpand(deltas),
     onRethink: deltas => _runRethink(deltas),
   });
+
+  // Mount settings panel
+  mountSettings();
+  document.getElementById('settings-btn')
+    ?.addEventListener('click', () => toggleSettings());
 
   // Register Gemini as default LLM provider if key is set
   _tryRegisterGemini();
@@ -276,11 +282,14 @@ inputBus.addEventListener('intent', async e => {
   // 2. Deterministic: Wikidata entity resolution (QID, wd:QID, or label match)
   const qids = await resolve(text);
   if (qids.length > 0) {
+    console.log(`[kaaro/intent] Wikidata resolved "${text}" → [${qids.join(', ')}] — loading entities, skipping LLM`);
+    log('SYSTEM', `[intent] Wikidata match: ${qids.join(', ')} — loading entities`);
     for (const qid of qids) await loadEntity(qid);
     return;
   }
 
   // 3. Fallback: no deterministic match — hand off to LLM exploration pipeline
+  console.log(`[kaaro/intent] no Wikidata match for "${text}" — launching LLM exploration`);
   log('SYSTEM', `no wikidata match for "${text}" — launching exploration`);
   _runExploration(text);
 });
@@ -1098,6 +1107,32 @@ document.addEventListener('report:insight-focus', e => {
   focusEntity(qid);
 });
 
+// Live enrichment patch — apply Stage 3 adapter results to graph nodes as they arrive.
+// Fires while _runExploration is mid-enrichment; canvas is already populated by Stage 1.
+document.addEventListener('explore:node-update', e => {
+  const { nodeId, patch, deltaType } = e.detail ?? {};
+  if (!nodeId || !patch) return;
+
+  const node = graph.getNode(nodeId);
+  if (!node) return;
+
+  // Merge enriched data into the live node
+  node.metrics = { ...(node.metrics ?? {}), ...patch.metrics };
+  if (patch.summary && (!node.description || node.description.length < 30)) {
+    node.description = patch.summary.slice(0, 400);
+  }
+  if (!node.image && patch.thumbnail) node.image = patch.thumbnail;
+  if (patch.links?.length) node._links = [...new Set([...(node._links ?? []), ...patch.links])];
+  node._enriched = true;
+
+  // If this node is open in the detail panel, refresh it with the new data
+  if (getCurrentQid() === nodeId) {
+    showDetail(node, graph.getEdgesFor(nodeId), q => graph.getNode(q));
+  }
+
+  log('ENRICHER', `[canvas] node-update: ${nodeId} (${deltaType})`);
+});
+
 // Fly camera to a story beat's node set — dim all non-beat nodes
 document.addEventListener('report:beat-frame', e => {
   const { nodeIds } = e.detail ?? {};
@@ -1248,7 +1283,9 @@ async function _loadBriefIntoCanvas(brief) {
 }
 
 /**
- * Full exploration pipeline: Stage 1 → Stage 3 → Stage 4 → canvas.
+ * Full exploration pipeline: Stage 1 → canvas → Stage 3 (streaming) → Stage 4 → re-render.
+ * Canvas is loaded after Stage 1 so streaming node-update events from Stage 3 land on
+ * actual nodes rather than firing into an empty graph.
  */
 async function _runExploration(seed) {
   log('SYSTEM', `[explore] starting full pipeline for: "${seed}"`);
@@ -1258,28 +1295,30 @@ async function _runExploration(seed) {
     const brief = await explore(seed);
     _activeBrief = brief;
 
-    // Stage 3: Enrichment coordinator
+    // Load canvas immediately — Stage 3 streaming updates need nodes to be present
+    await _loadBriefIntoCanvas(brief);
+    _lastLoadedDocId = brief.meta.id;
+    _currentDocMeta  = brief;
+    _showBrief(brief);
+    _renderClusterPills(brief);
+    _updateStatsStrip(brief);
+    updateFnBar();
+
+    // Stage 3: Enrichment coordinator — streams explore:node-update to canvas
     const enrichReport = await runEnrichment(brief, {
-      concurrency:   3,
-      stream:        true,
+      concurrency:    3,
+      stream:         true,
       priorityFilter: null,
     });
     _activePatches = enrichReport.patches;
 
-    // Stage 4: Completion pass
+    // Stage 4: Completion pass — fill narrative gaps
     await runCompletion(brief, enrichReport.patches);
 
-    // Load into canvas
-    await _loadBriefIntoCanvas(brief);
-
-    // Render report
-    _lastLoadedDocId = brief.meta.id;
-    _currentDocMeta  = brief;
-    renderReport(brief);
-    showReport();
+    // Re-render brief with enriched node data (metrics, descriptions may have changed)
+    _showBrief(brief);
     _renderClusterPills(brief);
     _updateStatsStrip(brief);
-    updateFnBar();
 
     log('SYSTEM', `[explore] pipeline complete — ${brief.nodes?.length} nodes`);
 
@@ -1300,8 +1339,7 @@ async function _runExpand(deltas) {
   await runCompletion(_activeBrief, enrichReport.patches);
   await _loadBriefIntoCanvas(_activeBrief);
 
-  renderReport(_activeBrief);
-  showReport();
+  _showBrief(_activeBrief);
   _renderClusterPills(_activeBrief);
   _updateStatsStrip(_activeBrief);
 }
@@ -1324,8 +1362,7 @@ async function _runRethink(deltas) {
 
     _lastLoadedDocId = revised.meta.id;
     _currentDocMeta  = revised;
-    renderReport(revised);
-    showReport();
+    _showBrief(revised);
     _renderClusterPills(revised);
     _updateStatsStrip(revised);
     updateFnBar();
