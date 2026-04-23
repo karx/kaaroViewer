@@ -28,6 +28,8 @@ import { resolveEntityType }                                    from './ontology
 import { loadLocalDoc, LIBRARY, getDocMeta }                   from './pipeline/local-graph.mjs';
 import { initReport, renderReport, showReport, hideReport, isReportVisible,
          scrollToCluster } from './canvas/report.mjs';
+import { initSlides, renderSlides, showSlides, hideSlides, isSlidesVisible,
+         nextSlide, prevSlide } from './canvas/slides.mjs';
 import { sourceManager }                                       from './pipeline/sources/source-manager.mjs';
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
@@ -57,6 +59,7 @@ requestAnimationFrame(() => {
   initDetail();
   initTooltip();
   initReport();
+  initSlides();
   initNarrative(focusEntity);
   updateFnBar();
   _renderSourceToggles();
@@ -115,8 +118,7 @@ requestAnimationFrame(() => {
         _lastLoadedDocId = meta.id;
         _currentDocMeta  = meta;
         runForceRelax(160);
-        renderReport(meta);
-        showReport();
+        _showBrief(meta);
         _renderClusterPills(meta);
         _updateStatsStrip(meta);
         updateFnBar();
@@ -583,8 +585,7 @@ function _renderLibrary(tagFilter = null) {
             _currentDocMeta  = meta;
             runForceRelax(160);
             toggleLibrary(false);
-            renderReport(meta);
-            showReport();
+            _showBrief(meta);
             _renderClusterPills(meta);
             _updateStatsStrip(meta);
             updateFnBar();
@@ -822,7 +823,7 @@ export function updateFnBar() {
       <span class="fnk"><em>F5</em> Library</span>
       <span class="fnk"><em>F6</em> Tour</span>
       <span class="fnk"><em>F7</em> Causal</span>
-      <span class="fnk"><em>F9</em> Report</span>
+      <span class="fnk"><em>F9</em> Brief</span>
       <span class="fnk"><em>F10</em> 📷</span>
       <span class="fnk fnk-right"><em>◎</em> Log</span>`;
   } else {
@@ -834,7 +835,7 @@ export function updateFnBar() {
       <span class="fnk fnk-ctx"><em>F</em> Ego-graph</span>
       <span class="fnk fnk-ctx"><em>R</em> Refetch</span>
       <span class="fnk fnk-ctx"><em>F7</em> ${isCausalMode() ? 'Force' : 'Causal'}</span>
-      <span class="fnk fnk-ctx"><em>F9</em> Report</span>
+      <span class="fnk fnk-ctx"><em>F9</em> Brief</span>
       <span class="fnk fnk-ctx"><em>Esc</em> Deselect</span>
       <span class="fnk fnk-right fnk-selected">◉ ${_esc(label.toUpperCase())}</span>`;
   }
@@ -873,6 +874,13 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft')  { e.preventDefault(); narrativePrev(); return; }
     if (e.key === 'Escape')     { e.preventDefault(); stopNarrative(); updateFnBar(); return; }
     if (e.key === ' ')          { e.preventDefault(); toggleNarrative(); return; }
+  }
+
+  // Slides arrow keys — consume left/right when slides panel is open
+  if (isSlidesVisible()) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); return; }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); prevSlide(); return; }
+    if (e.key === 'Escape')     { e.preventDefault(); hideSlides(); updateFnBar(); return; }
   }
 
   // Tab always cycles nodes
@@ -918,32 +926,97 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ── Report mode ───────────────────────────────────────────────────────────────
+// ── Brief mode — slides (default) or reader ──────────────────────────────────
 
 // Track the last loaded doc so F9 can render it
 let _lastLoadedDocId = null;
 
+// Persisted UI preference: 'slides' | 'reader' — slides is the default format.
+let _briefMode = (sessionStorage.getItem('kv.briefMode') === 'reader') ? 'reader' : 'slides';
+
+function _setBriefMode(mode) {
+  _briefMode = (mode === 'reader') ? 'reader' : 'slides';
+  try { sessionStorage.setItem('kv.briefMode', _briefMode); } catch {}
+}
+
+function _isBriefVisible() {
+  return isSlidesVisible() || isReportVisible();
+}
+
+function _hideBrief() {
+  hideSlides();
+  hideReport();
+}
+
+function _showBrief(meta) {
+  if (_briefMode === 'reader') {
+    hideSlides();
+    renderReport(meta);
+    showReport();
+  } else {
+    hideReport();
+    renderSlides(meta);
+    showSlides();
+  }
+}
+
 function toggleReportMode() {
   const reportBtn = document.getElementById('report-btn');
-  if (isReportVisible()) {
-    hideReport();
+  if (_isBriefVisible()) {
+    _hideBrief();
     reportBtn?.setAttribute('aria-expanded', 'false');
-    log('SYSTEM', 'report mode OFF');
+    log('SYSTEM', 'brief OFF');
   } else {
-    // Render the last loaded doc, or the first available doc
     const docId = _lastLoadedDocId;
     const meta  = docId ? getDocMeta(docId) : null;
     if (!meta) {
       log('SYSTEM', 'no doc loaded — use F5 LIB to load a document first');
       return;
     }
-    renderReport(meta);
-    showReport();
+    _showBrief(meta);
     reportBtn?.setAttribute('aria-expanded', 'true');
-    log('SYSTEM', `report: ${meta.title}`);
+    log('SYSTEM', `${_briefMode}: ${meta.title}`);
   }
   updateFnBar();
 }
+
+// Switch between slides ↔ reader without closing the brief
+document.addEventListener('slides:mode', e => {
+  const requested = e.detail?.mode === 'reader' ? 'reader' : 'slides';
+  const docId = _lastLoadedDocId;
+  const meta  = docId ? getDocMeta(docId) : null;
+  if (!meta) return;
+  _setBriefMode(requested);
+  _showBrief(meta);
+  log('SYSTEM', `brief mode → ${requested}`);
+});
+
+// Slides closed via the ✕ button → refresh fn-bar + log a hint so the user
+// knows how to reopen
+document.addEventListener('slides:closed', () => {
+  clearDim();
+  updateFnBar();
+  log('SYSTEM', 'brief closed — F9 to reopen');
+});
+
+// Slides active-slide changed → frame the slide's node set (without closing slides)
+document.addEventListener('slides:frame', e => {
+  const { nodeIds } = e.detail ?? {};
+  clearDim();
+  if (!nodeIds?.length) return;
+  dimAllExcept(nodeIds);
+  const meshes = nodeIds.map(q => getNodeMesh(q)).filter(Boolean);
+  if (meshes.length) frameNodes(meshes);
+});
+
+// Entity pill clicked inside a slide → leave slides + focus the entity
+document.addEventListener('slides:navigate', e => {
+  const { qid } = e.detail ?? {};
+  if (!qid) return;
+  hideSlides();
+  updateFnBar();
+  focusEntity(qid);
+});
 
 // Cross-document navigation from detail panel (IA-01)
 document.addEventListener('detail:navigate-doc', e => {
@@ -952,8 +1025,7 @@ document.addEventListener('detail:navigate-doc', e => {
   const meta = getDocMeta(docId);
   if (!meta) { log('SYSTEM', `doc ${docId} not yet loaded`); return; }
   _lastLoadedDocId = docId;
-  renderReport(meta);
-  showReport();
+  _showBrief(meta);
   updateFnBar();
   log('SYSTEM', `cross-doc: switched to ${meta.title}`);
 });
