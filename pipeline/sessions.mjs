@@ -15,10 +15,24 @@ let _db = null;
 
 async function _open() {
   if (_db) return _db;
-  return new Promise((resolve, reject) => {
-    // Open without a version so we always accept whatever version is stored.
-    // onupgradeneeded only fires for truly new databases.
+
+  // Step 1: probe current version (onupgradeneeded only fires for new DBs here).
+  const probe = await new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME);
+    req.onupgradeneeded = e => e.target.result.close(); // brand-new DB — close immediately
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror   = e => reject(e.target.error);
+  });
+
+  const currentVersion = probe.version;
+  const hasStore       = probe.objectStoreNames.contains(STORE);
+  probe.close();
+
+  // Step 2: if store exists, reopen at same version; otherwise upgrade.
+  const targetVersion = hasStore ? currentVersion : currentVersion + 1;
+
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, targetVersion);
     req.onupgradeneeded = e => {
       const db = e.target.result;
       if (!db.objectStoreNames.contains(STORE)) {
