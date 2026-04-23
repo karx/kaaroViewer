@@ -17,15 +17,15 @@ const YT_SEARCH = 'https://www.googleapis.com/youtube/v3/search';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function _videoId(id)   { return `yt:v:${id}`; }
+function _videoId(id) { return `yt:v:${id}`; }
 function _channelId(id) { return `yt:c:${id}`; }
 
 // ── Source class ───────────────────────────────────────────────────────────────
 
 export class YouTubeSource extends ContentSource {
-  name        = 'youtube';
+  name = 'youtube';
   displayName = 'YouTube';
-  icon        = '▶';
+  icon = '▶';
 
   _getKey() {
     return localStorage.getItem('yt_api_key') ?? '';
@@ -45,16 +45,16 @@ export class YouTubeSource extends ContentSource {
     log('SOURCE', `[YouTube] searching "${query}"`);
 
     const url = `${YT_SEARCH}?${new URLSearchParams({
-      part:       'snippet',
-      q:          query,
-      type:       'video',
+      part: 'snippet',
+      q: query,
+      type: 'video',
       maxResults: '6',
       key,
     })}`;
 
     let items;
     try {
-      const res  = await fetch(url);
+      const res = await fetch(url);
       if (!res.ok) throw new Error(`YouTube HTTP ${res.status}`);
       const json = await res.json();
       items = json.items ?? [];
@@ -68,26 +68,26 @@ export class YouTubeSource extends ContentSource {
     const seenChannels = new Map();
 
     for (const item of items) {
-      const s   = item.snippet;
+      const s = item.snippet;
       const vid = item.id?.videoId;
       if (!vid) continue;
 
       // Video node
       nodes.push({
-        id:             _videoId(vid),
-        label:          s.title?.slice(0, 80) ?? 'Untitled',
-        type:           'video',
-        description:    s.description?.slice(0, 200) ?? '',
-        image:          s.thumbnails?.medium?.url ?? s.thumbnails?.default?.url ?? null,
-        url:            `https://www.youtube.com/watch?v=${vid}`,
-        _source:        'youtube',
-        _sourceIcon:    this.icon,
-        instanceofLabel:'video',
+        id: _videoId(vid),
+        label: s.title?.slice(0, 80) ?? 'Untitled',
+        type: 'video',
+        description: s.description?.slice(0, 200) ?? '',
+        image: s.thumbnails?.medium?.url ?? s.thumbnails?.default?.url ?? null,
+        url: `https://www.youtube.com/watch?v=${vid}`,
+        _source: 'youtube',
+        _sourceIcon: this.icon,
+        instanceofLabel: 'video',
         instanceofQids: [],
         _meta: {
-          channelId:    s.channelId,
+          channelId: s.channelId,
           channelTitle: s.channelTitle,
-          publishedAt:  s.publishedAt,
+          publishedAt: s.publishedAt,
         },
       });
 
@@ -95,15 +95,15 @@ export class YouTubeSource extends ContentSource {
       if (s.channelId && !seenChannels.has(s.channelId)) {
         seenChannels.set(s.channelId, true);
         nodes.push({
-          id:             _channelId(s.channelId),
-          label:          s.channelTitle ?? 'Channel',
-          type:           'channel',
-          description:    `YouTube channel: ${s.channelTitle}`,
-          image:          null,
-          url:            `https://www.youtube.com/channel/${s.channelId}`,
-          _source:        'youtube',
-          _sourceIcon:    this.icon,
-          instanceofLabel:'channel',
+          id: _channelId(s.channelId),
+          label: s.channelTitle ?? 'Channel',
+          type: 'channel',
+          description: `YouTube channel: ${s.channelTitle}`,
+          image: null,
+          url: `https://www.youtube.com/channel/${s.channelId}`,
+          _source: 'youtube',
+          _sourceIcon: this.icon,
+          instanceofLabel: 'channel',
           instanceofQids: [],
         });
       }
@@ -112,8 +112,8 @@ export class YouTubeSource extends ContentSource {
       if (s.channelId) {
         edges.push({
           from: _videoId(vid),
-          to:   _channelId(s.channelId),
-          rel:  'creation',
+          to: _channelId(s.channelId),
+          rel: 'creation',
           label: 'uploaded by',
         });
       }

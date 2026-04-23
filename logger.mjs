@@ -15,9 +15,11 @@
 export const LOG_TYPES = {
   INPUT:        { color: '#00cec9' },  // teal   — user text input
   ENTITY_MATCH: { color: '#fdcb6e' },  // yellow — OpenTapioca NLP
+  NED:          { color: '#81ecec' },  // cyan   — NED++ resolution
   SPARQL:       { color: '#a29bfe' },  // purple — Wikidata SPARQL
   VIEWER:       { color: '#55efc4' },  // green  — 3D scene events
   MQTT:         { color: '#fd79a8' },  // pink   — MQTT messages
+  ENRICHER:     { color: '#e17055' },  // orange — enrichment adapter events
   ERROR:        { color: '#ff7675' },  // red    — failures
   SYSTEM:       { color: '#b2bec3' },  // grey   — lifecycle events
 };

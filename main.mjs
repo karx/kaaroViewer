@@ -28,6 +28,8 @@ import { resolveEntityType }                                    from './ontology
 import { loadLocalDoc, LIBRARY, getDocMeta }                   from './pipeline/local-graph.mjs';
 import { initReport, renderReport, showReport, hideReport, isReportVisible,
          scrollToCluster } from './canvas/report.mjs';
+import { initSlides, renderSlides, showSlides, hideSlides, isSlidesVisible,
+         nextSlide, prevSlide } from './canvas/slides.mjs';
 import { sourceManager }                                       from './pipeline/sources/source-manager.mjs';
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
@@ -37,6 +39,11 @@ import { toggleCausalLayout, isCausalMode }                    from './canvas/ca
 import { initNarrative, toggleNarrative, narrativeNext,
          narrativePrev, stopNarrative, isNarrativeActive,
          loadTour }                                            from './canvas/narrative.mjs';
+import { explore, rethink, registerLLM,
+         registerLLMDisambiguate, validateBrief }             from './pipeline/explore.mjs';
+import { runCompletion }                                       from './pipeline/completion.mjs';
+import { runEnrichment, applyPatches }                        from './pipeline/enrichment-coordinator.mjs';
+import { mountExploreUI }                                     from './canvas/explore-ui.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -52,9 +59,20 @@ requestAnimationFrame(() => {
   initDetail();
   initTooltip();
   initReport();
+  initSlides();
   initNarrative(focusEntity);
   updateFnBar();
   _renderSourceToggles();
+
+  // ── Mount explore UI ──────────────────────────────────────────────────────
+  mountExploreUI({
+    container: 'body',
+    onExpand:  deltas => _runExpand(deltas),
+    onRethink: deltas => _runRethink(deltas),
+  });
+
+  // Register Gemini as default LLM provider if key is set
+  _tryRegisterGemini();
 
   document.getElementById('overlay-sent-btn')?.addEventListener('click', () => _applyOverlay('sentiment'));
   document.getElementById('overlay-tier-btn')?.addEventListener('click', () => _applyOverlay('tier'));
@@ -99,8 +117,7 @@ requestAnimationFrame(() => {
         _lastLoadedDocId = meta.id;
         _currentDocMeta  = meta;
         runForceRelax(160);
-        renderReport(meta);
-        showReport();
+        _showBrief(meta);
         _renderClusterPills(meta);
         _updateStatsStrip(meta);
         updateFnBar();
@@ -238,7 +255,7 @@ const REDDIT_PREFIX_RE = /^r\/\w+\s+.+$/i;
 inputBus.addEventListener('intent', async e => {
   const text = e.detail.text;
 
-  // Check for source prefix commands
+  // 1. Source prefix commands — deterministic, no fallback needed
   const srcMatch = text.match(SOURCE_PREFIX_RE);
   if (srcMatch) {
     const prefix = srcMatch[1].toLowerCase();
@@ -250,17 +267,22 @@ inputBus.addEventListener('intent', async e => {
       return;
     }
   }
-
-  // Reddit prefix: r/subreddit query
   if (REDDIT_PREFIX_RE.test(text)) {
     const result = await sourceManager.searchSource('reddit', text);
     loadSourceResults(result);
     return;
   }
 
-  // Default: Wikidata entity resolution
+  // 2. Deterministic: Wikidata entity resolution (QID, wd:QID, or label match)
   const qids = await resolve(text);
-  for (const qid of qids) await loadEntity(qid);
+  if (qids.length > 0) {
+    for (const qid of qids) await loadEntity(qid);
+    return;
+  }
+
+  // 3. Fallback: no deterministic match — hand off to LLM exploration pipeline
+  log('SYSTEM', `no wikidata match for "${text}" — launching exploration`);
+  _runExploration(text);
 });
 
 // ── Load source results into graph ────────────────────────────────────────────
@@ -304,8 +326,9 @@ function loadSourceResults({ nodes = [], edges = [] }) {
   }
 }
 
-const textInput = document.getElementById('main-input');
-if (textInput) inputBus.bindTextInput(textInput);
+// Text input surface lives in the hovering Explore UI (canvas/explore-ui.mjs),
+// which pushes into inputBus directly. The legacy bottom-bar #main-input has
+// been removed — the action bar now holds only chrome (source toggles, F-keys).
 
 const voiceBtn = document.getElementById('voice-btn');
 if (voiceBtn) {
@@ -567,8 +590,7 @@ function _renderLibrary(tagFilter = null) {
             _currentDocMeta  = meta;
             runForceRelax(160);
             toggleLibrary(false);
-            renderReport(meta);
-            showReport();
+            _showBrief(meta);
             _renderClusterPills(meta);
             _updateStatsStrip(meta);
             updateFnBar();
@@ -744,7 +766,7 @@ function _renderSourceToggles() {
   });
 }
 
-window.kaaro = { load: loadEntity, focus: focusEntity, expand: expandEntity, loadDoc: loadLocalDoc, graph, inputBus, sourceManager, loadSourceResults };
+window.kaaro = { load: loadEntity, focus: focusEntity, expand: expandEntity, loadDoc: loadLocalDoc, graph, inputBus, sourceManager, loadSourceResults, explore: _runExploration, rethink: _runRethink };
 
 // ── Keyboard navigation (active when entity is focused) ───────────────────────
 
@@ -806,7 +828,7 @@ export function updateFnBar() {
       <span class="fnk"><em>F5</em> Library</span>
       <span class="fnk"><em>F6</em> Tour</span>
       <span class="fnk"><em>F7</em> Causal</span>
-      <span class="fnk"><em>F9</em> Report</span>
+      <span class="fnk"><em>F9</em> Brief</span>
       <span class="fnk"><em>F10</em> 📷</span>
       <span class="fnk fnk-right"><em>◎</em> Log</span>`;
   } else {
@@ -818,7 +840,7 @@ export function updateFnBar() {
       <span class="fnk fnk-ctx"><em>F</em> Ego-graph</span>
       <span class="fnk fnk-ctx"><em>R</em> Refetch</span>
       <span class="fnk fnk-ctx"><em>F7</em> ${isCausalMode() ? 'Force' : 'Causal'}</span>
-      <span class="fnk fnk-ctx"><em>F9</em> Report</span>
+      <span class="fnk fnk-ctx"><em>F9</em> Brief</span>
       <span class="fnk fnk-ctx"><em>Esc</em> Deselect</span>
       <span class="fnk fnk-right fnk-selected">◉ ${_esc(label.toUpperCase())}</span>`;
   }
@@ -857,6 +879,18 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft')  { e.preventDefault(); narrativePrev(); return; }
     if (e.key === 'Escape')     { e.preventDefault(); stopNarrative(); updateFnBar(); return; }
     if (e.key === ' ')          { e.preventDefault(); toggleNarrative(); return; }
+  }
+
+  // Slides arrow keys — consume left/right when slides panel is open
+  if (isSlidesVisible()) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); return; }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); prevSlide(); return; }
+    if (e.key === 'Escape')     {
+      e.preventDefault();
+      hideSlides();
+      document.dispatchEvent(new CustomEvent('slides:closed'));
+      return;
+    }
   }
 
   // Tab always cycles nodes
@@ -902,32 +936,113 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ── Report mode ───────────────────────────────────────────────────────────────
+// ── Brief mode — slides (default) or reader ──────────────────────────────────
 
 // Track the last loaded doc so F9 can render it
 let _lastLoadedDocId = null;
 
+// Persisted UI preference: 'slides' | 'reader' — slides is the default format.
+let _briefMode = (sessionStorage.getItem('kv.briefMode') === 'reader') ? 'reader' : 'slides';
+
+function _setBriefMode(mode) {
+  _briefMode = (mode === 'reader') ? 'reader' : 'slides';
+  try { sessionStorage.setItem('kv.briefMode', _briefMode); } catch {}
+}
+
+function _isBriefVisible() {
+  return isSlidesVisible() || isReportVisible();
+}
+
+function _hideBrief() {
+  hideSlides();
+  hideReport();
+}
+
+function _showBrief(meta) {
+  if (_briefMode === 'reader') {
+    hideSlides();
+    renderReport(meta);
+    showReport();
+  } else {
+    hideReport();
+    renderSlides(meta);
+    showSlides();
+  }
+}
+
 function toggleReportMode() {
   const reportBtn = document.getElementById('report-btn');
-  if (isReportVisible()) {
-    hideReport();
+  if (_isBriefVisible()) {
+    _hideBrief();
     reportBtn?.setAttribute('aria-expanded', 'false');
-    log('SYSTEM', 'report mode OFF');
+    log('SYSTEM', 'brief OFF');
   } else {
-    // Render the last loaded doc, or the first available doc
     const docId = _lastLoadedDocId;
     const meta  = docId ? getDocMeta(docId) : null;
     if (!meta) {
       log('SYSTEM', 'no doc loaded — use F5 LIB to load a document first');
       return;
     }
-    renderReport(meta);
-    showReport();
+    _showBrief(meta);
     reportBtn?.setAttribute('aria-expanded', 'true');
-    log('SYSTEM', `report: ${meta.title}`);
+    log('SYSTEM', `${_briefMode}: ${meta.title}`);
   }
   updateFnBar();
 }
+
+// Switch between slides ↔ reader without closing the brief
+document.addEventListener('slides:mode', e => {
+  const requested = e.detail?.mode === 'reader' ? 'reader' : 'slides';
+  const docId = _lastLoadedDocId;
+  const meta  = docId ? getDocMeta(docId) : null;
+  if (!meta) return;
+  _setBriefMode(requested);
+  _showBrief(meta);
+  log('SYSTEM', `brief mode → ${requested}`);
+});
+
+// Reader → slides (or close) via the reader's sticky toggle bar
+document.addEventListener('report:mode', e => {
+  const mode = e.detail?.mode;
+  if (mode === 'close') {
+    _hideBrief();
+    updateFnBar();
+    log('SYSTEM', 'brief OFF');
+    return;
+  }
+  const docId = _lastLoadedDocId;
+  const meta  = docId ? getDocMeta(docId) : null;
+  if (!meta) return;
+  _setBriefMode('slides');
+  _showBrief(meta);
+  log('SYSTEM', 'brief mode → slides');
+});
+
+// Slides closed via the ✕ button → refresh fn-bar + log a hint so the user
+// knows how to reopen
+document.addEventListener('slides:closed', () => {
+  clearDim();
+  updateFnBar();
+  log('SYSTEM', 'brief closed — F9 to reopen');
+});
+
+// Slides active-slide changed → frame the slide's node set (without closing slides)
+document.addEventListener('slides:frame', e => {
+  const { nodeIds } = e.detail ?? {};
+  clearDim();
+  if (!nodeIds?.length) return;
+  dimAllExcept(nodeIds);
+  const meshes = nodeIds.map(q => getNodeMesh(q)).filter(Boolean);
+  if (meshes.length) frameNodes(meshes);
+});
+
+// Entity pill clicked inside a slide → focus the entity in canvas but keep
+// slides open so narrative context stays on screen.
+document.addEventListener('slides:navigate', e => {
+  const { qid } = e.detail ?? {};
+  if (!qid) return;
+  focusEntity(qid);
+});
 
 // Cross-document navigation from detail panel (IA-01)
 document.addEventListener('detail:navigate-doc', e => {
@@ -936,8 +1051,7 @@ document.addEventListener('detail:navigate-doc', e => {
   const meta = getDocMeta(docId);
   if (!meta) { log('SYSTEM', `doc ${docId} not yet loaded`); return; }
   _lastLoadedDocId = docId;
-  renderReport(meta);
-  showReport();
+  _showBrief(meta);
   updateFnBar();
   log('SYSTEM', `cross-doc: switched to ${meta.title}`);
 });
@@ -1058,3 +1172,176 @@ function exportCanvasPNG() {
 function _esc(s) {
   return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+
+// ── Exploration pipeline ──────────────────────────────────────────────────────
+
+let _activeBrief       = null; // current working brief
+let _activePatches     = null; // current enrichment patches
+
+/**
+ * Register Gemini as the LLM provider if gemini_api_key is in localStorage.
+ * Users can also call window.kaaro.registerLLM(fn) to inject a custom provider.
+ */
+function _tryRegisterGemini() {
+  const key = localStorage.getItem('gemini_api_key');
+  if (key) {
+    // explore.mjs's built-in fallback covers this — just log confirmation
+    log('SYSTEM', '[explore] Gemini API key found in localStorage — LLM ready');
+  } else {
+    log('SYSTEM', '[explore] No gemini_api_key in localStorage. Set it to enable AI exploration. window.kaaro.registerLLM(fn) for custom provider.');
+  }
+}
+
+/**
+ * Load a completed working brief into the canvas + report panel.
+ */
+async function _loadBriefIntoCanvas(brief) {
+  // Clear existing graph
+  clearAllNodes();
+  clearAllEdges();
+  graph.clear();
+  clearCrumbs();
+  clearLayout();
+  clearNodeColorOverrides();
+  _overlayMode = null;
+
+  // Place and add all nodes
+  const spine = new Set(brief.report_card?.spine ?? []);
+  for (const node of (brief.nodes ?? [])) {
+    const pos = placeNode(node.id, null);
+    graph.addNode(node.id, {
+      qid:             node.id,
+      label:           node.label,
+      type:            node.type ?? 'concept',
+      description:     node.description ?? '',
+      image:           node.image ?? null,
+      instanceofLabel: node.type ?? '',
+      instanceofQids:  [],
+      tier:            node.tier ?? 'primary',
+      sentiment:       node.sentiment ?? 'neutral',
+      metrics:         node.metrics ?? {},
+      wikidata:        node.wikidata ?? null,
+      _links:          node._links ?? [],
+      _source:         'explore',
+      _state:          spine.has(node.id) ? 'focused' : 'unvisited',
+      confidence:      node.confidence ?? 0.5,
+    });
+    setPosition(node.id, pos);
+  }
+
+  // Add edges
+  for (const edge of (brief.edges ?? [])) {
+    if (!graph.hasNode(edge.from) || !graph.hasNode(edge.to)) continue;
+    graph.addEdge(edge.from, edge.to, edge.rel ?? 'association', edge.label ?? edge.rel ?? '');
+  }
+
+  runForceRelax(180);
+
+  // Focus first spine node
+  const firstSpine = (brief.report_card?.spine ?? [])[0]
+    ?? brief.nodes?.[0]?.id;
+  if (firstSpine && graph.hasNode(firstSpine)) {
+    focusEntity(firstSpine);
+  }
+
+  log('SYSTEM', `[explore] canvas loaded: ${brief.nodes?.length ?? 0} nodes, ${brief.edges?.length ?? 0} edges`);
+}
+
+/**
+ * Full exploration pipeline: Stage 1 → Stage 3 → Stage 4 → canvas.
+ */
+async function _runExploration(seed) {
+  log('SYSTEM', `[explore] starting full pipeline for: "${seed}"`);
+
+  try {
+    // Stage 1: LLM brief generation
+    const brief = await explore(seed);
+    _activeBrief = brief;
+
+    // Stage 3: Enrichment coordinator
+    const enrichReport = await runEnrichment(brief, {
+      concurrency:   3,
+      stream:        true,
+      priorityFilter: null,
+    });
+    _activePatches = enrichReport.patches;
+
+    // Stage 4: Completion pass
+    await runCompletion(brief, enrichReport.patches);
+
+    // Load into canvas
+    await _loadBriefIntoCanvas(brief);
+
+    // Render report
+    _lastLoadedDocId = brief.meta.id;
+    _currentDocMeta  = brief;
+    renderReport(brief);
+    showReport();
+    _renderClusterPills(brief);
+    _updateStatsStrip(brief);
+    updateFnBar();
+
+    log('SYSTEM', `[explore] pipeline complete — ${brief.nodes?.length} nodes`);
+
+  } catch (err) {
+    log('ERROR', `[explore] pipeline failed: ${err.message}`, { message: err.message });
+  }
+}
+
+/**
+ * EXPAND: run another enrichment pass, adding enrichment-discovered nodes.
+ */
+async function _runExpand(deltas) {
+  if (!_activeBrief) { log('SYSTEM', '[explore] no active brief for EXPAND'); return; }
+  log('SYSTEM', '[explore] EXPAND triggered', { deltas: deltas?.length ?? 0 });
+
+  const enrichReport = await runEnrichment(_activeBrief, { concurrency: 3, stream: true });
+  _activePatches = enrichReport.patches;
+  await runCompletion(_activeBrief, enrichReport.patches);
+  await _loadBriefIntoCanvas(_activeBrief);
+
+  renderReport(_activeBrief);
+  showReport();
+  _renderClusterPills(_activeBrief);
+  _updateStatsStrip(_activeBrief);
+}
+
+/**
+ * RETHINK: re-generate brief with enrichment context, then re-run pipeline.
+ */
+async function _runRethink(deltas) {
+  if (!_activeBrief) { log('SYSTEM', '[explore] no active brief for RETHINK'); return; }
+  log('SYSTEM', '[explore] RETHINK triggered');
+
+  try {
+    const revised = await rethink(_activeBrief, _activePatches ?? {});
+    _activeBrief = revised;
+
+    const enrichReport = await runEnrichment(revised, { concurrency: 3, stream: true });
+    _activePatches = enrichReport.patches;
+    await runCompletion(revised, enrichReport.patches);
+    await _loadBriefIntoCanvas(revised);
+
+    _lastLoadedDocId = revised.meta.id;
+    _currentDocMeta  = revised;
+    renderReport(revised);
+    showReport();
+    _renderClusterPills(revised);
+    _updateStatsStrip(revised);
+    updateFnBar();
+  } catch (err) {
+    log('ERROR', `[explore] RETHINK failed: ${err.message}`);
+  }
+}
+
+// Expose on window.kaaro for console access
+Object.assign(window.kaaro, {
+  explore:         _runExploration,
+  rethink:         _runRethink,
+  expand:          _runExpand,
+  registerLLM,
+  registerLLMDisambiguate,
+  validateBrief,
+  getActiveBrief:  () => _activeBrief,
+  getPatches:      () => _activePatches,
+});
