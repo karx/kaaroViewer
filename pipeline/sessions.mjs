@@ -8,16 +8,17 @@
  *   - pinned nodes
  */
 
-const DB_NAME    = 'kaaroViewer';
-const DB_VERSION = 1;
-const STORE      = 'explorations';
+const DB_NAME = 'kaaroViewer';
+const STORE   = 'explorations';
 
 let _db = null;
 
 async function _open() {
   if (_db) return _db;
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    // Open without a version so we always accept whatever version is stored.
+    // onupgradeneeded only fires for truly new databases.
+    const req = indexedDB.open(DB_NAME);
     req.onupgradeneeded = e => {
       const db = e.target.result;
       if (!db.objectStoreNames.contains(STORE)) {
