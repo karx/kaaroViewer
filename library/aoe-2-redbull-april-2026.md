@@ -1,3 +1,13 @@
+---
+published: false
+title: "Red Bull Wololo: Londinium — AoE2/AoE4 Tournament April 2026"
+tags: [esports, age-of-empires, tournament, competitive-gaming, rts]
+description: "Comprehensive analysis of Red Bull Wololo: Londinium (April 1–6, 2026) — the $250K S-Tier Age of Empires II/IV event at the Royal Albert Hall, with metagame shifts from new DLC, visa crises, and unprecedented venue escalation."
+date: 2026-04-06
+layer: L1-Instance
+maturity: EVERGREEN
+para: SkillSurface
+---
 
 ## Executive Summary
 

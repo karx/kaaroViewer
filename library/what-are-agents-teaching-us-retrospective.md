@@ -1,3 +1,14 @@
+---
+published: false
+title: "Encoding Retrospective: What Are Agents Teaching Us?"
+tags: [visualize-skill, encoding-retrospective, ai-agents, reflective-essay]
+description: "Post-encoding analysis of the agents-teaching-us brief: strong framework spine, clean Langton's Ant climax, exact 2.0 edge density. Key SOP gaps: no Reflective/Essay domain profile, rel enum mismatch (creates vs creation), sparse key_stats guidance for opinion pieces."
+date: 2026-04-22
+layer: L1-Instance
+maturity: BUDDING
+para: Crystallized
+---
+
 # Encoding Retrospective: What Are Agents Teaching Us?
 
 **Source**: `D:/src/karx.github.io/what-agents-are-teaching-us.md` (LinkedIn post draft)
