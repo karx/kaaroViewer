@@ -340,22 +340,28 @@ html, body {
   scrollbar-width: thin; scrollbar-color: #1e1e00 transparent;
 }
 
-.sd-empty { font-size: 10px; color: #2a2a10; padding: 10px; letter-spacing: 0.06em; }
+.sd-empty { font-size: 10px; color: #667755; padding: 10px; letter-spacing: 0.06em; }
 
 .sd-item {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 8px; border: 1px solid #1a1a00;
   background: #0a0a00; margin-bottom: 4px;
+  cursor: default;
 }
+.sd-item:hover { background: #0e0e00; border-color: #2a2a00; }
 .sd-name  { flex: 1; font-size: 10px; color: #ccccaa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.sd-date  { font-size: 9px; color: #2a2a10; flex-shrink: 0; }
-.sd-count { font-size: 9px; color: #445544; flex-shrink: 0; }
+.sd-meta  { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; flex-shrink: 0; }
+.sd-date  { font-size: 9px; color: #667755; }
+.sd-count { font-size: 9px; color: #667755; }
+.sd-has-brief { font-size: 8px; color: #44aa66; letter-spacing: 0.04em; }
 .sd-load  {
-  font-family: inherit; font-size: 8px; font-weight: 700;
+  font-family: inherit; font-size: 9px; font-weight: 700;
   background: #0d0d00; border: 1px solid #2a2a00; color: #ff6600;
-  padding: 2px 6px; cursor: pointer; letter-spacing: 0.04em; flex-shrink: 0;
+  padding: 3px 8px; cursor: pointer; letter-spacing: 0.04em; flex-shrink: 0;
+  transition: background 0.1s, color 0.1s;
 }
-.sd-del   { background: none; border: none; color: #2a2a10; cursor: pointer; font-size: 10px; flex-shrink: 0; }
+.sd-load:hover { background: #ff6600; color: #000; }
+.sd-del   { background: none; border: none; color: #445544; cursor: pointer; font-size: 11px; flex-shrink: 0; padding: 2px 4px; }
 .sd-del:hover { color: #ff4444; }
 
 /* ── Debug log ───────────────────────────────────────────────────────────── */

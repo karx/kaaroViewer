@@ -358,18 +358,33 @@ if (voiceBtn) {
 // ── Sessions ──────────────────────────────────────────────────────────────────
 
 async function _snapshotSession(name) {
-  const cam     = getCamera();
-  const ctrl    = getControls();
-  const nodes   = [...graph.nodes.values()].map(n => ({
-    qid: n.qid, label: n.label, type: n.type,
-    image: n.image, position: getPosition(n.qid) ?? [0,0,0],
+  const cam   = getCamera();
+  const ctrl  = getControls();
+  const nodes = [...graph.nodes.values()].map(n => ({
+    qid:         n.qid,
+    label:       n.label,
+    type:        n.type,
+    tier:        n.tier,
+    sentiment:   n.sentiment,
+    description: n.description,
+    image:       n.image,
+    metrics:     n.metrics,
+    confidence:  n.confidence,
+    wikidata:    n.wikidata,
+    _links:      n._links,
+    _enriched:   n._enriched,
+    _source:     n._source,
+    position:    getPosition(n.qid) ?? [0, 0, 0],
   }));
-  const edges   = [...graph.edges.values()];
-  const camera  = {
-    position: cam.position.toArray(),
-    target:   ctrl.target.toArray(),
-  };
-  return saveSession({ name, nodes, edges, camera, breadcrumb: getCrumbs().map(c => c.qid) });
+  const edges  = [...graph.edges.values()];
+  const camera = { position: cam.position.toArray(), target: ctrl.target.toArray() };
+  return saveSession({
+    name,
+    nodes, edges, camera,
+    breadcrumb: getCrumbs().map(c => c.qid),
+    brief:      _activeBrief   ?? null,
+    patches:    _activePatches ?? null,
+  });
 }
 
 document.getElementById('save-btn')?.addEventListener('click', async () => {
@@ -389,11 +404,14 @@ async function _renderSessionsDrawer() {
   }
   drawer.innerHTML = list.map(s => `
     <div class="sd-item" data-id="${s.id}">
-      <span class="sd-name">${_esc(s.name)}</span>
-      <span class="sd-date">${new Date(s.savedAt).toLocaleDateString()}</span>
-      <span class="sd-count">${s.nodes?.length ?? 0} nodes</span>
-      <button class="sd-load" data-action="load" data-id="${s.id}">Load</button>
-      <button class="sd-del"  data-action="delete" data-id="${s.id}">✕</button>
+      <span class="sd-name" title="${_esc(s.name)}">${_esc(s.name)}</span>
+      <span class="sd-meta">
+        <span class="sd-date">${new Date(s.savedAt).toLocaleDateString()}</span>
+        <span class="sd-count">${s.nodes?.length ?? 0} nodes</span>
+        ${s.brief ? '<span class="sd-has-brief">◆ brief</span>' : ''}
+      </span>
+      <button class="sd-load" data-action="load"   data-id="${_esc(s.id)}">LOAD</button>
+      <button class="sd-del"  data-action="delete" data-id="${_esc(s.id)}" title="Delete">✕</button>
     </div>
   `).join('');
 
@@ -441,7 +459,33 @@ async function _restoreSession(id) {
     ctrl.update();
   }
 
-  log('SYSTEM', `session restored: ${session.name}`);
+  // Restore breadcrumbs
+  for (const qid of (session.breadcrumb ?? [])) {
+    const node = graph.getNode(qid);
+    if (node) pushCrumb(qid, node.label ?? qid);
+  }
+
+  // Restore brief + report if the session has one
+  if (session.brief) {
+    _activeBrief      = session.brief;
+    _activePatches    = session.patches ?? null;
+    _lastLoadedDocId  = session.brief.meta?.id ?? null;
+    _currentDocMeta   = session.brief;
+
+    // Rebuild nodeLookup in case it wasn't persisted
+    if (!_activeBrief.nodeLookup) {
+      _activeBrief.nodeLookup = Object.fromEntries(
+        (_activeBrief.nodes ?? []).map(n => [n.id, n])
+      );
+    }
+
+    _showBrief(_activeBrief);
+    _renderClusterPills(_activeBrief);
+    _updateStatsStrip(_activeBrief);
+  }
+
+  updateFnBar();
+  log('SYSTEM', `session restored: ${session.name} (${session.nodes?.length ?? 0} nodes${session.brief ? ', brief included' : ''})`);
 }
 
 let _drawerOpen = false;
