@@ -74,6 +74,21 @@ export function initScene(container) {
   // Cancel programmatic animation if user grabs the camera
   _renderer.domElement.addEventListener('pointerdown', () => { _camAnim = null; });
 
+  // Double-tap → expand node (iOS/Android don't fire dblclick reliably)
+  let _lastTapAt = 0;
+  _renderer.domElement.addEventListener('touchend', e => {
+    const now = Date.now();
+    const touch = e.changedTouches[0];
+    const rect = _renderer.domElement.getBoundingClientRect();
+    _pointer.x =  ((touch.clientX - rect.left) / rect.width)  * 2 - 1;
+    _pointer.y = -((touch.clientY - rect.top)  / rect.height) * 2 + 1;
+    if (now - _lastTapAt < 300) {
+      const qid = _hitQid();
+      if (qid) { _dblClickHandlers.forEach(fn => fn(qid)); e.preventDefault(); }
+    }
+    _lastTapAt = now;
+  }, { passive: false });
+
   // Responsive resize
   new ResizeObserver(() => {
     const W = container.clientWidth, H = container.clientHeight;

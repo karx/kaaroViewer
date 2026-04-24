@@ -1972,18 +1972,21 @@ html, body {
   .shell { grid-template-rows: 34px 1fr auto 22px; }
   .top-bar { height: 34px; padding: 0 12px; }
 
-  /* Input bar wraps on mobile */
-  .input-bar { flex-wrap: wrap; gap: 4px; padding: 6px 10px; height: auto; }
-  .input-bar input {
-    min-width: 0; width: 100%; order: 1;
-    font-size: 14px; padding: 8px 10px;
+  /* Input bar — single scrollable row on mobile (no wrap) */
+  .input-bar {
+    flex-wrap: nowrap; gap: 4px; padding: 4px 8px;
+    min-height: 48px; overflow-x: auto; scrollbar-width: none;
   }
-  #source-toggles { order: 2; width: 100%; }
+  .input-bar::-webkit-scrollbar { display: none; }
+  /* Source toggles are not touch-friendly; hide them at this breakpoint */
+  #source-toggles { display: none; }
   #voice-btn, #save-btn, #sessions-btn,
-  #library-btn, #report-btn {
-    order: 3; min-height: 40px;
-    font-size: 11px; padding: 0 10px; flex-shrink: 0;
+  #library-btn, #report-btn, #settings-btn {
+    min-height: 44px; flex-shrink: 0;
+    font-size: 10px; padding: 0 10px;
   }
+  /* Explore bar sits above action bar (48px) + fnkey bar (22px) */
+  #explore-ui { bottom: 74px; }
 
   .fnkey-bar {
     font-size: 11px; height: 22px;
@@ -2062,11 +2065,28 @@ html, body {
   .fnkey-bar { display: none; }
 
   /* Icon-only toolbar buttons */
-  #voice-btn  { font-size: 0; width: 40px; min-height: 40px; }
+  #voice-btn  { font-size: 0; width: 44px; min-height: 44px; }
   #voice-btn::after  { content: '🎤'; font-size: 16px; }
-  #save-btn   { font-size: 0; width: 40px; }
+  #save-btn   { font-size: 0; width: 44px; min-height: 44px; }
   #save-btn::after   { content: '💾'; font-size: 16px; }
-  #sessions-btn, #library-btn, #report-btn { font-size: 10px; padding: 0 8px; }
+  #sessions-btn, #library-btn, #report-btn, #settings-btn {
+    font-size: 10px; padding: 0 8px; min-height: 44px;
+  }
+
+  /* Explore bar — no fnkey bar, so bottom = action bar height only */
+  #explore-ui { bottom: 56px; width: calc(100vw - 16px); }
+  /* 16px font prevents iOS auto-zoom on focus */
+  .explore-input { font-size: 16px; }
+  .explore-bar   { min-height: 48px; }
+
+  /* Zero state — phone-friendly sizes */
+  .zs-body       { gap: 16px; padding: 0 16px; }
+  .zs-brand      { gap: 10px; }
+  .zs-mark       { font-size: 26px; }
+  .zs-wordmark   { font-size: 22px; }
+  .zs-input      { font-size: 16px; padding: 14px 12px; }
+  /* Seeds need 44px tap target */
+  .zs-seed       { min-height: 44px; display: flex; align-items: center; padding: 0 16px; }
 
   .report-inner { padding: 12px 10px; }
   .rp-kpi-strip { grid-template-columns: repeat(2, 1fr); }
@@ -2081,7 +2101,7 @@ html, body {
   .sl-analytics-grid { grid-template-columns: 1fr; }
   .sl-topbar       { padding: 6px 10px 8px; }
   .sl-topbar-title { display: none; }
-  .sl-nav-btn, .sl-mode-btn, .sl-close { padding: 7px 10px; min-height: 34px; }
+  .sl-nav-btn, .sl-mode-btn, .sl-close { padding: 7px 10px; min-height: 44px; }
   .sl-track        { padding: 0 12px 10px; gap: 12px; }
 }
 
@@ -2390,4 +2410,168 @@ html, body {
 .set-status-warn { color: #ffaa33; }
 .set-status-error{ color: #ff4444; }
 .set-status-info { color: #aabb88; }
+
+/* ── Zero state ───────────────────────────────────────────────────────────── */
+.zero-state {
+  position: absolute; inset: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  background: #000000;
+  transition: opacity 0.45s ease;
+}
+.zero-state.zs-out {
+  opacity: 0; pointer-events: none;
+}
+
+/* Subtle warm-grid background */
+.zs-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(30,30,0,0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,30,0,0.2) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse 72% 64% at 50% 50%, black 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 72% 64% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* Scanline veil */
+.zero-state::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,0.05) 3px,
+    rgba(0,0,0,0.05) 4px
+  );
+  pointer-events: none;
+}
+
+.zs-body {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 22px; max-width: 540px; width: 100%; padding: 0 28px;
+}
+
+.zs-brand {
+  display: flex; align-items: center; gap: 16px;
+}
+.zs-mark {
+  font-size: 34px; color: #ff6600;
+  animation: zs-pulse 2.6s ease-in-out infinite;
+}
+@keyframes zs-pulse {
+  0%, 100% { opacity: 1; text-shadow: 0 0 0 rgba(255,102,0,0); }
+  50%       { opacity: 0.65; text-shadow: 0 0 22px rgba(255,102,0,0.45); }
+}
+.zs-wordmark {
+  font-size: 30px; font-weight: 700; color: #e8e0c8;
+  letter-spacing: 0.05em;
+}
+
+.zs-tagline {
+  font-size: 10px; color: #334433; letter-spacing: 0.22em;
+  text-transform: uppercase; margin-top: -14px;
+}
+
+.zs-input-wrap {
+  display: flex; align-items: stretch; width: 100%;
+  border: 1px solid #ff6600;
+  box-shadow: 0 0 28px rgba(255,102,0,0.1);
+}
+.zs-prompt {
+  font-size: 11px; font-weight: 700; color: #ff6600;
+  padding: 0 14px; letter-spacing: 0.1em; flex-shrink: 0;
+  border-right: 1px solid #331100;
+  display: flex; align-items: center;
+}
+.zs-input {
+  flex: 1; min-width: 0;
+  background: #000; border: none; outline: none;
+  color: #e8e0c8;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 14px; font-weight: 500;
+  padding: 13px 14px;
+  letter-spacing: 0.02em;
+}
+.zs-input::placeholder { color: #1e1e00; }
+.zs-submit {
+  background: #ff6600; border: none; color: #000;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px; font-weight: 700;
+  padding: 0 20px; cursor: pointer; flex-shrink: 0;
+  letter-spacing: 0.06em;
+  transition: background 0.12s;
+}
+.zs-submit:hover { background: #ff8833; }
+
+.zs-seeds {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+}
+.zs-seed {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  background: #080800; border: 1px solid #2a2a10; color: #556655;
+  padding: 6px 16px; cursor: pointer; letter-spacing: 0.06em;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.zs-seed:hover { color: #ff6600; border-color: #ff6600; background: #100800; }
+
+.zs-hint {
+  font-size: 9px; color: #1a1a00; letter-spacing: 0.12em;
+}
+.zs-hint em { font-style: normal; color: #445533; }
+
+/* ── Canvas loader ────────────────────────────────────────────────────────── */
+.canvas-loader {
+  position: absolute; inset: 0; z-index: 9;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.82);
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.canvas-loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.cl-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+
+.cl-dots {
+  display: flex; gap: 10px;
+}
+.cl-dots span {
+  width: 7px; height: 7px; border-radius: 50%; background: #ff6600;
+  animation: cl-bounce 1.2s ease-in-out infinite;
+}
+.cl-dots span:nth-child(2) { animation-delay: 0.2s; }
+.cl-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes cl-bounce {
+  0%, 60%, 100% { transform: scale(0.85); opacity: 0.3; }
+  30%           { transform: scale(1.4);  opacity: 1; }
+}
+
+.cl-label {
+  font-size: 11px; color: #667755; letter-spacing: 0.18em; text-transform: uppercase;
+  min-height: 16px;
+}
+
+.cl-progress-track {
+  width: 220px; height: 1px; background: #1e1e00;
+}
+.cl-progress-fill {
+  height: 100%; background: linear-gradient(to right, #ff6600, #ffaa00);
+  width: 0%;
+  transition: width 0.6s ease;
+}
+
+.cl-seed-echo {
+  font-size: 10px; color: #2a2a10; letter-spacing: 0.06em;
+  max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  text-align: center;
+}
 

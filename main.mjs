@@ -77,6 +77,38 @@ requestAnimationFrame(() => {
   document.getElementById('settings-btn')
     ?.addEventListener('click', () => toggleSettings());
 
+  // ── Zero state ───────────────────────────────────────────────────────────
+  const _zsEl = document.getElementById('zero-state');
+  let   _zsDismissed = false;
+  function _dismissZeroState() {
+    if (_zsDismissed || !_zsEl) return;
+    _zsDismissed = true;
+    _zsEl.classList.add('zs-out');
+    setTimeout(() => _zsEl.remove(), 500);
+  }
+
+  function _zsSubmit() {
+    const inp = document.getElementById('zs-input');
+    const val = inp?.value.trim();
+    if (!val) return;
+    _dismissZeroState();
+    inputBus.push(val, 'zero-state');
+  }
+  document.getElementById('zs-submit')?.addEventListener('click', _zsSubmit);
+  document.getElementById('zs-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') _zsSubmit();
+  });
+  document.querySelectorAll('.zs-seed').forEach(btn => {
+    btn.addEventListener('click', () => {
+      _dismissZeroState();
+      inputBus.push(btn.dataset.seed, 'zero-state-seed');
+    });
+  });
+  // Dismiss on any node load (library path, Wikidata path, LLM path)
+  graph.on('node:added', _dismissZeroState);
+  // Auto-focus the zero-state input
+  requestAnimationFrame(() => document.getElementById('zs-input')?.focus());
+
   // Register Gemini as default LLM provider if key is set
   _tryRegisterGemini();
 
@@ -877,8 +909,9 @@ export function updateFnBar() {
       <span class="fnk"><em>Click</em> Detail</span>
       <span class="fnk"><em>Dbl-click</em> Expand</span>
       <span class="fnk"><em>Tab</em> Cycle nodes</span>
+      <span class="fnk"><em>F1</em> Voice</span>
       <span class="fnk"><em>F2</em> Save</span>
-      <span class="fnk"><em>F5</em> Library</span>
+      <span class="fnk"><em>L</em> Library</span>
       <span class="fnk"><em>F6</em> Tour</span>
       <span class="fnk"><em>F7</em> Causal</span>
       <span class="fnk"><em>F9</em> Brief</span>
@@ -904,10 +937,14 @@ document.addEventListener('keydown', e => {
 
   // Global keybindings (always active)
   switch (e.key) {
-    case 'F6':  e.preventDefault(); toggleNarrative();      updateFnBar(); return;
-    case 'F7':  e.preventDefault(); toggleCausalLayout();   updateFnBar(); return;
-    case 'F9':  e.preventDefault(); toggleReportMode();     return;
-    case 'F10': e.preventDefault(); exportCanvasPNG();      return;
+    case 'F1':  e.preventDefault(); voiceBtn?.click();          return;
+    case 'F2':  e.preventDefault(); document.getElementById('save-btn')?.click(); return;
+    case 'F6':  e.preventDefault(); toggleNarrative();          updateFnBar(); return;
+    case 'F7':  e.preventDefault(); toggleCausalLayout();       updateFnBar(); return;
+    case 'F8':  e.preventDefault(); toggleSessionsDrawer();     return;
+    case 'F9':  e.preventDefault(); toggleReportMode();         return;
+    case 'F10': e.preventDefault(); exportCanvasPNG();          return;
+    case 'l': case 'L': e.preventDefault(); toggleLibrary();    return;
   }
 
   // Cluster shortcuts: digits 1–6
@@ -1033,7 +1070,7 @@ function toggleReportMode() {
     const docId = _lastLoadedDocId;
     const meta  = docId ? getDocMeta(docId) : null;
     if (!meta) {
-      log('SYSTEM', 'no doc loaded — use F5 LIB to load a document first');
+      log('SYSTEM', 'no doc loaded — press L to open the library');
       return;
     }
     _showBrief(meta);
@@ -1245,7 +1282,7 @@ function exportCanvasPNG() {
 }
 
 // ── Seed ──────────────────────────────────────────────────────────────────────
-// Auto-seed disabled — canvas starts empty. Use input bar or F5 LIB to load.
+// Auto-seed disabled — canvas starts empty. Use the explore input or press L to load from library.
 // requestAnimationFrame(() => setTimeout(() => loadEntity('Q668'), 300));
 
 function _esc(s) {
@@ -1326,6 +1363,35 @@ async function _loadBriefIntoCanvas(brief) {
   log('SYSTEM', `[explore] canvas loaded: ${brief.nodes?.length ?? 0} nodes, ${brief.edges?.length ?? 0} edges`);
 }
 
+// ── Canvas loader helpers ─────────────────────────────────────────────────────
+
+const _clEl       = () => document.getElementById('canvas-loader');
+const _clLabelEl  = () => document.getElementById('cl-label');
+const _clProgEl   = () => document.getElementById('cl-progress');
+const _clSeedEl   = () => document.getElementById('cl-seed-echo');
+
+function _showLoader(seed, label = 'exploring…', pct = 5) {
+  const el = _clEl(); if (!el) return;
+  el.classList.remove('hidden');
+  const lbl = _clLabelEl(); if (lbl) lbl.textContent = label;
+  const prg = _clProgEl();  if (prg) prg.style.width = `${pct}%`;
+  const ech = _clSeedEl();  if (ech) ech.textContent = seed ?? '';
+}
+
+function _updateLoader(label, pct) {
+  const lbl = _clLabelEl(); if (lbl) lbl.textContent = label;
+  const prg = _clProgEl();  if (prg) prg.style.width = `${pct}%`;
+}
+
+function _hideLoader() {
+  const el = _clEl(); if (!el) return;
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.classList.add('hidden');
+    el.style.opacity = '';
+  }, 380);
+}
+
 /**
  * Full exploration pipeline: Stage 1 → canvas → Stage 3 (streaming) → Stage 4 → re-render.
  * Canvas is loaded after Stage 1 so streaming node-update events from Stage 3 land on
@@ -1333,11 +1399,13 @@ async function _loadBriefIntoCanvas(brief) {
  */
 async function _runExploration(seed) {
   log('SYSTEM', `[explore] starting full pipeline for: "${seed}"`);
+  _showLoader(seed, 'generating brief…', 5);
 
   try {
     // Stage 1: LLM brief generation
     const brief = await explore(seed);
     _activeBrief = brief;
+    _updateLoader('building graph…', 55);
 
     // Load canvas immediately — Stage 3 streaming updates need nodes to be present
     await _loadBriefIntoCanvas(brief);
@@ -1347,6 +1415,7 @@ async function _runExploration(seed) {
     _renderClusterPills(brief);
     _updateStatsStrip(brief);
     updateFnBar();
+    _updateLoader('enriching entities…', 72);
 
     // Stage 3: Enrichment coordinator — streams explore:node-update to canvas
     const enrichReport = await runEnrichment(brief, {
@@ -1355,6 +1424,7 @@ async function _runExploration(seed) {
       priorityFilter: null,
     });
     _activePatches = enrichReport.patches;
+    _updateLoader('finishing…', 90);
 
     // Stage 4: Completion pass — fill narrative gaps
     await runCompletion(brief, enrichReport.patches);
@@ -1364,9 +1434,13 @@ async function _runExploration(seed) {
     _renderClusterPills(brief);
     _updateStatsStrip(brief);
 
+    _updateLoader('done', 100);
+    _hideLoader();
     log('SYSTEM', `[explore] pipeline complete — ${brief.nodes?.length} nodes`);
 
   } catch (err) {
+    _updateLoader('exploration failed', 100);
+    _hideLoader();
     log('ERROR', `[explore] pipeline failed: ${err.message}`, { message: err.message });
   }
 }
