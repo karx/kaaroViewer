@@ -9,7 +9,7 @@
 
 import { initScene, onNodeClick, onNodeDblClick, onNodeHover,
          focusOn, frameNodes, getCamera, getRenderer, getScene,
-         getControls, addTick, tickHover } from './canvas/scene.mjs';
+         getControls, addTick, tickHover, animateCameraTo } from './canvas/scene.mjs';
 import { addNodeMesh, getNodeMesh, setNodeState, clearAllNodes, removeNodeMesh,
          updateNodeDegree, dimAllExcept, clearDim,
          setNodeColorOverride, clearNodeColorOverrides } from './canvas/nodes.mjs';
@@ -29,7 +29,7 @@ import { loadLocalDoc, LIBRARY, getDocMeta }                   from './pipeline/
 import { initReport, renderReport, showReport, hideReport, isReportVisible,
          scrollToCluster } from './canvas/report.mjs';
 import { initSlides, renderSlides, showSlides, hideSlides, isSlidesVisible,
-         nextSlide, prevSlide } from './canvas/slides.mjs';
+         nextSlide, prevSlide, notifySceneResult } from './canvas/slides.mjs';
 import { sourceManager }                                       from './pipeline/sources/source-manager.mjs';
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
@@ -45,6 +45,9 @@ import { runCompletion }                                       from './pipeline/
 import { runEnrichment, applyPatches }                        from './pipeline/enrichment-coordinator.mjs';
 import { mountExploreUI }                                     from './canvas/explore-ui.mjs';
 import { mountSettings, toggleSettings }                      from './canvas/settings.mjs';
+import { initScenePainter, generateScene, rehydrateSlides, getCanonicalCamera,
+         restoreScene, clearSlide, clearAllSlides,
+         tickScenePainter, getImageKey }                     from './canvas/scene-painter.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -57,6 +60,8 @@ sourceManager.register(new YouTubeSource());
 
 requestAnimationFrame(() => {
   initScene(container);
+  initScenePainter(getScene());   // must come after initScene so the Three.js canvas exists
+  addTick(tickScenePainter);
   initDetail();
   initTooltip();
   initReport();
@@ -1048,7 +1053,7 @@ function _hideBrief() {
   hideReport();
 }
 
-function _showBrief(meta) {
+async function _showBrief(meta) {
   if (_briefMode === 'reader') {
     hideSlides();
     renderReport(meta);
@@ -1057,6 +1062,12 @@ function _showBrief(meta) {
     hideReport();
     renderSlides(meta);
     showSlides();
+    // Reload any previously-painted scenes from localStorage
+    const docId    = _lastLoadedDocId ?? meta?.id ?? meta?.meta?.id;
+    const restored = await rehydrateSlides(docId, getCamera());
+    for (const idx of restored) {
+      notifySceneResult(idx, 'done', undefined, { restored: true });
+    }
   }
 }
 
@@ -1112,18 +1123,22 @@ document.addEventListener('report:mode', e => {
 // knows how to reopen
 document.addEventListener('slides:closed', () => {
   clearDim();
+  clearAllSlides();
   updateFnBar();
   log('SYSTEM', 'brief closed — F9 to reopen');
 });
 
 // Slides active-slide changed → frame the slide's node set (without closing slides)
 document.addEventListener('slides:frame', e => {
-  const { nodeIds } = e.detail ?? {};
+  const { nodeIds, slideIdx } = e.detail ?? {};
   clearDim();
   if (!nodeIds?.length) return;
   dimAllExcept(nodeIds);
   const meshes = nodeIds.map(q => getNodeMesh(q)).filter(Boolean);
-  if (meshes.length) frameNodes(meshes);
+  if (meshes.length) {
+    const fromDir = slideIdx != null ? getCanonicalCamera(slideIdx).pos.clone().normalize() : null;
+    frameNodes(meshes, fromDir);
+  }
 });
 
 // Entity pill clicked inside a slide → focus the entity in canvas but keep
@@ -1132,6 +1147,46 @@ document.addEventListener('slides:navigate', e => {
   const { qid } = e.detail ?? {};
   if (!qid) return;
   focusEntity(qid);
+});
+
+// Paint scene button — generate a Gemini background for the active slide
+document.addEventListener('slides:paint-scene', async e => {
+  const { slideIdx, centralNodeId, frameNodeIds } = e.detail ?? {};
+  if (slideIdx == null || !centralNodeId) return;
+
+  const central    = graph.getNode(centralNodeId);
+  const frameNodes = (frameNodeIds ?? [])
+    .map(id => graph.getNode(id))
+    .filter(Boolean);
+
+  const apiKey = getImageKey();
+  if (!apiKey) {
+    notifySceneResult(slideIdx, 'error', 'No image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
+    log('SYSTEM', '[paint-scene] no image key');
+    return;
+  }
+
+  const canon = getCanonicalCamera(slideIdx);
+  animateCameraTo(canon.pos, canon.target, 700);
+
+  try {
+    const result = await generateScene(central, frameNodes, apiKey, getCamera(), slideIdx, _lastLoadedDocId);
+    notifySceneResult(slideIdx, 'done', undefined, result);
+    // Re-fly to canonical: Gemini takes seconds; camera may have drifted
+    animateCameraTo(canon.pos, canon.target, 600);
+  } catch (err) {
+    log('ERROR', `[paint-scene] ${err.message}`);
+    notifySceneResult(slideIdx, 'error', err.message);
+  }
+});
+
+// Restore a previously-painted scene when navigating back to its slide
+document.addEventListener('slides:restore-scene', e => {
+  const { slideIdx } = e.detail ?? {};
+  if (slideIdx == null) return;
+  restoreScene(slideIdx);
+  const canon = getCanonicalCamera(slideIdx);
+  animateCameraTo(canon.pos, canon.target, 800);
 });
 
 // Cross-document navigation from detail panel (IA-01)

@@ -33,6 +33,7 @@ let _active = 0;
 let _observer = null;
 let _currentDoc = null;
 let _suppressObserverUntil = 0;   // ms timestamp; observer ignores entries before this
+const _paintState = new Map();     // slideIdx → 'idle'|'loading'|'done'|'error'
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
@@ -98,12 +99,38 @@ export function renderSlides(doc) {
   if (!_track || !doc) return;
   _currentDoc = doc;
   _slides = _buildSlides(doc);
+  _paintState.clear();
   _track.innerHTML = _slides.map((s, i) => _renderSlide(s, i, _slides.length)).join('');
   _renderDots();
   _bindIntersection();
   _bindClicks();
   _active = 0;
   _updateIndex();
+}
+
+/**
+ * Called by main.mjs after a generateScene() attempt completes.
+ * Stores scene metadata per slide and updates the paint button.
+ *
+ * @param {number}  idx
+ * @param {'done'|'error'} status
+ * @param {string}  [errorMsg]
+ * @param {object}  [sceneData]  — { projViewMatrix, cameraPos, cameraTarget }
+ */
+export function notifySceneResult(idx, status, errorMsg, sceneData) {
+  _paintState.set(idx, { status, sceneData: sceneData ?? null });
+  const btn = _track?.querySelector(`[data-paint-idx="${idx}"]`);
+  if (!btn) return;
+  if (status === 'done') {
+    btn.textContent = '◆ SCENE ✓';
+    btn.classList.add('sl-paint-done');
+    btn.disabled = false;
+  } else {
+    btn.textContent = '◆ PAINT ✕';
+    btn.classList.add('sl-paint-error');
+    btn.title = errorMsg ?? 'Generation failed';
+    btn.disabled = false;
+  }
 }
 
 export function showSlides() {
@@ -250,6 +277,13 @@ function _renderSlide(slide, idx, total) {
     }
   })();
 
+  const hasPaint  = (slide.frameNodes ?? []).length > 0;
+  const paintBtn  = hasPaint
+    ? `<button class="sl-paint-btn" data-paint-idx="${idx}"
+         aria-label="Generate AI background scene for this slide (requires Gemini image key)"
+         title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>`
+    : '';
+
   return `
     <article class="sl-slide sl-slide-${_e(slide.type)}"
       data-slide-idx="${idx}"
@@ -261,6 +295,7 @@ function _renderSlide(slide, idx, total) {
       <div class="sl-slide-marker">
         <span class="sl-slide-num">${String(idx + 1).padStart(2, '0')}</span>
         <span class="sl-slide-type">${_e(slide.type.toUpperCase())}</span>
+        ${paintBtn}
       </div>
       <div class="sl-slide-body">${body}</div>
     </article>
@@ -567,9 +602,18 @@ function _setActive(n) {
   if (!slide) return;
   if (_title) _title.textContent = slide.title ?? '';
   if (slide.frameNodes?.length) {
-    document.dispatchEvent(new CustomEvent('slides:frame', { detail: { nodeIds: slide.frameNodes } }));
+    document.dispatchEvent(new CustomEvent('slides:frame', { detail: { nodeIds: slide.frameNodes, slideIdx: n } }));
   } else {
-    document.dispatchEvent(new CustomEvent('slides:frame', { detail: { nodeIds: [] } }));
+    document.dispatchEvent(new CustomEvent('slides:frame', { detail: { nodeIds: [], slideIdx: n } }));
+  }
+
+  // If this slide has a painted scene, restore its canonical projection
+  const paintInfo = _paintState.get(n);
+  if (paintInfo?.status === 'done' && paintInfo.sceneData) {
+    document.dispatchEvent(new CustomEvent('slides:restore-scene', {
+      detail: { slideIdx: n, sceneData: paintInfo.sceneData },
+      bubbles: true,
+    }));
   }
 }
 
@@ -619,6 +663,35 @@ function _bindClicks() {
       e.stopPropagation();
       const mode = el.dataset.mode ?? 'reader';
       document.dispatchEvent(new CustomEvent('slides:mode', { detail: { mode } }));
+    });
+  });
+
+  // Paint scene buttons
+  _track.querySelectorAll('.sl-paint-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const slideIdx = parseInt(btn.dataset.paintIdx, 10);
+      if (isNaN(slideIdx)) return;
+      const slide = _slides[slideIdx];
+      if (!slide?.frameNodes?.length) return;
+
+      const state = _paintState.get(slideIdx);
+      // Don't re-fire while loading; allow retry on error or re-paint on done
+      if (state === 'loading') return;
+
+      _paintState.set(slideIdx, 'loading');
+      btn.textContent = '◆ PAINTING…';
+      btn.disabled    = true;
+      btn.classList.remove('sl-paint-done', 'sl-paint-error');
+
+      document.dispatchEvent(new CustomEvent('slides:paint-scene', {
+        detail: {
+          slideIdx,
+          centralNodeId: slide.frameNodes[0],
+          frameNodeIds:  slide.frameNodes,
+        },
+        bubbles: true,
+      }));
     });
   });
 
