@@ -48,6 +48,7 @@ import { mountSettings, toggleSettings }                      from './canvas/set
 import { initScenePainter, generateScene, rehydrateSlides, getCanonicalCamera,
          restoreScene, clearSlide, clearAllSlides,
          tickScenePainter, getImageKey }                     from './canvas/scene-painter.mjs';
+import { EMBED_MODE, notifyBriefReady, signalReady }         from './embed.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -77,10 +78,12 @@ requestAnimationFrame(() => {
     onRethink: deltas => _runRethink(deltas),
   });
 
-  // Mount settings panel
-  mountSettings();
-  document.getElementById('settings-btn')
-    ?.addEventListener('click', () => toggleSettings());
+  // Mount settings panel (suppressed in embed mode — keys live in the host CF)
+  if (!EMBED_MODE) {
+    mountSettings();
+    document.getElementById('settings-btn')
+      ?.addEventListener('click', () => toggleSettings());
+  }
 
   // ── Zero state ───────────────────────────────────────────────────────────
   const _zsEl = document.getElementById('zero-state');
@@ -114,8 +117,17 @@ requestAnimationFrame(() => {
   // Auto-focus the zero-state input
   requestAnimationFrame(() => document.getElementById('zs-input')?.focus());
 
-  // Register Gemini as default LLM provider if key is set
-  _tryRegisterGemini();
+  // Register Gemini as default LLM provider if key is set (standalone only)
+  if (!EMBED_MODE) _tryRegisterGemini();
+
+  // Embed mode: signal ready to parent, then process any queued seed
+  if (EMBED_MODE) {
+    signalReady();
+    if (window.__kaaro_embed_seed) {
+      inputBus.push(window.__kaaro_embed_seed, 'embed');
+      window.__kaaro_embed_seed = null;
+    }
+  }
 
   document.getElementById('overlay-sent-btn')?.addEventListener('click', () => _applyOverlay('sentiment'));
   document.getElementById('overlay-tier-btn')?.addEventListener('click', () => _applyOverlay('tier'));
@@ -1492,6 +1504,7 @@ async function _runExploration(seed) {
     _updateLoader('done', 100);
     _hideLoader();
     log('SYSTEM', `[explore] pipeline complete — ${brief.nodes?.length} nodes`);
+    notifyBriefReady(brief);
 
   } catch (err) {
     _updateLoader('exploration failed', 100);
