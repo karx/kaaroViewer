@@ -11,6 +11,7 @@
 
 import { routeToProvider, loadLLMConfig, saveLLMConfig, clearLLMConfig, PROVIDERS }
   from '../pipeline/gateway/index.mjs';
+import { getImageKey, setImageKey } from './scene-painter.mjs';
 import { log } from '../logger.mjs';
 
 // ── Provider metadata ─────────────────────────────────────────────────────────
@@ -120,6 +121,22 @@ function _render() {
     </div>
 
     <div id="set-status" class="set-status"></div>
+
+    <div class="set-section-hdr">◆ SCENE PAINTER</div>
+
+    <div class="set-row">
+      <label for="set-img-key">Gemini Image Key</label>
+      <input id="set-img-key" type="password" autocomplete="off"
+             placeholder="AIza… (leave blank to reuse Gemini LLM key above)"
+             value="${_esc(getImageKey())}">
+      <span class="set-help">Powers ◆ PAINT on each slide. Uses gemini-2.5-flash-image — ~1 290 tokens / image.</span>
+    </div>
+
+    <div class="set-actions">
+      <button id="set-img-save-btn" class="set-btn set-btn-primary">Save image key</button>
+    </div>
+
+    <div id="set-img-status" class="set-status"></div>
   `;
 
   _bindEvents();
@@ -137,6 +154,7 @@ function _bindEvents() {
   _q('#set-save-btn')?.addEventListener('click', _onSave);
   _q('#set-test-btn')?.addEventListener('click', _onTest);
   _q('#set-clear-btn')?.addEventListener('click', _onClear);
+  _q('#set-img-save-btn')?.addEventListener('click', _onImgSave);
 }
 
 function _readForm() {
@@ -206,6 +224,15 @@ function _onClear() {
   _setStatus('Config cleared.', 'warn');
   log('SYSTEM', '[settings] LLM config cleared');
   setTimeout(() => { _setStatus(''); _render(); }, 1500);
+}
+
+function _onImgSave() {
+  const key = _q('#set-img-key')?.value?.trim() ?? '';
+  setImageKey(key);
+  const el = _q('#set-img-status');
+  if (el) { el.textContent = key ? 'Image key saved.' : 'Image key cleared (will use Gemini LLM key).'; el.className = 'set-status set-status-ok'; }
+  log('SYSTEM', `[settings] image key ${key ? 'saved' : 'cleared'}`);
+  setTimeout(() => { if (el) el.textContent = ''; }, 3000);
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────

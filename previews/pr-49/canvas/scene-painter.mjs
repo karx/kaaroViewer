@@ -120,9 +120,12 @@ function _canonicalProjView(slideIdx, liveCam) {
   const dir = _canonicalDir(slideIdx);
   const pos = dir.clone().multiplyScalar(CANONICAL_DIST);
 
-  const up = Math.abs(dir.y) > 0.9
-    ? new THREE.Vector3(0, 0, 1)
-    : new THREE.Vector3(0, 1, 0);
+  // Gram-Schmidt: remove the dir component from world-Y so the camera's
+  // y-axis always points "as northward as possible" — eliminates the
+  // progressive 90° tilt from equator to poles.
+  const up = new THREE.Vector3(0, 1, 0).addScaledVector(dir, -dir.y);
+  if (up.lengthSq() < 1e-4) up.set(0, 0, 1);
+  else up.normalize();
 
   const tmp = new THREE.PerspectiveCamera(liveCam.fov, liveCam.aspect, liveCam.near, liveCam.far);
   tmp.position.copy(pos);
