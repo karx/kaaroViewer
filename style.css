@@ -2575,3 +2575,71 @@ html, body {
   text-align: center;
 }
 
+/* ── Scene Painter: background image layer ──────────────────────────────────
+   Sits behind the Three.js canvas (which has alpha:true + clearAlpha:0).
+   DOM order: scene-bg → Three.js canvas → other absolute overlays (z-index 10+)
+────────────────────────────────────────────────────────────────────────────── */
+
+.scene-bg {
+  position: absolute; inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.85s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.scene-bg.scene-bg-visible { opacity: 1; }
+
+/* Keep Three.js canvas above scene-bg; overlays already have z-index: 10 */
+.canvas-wrap > canvas {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Slide paint button ──────────────────────────────────────────────────── */
+
+.sl-slide-marker { position: relative; }
+
+.sl-paint-btn {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em;
+  background: transparent;
+  border: 1px solid #2a1800;
+  color: #443322;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sl-paint-btn:hover:not(:disabled) {
+  color: #ff6600;
+  border-color: #ff6600;
+  background: rgba(255, 102, 0, 0.06);
+}
+.sl-paint-btn:disabled {
+  color: #332211;
+  cursor: wait;
+}
+.sl-paint-btn.sl-paint-done {
+  color: #00cc66;
+  border-color: #006633;
+}
+.sl-paint-btn.sl-paint-error {
+  color: #cc2200;
+  border-color: #661100;
+}
+
+/* ── Settings: section header ───────────────────────────────────────────── */
+.set-section-hdr {
+  font-size: 9px; font-weight: 700; color: #ff6600;
+  letter-spacing: 0.14em;
+  padding: 14px 0 6px;
+  border-top: 1px solid #1e1e00;
+  margin-top: 6px;
+}
+
