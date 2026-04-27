@@ -1,15 +1,1 @@
-{
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/validate-library-json.py"
-          }
-        ]
-      }
-    ]
-  }
-}
+{}

@@ -1,3 +1,14 @@
+---
+published: false
+title: "Encoding Retrospective: Advanced Version Control Dynamics"
+tags: [visualize-skill, encoding-retrospective, git, version-control]
+description: "Post-encoding analysis of the git-workflows brief: what the skill did well (spine selection, edge density, CAS insight), what it missed (named organisations, temporal chain), and SOP improvements for technical/tooling documents."
+date: 2026-04-19
+layer: L1-Instance
+maturity: BUDDING
+para: Crystallized
+---
+
 # Encoding Retrospective: Advanced Version Control Dynamics
 
 **Source**: `library/git-workflows.md`

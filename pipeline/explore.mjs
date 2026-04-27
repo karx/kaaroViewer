@@ -13,22 +13,17 @@
  * The explore.mjs file governs Stage 1 + validation only.
  * completion.mjs handles Stages 4a–4c.
  *
- * Brief schema (matches library JSON):
- * {
- *   meta: { id, title, subtitle, domain, year, tags[], tone }
- *   report_card: { summary, key_stats[], spine[], protagonists[], antagonists[], themes[] }
- *   story: [{ id, title, node, nodes[], narration, tension, focus }]
- *   insights: [{ id, title, body, type, severity, evidence[] }]
- *   clusters: [{ id, label, color, nodes[], description }]
- *   nodes: [{ id, label, type, tier, sentiment, description, metrics?, wikidata? }]
- *   edges: [{ from, to, rel, weight, directed }]
- *   enrichment_targets: [{ node_id, priority }]  ← added by Stage 1
- *   layout_hints: [{ node_id, hint }]             ← added by Stage 1
- * }
+ * LLM resolution order:
+ *   1. window.kaaro_llm — host-injected function (highest priority)
+ *   2. gateway config from localStorage (kv.llm) — BYOM via pipeline/gateway/
+ *   3. Legacy: localStorage.gemini_api_key — backward compat
+ *   4. Throw with a clear setup message
  *
- * LLM API:
- *   Expects window.kaaro_llm(prompt, options) → Promise<string>
- *   Registered by the host application. Falls back to localStorage 'llm_provider'.
+ * BYOM setup:
+ *   import { saveLLMConfig } from './pipeline/gateway/index.mjs';
+ *   saveLLMConfig({ provider: 'anthropic', apiKey: 'sk-ant-...', model: 'claude-haiku-4-5-20251001' });
+ *   // or: { provider: 'gemini', apiKey: 'AIza...' }
+ *   // or: { provider: 'custom', endpoint: 'http://localhost:11434/v1/chat/completions', model: 'llama3' }
  *
  * Usage:
  *   import { explore, rethink } from './pipeline/explore.mjs';
@@ -37,112 +32,49 @@
  */
 
 import { log } from '../logger.mjs';
+import { routeToProvider, loadLLMConfig } from './gateway/index.mjs';
 
 // ── LLM interface ─────────────────────────────────────────────────────────────
 
-// Model cascade — lite first (higher free-tier capacity), then full flash models
-const GEMINI_MODELS = [
-  'gemini-2.0-flash-lite', // highest throughput on free tier
-  'gemini-2.0-flash',
-  'gemini-1.5-flash',
-  'gemini-1.5-flash-8b',
-];
-
-const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
-
 /**
- * Fetch one Gemini model. Returns { ok, status, text } — does NOT throw.
- */
-async function _geminiFetch(model, key, prompt, { temperature, maxTokens }) {
-  const url = `${GEMINI_BASE}/${model}:generateContent?key=${key}`;
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature,
-          maxOutputTokens: maxTokens,
-          // NOTE: responseMimeType:'application/json' is intentionally omitted.
-          // JSON mode uses a separate, tighter quota bucket and triggers 429
-          // even when main RPM/TPD quota is healthy. _extractJSON() handles
-          // parsing from plain text output instead.
-        },
-      }),
-    });
-    const body = await res.text();
-    if (!res.ok) {
-      log('ERROR', `[explore] ${model} HTTP ${res.status}`, { body: body.slice(0, 300) });
-    }
-    return { ok: res.ok, status: res.status, text: body };
-  } catch (err) {
-    return { ok: false, status: 0, text: err.message };
-  }
-}
-
-/**
- * Call the host-registered LLM function.
- * Falls back to Gemini with exponential backoff on 429 and model cascade.
+ * Call the configured LLM. Resolution order:
+ *   1. window.kaaro_llm (host-injected — highest priority, stays for compat)
+ *   2. Gateway config stored in localStorage (kv.llm)
+ *   3. Legacy localStorage.gemini_api_key
  *
- * 429 strategy:
- *   - Per-model: retry after 30s, 60s (2 attempts per model)
- *   - If still 429 → try next model in cascade
- *   - All models exhausted → throw with clear message
+ * The _fetchFn parameter is injectable for unit tests.
  */
-async function _callLLM(prompt, { temperature = 0.7, maxTokens = 8192 } = {}) {
-  // Prefer host-registered function (injected by app shell)
-  if (typeof window.kaaro_llm === 'function') {
+async function _callLLM(prompt, { temperature = 0.7, maxTokens = 8192 } = {}, _fetchFn = fetch) {
+  // 1. Host-injected function (e.g. art-of-intent integration, test mocks)
+  if (typeof window !== 'undefined' && typeof window.kaaro_llm === 'function') {
+    console.log('[kaaro/explore] _callLLM → path 1: window.kaaro_llm (host-injected)');
     return window.kaaro_llm(prompt, { temperature, maxTokens });
   }
 
-  const key = localStorage.getItem('gemini_api_key');
-  if (!key) throw new Error('No LLM provider. Set window.kaaro_llm or localStorage.gemini_api_key');
-
-  const RATE_LIMIT_WAITS = [30_000, 60_000]; // ms between retries on 429
-
-  for (const model of GEMINI_MODELS) {
-    let attempts = 0;
-    while (attempts <= RATE_LIMIT_WAITS.length) {
-      const { ok, status, text } = await _geminiFetch(model, key, prompt, { temperature, maxTokens });
-
-      if (ok) {
-        // Parse and extract text
-        try {
-          const json = JSON.parse(text);
-          const out  = json.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (!out) throw new Error('Empty response body');
-          if (model !== GEMINI_MODELS[0]) {
-            log('ENRICHER', `[explore] used fallback model: ${model}`);
-          }
-          return out;
-        } catch (parseErr) {
-          throw new Error(`Gemini parse error on ${model}: ${parseErr.message}`);
-        }
-      }
-
-      if (status === 429) {
-        const wait = RATE_LIMIT_WAITS[attempts];
-        if (wait === undefined) {
-          // No more retries for this model — try next in cascade
-          log('ENRICHER', `[explore] ${model} rate limited — trying next model`);
-          break;
-        }
-        const waitSec = Math.round(wait / 1000);
-        log('ENRICHER', `[explore] 429 rate limit on ${model} — waiting ${waitSec}s before retry (attempt ${attempts + 1})`);
-        await new Promise(r => setTimeout(r, wait));
-        attempts++;
-        continue;
-      }
-
-      // Non-429 error (400, 500, etc.) — don't retry this model
-      throw new Error(`Gemini ${model} HTTP ${status}: ${text.slice(0, 200)}`);
-    }
+  // 2. Gateway BYOM config
+  const config = loadLLMConfig();
+  console.log('[kaaro/explore] _callLLM → path 2: loadLLMConfig() =', config ? `provider=${config.provider} apiKey=${config.apiKey ? '***' : 'MISSING'}` : 'null');
+  if (config?.provider && config?.apiKey) {
+    log('ENRICHER', `[explore] using gateway provider: ${config.provider} model=${config.model ?? 'auto'}`);
+    const result = await routeToProvider(config.provider, prompt, config, _fetchFn);
+    return result.text;
   }
 
+  // 3. Legacy Gemini key fallback
+  const legacyKey = (() => { try { return localStorage.getItem('gemini_api_key'); } catch { return null; } })();
+  if (legacyKey) {
+    console.log('[kaaro/explore] _callLLM → path 3: legacy gemini_api_key');
+    log('ENRICHER', '[explore] using legacy gemini_api_key — migrate to saveLLMConfig() for full BYOM');
+    const result = await routeToProvider('gemini', prompt, { apiKey: legacyKey }, _fetchFn);
+    return result.text;
+  }
+
+  console.error('[kaaro/explore] _callLLM → no provider configured. localStorage kv.llm =', localStorage.getItem('kv.llm'));
   throw new Error(
-    'Gemini rate limit exhausted across all models (2.0-flash, 1.5-flash, 1.5-flash-8b). ' +
-    'Wait a minute and try again, or set localStorage.gemini_api_key to a key with higher quota.'
+    'No LLM provider configured. Options:\n' +
+    '  • window.kaaro.registerLLM(fn) — inject any async function\n' +
+    '  • saveLLMConfig({ provider, apiKey }) — BYOM via settings UI\n' +
+    '  • localStorage.gemini_api_key — legacy Gemini key'
   );
 }
 
@@ -247,8 +179,9 @@ export function validateBrief(brief) {
 /**
  * Robustly extract a JSON object from LLM output.
  * Handles: raw JSON, JSON in ```json fences, stray text before/after.
+ * Exported for unit tests.
  */
-function _extractJSON(raw) {
+export function _extractJSON(raw) {
   // Try direct parse first
   try { return JSON.parse(raw); } catch { /* fall through */ }
 

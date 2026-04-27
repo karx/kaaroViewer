@@ -1,41 +1,56 @@
+---
+published: true
+title: "kaaroViewer"
+tags: [kaaroviewer, knowledge-graph, three-js, enrichment-pipeline]
+description: "A real-time knowledge graph viewer with an LLM-driven enrichment pipeline, Three.js canvas, and interactive narrative slides. Type or speak a seed → the system builds a richly connected graph, enriches it from Wikidata/Wikipedia/GitHub/HN/YouTube/Reddit/npm, and presents it as navigable story beats."
+date: 2026-04-23
+layer: L2-System
+maturity: BUDDING
+para: Area
+---
+
 # kaaroViewer
-A-frame viewer is what this is. 
 
-## Platform support
-* Instagram (v1)
-* Twitter (WIP)
-* Reddit (WIP)
-* Github (WIP)
-* Wikidata (WIP)
+A real-time immersive knowledge graph platform. Type or speak any seed → an LLM builds a knowledge graph → seven enrichment adapters fill in real-world data → the graph renders on a Three.js canvas with navigable narrative slides.
 
-
-## Discussion, Support and Issues
-For general support and discussion of this project, please join the Discord server: [Discord Invite Link](https://discord.gg/B2cERQ5)
-
-[![Discord Server](https://discordapp.com/api/guilds/552881714196774953/widget.png?style=banner2)](https://discord.gg/B2cERQ5)
-
-To check known bugs and see planned changes and features for this project, please see the GitHub issues.
-
-Found a bug we don't already have an issue for? Please report it in a new GitHub issue with as much detail as you can!
-
-
-## Thought jumper
-https://thoughtjumper.netlify.com/
-
-### Entity Matching
-Simple name place animal thing:
-
+## How it works
 
 ```
- SELECT ?level2Node ?level2NodeLabel ?prop
-      WHERE 
-      {    
-        VALUES ?props {wd:Q5 wd:Q2221906 wd:Q48264 wd:Q515}
-        wd:Q9570 wdt:P31 ?instanceof .
-        wd:Q9570 ?prop ?level2Node .
-        ?level2Node wdt:P31 ?props .
-        
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-    
-      }
+Seed (text / speech / click)
+  → Stage 1: LLM generates working brief (nodes, edges, story beats, insights)
+  → Stage 2: NED++ resolves entities to Wikidata QIDs / YouTube / GitHub IDs
+  → Stage 3: Enrichment coordinator fans out to 7 adapters in parallel
+  → Stage 4: Completion fills gaps (story beats, edge stubs)
+  → Canvas: Three.js scene renders nodes + edges + slides overlay
 ```
+
+## Key modules
+
+| Module | Role |
+|--------|------|
+| `pipeline/explore.mjs` | Stage 1 — LLM prompt builder, brief validator, Gemini cascade |
+| `pipeline/ned-resolver.mjs` | Stage 2 — NED++ entity resolution (Wikidata, heuristics, LLM disambiguation) |
+| `pipeline/enrichment-coordinator.mjs` | Stage 3 — fan-out, merge, delta classification, canvas event streaming |
+| `pipeline/completion.mjs` | Stage 4 — story beat completion, edge stubs |
+| `enrichers/` | 7 adapters: wikidata, wikipedia, youtube, reddit, github, npm, hackernews |
+| `canvas/scene.mjs` | Three.js renderer — nodes, edges, camera, tooltip |
+| `canvas/slides.mjs` | Horizontally-scrollable narrative slides overlay |
+| `canvas/report.mjs` | Dashboard report view |
+| `canvas/detail.mjs` | Detail panel — entity data, vault-note branch |
+| `pipeline/sources/vault.mjs` | Vault source — loads personal knowledge garden graph |
+
+## Entry points
+
+- `index.html` — main viewer (Wikidata / enrichment mode)
+- `garden.html` — vault mode (personal knowledge garden)
+- `garden-main.mjs` — vault-mode orchestrator
+
+## Garden integration
+
+kaaroViewer is the rendering engine for the `karx.github.io` knowledge garden. The homepage build pipeline emits `garden-graph.json`; kaaroViewer loads it as a `VaultSource` and renders the vault as an interactive 3D graph. See [[GARDEN_INTEGRATION]] for the full integration spec.
+
+## Related
+
+- [[PRODUCT_ROADMAP]] — phase plan and open items
+- [[GARDEN_INTEGRATION]] — vault embed spec, VaultSource, build pipeline
+- [[seed]] — platform vision

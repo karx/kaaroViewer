@@ -1,3 +1,14 @@
+---
+published: false
+title: "Encoding Retrospective: Minecraft Redstone Computation"
+tags: [visualize-skill, encoding-retrospective, minecraft, computation]
+description: "Post-encoding analysis of the minecraft-redstone brief: what the skill did well, what it could have done better, and SOP-level recommendations for technically dense historical documents."
+date: 2026-04-15
+layer: L1-Instance
+maturity: BUDDING
+para: Crystallized
+---
+
 # Encoding Retrospective: The Digital Bedrock — Minecraft Redstone Computation
 
 **Source**: `library/minecraft-redstone.md`

@@ -9,7 +9,7 @@
 
 import { initScene, onNodeClick, onNodeDblClick, onNodeHover,
          focusOn, frameNodes, getCamera, getRenderer, getScene,
-         getControls, addTick, tickHover } from './canvas/scene.mjs';
+         getControls, addTick, tickHover, animateCameraTo } from './canvas/scene.mjs';
 import { addNodeMesh, getNodeMesh, setNodeState, clearAllNodes, removeNodeMesh,
          updateNodeDegree, dimAllExcept, clearDim,
          setNodeColorOverride, clearNodeColorOverrides } from './canvas/nodes.mjs';
@@ -29,7 +29,7 @@ import { loadLocalDoc, LIBRARY, getDocMeta }                   from './pipeline/
 import { initReport, renderReport, showReport, hideReport, isReportVisible,
          scrollToCluster } from './canvas/report.mjs';
 import { initSlides, renderSlides, showSlides, hideSlides, isSlidesVisible,
-         nextSlide, prevSlide } from './canvas/slides.mjs';
+         nextSlide, prevSlide, notifySceneResult } from './canvas/slides.mjs';
 import { sourceManager }                                       from './pipeline/sources/source-manager.mjs';
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
@@ -44,6 +44,10 @@ import { explore, rethink, registerLLM,
 import { runCompletion }                                       from './pipeline/completion.mjs';
 import { runEnrichment, applyPatches }                        from './pipeline/enrichment-coordinator.mjs';
 import { mountExploreUI }                                     from './canvas/explore-ui.mjs';
+import { mountSettings, toggleSettings }                      from './canvas/settings.mjs';
+import { initScenePainter, generateScene, rehydrateSlides, getCanonicalCamera,
+         restoreScene, clearSlide, clearAllSlides,
+         tickScenePainter, getImageKey }                     from './canvas/scene-painter.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -56,6 +60,8 @@ sourceManager.register(new YouTubeSource());
 
 requestAnimationFrame(() => {
   initScene(container);
+  initScenePainter(getScene());   // must come after initScene so the Three.js canvas exists
+  addTick(tickScenePainter);
   initDetail();
   initTooltip();
   initReport();
@@ -70,6 +76,43 @@ requestAnimationFrame(() => {
     onExpand:  deltas => _runExpand(deltas),
     onRethink: deltas => _runRethink(deltas),
   });
+
+  // Mount settings panel
+  mountSettings();
+  document.getElementById('settings-btn')
+    ?.addEventListener('click', () => toggleSettings());
+
+  // ── Zero state ───────────────────────────────────────────────────────────
+  const _zsEl = document.getElementById('zero-state');
+  let   _zsDismissed = false;
+  function _dismissZeroState() {
+    if (_zsDismissed || !_zsEl) return;
+    _zsDismissed = true;
+    _zsEl.classList.add('zs-out');
+    setTimeout(() => _zsEl.remove(), 500);
+  }
+
+  function _zsSubmit() {
+    const inp = document.getElementById('zs-input');
+    const val = inp?.value.trim();
+    if (!val) return;
+    _dismissZeroState();
+    inputBus.push(val, 'zero-state');
+  }
+  document.getElementById('zs-submit')?.addEventListener('click', _zsSubmit);
+  document.getElementById('zs-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') _zsSubmit();
+  });
+  document.querySelectorAll('.zs-seed').forEach(btn => {
+    btn.addEventListener('click', () => {
+      _dismissZeroState();
+      inputBus.push(btn.dataset.seed, 'zero-state-seed');
+    });
+  });
+  // Dismiss on any node load (library path, Wikidata path, LLM path)
+  graph.on('node:added', _dismissZeroState);
+  // Auto-focus the zero-state input
+  requestAnimationFrame(() => document.getElementById('zs-input')?.focus());
 
   // Register Gemini as default LLM provider if key is set
   _tryRegisterGemini();
@@ -276,11 +319,14 @@ inputBus.addEventListener('intent', async e => {
   // 2. Deterministic: Wikidata entity resolution (QID, wd:QID, or label match)
   const qids = await resolve(text);
   if (qids.length > 0) {
+    console.log(`[kaaro/intent] Wikidata resolved "${text}" → [${qids.join(', ')}] — loading entities, skipping LLM`);
+    log('SYSTEM', `[intent] Wikidata match: ${qids.join(', ')} — loading entities`);
     for (const qid of qids) await loadEntity(qid);
     return;
   }
 
   // 3. Fallback: no deterministic match — hand off to LLM exploration pipeline
+  console.log(`[kaaro/intent] no Wikidata match for "${text}" — launching LLM exploration`);
   log('SYSTEM', `no wikidata match for "${text}" — launching exploration`);
   _runExploration(text);
 });
@@ -349,18 +395,33 @@ if (voiceBtn) {
 // ── Sessions ──────────────────────────────────────────────────────────────────
 
 async function _snapshotSession(name) {
-  const cam     = getCamera();
-  const ctrl    = getControls();
-  const nodes   = [...graph.nodes.values()].map(n => ({
-    qid: n.qid, label: n.label, type: n.type,
-    image: n.image, position: getPosition(n.qid) ?? [0,0,0],
+  const cam   = getCamera();
+  const ctrl  = getControls();
+  const nodes = [...graph.nodes.values()].map(n => ({
+    qid:         n.qid,
+    label:       n.label,
+    type:        n.type,
+    tier:        n.tier,
+    sentiment:   n.sentiment,
+    description: n.description,
+    image:       n.image,
+    metrics:     n.metrics,
+    confidence:  n.confidence,
+    wikidata:    n.wikidata,
+    _links:      n._links,
+    _enriched:   n._enriched,
+    _source:     n._source,
+    position:    getPosition(n.qid) ?? [0, 0, 0],
   }));
-  const edges   = [...graph.edges.values()];
-  const camera  = {
-    position: cam.position.toArray(),
-    target:   ctrl.target.toArray(),
-  };
-  return saveSession({ name, nodes, edges, camera, breadcrumb: getCrumbs().map(c => c.qid) });
+  const edges  = [...graph.edges.values()];
+  const camera = { position: cam.position.toArray(), target: ctrl.target.toArray() };
+  return saveSession({
+    name,
+    nodes, edges, camera,
+    breadcrumb: getCrumbs().map(c => c.qid),
+    brief:      _activeBrief   ?? null,
+    patches:    _activePatches ?? null,
+  });
 }
 
 document.getElementById('save-btn')?.addEventListener('click', async () => {
@@ -380,11 +441,14 @@ async function _renderSessionsDrawer() {
   }
   drawer.innerHTML = list.map(s => `
     <div class="sd-item" data-id="${s.id}">
-      <span class="sd-name">${_esc(s.name)}</span>
-      <span class="sd-date">${new Date(s.savedAt).toLocaleDateString()}</span>
-      <span class="sd-count">${s.nodes?.length ?? 0} nodes</span>
-      <button class="sd-load" data-action="load" data-id="${s.id}">Load</button>
-      <button class="sd-del"  data-action="delete" data-id="${s.id}">✕</button>
+      <span class="sd-name" title="${_esc(s.name)}">${_esc(s.name)}</span>
+      <span class="sd-meta">
+        <span class="sd-date">${new Date(s.savedAt).toLocaleDateString()}</span>
+        <span class="sd-count">${s.nodes?.length ?? 0} nodes</span>
+        ${s.brief ? '<span class="sd-has-brief">◆ brief</span>' : ''}
+      </span>
+      <button class="sd-load" data-action="load"   data-id="${_esc(s.id)}">LOAD</button>
+      <button class="sd-del"  data-action="delete" data-id="${_esc(s.id)}" title="Delete">✕</button>
     </div>
   `).join('');
 
@@ -432,7 +496,33 @@ async function _restoreSession(id) {
     ctrl.update();
   }
 
-  log('SYSTEM', `session restored: ${session.name}`);
+  // Restore breadcrumbs
+  for (const qid of (session.breadcrumb ?? [])) {
+    const node = graph.getNode(qid);
+    if (node) pushCrumb(qid, node.label ?? qid);
+  }
+
+  // Restore brief + report if the session has one
+  if (session.brief) {
+    _activeBrief      = session.brief;
+    _activePatches    = session.patches ?? null;
+    _lastLoadedDocId  = session.brief.meta?.id ?? null;
+    _currentDocMeta   = session.brief;
+
+    // Rebuild nodeLookup in case it wasn't persisted
+    if (!_activeBrief.nodeLookup) {
+      _activeBrief.nodeLookup = Object.fromEntries(
+        (_activeBrief.nodes ?? []).map(n => [n.id, n])
+      );
+    }
+
+    _showBrief(_activeBrief);
+    _renderClusterPills(_activeBrief);
+    _updateStatsStrip(_activeBrief);
+  }
+
+  updateFnBar();
+  log('SYSTEM', `session restored: ${session.name} (${session.nodes?.length ?? 0} nodes${session.brief ? ', brief included' : ''})`);
 }
 
 let _drawerOpen = false;
@@ -824,8 +914,9 @@ export function updateFnBar() {
       <span class="fnk"><em>Click</em> Detail</span>
       <span class="fnk"><em>Dbl-click</em> Expand</span>
       <span class="fnk"><em>Tab</em> Cycle nodes</span>
+      <span class="fnk"><em>F1</em> Voice</span>
       <span class="fnk"><em>F2</em> Save</span>
-      <span class="fnk"><em>F5</em> Library</span>
+      <span class="fnk"><em>L</em> Library</span>
       <span class="fnk"><em>F6</em> Tour</span>
       <span class="fnk"><em>F7</em> Causal</span>
       <span class="fnk"><em>F9</em> Brief</span>
@@ -851,10 +942,14 @@ document.addEventListener('keydown', e => {
 
   // Global keybindings (always active)
   switch (e.key) {
-    case 'F6':  e.preventDefault(); toggleNarrative();      updateFnBar(); return;
-    case 'F7':  e.preventDefault(); toggleCausalLayout();   updateFnBar(); return;
-    case 'F9':  e.preventDefault(); toggleReportMode();     return;
-    case 'F10': e.preventDefault(); exportCanvasPNG();      return;
+    case 'F1':  e.preventDefault(); voiceBtn?.click();          return;
+    case 'F2':  e.preventDefault(); document.getElementById('save-btn')?.click(); return;
+    case 'F6':  e.preventDefault(); toggleNarrative();          updateFnBar(); return;
+    case 'F7':  e.preventDefault(); toggleCausalLayout();       updateFnBar(); return;
+    case 'F8':  e.preventDefault(); toggleSessionsDrawer();     return;
+    case 'F9':  e.preventDefault(); toggleReportMode();         return;
+    case 'F10': e.preventDefault(); exportCanvasPNG();          return;
+    case 'l': case 'L': e.preventDefault(); toggleLibrary();    return;
   }
 
   // Cluster shortcuts: digits 1–6
@@ -958,7 +1053,7 @@ function _hideBrief() {
   hideReport();
 }
 
-function _showBrief(meta) {
+async function _showBrief(meta) {
   if (_briefMode === 'reader') {
     hideSlides();
     renderReport(meta);
@@ -967,6 +1062,12 @@ function _showBrief(meta) {
     hideReport();
     renderSlides(meta);
     showSlides();
+    // Reload any previously-painted scenes from localStorage
+    const docId    = _lastLoadedDocId ?? meta?.id ?? meta?.meta?.id;
+    const restored = await rehydrateSlides(docId, getCamera());
+    for (const idx of restored) {
+      notifySceneResult(idx, 'done', undefined, { restored: true });
+    }
   }
 }
 
@@ -980,7 +1081,7 @@ function toggleReportMode() {
     const docId = _lastLoadedDocId;
     const meta  = docId ? getDocMeta(docId) : null;
     if (!meta) {
-      log('SYSTEM', 'no doc loaded — use F5 LIB to load a document first');
+      log('SYSTEM', 'no doc loaded — press L to open the library');
       return;
     }
     _showBrief(meta);
@@ -1022,18 +1123,22 @@ document.addEventListener('report:mode', e => {
 // knows how to reopen
 document.addEventListener('slides:closed', () => {
   clearDim();
+  clearAllSlides();
   updateFnBar();
   log('SYSTEM', 'brief closed — F9 to reopen');
 });
 
 // Slides active-slide changed → frame the slide's node set (without closing slides)
 document.addEventListener('slides:frame', e => {
-  const { nodeIds } = e.detail ?? {};
+  const { nodeIds, slideIdx } = e.detail ?? {};
   clearDim();
   if (!nodeIds?.length) return;
   dimAllExcept(nodeIds);
   const meshes = nodeIds.map(q => getNodeMesh(q)).filter(Boolean);
-  if (meshes.length) frameNodes(meshes);
+  if (meshes.length) {
+    const fromDir = slideIdx != null ? getCanonicalCamera(slideIdx).pos.clone().normalize() : null;
+    frameNodes(meshes, fromDir);
+  }
 });
 
 // Entity pill clicked inside a slide → focus the entity in canvas but keep
@@ -1042,6 +1147,46 @@ document.addEventListener('slides:navigate', e => {
   const { qid } = e.detail ?? {};
   if (!qid) return;
   focusEntity(qid);
+});
+
+// Paint scene button — generate a Gemini background for the active slide
+document.addEventListener('slides:paint-scene', async e => {
+  const { slideIdx, centralNodeId, frameNodeIds } = e.detail ?? {};
+  if (slideIdx == null || !centralNodeId) return;
+
+  const central    = graph.getNode(centralNodeId);
+  const frameNodes = (frameNodeIds ?? [])
+    .map(id => graph.getNode(id))
+    .filter(Boolean);
+
+  const apiKey = getImageKey();
+  if (!apiKey) {
+    notifySceneResult(slideIdx, 'error', 'No image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
+    log('SYSTEM', '[paint-scene] no image key');
+    return;
+  }
+
+  const canon = getCanonicalCamera(slideIdx);
+  animateCameraTo(canon.pos, canon.target, 700);
+
+  try {
+    const result = await generateScene(central, frameNodes, apiKey, getCamera(), slideIdx, _lastLoadedDocId);
+    notifySceneResult(slideIdx, 'done', undefined, result);
+    // Re-fly to canonical: Gemini takes seconds; camera may have drifted
+    animateCameraTo(canon.pos, canon.target, 600);
+  } catch (err) {
+    log('ERROR', `[paint-scene] ${err.message}`);
+    notifySceneResult(slideIdx, 'error', err.message);
+  }
+});
+
+// Restore a previously-painted scene when navigating back to its slide
+document.addEventListener('slides:restore-scene', e => {
+  const { slideIdx } = e.detail ?? {};
+  if (slideIdx == null) return;
+  restoreScene(slideIdx);
+  const canon = getCanonicalCamera(slideIdx);
+  animateCameraTo(canon.pos, canon.target, 800);
 });
 
 // Cross-document navigation from detail panel (IA-01)
@@ -1096,6 +1241,32 @@ document.addEventListener('report:insight-focus', e => {
   const meshes = all.map(q => getNodeMesh(q)).filter(Boolean);
   if (meshes.length) frameNodes(meshes);
   focusEntity(qid);
+});
+
+// Live enrichment patch — apply Stage 3 adapter results to graph nodes as they arrive.
+// Fires while _runExploration is mid-enrichment; canvas is already populated by Stage 1.
+document.addEventListener('explore:node-update', e => {
+  const { nodeId, patch, deltaType } = e.detail ?? {};
+  if (!nodeId || !patch) return;
+
+  const node = graph.getNode(nodeId);
+  if (!node) return;
+
+  // Merge enriched data into the live node
+  node.metrics = { ...(node.metrics ?? {}), ...patch.metrics };
+  if (patch.summary && (!node.description || node.description.length < 30)) {
+    node.description = patch.summary.slice(0, 400);
+  }
+  if (!node.image && patch.thumbnail) node.image = patch.thumbnail;
+  if (patch.links?.length) node._links = [...new Set([...(node._links ?? []), ...patch.links])];
+  node._enriched = true;
+
+  // If this node is open in the detail panel, refresh it with the new data
+  if (getCurrentQid() === nodeId) {
+    showDetail(node, graph.getEdgesFor(nodeId), q => graph.getNode(q));
+  }
+
+  log('ENRICHER', `[canvas] node-update: ${nodeId} (${deltaType})`);
 });
 
 // Fly camera to a story beat's node set — dim all non-beat nodes
@@ -1166,7 +1337,7 @@ function exportCanvasPNG() {
 }
 
 // ── Seed ──────────────────────────────────────────────────────────────────────
-// Auto-seed disabled — canvas starts empty. Use input bar or F5 LIB to load.
+// Auto-seed disabled — canvas starts empty. Use the explore input or press L to load from library.
 // requestAnimationFrame(() => setTimeout(() => loadEntity('Q668'), 300));
 
 function _esc(s) {
@@ -1247,43 +1418,84 @@ async function _loadBriefIntoCanvas(brief) {
   log('SYSTEM', `[explore] canvas loaded: ${brief.nodes?.length ?? 0} nodes, ${brief.edges?.length ?? 0} edges`);
 }
 
+// ── Canvas loader helpers ─────────────────────────────────────────────────────
+
+const _clEl       = () => document.getElementById('canvas-loader');
+const _clLabelEl  = () => document.getElementById('cl-label');
+const _clProgEl   = () => document.getElementById('cl-progress');
+const _clSeedEl   = () => document.getElementById('cl-seed-echo');
+
+function _showLoader(seed, label = 'exploring…', pct = 5) {
+  const el = _clEl(); if (!el) return;
+  el.classList.remove('hidden');
+  const lbl = _clLabelEl(); if (lbl) lbl.textContent = label;
+  const prg = _clProgEl();  if (prg) prg.style.width = `${pct}%`;
+  const ech = _clSeedEl();  if (ech) ech.textContent = seed ?? '';
+}
+
+function _updateLoader(label, pct) {
+  const lbl = _clLabelEl(); if (lbl) lbl.textContent = label;
+  const prg = _clProgEl();  if (prg) prg.style.width = `${pct}%`;
+}
+
+function _hideLoader() {
+  const el = _clEl(); if (!el) return;
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.classList.add('hidden');
+    el.style.opacity = '';
+  }, 380);
+}
+
 /**
- * Full exploration pipeline: Stage 1 → Stage 3 → Stage 4 → canvas.
+ * Full exploration pipeline: Stage 1 → canvas → Stage 3 (streaming) → Stage 4 → re-render.
+ * Canvas is loaded after Stage 1 so streaming node-update events from Stage 3 land on
+ * actual nodes rather than firing into an empty graph.
  */
 async function _runExploration(seed) {
   log('SYSTEM', `[explore] starting full pipeline for: "${seed}"`);
+  _showLoader(seed, 'generating brief…', 5);
 
   try {
     // Stage 1: LLM brief generation
     const brief = await explore(seed);
     _activeBrief = brief;
+    _updateLoader('building graph…', 55);
 
-    // Stage 3: Enrichment coordinator
-    const enrichReport = await runEnrichment(brief, {
-      concurrency:   3,
-      stream:        true,
-      priorityFilter: null,
-    });
-    _activePatches = enrichReport.patches;
-
-    // Stage 4: Completion pass
-    await runCompletion(brief, enrichReport.patches);
-
-    // Load into canvas
+    // Load canvas immediately — Stage 3 streaming updates need nodes to be present
     await _loadBriefIntoCanvas(brief);
-
-    // Render report
     _lastLoadedDocId = brief.meta.id;
     _currentDocMeta  = brief;
-    renderReport(brief);
-    showReport();
+    _showBrief(brief);
     _renderClusterPills(brief);
     _updateStatsStrip(brief);
     updateFnBar();
+    _updateLoader('enriching entities…', 72);
 
+    // Stage 3: Enrichment coordinator — streams explore:node-update to canvas
+    const enrichReport = await runEnrichment(brief, {
+      concurrency:    3,
+      stream:         true,
+      priorityFilter: null,
+    });
+    _activePatches = enrichReport.patches;
+    _updateLoader('finishing…', 90);
+
+    // Stage 4: Completion pass — fill narrative gaps
+    await runCompletion(brief, enrichReport.patches);
+
+    // Re-render brief with enriched node data (metrics, descriptions may have changed)
+    _showBrief(brief);
+    _renderClusterPills(brief);
+    _updateStatsStrip(brief);
+
+    _updateLoader('done', 100);
+    _hideLoader();
     log('SYSTEM', `[explore] pipeline complete — ${brief.nodes?.length} nodes`);
 
   } catch (err) {
+    _updateLoader('exploration failed', 100);
+    _hideLoader();
     log('ERROR', `[explore] pipeline failed: ${err.message}`, { message: err.message });
   }
 }
@@ -1300,8 +1512,7 @@ async function _runExpand(deltas) {
   await runCompletion(_activeBrief, enrichReport.patches);
   await _loadBriefIntoCanvas(_activeBrief);
 
-  renderReport(_activeBrief);
-  showReport();
+  _showBrief(_activeBrief);
   _renderClusterPills(_activeBrief);
   _updateStatsStrip(_activeBrief);
 }
@@ -1324,8 +1535,7 @@ async function _runRethink(deltas) {
 
     _lastLoadedDocId = revised.meta.id;
     _currentDocMeta  = revised;
-    renderReport(revised);
-    showReport();
+    _showBrief(revised);
     _renderClusterPills(revised);
     _updateStatsStrip(revised);
     updateFnBar();

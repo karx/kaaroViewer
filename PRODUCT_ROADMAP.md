@@ -1,7 +1,7 @@
 # KaaroViewer — Product Roadmap
 
 **Prepared**: March 29, 2026
-**Revised**: March 30, 2026
+**Revised**: April 23, 2026
 **Status**: Active Planning
 **Vision**: A real-time immersive knowledge graph platform — speak or type anything, explore it in 3D VR
 
@@ -78,12 +78,28 @@ Rather than deep integrations with specific social platforms (whose APIs are res
 
 ---
 
-### PHASE 1: STREAMING PIPELINE (3–4 weeks)
-*Complete the `kaaro/stream` work — this is the active branch*
+### PHASE 1: ENRICHMENT PIPELINE ✓ (shipped April 2026)
+*LLM-driven knowledge graph generation with multi-source enrichment*
+
+- [x] Stage 1: LLM exploration prompt + working brief generator (`pipeline/explore.mjs`)
+- [x] Stage 2: NED++ entity resolution — Wikidata, YouTube, Reddit, GitHub (`pipeline/ned-resolver.mjs`)
+- [x] Stage 3: Enrichment coordinator — 7 adapters, delta classification, streaming to canvas (`pipeline/enrichment-coordinator.mjs`)
+- [x] Stage 4: Completion — story beat stubs, edge stubs, patch attachment (`pipeline/completion.mjs`)
+- [x] Narrative slides overlay for brief mode (`canvas/slides.mjs`)
+- [x] Slides progress bar + reader toggle bar (`canvas/slides.mjs`)
+- [x] Unified input bus (`pipeline/input.mjs`)
+- [ ] Wire up [ EXPAND ] / [ RETHINK ] UI controls in `main.mjs`
+- [ ] Integration test for Stage 4 completion
+
+*See [[enrichment-pipeline-crystallized]] for decisions, lessons, reusable patterns.*
+
+---
+
+### PHASE 1b: STREAMING PIPELINE (3–4 weeks)
+*Complete the `kaaro/stream` work — real-time text feed into the pipeline*
 
 - [ ] Implement `kaaro_stream.mjs` — real-time text stream → entity pipeline
 - [ ] Define stream protocol: MQTT message format, batching, deduplication
-- [ ] Add stream source abstraction (any text feed, not platform-specific)
 - [ ] Add backpressure handling (don't flood the 3D scene)
 - [ ] Log stream events via `logger.mjs` (MQTT type already defined)
 - [ ] Test with live MQTT controller (`controller/speech-to-text-to-mqtt.js`)
@@ -114,8 +130,8 @@ The three viz pages (`viz-gig-economy-india.html`, `viz-gig-worker-projects.html
 - [ ] Coverage target: 60%+ on core modules (80% is aspirational for now)
 
 #### CI/CD
+- [x] GitHub Actions: GitHub Pages deploy + PR preview workflows (added April 2026)
 - [ ] GitHub Actions: lint + test on every PR
-- [ ] Auto-deploy to GitHub Pages or Netlify on merge to master
 
 #### Code Quality
 - [ ] Add ESLint config (ES2022, browser env)
@@ -222,6 +238,6 @@ This architecture avoids locking the product to any single platform and sidestep
 
 ---
 
-**Last Updated**: March 30, 2026
-**Next Review**: April 30, 2026
+**Last Updated**: April 23, 2026
+**Next Review**: May 30, 2026
 **Owner**: Technical Lead

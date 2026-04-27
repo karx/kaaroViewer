@@ -1,9 +1,11 @@
 # kaaroViewer — Exploration Pipeline Plan
 
 **Created**: 2026-04-20  
-**Status**: Planning → Implementation  
+**Status**: ✓ Shipped — April 2026 (PR #48)
 **Scope**: Seed-to-canvas exploration pipeline with parallel deterministic enrichment  
 **Prior art**: `PRODUCT_ROADMAP.md` (infra), `IMPROVEMENT_PLAN.md` (canvas UX), `named-entity-detection-improvement.md` (NED research)
+
+> **Crystallized.** This was the planning document for the enrichment pipeline. It shipped as `pipeline/explore.mjs` (Stage 1), `pipeline/ned-resolver.mjs` (Stage 2), `pipeline/enrichment-coordinator.mjs` (Stage 3), and `pipeline/completion.mjs` (Stage 4). See `library/enrichment-pipeline-crystallized.md` for decisions, hard-won lessons, and reusable patterns.
 
 ---
 

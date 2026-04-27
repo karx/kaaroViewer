@@ -1,3 +1,13 @@
+---
+published: false
+title: "The Algorithmic Panopticon: Gig Economy and Delivery Workers in India"
+tags: [gig-economy, india, labor, q-commerce, algorithmic-management]
+description: "Analysis of India's Quick Commerce sector (Blinkit, Zepto, Swiggy Instamart) — algorithmic management structures governing delivery workers, physiological toll of the labor, and 3D-printing-based interventions to mitigate physical hazards."
+date: 2026-04-01
+layer: L1-Instance
+maturity: EVERGREEN
+para: SkillSurface
+---
 
 # The Algorithmic Panopticon: A Comprehensive Analysis of the Gig Economy and the Socio-Physical Erosion of Delivery Workers in India
 

@@ -32,6 +32,46 @@
     <main class="middle" id="main-content">
 
       <div class="canvas-wrap" id="theScene" role="application" aria-label="3D knowledge graph canvas — use mouse to navigate, click nodes to inspect">
+
+        <!-- ── Zero state: shown until the first entity loads ─────────────── -->
+        <div id="zero-state" class="zero-state" role="region" aria-label="kaaroViewer start screen">
+          <div class="zs-grid" aria-hidden="true"></div>
+          <div class="zs-body">
+            <div class="zs-brand">
+              <span class="zs-mark" aria-hidden="true">◆</span>
+              <span class="zs-wordmark">kaaroViewer</span>
+            </div>
+            <p class="zs-tagline">knowledge graph explorer</p>
+            <div class="zs-input-wrap">
+              <span class="zs-prompt" aria-hidden="true">explore</span>
+              <input id="zs-input" class="zs-input" type="text"
+                     placeholder="a topic, entity, or idea…"
+                     autocomplete="off" spellcheck="false"
+                     aria-label="Type a topic to explore">
+              <button id="zs-submit" class="zs-submit" aria-label="Start exploration">▶</button>
+            </div>
+            <div class="zs-seeds" role="group" aria-label="Quick-start suggestions">
+              <button class="zs-seed" data-seed="Gig economy India">Gig economy India</button>
+              <button class="zs-seed" data-seed="Minecraft redstone">Minecraft redstone</button>
+              <button class="zs-seed" data-seed="Age of Empires II">Age of Empires II</button>
+              <button class="zs-seed" data-seed="AI agents">AI agents</button>
+            </div>
+            <p class="zs-hint">or press <em>L</em> to load from the library</p>
+          </div>
+        </div>
+
+        <!-- ── Canvas loader: shown while LLM pipeline is running ─────────── -->
+        <div id="canvas-loader" class="canvas-loader hidden" role="status" aria-live="polite">
+          <div class="cl-inner">
+            <div class="cl-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span id="cl-label" class="cl-label">exploring…</span>
+            <div class="cl-progress-track" aria-hidden="true">
+              <div id="cl-progress" class="cl-progress-fill"></div>
+            </div>
+            <span id="cl-seed-echo" class="cl-seed-echo"></span>
+          </div>
+        </div>
+
         <!-- Cluster isolation pills overlay (C-03 / IA-06) -->
         <div id="cluster-pills" class="cluster-pills hidden" role="toolbar" aria-label="Cluster isolation — press 1–6 or click to isolate a cluster"></div>
         <!-- Sentiment / tier overlay toggle buttons (C-06) -->
@@ -64,8 +104,9 @@
       <button id="voice-btn" aria-label="Toggle voice input (F1)" title="Start voice">F1 MIC</button>
       <button id="save-btn"  aria-label="Save current session (F2)" title="Save session">F2 SAVE</button>
       <button id="sessions-btn" aria-label="Open saved sessions (F8)" title="Saved sessions">F8 SSNS</button>
-      <button id="library-btn"  aria-label="Open local document library (F5)" title="Load local document" aria-haspopup="dialog">F5 LIB</button>
-      <button id="report-btn"   aria-label="Toggle intelligence brief (F9)" title="Toggle brief view" aria-expanded="false">F9 BRIEF</button>
+      <button id="library-btn"  aria-label="Open local document library (L)" title="Load local document (L)" aria-haspopup="dialog">L LIB</button>
+      <button id="report-btn"    aria-label="Toggle intelligence brief (F9)" title="Toggle brief view" aria-expanded="false">F9 BRIEF</button>
+      <button id="settings-btn"  aria-label="Open model settings" title="LLM / BYOM settings" aria-haspopup="dialog">⚙ MODEL</button>
     </div>
 
     <!-- ── Function key hints ────────────────────────────────────────── -->
@@ -76,7 +117,7 @@
       <span class="fnk"><em>F4</em> CLEAR</span>
       <span class="fnk"><em>DBL-CLICK</em> EXPAND NODE</span>
       <span class="fnk"><em>CLICK</em> DETAIL</span>
-      <span class="fnk"><em>F5</em> LIBRARY</span>
+      <span class="fnk"><em>L</em> LIBRARY</span>
       <span class="fnk"><em>F8</em> SESSIONS</span>
       <span class="fnk fnk-right"><em>◎</em> LOG</span>
     </div>
@@ -99,6 +140,11 @@
       <button id="sessions-close" aria-label="Close sessions panel">✕</button>
     </div>
     <div id="sessions-drawer" class="sessions-drawer" role="list" aria-labelledby="sessions-title"></div>
+  </div>
+
+  <!-- ── Settings drawer ────────────────────────────────────────────── -->
+  <div id="settings-wrap" class="settings-wrap" role="dialog" aria-modal="true"
+       aria-label="Model settings" aria-hidden="true">
   </div>
 
   <!-- ── Debug log (hidden by default) ───────────────────────────────── -->
