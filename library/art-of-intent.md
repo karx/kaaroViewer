@@ -1,3 +1,14 @@
+---
+published: false
+title: "Art of Intent: Codebase Intelligence Brief"
+tags: [codebase-analysis, game, ai, kaaroviewer-adjacent]
+description: "Codebase inventory and intelligence brief for Art of Intent — an AI-powered word game. Documents frontend/backend architecture, the Gemini-driven pipeline, share card generators, and scoring systems."
+date: 2026-04-07
+layer: L1-Instance
+maturity: BUDDING
+para: SkillSurface
+---
+
 http://art-of-intent.netlify.app/
 ---
 ## CODEBASE INVENTORY: Art of Intent

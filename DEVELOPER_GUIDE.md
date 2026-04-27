@@ -1,5 +1,7 @@
 # KaaroViewer - Developer Guide
 
+> **⚠ STALE — written for A-Frame era (pre-2026).** The platform has migrated to Three.js canvas. The A-Frame components in `components/` still exist but the active development surface is `canvas/`, `pipeline/`, and `enrichers/`. See `README.md` and `pipeline/README.md` for the current architecture.
+
 ## Project Overview
 
 **KaaroViewer** is an immersive 3D visualization platform built on **A-Frame** that displays social media content and knowledge graph data (Wikidata) in a virtual reality environment. It enables users to explore entities, posts, and connections across multiple social platforms through an interactive 3D interface.

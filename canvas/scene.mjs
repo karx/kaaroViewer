@@ -74,6 +74,21 @@ export function initScene(container) {
   // Cancel programmatic animation if user grabs the camera
   _renderer.domElement.addEventListener('pointerdown', () => { _camAnim = null; });
 
+  // Double-tap → expand node (iOS/Android don't fire dblclick reliably)
+  let _lastTapAt = 0;
+  _renderer.domElement.addEventListener('touchend', e => {
+    const now = Date.now();
+    const touch = e.changedTouches[0];
+    const rect = _renderer.domElement.getBoundingClientRect();
+    _pointer.x =  ((touch.clientX - rect.left) / rect.width)  * 2 - 1;
+    _pointer.y = -((touch.clientY - rect.top)  / rect.height) * 2 + 1;
+    if (now - _lastTapAt < 300) {
+      const qid = _hitQid();
+      if (qid) { _dblClickHandlers.forEach(fn => fn(qid)); e.preventDefault(); }
+    }
+    _lastTapAt = now;
+  }, { passive: false });
+
   // Responsive resize
   new ResizeObserver(() => {
     const W = container.clientWidth, H = container.clientHeight;
@@ -93,15 +108,26 @@ export function getCamera()   { return _camera; }
 export function getRenderer() { return _renderer; }
 export function getControls() { return _controls; }
 
-/** Smoothly frame a set of meshes — animates camera to encompass all of them. */
-export function frameNodes(meshes) {
+/** Public wrapper — smoothly moves camera to a world position + target. */
+export function animateCameraTo(toPos, toTarget, duration = 600) {
+  _animateCameraTo(toPos, toTarget, duration);
+}
+
+/**
+ * Smoothly frame a set of meshes.
+ * @param {THREE.Object3D[]} meshes
+ * @param {THREE.Vector3}    [fromDir]  — unit vector for the camera offset direction.
+ *                                        Defaults to (0, 0.25, 1) if omitted.
+ */
+export function frameNodes(meshes, fromDir = null) {
   if (!meshes.length) return;
   const box = new THREE.Box3();
   meshes.forEach(m => box.expandByPoint(m.position));
   const center = box.getCenter(new THREE.Vector3());
   const size   = box.getSize(new THREE.Vector3());
   const dist   = Math.max(size.x, size.y, size.z) * 0.8 + 6;
-  const toPos  = center.clone().add(new THREE.Vector3(0, dist * 0.25, dist));
+  const dir    = fromDir ? fromDir.clone().normalize() : new THREE.Vector3(0, 0.25, 1).normalize();
+  const toPos  = center.clone().addScaledVector(dir, dist);
   _animateCameraTo(toPos, center, 650);
 }
 

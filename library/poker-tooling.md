@@ -1,3 +1,13 @@
+---
+published: false
+title: "The Modern Poker Player's Toolkit"
+tags: [poker, software-tools, gto, regulatory, india-gaming-law]
+description: "Expert-level analysis of the contemporary poker toolkit — GTO solvers, HUDs, bankroll tools, psychological apps, ergonomics, and the regulatory collapse of India's online poker market under PROGA 2025."
+date: 2026-04-06
+layer: L1-Instance
+maturity: EVERGREEN
+para: SkillSurface
+---
 
 # Comprehensive Analysis of the Modern Poker Player's Toolkit: Software, Hardware, and Psychological Utilities
 

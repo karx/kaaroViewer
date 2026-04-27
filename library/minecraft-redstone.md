@@ -1,4 +1,13 @@
-
+---
+published: false
+title: "The Digital Bedrock: Minecraft Redstone Computation"
+tags: [minecraft, computation, redstone, emergent-systems, game-theory]
+description: "A visual and technical history of Minecraft Redstone computation — from simple circuit elements through distinct engineering eras to fully programmable CPUs and complex data storage architectures built within game-engine constraints."
+date: 2026-04-15
+layer: L1-Instance
+maturity: EVERGREEN
+para: SkillSurface
+---
 
 # The Digital Bedrock: A Visual and Technical History of Minecraft Redstone Computation
 

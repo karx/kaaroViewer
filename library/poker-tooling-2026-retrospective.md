@@ -1,3 +1,14 @@
+---
+published: false
+title: "Encoding Retrospective: The Modern Poker Player's Toolkit"
+tags: [visualize-skill, encoding-retrospective, poker, regulatory]
+description: "Post-encoding analysis of the poker-tooling brief: strong story arc and paradox insight, weak named-entity granularity (20+ tools collapsed), missing compliance matrix and ergonomics section, thin edge density. Two SOP additions: named-entity sweep pass and temporal milestone check."
+date: 2026-04-06
+layer: L1-Instance
+maturity: BUDDING
+para: Crystallized
+---
+
 # Encoding Retrospective: The Modern Poker Player's Toolkit
 
 **Source**: `library/poker-tooling.md`
