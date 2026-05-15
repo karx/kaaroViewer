@@ -147,6 +147,8 @@ export function isSlidesVisible() {
 }
 
 export function getActiveSlideIdx() { return _active; }
+export function getSlideCount()    { return _slides.length; }
+export function getSlideIds()      { return _slides.map(s => s.id); }
 
 export function nextSlide() { goToSlide(_active + 1); }
 export function prevSlide() { goToSlide(_active - 1); }

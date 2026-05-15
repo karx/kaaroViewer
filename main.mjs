@@ -29,7 +29,8 @@ import { loadLocalDoc, LIBRARY, getDocMeta }                   from './pipeline/
 import { initReport, renderReport, showReport, hideReport, isReportVisible,
          scrollToCluster } from './canvas/report.mjs';
 import { initSlides, renderSlides, showSlides, hideSlides, isSlidesVisible,
-         nextSlide, prevSlide, notifySceneResult } from './canvas/slides.mjs';
+         nextSlide, prevSlide, notifySceneResult,
+         getSlideCount, getSlideIds } from './canvas/slides.mjs';
 import { sourceManager }                                       from './pipeline/sources/source-manager.mjs';
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
@@ -47,7 +48,8 @@ import { mountExploreUI }                                     from './canvas/exp
 import { mountSettings, toggleSettings }                      from './canvas/settings.mjs';
 import { initScenePainter, generateScene, rehydrateSlides, getCanonicalCamera,
          restoreScene, clearSlide, clearAllSlides,
-         tickScenePainter, getImageKey }                     from './canvas/scene-painter.mjs';
+         tickScenePainter, getImageKey,
+         getAllBackdrops }                                    from './canvas/scene-painter.mjs';
 import { EMBED_MODE, notifyBriefReady, signalReady }         from './embed.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
@@ -933,6 +935,7 @@ export function updateFnBar() {
       <span class="fnk"><em>F7</em> Causal</span>
       <span class="fnk"><em>F9</em> Brief</span>
       <span class="fnk"><em>F10</em> 📷</span>
+      <span class="fnk"><em>F11</em> 📦</span>
       <span class="fnk fnk-right"><em>◎</em> Log</span>`;
   } else {
     const label = graph.getNode(qid)?.label ?? qid;
@@ -961,6 +964,7 @@ document.addEventListener('keydown', e => {
     case 'F8':  e.preventDefault(); toggleSessionsDrawer();     return;
     case 'F9':  e.preventDefault(); toggleReportMode();         return;
     case 'F10': e.preventDefault(); exportCanvasPNG();          return;
+    case 'F11': e.preventDefault(); exportAssets();             return;
     case 'l': case 'L': e.preventDefault(); toggleLibrary();    return;
   }
 
@@ -1346,6 +1350,94 @@ function exportCanvasPNG() {
   link.click();
 
   log('SYSTEM', 'PNG exported');
+}
+
+// ── Asset export (F11) ────────────────────────────────────────────────────────
+// Bundles JSON + per-slide canvas PNGs + backdrop images into a ZIP for ffmpeg.
+
+async function exportAssets() {
+  if (!_currentDocMeta) { log('SYSTEM', 'no brief loaded — open a library doc first'); return; }
+
+  const docId    = _currentDocMeta.id;
+  const docTitle = _currentDocMeta.title ?? docId;
+  log('SYSTEM', `asset export started for "${docTitle}"`);
+
+  // Lazy-load JSZip from CDN
+  const { default: JSZip } = await import('https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm');
+  const zip = new JSZip();
+
+  // ── manifest.json ────────────────────────────────────────────────────────
+  const slideCount = getSlideCount();
+  const slideIds   = getSlideIds();
+  zip.file('manifest.json', JSON.stringify({
+    docId,
+    title:      docTitle,
+    exportedAt: new Date().toISOString(),
+    nodes:      graph.nodes.size,
+    edges:      graph.edges.size,
+    slideCount,
+    slideIds,
+    ffmpegHint: `ffmpeg -framerate 1/4 -pattern_type glob -i 'slide_*_canvas.png' -c:v libx264 -pix_fmt yuv420p out.mp4`,
+  }, null, 2));
+
+  // ── doc.json ──────────────────────────────────────────────────────────────
+  const libEntry = LIBRARY.find(l => l.id === docId);
+  if (libEntry?.path) {
+    try {
+      const raw = await fetch(libEntry.path).then(r => r.text());
+      zip.file('doc.json', raw);
+    } catch (err) {
+      log('SYSTEM', `asset export: doc.json fetch failed — ${err.message}`);
+    }
+  }
+
+  // ── canvas_overview.png ──────────────────────────────────────────────────
+  const renderer = getRenderer();
+  const cam      = getCamera();
+  const scene    = getScene();
+  const threeCanvas = document.querySelector('.canvas-wrap canvas');
+  if (threeCanvas) {
+    if (renderer) renderer.render(scene, cam);
+    zip.file('canvas_overview.png', threeCanvas.toDataURL('image/png').split(',')[1], { base64: true });
+  }
+
+  // ── Per-slide canvas renders ──────────────────────────────────────────────
+  const savedPos    = cam.position.clone();
+  const savedTarget = getControls().target.clone();
+
+  if (renderer && cam && scene && slideCount > 0) {
+    for (let i = 0; i < slideCount; i++) {
+      const { pos, target } = getCanonicalCamera(i);
+      cam.position.copy(pos);
+      cam.lookAt(target);
+      renderer.render(scene, cam);
+      const dataURL = renderer.domElement.toDataURL('image/png');
+      zip.file(`slide_${String(i).padStart(2,'0')}_canvas.png`, dataURL.split(',')[1], { base64: true });
+    }
+    // restore camera
+    cam.position.copy(savedPos);
+    cam.lookAt(savedTarget);
+    getControls().target.copy(savedTarget);
+    renderer.render(scene, cam);
+  }
+
+  // ── Backdrop images from IDB ──────────────────────────────────────────────
+  const backdrops = await getAllBackdrops(docId);
+  for (const { slideIdx, dataURL } of backdrops) {
+    const base64 = dataURL.includes(',') ? dataURL.split(',')[1] : dataURL;
+    zip.file(`slide_${String(slideIdx).padStart(2,'0')}_backdrop.png`, base64, { base64: true });
+  }
+
+  // ── Download ──────────────────────────────────────────────────────────────
+  const blob    = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+  const url     = URL.createObjectURL(blob);
+  const link    = document.createElement('a');
+  link.href     = url;
+  link.download = `kaaroViewer-export-${docId}-${new Date().toISOString().slice(0, 10)}.zip`;
+  link.click();
+  URL.revokeObjectURL(url);
+
+  log('SYSTEM', `asset export complete — ${slideCount} slides, ${backdrops.length} backdrops`);
 }
 
 // ── Seed ──────────────────────────────────────────────────────────────────────
