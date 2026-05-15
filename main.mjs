@@ -116,8 +116,17 @@ requestAnimationFrame(() => {
   });
   // Dismiss on any node load (library path, Wikidata path, LLM path)
   graph.on('node:added', _dismissZeroState);
-  // Auto-focus the zero-state input
-  requestAnimationFrame(() => document.getElementById('zs-input')?.focus());
+  // Boot ritual: show terminal handshake, then reveal explore UI
+  const _bootEl = document.getElementById('zs-boot');
+  const _zsBody = _zsEl?.querySelector('.zs-body');
+  setTimeout(() => {
+    _bootEl?.classList.add('zs-boot-out');
+    _zsBody?.classList.add('zs-body-visible');
+    setTimeout(() => {
+      _bootEl?.remove();
+      document.getElementById('zs-input')?.focus();
+    }, 320);
+  }, 2300);
 
   // Register Gemini as default LLM provider if key is set (standalone only)
   if (!EMBED_MODE) _tryRegisterGemini();
@@ -221,7 +230,7 @@ async function focusEntity(qid) {
   }
 
   setNodeState(qid, 'focused');
-  pushCrumb(qid, node.label);
+  pushCrumb(qid, node.label, node.type);
   updateFnBar();
 
   const mesh = getNodeMesh(qid);
@@ -513,7 +522,7 @@ async function _restoreSession(id) {
   // Restore breadcrumbs
   for (const qid of (session.breadcrumb ?? [])) {
     const node = graph.getNode(qid);
-    if (node) pushCrumb(qid, node.label ?? qid);
+    if (node) pushCrumb(qid, node.label ?? qid, node.type);
   }
 
   // Restore brief + report if the session has one

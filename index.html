@@ -36,7 +36,19 @@
         <!-- ── Zero state: shown until the first entity loads ─────────────── -->
         <div id="zero-state" class="zero-state" role="region" aria-label="kaaroViewer start screen">
           <div class="zs-grid" aria-hidden="true"></div>
-          <div class="zs-body">
+
+          <!-- Boot ritual — shown briefly before the explore UI -->
+          <div id="zs-boot" class="zs-boot" aria-hidden="true">
+            <div class="zs-boot-line zs-bl-0">kaaroViewer  3.0.0</div>
+            <div class="zs-boot-line zs-bl-1">────────────────────────────────</div>
+            <div class="zs-boot-line zs-bl-2">&gt; ontology       <span class="zs-bl-ok">[OK]</span></div>
+            <div class="zs-boot-line zs-bl-3">&gt; canvas         <span class="zs-bl-ok">[OK]</span></div>
+            <div class="zs-boot-line zs-bl-4">&gt; knowledge bus  <span class="zs-bl-ok">[OK]</span></div>
+            <div class="zs-boot-line zs-bl-5">────────────────────────────────</div>
+            <div class="zs-boot-line zs-bl-6">READY <span class="zs-bl-cursor">█</span></div>
+          </div>
+
+          <div class="zs-body zs-body-hidden">
             <div class="zs-brand">
               <span class="zs-mark" aria-hidden="true">◆</span>
               <span class="zs-wordmark">kaaroViewer</span>
