@@ -116,6 +116,21 @@ export function getCanonicalCamera(slideIdx) {
   };
 }
 
+function _projViewFromPos(pos, target, liveCam) {
+  const dir = pos.clone().normalize();
+  const up  = new THREE.Vector3(0, 1, 0).addScaledVector(dir, -dir.y);
+  if (up.lengthSq() < 1e-4) up.set(0, 0, 1);
+  else up.normalize();
+
+  const tmp = new THREE.PerspectiveCamera(liveCam.fov, liveCam.aspect, liveCam.near, liveCam.far);
+  tmp.position.copy(pos);
+  tmp.up.copy(up);
+  tmp.lookAt(target.x, target.y, target.z);
+  tmp.updateMatrixWorld();
+  tmp.updateProjectionMatrix();
+  return new THREE.Matrix4().multiplyMatrices(tmp.projectionMatrix, tmp.matrixWorldInverse);
+}
+
 function _canonicalProjView(slideIdx, liveCam) {
   const dir = _canonicalDir(slideIdx);
   const pos = dir.clone().multiplyScalar(CANONICAL_DIST);
@@ -290,37 +305,51 @@ export function buildPrompt(centralNode, frameNodes) {
  * @param {object}       centralNode
  * @param {object[]}     frameNodes
  * @param {string}       apiKey
- * @param {THREE.Camera} camera      live camera (FOV/aspect only)
+ * @param {THREE.Camera} camera           live camera (FOV/aspect)
  * @param {number}       slideIdx
- * @param {string}       [docId]     stored so rehydrateSlides can restore on reload
+ * @param {string}       [docId]          stored so rehydrateSlides can restore on reload
+ * @param {object}       [opts]
+ * @param {string}       [opts.prompt]    pre-built prompt (skips buildPrompt)
+ * @param {string}       [opts.strategy]  strategy name for cache key (default 'cinematic')
+ * @param {object}       [opts.canonicalOverride]  { pos: Vector3, target: Vector3 }
+ *                                        use live camera position instead of golden-angle spiral
  */
-export async function generateScene(centralNode, frameNodes, apiKey, camera, slideIdx, docId) {
+export async function generateScene(centralNode, frameNodes, apiKey, camera, slideIdx, docId, opts = {}) {
+  const { prompt: promptOverride, strategy = 'cinematic', canonicalOverride = null } = opts;
+
   const key = apiKey || getImageKey();
   if (!key) throw new Error('No Gemini image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
   if (!_scene) throw new Error('[ScenePainter] call initScenePainter(scene) first');
 
-  const projViewMatrix = _canonicalProjView(slideIdx, camera);
-  const { pos: cameraPos, target: cameraTarget } = getCanonicalCamera(slideIdx);
+  let projViewMatrix, cameraPos, cameraTarget;
+  if (canonicalOverride) {
+    projViewMatrix = _projViewFromPos(canonicalOverride.pos, canonicalOverride.target, camera);
+    cameraPos      = canonicalOverride.pos;
+    cameraTarget   = canonicalOverride.target;
+  } else {
+    projViewMatrix = _canonicalProjView(slideIdx, camera);
+    ({ pos: cameraPos, target: cameraTarget } = getCanonicalCamera(slideIdx));
+  }
 
-  const cKey = _cacheKey(centralNode, frameNodes);
+  const cKey = _cacheKey(centralNode, frameNodes, strategy);
   let texture = _memCache.get(cKey);
 
   if (!texture) {
     const stored = await _idbLoad(cKey);
     if (stored) {
-      log('SYSTEM', '[ScenePainter] IDB hit', { slide: slideIdx });
+      log('SYSTEM', '[ScenePainter] IDB hit', { slide: slideIdx, strategy });
       texture = await _textureFromDataURL(stored);
     } else {
-      const prompt = buildPrompt(centralNode, frameNodes);
+      const prompt = promptOverride ?? buildPrompt(centralNode, frameNodes);
 
-      log('SYSTEM', '[ScenePainter] requesting image', { slide: slideIdx, node: centralNode?.label });
+      log('SYSTEM', '[ScenePainter] requesting image', { slide: slideIdx, strategy, node: centralNode?.label });
       const dataURL = await _fetchDataURL(prompt, key);
       await _idbSave(cKey, dataURL);
       texture = await _textureFromDataURL(dataURL);
     }
     _memCache.set(cKey, texture);
   } else {
-    log('SYSTEM', '[ScenePainter] memory hit', { slide: slideIdx });
+    log('SYSTEM', '[ScenePainter] memory hit', { slide: slideIdx, strategy });
   }
 
   _storeSlideRef(docId, slideIdx, cKey);
@@ -496,9 +525,10 @@ function _textureFromDataURL(dataURL) {
   );
 }
 
-function _cacheKey(central, nodes) {
+function _cacheKey(central, nodes, strategy = 'cinematic') {
   return [
     central?.qid ?? '',
+    strategy,
     ...(nodes ?? []).map(n => n?.qid ?? '').sort(),
   ].join('|');
 }

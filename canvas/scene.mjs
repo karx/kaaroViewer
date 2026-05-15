@@ -108,6 +108,23 @@ export function getCamera()   { return _camera; }
 export function getRenderer() { return _renderer; }
 export function getControls() { return _controls; }
 
+/**
+ * Return QIDs of all node meshes whose world position falls inside the
+ * current camera frustum. Accepts a Map<qid, THREE.Object3D> (from getAllMeshes()).
+ */
+export function getVisibleNodeQids(meshMap) {
+  if (!_camera || !meshMap) return [];
+  const frustum = new THREE.Frustum();
+  frustum.setFromProjectionMatrix(
+    new THREE.Matrix4().multiplyMatrices(_camera.projectionMatrix, _camera.matrixWorldInverse),
+  );
+  const out = [];
+  for (const [qid, mesh] of meshMap) {
+    if (frustum.containsPoint(mesh.position)) out.push(qid);
+  }
+  return out;
+}
+
 /** Public wrapper — smoothly moves camera to a world position + target. */
 export function animateCameraTo(toPos, toTarget, duration = 600) {
   _animateCameraTo(toPos, toTarget, duration);

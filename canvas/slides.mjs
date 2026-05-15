@@ -147,6 +147,7 @@ export function isSlidesVisible() {
 }
 
 export function getActiveSlideIdx() { return _active; }
+export function getActiveSlide()   { return _slides[_active] ?? null; }
 export function getSlideCount()    { return _slides.length; }
 export function getSlideIds()      { return _slides.map(s => s.id); }
 

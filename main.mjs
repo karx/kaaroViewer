@@ -9,8 +9,9 @@
 
 import { initScene, onNodeClick, onNodeDblClick, onNodeHover,
          focusOn, frameNodes, getCamera, getRenderer, getScene,
-         getControls, addTick, tickHover, animateCameraTo } from './canvas/scene.mjs';
-import { addNodeMesh, getNodeMesh, setNodeState, clearAllNodes, removeNodeMesh,
+         getControls, addTick, tickHover, animateCameraTo,
+         getVisibleNodeQids } from './canvas/scene.mjs';
+import { addNodeMesh, getNodeMesh, getAllMeshes, setNodeState, clearAllNodes, removeNodeMesh,
          updateNodeDegree, dimAllExcept, clearDim,
          setNodeColorOverride, clearNodeColorOverrides } from './canvas/nodes.mjs';
 import { addEdgeLine, syncEdgePositions, clearAllEdges, clearEdgesFor }         from './canvas/edges.mjs';
@@ -30,7 +31,8 @@ import { initReport, renderReport, showReport, hideReport, isReportVisible,
          scrollToCluster } from './canvas/report.mjs';
 import { initSlides, renderSlides, showSlides, hideSlides, isSlidesVisible,
          nextSlide, prevSlide, notifySceneResult,
-         getSlideCount, getSlideIds } from './canvas/slides.mjs';
+         getSlideCount, getSlideIds,
+         getActiveSlideIdx, getActiveSlide } from './canvas/slides.mjs';
 import { sourceManager }                                       from './pipeline/sources/source-manager.mjs';
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
@@ -51,6 +53,10 @@ import { initScenePainter, generateScene, rehydrateSlides, getCanonicalCamera,
          tickScenePainter, getImageKey,
          getAllBackdrops }                                    from './canvas/scene-painter.mjs';
 import { EMBED_MODE, notifyBriefReady, signalReady }         from './embed.mjs';
+import { assemblePaintContext }                               from './canvas/paint-context.mjs';
+import { buildPrompt as buildStrategyPrompt,
+         setActiveStrategy, getActiveStrategy,
+         listStrategies } from './canvas/paint-strategies.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -943,6 +949,7 @@ export function updateFnBar() {
       <span class="fnk"><em>F6</em> Tour</span>
       <span class="fnk"><em>F7</em> Causal</span>
       <span class="fnk"><em>F9</em> Brief</span>
+      <span class="fnk"><em>P</em> Paint</span>
       <span class="fnk"><em>F10</em> 📷</span>
       <span class="fnk"><em>F11</em> 📦</span>
       <span class="fnk fnk-right"><em>◎</em> Log</span>`;
@@ -956,6 +963,7 @@ export function updateFnBar() {
       <span class="fnk fnk-ctx"><em>R</em> Refetch</span>
       <span class="fnk fnk-ctx"><em>F7</em> ${isCausalMode() ? 'Force' : 'Causal'}</span>
       <span class="fnk fnk-ctx"><em>F9</em> Brief</span>
+      <span class="fnk fnk-ctx"><em>P</em> Paint</span>
       <span class="fnk fnk-ctx"><em>Esc</em> Deselect</span>
       <span class="fnk fnk-right fnk-selected">◉ ${_esc(label.toUpperCase())}</span>`;
   }
@@ -975,6 +983,11 @@ document.addEventListener('keydown', e => {
     case 'F10': e.preventDefault(); exportCanvasPNG();          return;
     case 'F11': e.preventDefault(); exportAssets();             return;
     case 'l': case 'L': e.preventDefault(); toggleLibrary();    return;
+    case 'p': case 'P':
+      e.preventDefault();
+      if (e.shiftKey) { _cycleStrategy(); return; }
+      _triggerGlobalPaint();
+      return;
   }
 
   // Cluster shortcuts: digits 1–6
@@ -1174,36 +1187,168 @@ document.addEventListener('slides:navigate', e => {
   focusEntity(qid);
 });
 
-// Paint scene button — generate a Gemini background for the active slide
+// ── Paint pipeline ────────────────────────────────────────────────────────────
+
+const GLOBAL_PAINT_SLIDE_IDX = 999; // synthetic slot for view-based global paint
+
+/**
+ * Assemble PaintContext from live state: slide (if any), camera, frustum, selection.
+ * If slideIdx is provided, slide data (central + frameNodes) is pulled from the slide;
+ * otherwise only view and selection context are populated.
+ */
+function _assembleLiveContext(slideIdx = null) {
+  const slide       = slideIdx != null ? getActiveSlide() : null;
+  const slideNodes  = (slide?.frameNodes ?? []).map(id => graph.getNode(id)).filter(Boolean);
+  const slideCentral = slideNodes[0] ?? null;
+
+  const selectedQid  = getCurrentQid();
+  const selectedNode = selectedQid ? graph.getNode(selectedQid) : null;
+
+  const visibleQids  = getVisibleNodeQids(getAllMeshes());
+  const visibleNodes = visibleQids.map(q => graph.getNode(q)).filter(Boolean);
+
+  return assemblePaintContext({
+    slideIdx,
+    slideType:    slide?.type ?? null,
+    slideCentral,
+    slideNodes,
+    camera:       getCamera(),
+    visibleNodes,
+    selectedNode,
+  });
+}
+
+/**
+ * Core paint execution: build enriched prompt → call generateScene → notify UI.
+ * Used by both the slide paint button and the global P-key/HUD trigger.
+ *
+ * @param {number}  slideIdx         slide index (GLOBAL_PAINT_SLIDE_IDX for global paint)
+ * @param {object}  centralNode      entity to center the image on
+ * @param {object[]} frameNodes      entities to include in scene context
+ * @param {object}  [canonicalOverride]  { pos, target } — use live camera instead of spiral
+ */
+async function _executePaint(slideIdx, centralNode, frameNodes, canonicalOverride = null) {
+  const apiKey = getImageKey();
+  if (!apiKey) {
+    if (slideIdx !== GLOBAL_PAINT_SLIDE_IDX) {
+      notifySceneResult(slideIdx, 'error', 'No image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
+    }
+    log('SYSTEM', '[paint] no image key');
+    return;
+  }
+
+  const ctx      = _assembleLiveContext(slideIdx !== GLOBAL_PAINT_SLIDE_IDX ? slideIdx : null);
+  const strategy = getActiveStrategy();
+  const prompt   = buildStrategyPrompt(ctx);
+
+  log('SYSTEM', `[paint] strategy=${strategy} slide=${slideIdx}`, {
+    hero: ctx.selectedNode?.label ?? ctx.slideCentral?.label,
+    visible: ctx.visibleNodes.length,
+    angle: ctx.cameraAngle?.phrase,
+  });
+
+  if (!canonicalOverride) {
+    const canon = getCanonicalCamera(slideIdx);
+    animateCameraTo(canon.pos, canon.target, 700);
+  }
+
+  try {
+    const result = await generateScene(
+      centralNode, frameNodes, apiKey, getCamera(),
+      slideIdx, _lastLoadedDocId,
+      { prompt, strategy, canonicalOverride },
+    );
+    if (slideIdx !== GLOBAL_PAINT_SLIDE_IDX) {
+      notifySceneResult(slideIdx, 'done', undefined, result);
+    }
+    if (!canonicalOverride) {
+      animateCameraTo(result.cameraPos, result.cameraTarget, 600);
+    }
+    _updatePaintHUD();
+  } catch (err) {
+    log('ERROR', `[paint] ${err.message}`);
+    if (slideIdx !== GLOBAL_PAINT_SLIDE_IDX) {
+      notifySceneResult(slideIdx, 'error', err.message);
+    }
+  }
+}
+
+/**
+ * Global paint — triggered by P key or HUD button.
+ * When slides are visible: paints the active slide with enriched context.
+ * When slides are hidden: uses live camera position as the canonical and
+ * synthesises hero/frame from current selection + visible nodes.
+ */
+async function _triggerGlobalPaint() {
+  if (isSlidesVisible()) {
+    // Use active slide's slot but enrich with live view + selection
+    const slideIdx = getActiveSlideIdx();
+    const slide    = getActiveSlide();
+    if (!slide?.frameNodes?.length) {
+      log('SYSTEM', '[paint] active slide has no paintable nodes');
+      return;
+    }
+    const centralNode = graph.getNode(slide.frameNodes[0]);
+    const frameNodes  = slide.frameNodes.map(id => graph.getNode(id)).filter(Boolean);
+    await _executePaint(slideIdx, centralNode, frameNodes);
+  } else {
+    // Pure graph exploration — paint from live view
+    const selectedQid  = getCurrentQid();
+    const selectedNode = selectedQid ? graph.getNode(selectedQid) : null;
+    const visibleQids  = getVisibleNodeQids(getAllMeshes());
+    const visibleNodes = visibleQids.map(q => graph.getNode(q)).filter(Boolean);
+
+    const centralNode  = selectedNode ?? visibleNodes[0] ?? null;
+    if (!centralNode) { log('SYSTEM', '[paint] nothing in view to paint'); return; }
+
+    const cam = getCamera();
+    const ctrl = getControls();
+    const canonicalOverride = {
+      pos:    cam.position.clone(),
+      target: ctrl.target.clone(),
+    };
+
+    await _executePaint(GLOBAL_PAINT_SLIDE_IDX, centralNode, visibleNodes, canonicalOverride);
+  }
+}
+
+// Slide paint button → uses enriched pipeline
 document.addEventListener('slides:paint-scene', async e => {
   const { slideIdx, centralNodeId, frameNodeIds } = e.detail ?? {};
   if (slideIdx == null || !centralNodeId) return;
 
   const central    = graph.getNode(centralNodeId);
-  const frameNodes = (frameNodeIds ?? [])
-    .map(id => graph.getNode(id))
-    .filter(Boolean);
-
-  const apiKey = getImageKey();
-  if (!apiKey) {
-    notifySceneResult(slideIdx, 'error', 'No image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
-    log('SYSTEM', '[paint-scene] no image key');
-    return;
-  }
-
-  const canon = getCanonicalCamera(slideIdx);
-  animateCameraTo(canon.pos, canon.target, 700);
-
-  try {
-    const result = await generateScene(central, frameNodes, apiKey, getCamera(), slideIdx, _lastLoadedDocId);
-    notifySceneResult(slideIdx, 'done', undefined, result);
-    // Re-fly to canonical: Gemini takes seconds; camera may have drifted
-    animateCameraTo(canon.pos, canon.target, 600);
-  } catch (err) {
-    log('ERROR', `[paint-scene] ${err.message}`);
-    notifySceneResult(slideIdx, 'error', err.message);
-  }
+  const frameNodes = (frameNodeIds ?? []).map(id => graph.getNode(id)).filter(Boolean);
+  await _executePaint(slideIdx, central, frameNodes);
 });
+
+// ── Paint HUD button + P key ──────────────────────────────────────────────────
+
+function _updatePaintHUD() {
+  const btn = document.getElementById('paint-hud-btn');
+  if (!btn) return;
+  const strategy = getActiveStrategy();
+  btn.textContent = `◆ PAINT [${strategy}]`;
+  btn.title = `Paint scene (P) — Shift+P to cycle strategy. Active: ${strategy}`;
+}
+
+function _cycleStrategy() {
+  const all = listStrategies();
+  const cur = getActiveStrategy();
+  const next = all[(all.indexOf(cur) + 1) % all.length];
+  setActiveStrategy(next);
+  _updatePaintHUD();
+  log('SYSTEM', `[paint] strategy → ${next}`);
+}
+
+// Wire HUD button: click = paint, shift-click = cycle strategy
+document.getElementById('paint-hud-btn')?.addEventListener('click', e => {
+  if (e.shiftKey) { _cycleStrategy(); return; }
+  _triggerGlobalPaint();
+});
+
+// Initialize button label on load
+_updatePaintHUD();
 
 // Restore a previously-painted scene when navigating back to its slide
 document.addEventListener('slides:restore-scene', e => {
