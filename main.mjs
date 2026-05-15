@@ -1195,16 +1195,13 @@ document.addEventListener('slides:navigate', e => {
 
 // ── Paint pipeline ────────────────────────────────────────────────────────────
 
-const GLOBAL_PAINT_SLIDE_IDX = 999; // synthetic slot for view-based global paint
-
 /**
  * Assemble PaintContext from live state: slide (if any), camera, frustum, selection.
- * If slideIdx is provided, slide data (central + frameNodes) is pulled from the slide;
- * otherwise only view and selection context are populated.
+ * slideIdx null → free-roam context only (no slide data pulled).
  */
 function _assembleLiveContext(slideIdx = null) {
-  const slide       = slideIdx != null ? getActiveSlide() : null;
-  const slideNodes  = (slide?.frameNodes ?? []).map(id => graph.getNode(id)).filter(Boolean);
+  const slide        = slideIdx != null ? getActiveSlide() : null;
+  const slideNodes   = (slide?.frameNodes ?? []).map(id => graph.getNode(id)).filter(Boolean);
   const slideCentral = slideNodes[0] ?? null;
 
   const selectedQid  = getCurrentQid();
@@ -1225,18 +1222,17 @@ function _assembleLiveContext(slideIdx = null) {
 }
 
 /**
- * Core paint execution: build enriched prompt → call generateScene → notify UI.
- * Used by both the slide paint button and the global P-key/HUD trigger.
+ * Core paint execution: build enriched prompt → call generateScene → notify slide UI.
  *
- * @param {number}  slideIdx         slide index (GLOBAL_PAINT_SLIDE_IDX for global paint)
- * @param {object}  centralNode      entity to center the image on
- * @param {object[]} frameNodes      entities to include in scene context
- * @param {object}  [canonicalOverride]  { pos, target } — use live camera instead of spiral
+ * @param {number|null} slideIdx        slide slot, or null for free-roam paints
+ * @param {object}      centralNode
+ * @param {object[]}    frameNodes
+ * @param {object}      [canonicalOverride]  { pos, target } — skip golden-angle spiral
  */
 async function _executePaint(slideIdx, centralNode, frameNodes, canonicalOverride = null) {
   const apiKey = getImageKey();
   if (!apiKey) {
-    if (slideIdx !== GLOBAL_PAINT_SLIDE_IDX) {
+    if (slideIdx != null) {
       notifySceneResult(slideIdx, 'error', 'No image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
     }
     log('SYSTEM', '[paint] no image key');
@@ -1245,25 +1241,23 @@ async function _executePaint(slideIdx, centralNode, frameNodes, canonicalOverrid
 
   // When camera is locked: capture the live camera position NOW as the canonical
   // projection origin so the texture maps correctly to the current view.
-  // animateCameraTo calls below are already no-ops when locked, but we still need
-  // the override so the sphere shader projects from the right angle.
   const locked = isCameraLocked();
   const effectiveCanonical = canonicalOverride ?? (locked
     ? { pos: getCamera().position.clone(), target: getControls().target.clone() }
     : null);
 
-  const ctx      = _assembleLiveContext(slideIdx !== GLOBAL_PAINT_SLIDE_IDX ? slideIdx : null);
+  const ctx      = _assembleLiveContext(slideIdx);
   const strategy = getActiveStrategy();
   const prompt   = buildStrategyPrompt(ctx);
 
-  log('SYSTEM', `[paint] strategy=${strategy} slide=${slideIdx} locked=${locked}`, {
+  log('SYSTEM', `[paint] strategy=${strategy} slide=${slideIdx ?? 'free-roam'} locked=${locked}`, {
     hero:    ctx.selectedNode?.label ?? ctx.slideCentral?.label,
     visible: ctx.visibleNodes.length,
     angle:   ctx.cameraAngle?.phrase,
   });
 
-  // Fly to canonical before generation (skipped when locked or global)
-  if (!effectiveCanonical) {
+  // Fly to canonical before generation (slide paints, unlocked)
+  if (slideIdx != null && !effectiveCanonical) {
     const canon = getCanonicalCamera(slideIdx);
     animateCameraTo(canon.pos, canon.target, 700);
   }
@@ -1272,33 +1266,29 @@ async function _executePaint(slideIdx, centralNode, frameNodes, canonicalOverrid
     const result = await generateScene(
       centralNode, frameNodes, apiKey, getCamera(),
       slideIdx, _lastLoadedDocId,
-      { prompt, strategy, canonicalOverride: effectiveCanonical },
+      { prompt, canonicalOverride: effectiveCanonical },
     );
-    if (slideIdx !== GLOBAL_PAINT_SLIDE_IDX) {
+    if (slideIdx != null) {
       notifySceneResult(slideIdx, 'done', undefined, result);
     }
-    // Re-fly after generation (skipped when locked or global)
-    if (!effectiveCanonical) {
+    // Re-fly after generation (slide paints, unlocked)
+    if (slideIdx != null && !effectiveCanonical) {
       animateCameraTo(result.cameraPos, result.cameraTarget, 600);
     }
     _updatePaintHUD();
   } catch (err) {
     log('ERROR', `[paint] ${err.message}`);
-    if (slideIdx !== GLOBAL_PAINT_SLIDE_IDX) {
-      notifySceneResult(slideIdx, 'error', err.message);
-    }
+    if (slideIdx != null) notifySceneResult(slideIdx, 'error', err.message);
   }
 }
 
 /**
- * Global paint — triggered by P key or HUD button.
- * When slides are visible: paints the active slide with enriched context.
- * When slides are hidden: uses live camera position as the canonical and
- * synthesises hero/frame from current selection + visible nodes.
+ * Global paint — P key or HUD button.
+ * Slides visible → paints active slide (slot retained, enriched with live context).
+ * Free roam      → slideIdx null, live camera as projection origin, accumulates.
  */
 async function _triggerGlobalPaint() {
   if (isSlidesVisible()) {
-    // Use active slide's slot but enrich with live view + selection
     const slideIdx = getActiveSlideIdx();
     const slide    = getActiveSlide();
     if (!slide?.frameNodes?.length) {
@@ -1309,23 +1299,20 @@ async function _triggerGlobalPaint() {
     const frameNodes  = slide.frameNodes.map(id => graph.getNode(id)).filter(Boolean);
     await _executePaint(slideIdx, centralNode, frameNodes);
   } else {
-    // Pure graph exploration — paint from live view
     const selectedQid  = getCurrentQid();
     const selectedNode = selectedQid ? graph.getNode(selectedQid) : null;
     const visibleQids  = getVisibleNodeQids(getAllMeshes());
     const visibleNodes = visibleQids.map(q => graph.getNode(q)).filter(Boolean);
 
-    const centralNode  = selectedNode ?? visibleNodes[0] ?? null;
+    const centralNode = selectedNode ?? visibleNodes[0] ?? null;
     if (!centralNode) { log('SYSTEM', '[paint] nothing in view to paint'); return; }
 
-    const cam = getCamera();
+    const cam  = getCamera();
     const ctrl = getControls();
-    const canonicalOverride = {
+    await _executePaint(null, centralNode, visibleNodes, {
       pos:    cam.position.clone(),
       target: ctrl.target.clone(),
-    };
-
-    await _executePaint(GLOBAL_PAINT_SLIDE_IDX, centralNode, visibleNodes, canonicalOverride);
+    });
   }
 }
 
