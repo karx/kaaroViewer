@@ -40,20 +40,20 @@
  */
 
 import * as THREE from 'three';
-import { log }           from '../logger.mjs';
+import { log } from '../logger.mjs';
 import { loadLLMConfig } from '../pipeline/gateway/index.mjs';
 
 const ENDPOINT =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent';
 
-const IMG_KEY_STORE    = 'kv.kaaro.img';
+const IMG_KEY_STORE = 'kv.kaaro.img';
 const SLIDE_IDX_PREFIX = 'kv.kaaro.sidx.';  // localStorage: + docId → JSON {slideIdx: cacheKey}
 
 // IndexedDB — used for image data-URLs (too large for localStorage)
-const IDB_NAME    = 'kv.kaaro.painter';
+const IDB_NAME = 'kv.kaaro.painter';
 const IDB_VERSION = 1;
-const IDB_STORE   = 'images';
-let   _idb        = null;
+const IDB_STORE = 'images';
+let _idb = null;
 
 function _openIDB() {
   if (_idb) return Promise.resolve(_idb);
@@ -61,7 +61,7 @@ function _openIDB() {
     const req = indexedDB.open(IDB_NAME, IDB_VERSION);
     req.onupgradeneeded = e => e.target.result.createObjectStore(IDB_STORE);
     req.onsuccess = e => { _idb = e.target.result; resolve(_idb); };
-    req.onerror   = e => reject(e.target.error);
+    req.onerror = e => reject(e.target.error);
   });
 }
 
@@ -80,22 +80,22 @@ async function _idbLoad(key) {
   try {
     const db = await _openIDB();
     return new Promise((resolve, reject) => {
-      const tx  = db.transaction(IDB_STORE, 'readonly');
+      const tx = db.transaction(IDB_STORE, 'readonly');
       const req = tx.objectStore(IDB_STORE).get(key);
       req.onsuccess = () => resolve(req.result ?? null);
-      req.onerror   = () => reject(req.error);
+      req.onerror = () => reject(req.error);
     });
   } catch { return null; }
 }
 
-const SPHERE_RADIUS  = 180;
+const SPHERE_RADIUS = 180;
 const CANONICAL_DIST = 65;
-const FADE_RATE      = 1.6;  // opacity/s → ≈0.625 s full fade
+const FADE_RATE = 1.6;  // opacity/s → ≈0.625 s full fade
 
 // ── Canonical camera positions ────────────────────────────────────────────────
 
 const _GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5)); // ~137.508° — sunflower azimuth step
-const _SILVER_FRAC  = 0.6180339887;                  // 1/φ — uncorrelated elevation step
+const _SILVER_FRAC = 0.6180339887;                  // 1/φ — uncorrelated elevation step
 
 function _canonicalDir(slideIdx) {
   const azimuth = slideIdx * _GOLDEN_ANGLE;
@@ -111,7 +111,7 @@ function _canonicalDir(slideIdx) {
 export function getCanonicalCamera(slideIdx) {
   const dir = _canonicalDir(slideIdx);
   return {
-    pos:    dir.clone().multiplyScalar(CANONICAL_DIST),
+    pos: dir.clone().multiplyScalar(CANONICAL_DIST),
     target: new THREE.Vector3(0, 0, 0),
   };
 }
@@ -182,11 +182,11 @@ const FRAG_SRC = /* glsl */`
 // ── Module state ──────────────────────────────────────────────────────────────
 
 let _scene = null;
-let _geo   = null;   // shared SphereGeometry, never mutated
+let _geo = null;   // shared SphereGeometry, never mutated
 
-const _slides   = new Map();   // slideIdx → { mesh, opacity, fadeDir, lastTick }
+const _slides = new Map();   // slideIdx → { mesh, opacity, fadeDir, lastTick }
 const _memCache = new Map();   // cacheKey → THREE.Texture
-const _loader   = new THREE.TextureLoader();
+const _loader = new THREE.TextureLoader();
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -200,13 +200,13 @@ export function initScenePainter(scene) {
   const base = new THREE.Mesh(
     new THREE.SphereGeometry(SPHERE_RADIUS - 1, 32, 32),
     new THREE.MeshBasicMaterial({
-      color:      0x0f0902,
-      side:       THREE.DoubleSide,
-      depthTest:  false,
+      color: 0x0f0902,
+      side: THREE.DoubleSide,
+      depthTest: false,
       depthWrite: false,
     }),
   );
-  base.renderOrder   = -30;
+  base.renderOrder = -30;
   base.frustumCulled = false;
   scene.add(base);
 
@@ -217,7 +217,7 @@ export function initScenePainter(scene) {
 
 export function tickScenePainter() {
   if (!_slides.size) return;
-  const now      = performance.now();
+  const now = performance.now();
   const toRemove = [];
 
   for (const [idx, s] of _slides) {
@@ -254,14 +254,14 @@ export function getImageKey() {
 
 export function setImageKey(key) {
   if (key) localStorage.setItem(IMG_KEY_STORE, key.trim());
-  else     localStorage.removeItem(IMG_KEY_STORE);
+  else localStorage.removeItem(IMG_KEY_STORE);
 }
 
 // ── Prompt builder ────────────────────────────────────────────────────────────
 
 export function buildPrompt(centralNode, frameNodes) {
-  const name    = centralNode?.label       ?? 'an entity';
-  const kind    = centralNode?.type        ?? 'concept';
+  const name = centralNode?.label ?? 'an entity';
+  const kind = centralNode?.type ?? 'concept';
   const excerpt = centralNode?.description
     ? ` — ${centralNode.description.slice(0, 90)}`
     : '';
@@ -296,14 +296,14 @@ export function buildPrompt(centralNode, frameNodes) {
  */
 export async function generateScene(centralNode, frameNodes, apiKey, camera, slideIdx, docId) {
   const key = apiKey || getImageKey();
-  if (!key)    throw new Error('No Gemini image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
+  if (!key) throw new Error('No Gemini image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
   if (!_scene) throw new Error('[ScenePainter] call initScenePainter(scene) first');
 
   const projViewMatrix = _canonicalProjView(slideIdx, camera);
   const { pos: cameraPos, target: cameraTarget } = getCanonicalCamera(slideIdx);
 
-  const cKey    = _cacheKey(centralNode, frameNodes);
-  let   texture = _memCache.get(cKey);
+  const cKey = _cacheKey(centralNode, frameNodes);
+  let texture = _memCache.get(cKey);
 
   if (!texture) {
     const stored = await _idbLoad(cKey);
@@ -312,6 +312,7 @@ export async function generateScene(centralNode, frameNodes, apiKey, camera, sli
       texture = await _textureFromDataURL(stored);
     } else {
       const prompt = buildPrompt(centralNode, frameNodes);
+
       log('SYSTEM', '[ScenePainter] requesting image', { slide: slideIdx, node: centralNode?.label });
       const dataURL = await _fetchDataURL(prompt, key);
       await _idbSave(cKey, dataURL);
@@ -344,7 +345,7 @@ export async function rehydrateSlides(docId, camera) {
   const restored = [];
   for (const [idxStr, cKey] of Object.entries(index)) {
     const slideIdx = parseInt(idxStr, 10);
-    const stored   = await _idbLoad(cKey);
+    const stored = await _idbLoad(cKey);
     if (!stored) continue;
     try {
       let texture = _memCache.get(cKey);
@@ -363,19 +364,37 @@ export async function rehydrateSlides(docId, camera) {
   return restored;
 }
 
+/**
+ * Return all stored backdrop dataURLs for a doc, keyed by slideIdx.
+ * @returns {Promise<Array<{slideIdx:number, dataURL:string}>>}
+ */
+export async function getAllBackdrops(docId) {
+  if (!docId) return [];
+  let index;
+  try {
+    index = JSON.parse(localStorage.getItem(SLIDE_IDX_PREFIX + docId) ?? '{}');
+  } catch { return []; }
+  const result = [];
+  for (const [idxStr, cKey] of Object.entries(index)) {
+    const dataURL = await _idbLoad(cKey);
+    if (dataURL) result.push({ slideIdx: parseInt(idxStr, 10), dataURL });
+  }
+  return result.sort((a, b) => a.slideIdx - b.slideIdx);
+}
+
 // ── Restore / clear ───────────────────────────────────────────────────────────
 
 export function restoreScene(slideIdx) {
   const s = _slides.get(slideIdx);
   if (!s) return;
-  s.fadeDir  = 1;
+  s.fadeDir = 1;
   s.lastTick = performance.now();
 }
 
 export function clearSlide(slideIdx) {
   const s = _slides.get(slideIdx);
   if (!s) return;
-  s.fadeDir  = -1;
+  s.fadeDir = -1;
   s.lastTick = performance.now();
 }
 
@@ -391,22 +410,22 @@ function _applySlide(slideIdx, texture, projViewMatrix) {
 
   if (!s) {
     const mat = new THREE.ShaderMaterial({
-      vertexShader:   VERT_SRC,
+      vertexShader: VERT_SRC,
       fragmentShader: FRAG_SRC,
-      side:           THREE.DoubleSide,
-      depthTest:      false,
-      depthWrite:     false,
-      transparent:    true,
+      side: THREE.DoubleSide,
+      depthTest: false,
+      depthWrite: false,
+      transparent: true,
       uniforms: {
-        uTexture:     { value: texture },
+        uTexture: { value: texture },
         uProjViewMat: { value: projViewMatrix.clone() },
-        uOpacity:     { value: 0.0 },
-        uHasTexture:  { value: true },
+        uOpacity: { value: 0.0 },
+        uHasTexture: { value: true },
       },
     });
 
     const mesh = new THREE.Mesh(_geo, mat);
-    mesh.renderOrder   = -20 + (slideIdx % 10);
+    mesh.renderOrder = -20 + (slideIdx % 10);
     mesh.frustumCulled = false;
     _scene.add(mesh);
 
@@ -416,7 +435,7 @@ function _applySlide(slideIdx, texture, projViewMatrix) {
     s.mesh.material.uniforms.uTexture.value = texture;
     s.mesh.material.uniforms.uProjViewMat.value.copy(projViewMatrix);
     s.mesh.material.uniforms.uHasTexture.value = true;
-    s.fadeDir  = 1;
+    s.fadeDir = 1;
     s.lastTick = performance.now();
   }
 }
@@ -428,7 +447,7 @@ function _storeSlideRef(docId, slideIdx, cacheKey) {
     const index = JSON.parse(localStorage.getItem(lsKey) ?? '{}');
     index[slideIdx] = cacheKey;
     localStorage.setItem(lsKey, JSON.stringify(index));
-  } catch {}
+  } catch { }
 }
 
 async function _fetchDataURL(prompt, key) {
@@ -443,9 +462,9 @@ async function _fetchDataURL(prompt, key) {
   let res;
   try {
     res = await fetch(`${ENDPOINT}?key=${encodeURIComponent(key)}`, {
-      method:  'POST',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(body),
+      body: JSON.stringify(body),
     });
   } catch (err) {
     throw new Error(`Network error: ${err.message}`);
