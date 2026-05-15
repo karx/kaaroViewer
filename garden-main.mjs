@@ -122,7 +122,7 @@ onNodeClick(qid => {
   const prev = getCurrentQid();
   if (prev && prev !== qid) setNodeState(prev, 'visited');
   setNodeState(qid, 'focused');
-  pushCrumb(qid, node.label);
+  pushCrumb(qid, node.label, node.type);
   const mesh = getNodeMesh(qid);
   if (mesh) focusOn(mesh.position.toArray(), 12);
   showDetail(node, graph.getEdgesFor(qid), id => graph.getNode(id));
@@ -212,7 +212,7 @@ function _selectAcItem(idx) {
   if (!node) return;
   clearDim(); _isDimmed = false;
   setNodeState(item.id, 'focused');
-  pushCrumb(item.id, node.label);
+  pushCrumb(item.id, node.label, node.type);
   const mesh = getNodeMesh(item.id);
   if (mesh) focusOn(mesh.position.toArray(), 12);
   showDetail(node, graph.getEdgesFor(item.id), id => graph.getNode(id));
@@ -408,7 +408,7 @@ function _cycleNode(dir) {
   if (cur && cur !== next.qid) setNodeState(cur, 'visited');
   clearDim(); _isDimmed = false;
   setNodeState(next.qid, 'focused');
-  pushCrumb(next.qid, next.label);
+  pushCrumb(next.qid, next.label, next.type);
   const mesh = getNodeMesh(next.qid);
   if (mesh) focusOn(mesh.position.toArray(), 12);
   showDetail(next, graph.getEdgesFor(next.qid), id => graph.getNode(id));
