@@ -127,6 +127,15 @@ function analyzeSession(projectId, filePath) {
     // File operations: { normalised_path: { read, write, edit } }
     file_ops: {},
 
+    // Bash command categories: { git, npm, npx, node, python, fs, curl, other }
+    bash_categories: {},
+
+    // Content block type counts (thinking, text, tool_use)
+    content_blocks: {},
+
+    // Stop reason counts (tool_use, end_turn, stop_sequence, max_tokens)
+    stop_reasons: {},
+
     // Custom skills invoked
     skills: [],
     // Built-in /commands used
@@ -226,15 +235,23 @@ function analyzeSession(projectId, filePath) {
       session.tokens.cache_read   += u.cache_read_input_tokens       || 0;
       session.tokens.output       += u.output_tokens                 || 0;
 
+      // Stop reason
+      if (rec.message.stop_reason) {
+        const sr = rec.message.stop_reason;
+        session.stop_reasons[sr] = (session.stop_reasons[sr] || 0) + 1;
+      }
+
       // Content blocks
       for (const block of (rec.message.content || [])) {
         const bt = block.type || 'unknown';
         session.assistant_content_types[bt] = (session.assistant_content_types[bt] || 0) + 1;
+        session.content_blocks[bt] = (session.content_blocks[bt] || 0) + 1;
 
         // Tool calls
         if (bt === 'tool_use') {
           session.tool_calls++;
           const name = block.name || 'unknown';
+
           if (!session.tools[name]) session.tools[name] = { calls: 0, errors: 0 };
           session.tools[name].calls++;
 
@@ -246,6 +263,20 @@ function analyzeSession(projectId, filePath) {
               if (!session.file_ops[fp]) session.file_ops[fp] = { read: 0, write: 0, edit: 0 };
               session.file_ops[fp][FILE_OP[name]]++;
             }
+          }
+
+          // Categorise Bash commands
+          if (name === 'Bash' && block.input?.command) {
+            const cmd = block.input.command.trimStart();
+            const cat = cmd.startsWith('git ')  ? 'git'
+                      : cmd.startsWith('npm ')  ? 'npm'
+                      : cmd.startsWith('npx ')  ? 'npx'
+                      : cmd.startsWith('node ') ? 'node'
+                      : cmd.startsWith('py ')   || cmd.startsWith('python') ? 'python'
+                      : /^(ls|cat|head|tail|mkdir|rm |cp |mv )/.test(cmd) ? 'fs'
+                      : cmd.startsWith('curl ')  ? 'curl'
+                      : 'other';
+            session.bash_categories[cat] = (session.bash_categories[cat] || 0) + 1;
           }
         }
       }
