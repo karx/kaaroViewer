@@ -10,7 +10,7 @@
 import { initScene, onNodeClick, onNodeDblClick, onNodeHover,
          focusOn, frameNodes, getCamera, getRenderer, getScene,
          getControls, addTick, tickHover, animateCameraTo,
-         getVisibleNodeQids } from './canvas/scene.mjs';
+         getVisibleNodeQids, setCameraLock, isCameraLocked } from './canvas/scene.mjs';
 import { addNodeMesh, getNodeMesh, getAllMeshes, setNodeState, clearAllNodes, removeNodeMesh,
          updateNodeDegree, dimAllExcept, clearDim,
          setNodeColorOverride, clearNodeColorOverrides } from './canvas/nodes.mjs';
@@ -950,6 +950,7 @@ export function updateFnBar() {
       <span class="fnk"><em>F7</em> Causal</span>
       <span class="fnk"><em>F9</em> Brief</span>
       <span class="fnk"><em>P</em> Paint</span>
+      <span class="fnk ${isCameraLocked() ? 'fnk-active' : ''}"><em>C</em> ${isCameraLocked() ? '◎ CAM LOCKED' : '○ Cam'}</span>
       <span class="fnk"><em>F10</em> 📷</span>
       <span class="fnk"><em>F11</em> 📦</span>
       <span class="fnk fnk-right"><em>◎</em> Log</span>`;
@@ -964,6 +965,7 @@ export function updateFnBar() {
       <span class="fnk fnk-ctx"><em>F7</em> ${isCausalMode() ? 'Force' : 'Causal'}</span>
       <span class="fnk fnk-ctx"><em>F9</em> Brief</span>
       <span class="fnk fnk-ctx"><em>P</em> Paint</span>
+      <span class="fnk fnk-ctx ${isCameraLocked() ? 'fnk-active' : ''}"><em>C</em> ${isCameraLocked() ? '◎ CAM LOCKED' : '○ Cam'}</span>
       <span class="fnk fnk-ctx"><em>Esc</em> Deselect</span>
       <span class="fnk fnk-right fnk-selected">◉ ${_esc(label.toUpperCase())}</span>`;
   }
@@ -987,6 +989,10 @@ document.addEventListener('keydown', e => {
       e.preventDefault();
       if (e.shiftKey) { _cycleStrategy(); return; }
       _triggerGlobalPaint();
+      return;
+    case 'c': case 'C':
+      e.preventDefault();
+      _toggleCameraLock();
       return;
   }
 
@@ -1237,17 +1243,27 @@ async function _executePaint(slideIdx, centralNode, frameNodes, canonicalOverrid
     return;
   }
 
+  // When camera is locked: capture the live camera position NOW as the canonical
+  // projection origin so the texture maps correctly to the current view.
+  // animateCameraTo calls below are already no-ops when locked, but we still need
+  // the override so the sphere shader projects from the right angle.
+  const locked = isCameraLocked();
+  const effectiveCanonical = canonicalOverride ?? (locked
+    ? { pos: getCamera().position.clone(), target: getControls().target.clone() }
+    : null);
+
   const ctx      = _assembleLiveContext(slideIdx !== GLOBAL_PAINT_SLIDE_IDX ? slideIdx : null);
   const strategy = getActiveStrategy();
   const prompt   = buildStrategyPrompt(ctx);
 
-  log('SYSTEM', `[paint] strategy=${strategy} slide=${slideIdx}`, {
-    hero: ctx.selectedNode?.label ?? ctx.slideCentral?.label,
+  log('SYSTEM', `[paint] strategy=${strategy} slide=${slideIdx} locked=${locked}`, {
+    hero:    ctx.selectedNode?.label ?? ctx.slideCentral?.label,
     visible: ctx.visibleNodes.length,
-    angle: ctx.cameraAngle?.phrase,
+    angle:   ctx.cameraAngle?.phrase,
   });
 
-  if (!canonicalOverride) {
+  // Fly to canonical before generation (skipped when locked or global)
+  if (!effectiveCanonical) {
     const canon = getCanonicalCamera(slideIdx);
     animateCameraTo(canon.pos, canon.target, 700);
   }
@@ -1256,12 +1272,13 @@ async function _executePaint(slideIdx, centralNode, frameNodes, canonicalOverrid
     const result = await generateScene(
       centralNode, frameNodes, apiKey, getCamera(),
       slideIdx, _lastLoadedDocId,
-      { prompt, strategy, canonicalOverride },
+      { prompt, strategy, canonicalOverride: effectiveCanonical },
     );
     if (slideIdx !== GLOBAL_PAINT_SLIDE_IDX) {
       notifySceneResult(slideIdx, 'done', undefined, result);
     }
-    if (!canonicalOverride) {
+    // Re-fly after generation (skipped when locked or global)
+    if (!effectiveCanonical) {
       animateCameraTo(result.cameraPos, result.cameraTarget, 600);
     }
     _updatePaintHUD();
@@ -1325,11 +1342,28 @@ document.addEventListener('slides:paint-scene', async e => {
 // ── Paint HUD button + P key ──────────────────────────────────────────────────
 
 function _updatePaintHUD() {
-  const btn = document.getElementById('paint-hud-btn');
-  if (!btn) return;
-  const strategy = getActiveStrategy();
-  btn.textContent = `◆ PAINT [${strategy}]`;
-  btn.title = `Paint scene (P) — Shift+P to cycle strategy. Active: ${strategy}`;
+  const paintBtn = document.getElementById('paint-hud-btn');
+  const camBtn   = document.getElementById('cam-lock-btn');
+  if (paintBtn) {
+    const strategy = getActiveStrategy();
+    paintBtn.textContent = `◆ PAINT [${strategy}]`;
+    paintBtn.title = `Paint scene (P) — Shift+P to cycle strategy. Active: ${strategy}`;
+  }
+  if (camBtn) {
+    const locked = isCameraLocked();
+    camBtn.textContent = locked ? '◎ CAM' : '○ CAM';
+    camBtn.setAttribute('aria-pressed', String(locked));
+    camBtn.title = locked
+      ? 'Camera locked — auto-movement disabled. C to unlock.'
+      : 'Camera free — auto-movement enabled. C to lock.';
+  }
+}
+
+function _toggleCameraLock() {
+  setCameraLock(!isCameraLocked());
+  _updatePaintHUD();
+  updateFnBar();
+  log('SYSTEM', `[camera] ${isCameraLocked() ? 'locked' : 'unlocked'}`);
 }
 
 function _cycleStrategy() {
@@ -1347,7 +1381,9 @@ document.getElementById('paint-hud-btn')?.addEventListener('click', e => {
   _triggerGlobalPaint();
 });
 
-// Initialize button label on load
+document.getElementById('cam-lock-btn')?.addEventListener('click', _toggleCameraLock);
+
+// Initialize button labels on load
 _updatePaintHUD();
 
 // Restore a previously-painted scene when navigating back to its slide

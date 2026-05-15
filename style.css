@@ -238,6 +238,7 @@ html, body {
 }
 .input-bar button:hover  { color: #ff6600; border-color: #ff6600; }
 #voice-btn.active        { color: #ff6600; border-color: #ff6600; background: #1a0800; }
+#cam-lock-btn[aria-pressed="true"] { color: #ff6600; border-color: #ff6600; background: #1a0800; }
 
 /* Action bar layout — text input lives in the hovering Explore UI now, so
    the source toggles grow to push control buttons to the right edge. */
@@ -261,6 +262,8 @@ html, body {
 .fnk-ctx       { color: #445544; }
 .fnk-ctx em    { color: #ffaa00; }
 .fnk-selected  { color: #ffaa00; font-weight: 700; letter-spacing: 0.04em; }
+.fnk-active    { color: #ff6600; font-weight: 700; }
+.fnk-active em { color: #ff6600; }
 
 /* ── Library drawer ─────────────────────────────────────────────────────── */
 .library-wrap {
