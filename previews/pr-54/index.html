@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kaaroViewer — Knowledge Graph Explorer</title>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three":         "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="shell">
+
+    <!-- ── Top bar: breadcrumb ─────────────────────────────────────────── -->
+    <div class="top-bar" role="banner">
+      <nav id="breadcrumb" class="breadcrumb" role="navigation" aria-label="Exploration history" aria-live="polite">
+        <span class="bc-empty" aria-label="No entity selected — explore something">explore something…</span>
+      </nav>
+      <button class="log-toggle" id="log-toggle" aria-label="Toggle debug log" aria-expanded="false" aria-controls="log-bar">◎</button>
+    </div>
+
+    <!-- ── Middle: canvas + report + detail panel ────────────────────── -->
+    <main class="middle" id="main-content">
+
+      <div class="canvas-wrap" id="theScene" role="application" aria-label="3D knowledge graph canvas — use mouse to navigate, click nodes to inspect">
+
+        <!-- ── Zero state: shown until the first entity loads ─────────────── -->
+        <div id="zero-state" class="zero-state" role="region" aria-label="kaaroViewer start screen">
+          <div class="zs-grid" aria-hidden="true"></div>
+
+          <!-- Boot ritual — shown briefly before the explore UI -->
+          <div id="zs-boot" class="zs-boot" aria-hidden="true">
+            <div class="zs-boot-line zs-bl-0">kaaroViewer  3.0.0</div>
+            <div class="zs-boot-line zs-bl-1">────────────────────────────────</div>
+            <div class="zs-boot-line zs-bl-2">&gt; ontology       <span class="zs-bl-ok">[OK]</span></div>
+            <div class="zs-boot-line zs-bl-3">&gt; canvas         <span class="zs-bl-ok">[OK]</span></div>
+            <div class="zs-boot-line zs-bl-4">&gt; knowledge bus  <span class="zs-bl-ok">[OK]</span></div>
+            <div class="zs-boot-line zs-bl-5">────────────────────────────────</div>
+            <div class="zs-boot-line zs-bl-6">READY <span class="zs-bl-cursor">█</span></div>
+          </div>
+
+          <div class="zs-body zs-body-hidden">
+            <div class="zs-brand">
+              <span class="zs-mark" aria-hidden="true">◆</span>
+              <span class="zs-wordmark">kaaroViewer</span>
+            </div>
+            <p class="zs-tagline">knowledge graph explorer</p>
+            <div class="zs-input-wrap">
+              <span class="zs-prompt" aria-hidden="true">explore</span>
+              <input id="zs-input" class="zs-input" type="text"
+                     placeholder="a topic, entity, or idea…"
+                     autocomplete="off" spellcheck="false"
+                     aria-label="Type a topic to explore">
+              <button id="zs-submit" class="zs-submit" aria-label="Start exploration">▶</button>
+            </div>
+            <div class="zs-seeds" role="group" aria-label="Quick-start suggestions">
+              <button class="zs-seed" data-seed="Gig economy India">Gig economy India</button>
+              <button class="zs-seed" data-seed="Minecraft redstone">Minecraft redstone</button>
+              <button class="zs-seed" data-seed="Age of Empires II">Age of Empires II</button>
+              <button class="zs-seed" data-seed="AI agents">AI agents</button>
+            </div>
+            <p class="zs-hint">or press <em>L</em> to load from the library</p>
+          </div>
+        </div>
+
+        <!-- ── Canvas loader: shown while LLM pipeline is running ─────────── -->
+        <div id="canvas-loader" class="canvas-loader hidden" role="status" aria-live="polite">
+          <div class="cl-inner">
+            <div class="cl-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span id="cl-label" class="cl-label">exploring…</span>
+            <div class="cl-progress-track" aria-hidden="true">
+              <div id="cl-progress" class="cl-progress-fill"></div>
+            </div>
+            <span id="cl-seed-echo" class="cl-seed-echo"></span>
+          </div>
+        </div>
+
+        <!-- Cluster isolation pills overlay (C-03 / IA-06) -->
+        <div id="cluster-pills" class="cluster-pills hidden" role="toolbar" aria-label="Cluster isolation — press 1–6 or click to isolate a cluster"></div>
+        <!-- Sentiment / tier overlay toggle buttons (C-06) -->
+        <div class="canvas-overlays" role="group" aria-label="Visual overlay modes">
+          <button id="overlay-sent-btn" class="overlay-btn" aria-label="Toggle sentiment colour mode (S key)" aria-pressed="false" title="S — Sentiment colour mode">SENT</button>
+          <button id="overlay-tier-btn" class="overlay-btn" aria-label="Toggle tier size mode (T key)" aria-pressed="false" title="T — Tier size mode">TIER</button>
+          <button id="screenshot-btn"   class="overlay-btn" aria-label="Save canvas as PNG (C-10)" title="Save canvas as PNG">SNAP</button>
+        </div>
+        <!-- Key stats strip (C-12) -->
+        <div id="stats-strip" class="stats-strip hidden" role="status" aria-label="Document key statistics" aria-live="polite"></div>
+      </div>
+
+      <!-- Report view (F9) -->
+      <div id="report-wrap" class="report-wrap" role="complementary" aria-label="Intelligence brief report">
+        <div id="report-inner" class="report-inner" tabindex="-1"></div>
+      </div>
+
+      <!-- Detail panel -->
+      <aside class="detail-panel" id="detail-panel" role="complementary" aria-label="Entity detail panel" aria-live="polite"></aside>
+      <!-- Mobile bottom-sheet backdrop -->
+      <div id="detail-backdrop" class="detail-backdrop" aria-hidden="true"></div>
+
+    </main>
+
+    <!-- ── Action bar ────────────────────────────────────────────────────
+         Text input lives in the hovering Explore UI. This bar is now
+         chrome-only: source toggles + control buttons. -->
+    <div class="input-bar" role="toolbar" aria-label="Actions and data sources">
+      <div id="source-toggles" class="source-toggles" role="group" aria-label="Data sources"></div>
+      <button id="voice-btn" aria-label="Toggle voice input (F1)" title="Start voice">F1 MIC</button>
+      <button id="save-btn"  aria-label="Save current session (F2)" title="Save session">F2 SAVE</button>
+      <button id="sessions-btn" aria-label="Open saved sessions (F8)" title="Saved sessions">F8 SSNS</button>
+      <button id="library-btn"  aria-label="Open local document library (L)" title="Load local document (L)" aria-haspopup="dialog">L LIB</button>
+      <button id="report-btn"    aria-label="Toggle intelligence brief (F9)" title="Toggle brief view" aria-expanded="false">F9 BRIEF</button>
+      <button id="settings-btn"  aria-label="Open model settings" title="LLM / BYOM settings" aria-haspopup="dialog">⚙ MODEL</button>
+    </div>
+
+    <!-- ── Function key hints ────────────────────────────────────────── -->
+    <div class="fnkey-bar" id="fnkey-bar" role="status" aria-label="Available keyboard shortcuts" aria-live="polite">
+      <span class="fnk"><em>F1</em> VOICE</span>
+      <span class="fnk"><em>F2</em> SAVE</span>
+      <span class="fnk"><em>F3</em> EXPAND</span>
+      <span class="fnk"><em>F4</em> CLEAR</span>
+      <span class="fnk"><em>DBL-CLICK</em> EXPAND NODE</span>
+      <span class="fnk"><em>CLICK</em> DETAIL</span>
+      <span class="fnk"><em>L</em> LIBRARY</span>
+      <span class="fnk"><em>F8</em> SESSIONS</span>
+      <span class="fnk fnk-right"><em>◎</em> LOG</span>
+    </div>
+
+  </div>
+
+  <!-- ── Library drawer ──────────────────────────────────────────────── -->
+  <div id="library-wrap" class="library-wrap" role="dialog" aria-modal="true" aria-label="Local document library" aria-hidden="true">
+    <div class="library-header">
+      <span id="library-title">◆ LOCAL LIBRARY</span>
+      <button id="library-close" aria-label="Close library">✕</button>
+    </div>
+    <div id="library-drawer" class="library-drawer" role="list" aria-labelledby="library-title"></div>
+  </div>
+
+  <!-- ── Sessions drawer (overlay) ───────────────────────────────────── -->
+  <div id="sessions-wrap" class="sessions-wrap" role="dialog" aria-modal="true" aria-label="Saved exploration sessions" aria-hidden="true">
+    <div class="sessions-header">
+      <span id="sessions-title">Saved Explorations</span>
+      <button id="sessions-close" aria-label="Close sessions panel">✕</button>
+    </div>
+    <div id="sessions-drawer" class="sessions-drawer" role="list" aria-labelledby="sessions-title"></div>
+  </div>
+
+  <!-- ── Settings drawer ────────────────────────────────────────────── -->
+  <div id="settings-wrap" class="settings-wrap" role="dialog" aria-modal="true"
+       aria-label="Model settings" aria-hidden="true">
+  </div>
+
+  <!-- ── Debug log (hidden by default) ───────────────────────────────── -->
+  <div id="log-bar" class="log-bar hidden" role="log" aria-label="Debug log" aria-live="off">
+    <div id="logger" class="log-inner"></div>
+  </div>
+
+  <script type="module" src="./main.mjs"></script>
+  <script>
+    // Sessions close button
+    document.getElementById('sessions-close')?.addEventListener('click', () => {
+      const wrap = document.getElementById('sessions-wrap');
+      wrap?.classList.remove('open');
+      wrap?.setAttribute('aria-hidden', 'true');
+    });
+    // Log toggle
+    document.getElementById('log-toggle')?.addEventListener('click', function() {
+      const bar  = document.getElementById('log-bar');
+      const open = bar?.classList.toggle('hidden') === false;
+      this.setAttribute('aria-expanded', String(!open));
+    });
+    // Sync aria-hidden on drawers
+    const _libWrap  = document.getElementById('library-wrap');
+    const _sessWrap = document.getElementById('sessions-wrap');
+    new MutationObserver(ms => ms.forEach(m => {
+      if (m.type === 'attributes' && m.attributeName === 'class') {
+        const el   = m.target;
+        const open = el.classList.contains('open');
+        el.setAttribute('aria-hidden', String(!open));
+        if (open) el.querySelector('button, [tabindex]')?.focus();
+      }
+    })).observe(_libWrap,  { attributes: true });
+    new MutationObserver(ms => ms.forEach(m => {
+      if (m.type === 'attributes' && m.attributeName === 'class') {
+        const el   = m.target;
+        const open = el.classList.contains('open');
+        el.setAttribute('aria-hidden', String(!open));
+      }
+    })).observe(_sessWrap, { attributes: true });
+  </script>
+</body>
+</html>
