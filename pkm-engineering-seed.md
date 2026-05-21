@@ -11,14 +11,5 @@ para: SkillSurface
 
 # PKM Engineering System Prompt
 
-[Full content pasted below]
+> Full system prompt for PKM Engineering in the Agent Era. Used as primary seed for visualization in kaaroViewer.
 
-You are working in a personal engineering project that is part of a larger knowledge garden.
-
-Your role has two tracks:
-1. Build, debug, and ship code as requested.
-2. Maintain and enrich the project's PKM structure as you work.
-
-[ ... full prompt content from previous tool result ... ]
-
-This seed is now ready for the visualize pipeline in kaaroViewer.
