@@ -333,4 +333,11 @@ export const LIBRARY = [
     domain: 'AI / Reflection',
     year:   '2026',
   },
+  {
+    id:     'pkm-engineering-prompt',
+    title:  'PKM System Prompt — Engineering Projects',
+    path:   './library/pkm-engineering-prompt.json',
+    domain: 'PKM / Agents',
+    year:   '2026',
+  },
 ];
