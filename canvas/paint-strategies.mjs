@@ -14,28 +14,62 @@
  *   2. slideCentral  — the slide's primary entity
  *   3. visibleNodes[0] — whatever is most prominent on screen
  *
+ * Compositing modes (set per strategy via registerStrategy opts):
+ *   'replace'    — newest projection covers the overlap region (NormalBlending, opacity 1.0)
+ *   'accumulate' — pixels add up; overlaps brighten (AdditiveBlending, opacity 1.0)
+ *   'blend'      — all layers remain partially visible (NormalBlending, opacity < 1.0)
+ *
  * To add a custom strategy at runtime:
  *   import { registerStrategy } from './canvas/paint-strategies.mjs';
- *   registerStrategy('my-style', ctx => `paint ${ctx.selectedNode?.label} as neon graffiti`);
+ *   registerStrategy('my-style', ctx => `paint ${ctx.selectedNode?.label} as neon graffiti`,
+ *                    { compositing: 'accumulate' });
  *   setActiveStrategy('my-style');
  */
 
+// Registry stores { fn, compositing, opacity } per strategy name
 const _registry = new Map();
 let   _active   = 'cinematic';
 
-export function registerStrategy(name, fn) { _registry.set(name, fn); }
-export function setActiveStrategy(name)    { if (_registry.has(name)) { _active = name; return true; } return false; }
-export function getActiveStrategy()        { return _active; }
-export function listStrategies()           { return [..._registry.keys()]; }
+/**
+ * @param {string}   name
+ * @param {(ctx: object) => string} fn   — pure prompt builder
+ * @param {object}   [opts]
+ * @param {'replace'|'accumulate'|'blend'} [opts.compositing='replace']
+ * @param {number}   [opts.opacity=1.0]  — fade target (only meaningful for 'blend')
+ */
+export function registerStrategy(name, fn, opts = {}) {
+  _registry.set(name, {
+    fn,
+    compositing: opts.compositing ?? 'replace',
+    opacity:     opts.opacity     ?? 1.0,
+  });
+}
+
+export function setActiveStrategy(name) {
+  if (_registry.has(name)) { _active = name; return true; }
+  return false;
+}
+export function getActiveStrategy() { return _active; }
+export function listStrategies()    { return [..._registry.keys()]; }
+
+/**
+ * Return the compositing config for the named (or currently active) strategy.
+ * Falls back to { compositing: 'replace', opacity: 1.0 } for unknown names.
+ */
+export function getStrategyConfig(name) {
+  const entry = _registry.get(name ?? _active);
+  if (!entry) return { compositing: 'replace', opacity: 1.0 };
+  return { compositing: entry.compositing, opacity: entry.opacity };
+}
 
 /**
  * Build a prompt using the currently-active strategy.
  * Throws if the active strategy is not registered.
  */
 export function buildPrompt(ctx) {
-  const fn = _registry.get(_active);
-  if (!fn) throw new Error(`[PaintStrategies] unknown strategy: ${_active}`);
-  return fn(ctx);
+  const entry = _registry.get(_active);
+  if (!entry) throw new Error(`[PaintStrategies] unknown strategy: ${_active}`);
+  return entry.fn(ctx);
 }
 
 // ── Internal helpers ──────────────────────────────────────────────────────────
@@ -63,6 +97,7 @@ function _supportingCast(ctx, hero, limit = 5) {
 /**
  * cinematic — oil-painting atmospheric style, current default.
  * Uses camera elevation phrase to vary the shot description.
+ * Compositing: replace — authoritative image per slide angle.
  */
 registerStrategy('cinematic', ctx => {
   const hero    = _heroNode(ctx);
@@ -80,11 +115,12 @@ registerStrategy('cinematic', ctx => {
     'Rich texture and painterly brushwork. Shallow depth of field. Wide lens.',
     'No text. No labels. No UI elements. Cinematic intelligence brief aesthetic.',
   ].filter(Boolean).join(' ');
-});
+}, { compositing: 'replace' });
 
 /**
  * documentary — naturalistic photographic style.
  * More factual language; foregrounds the description.
+ * Compositing: blend — layers stack at partial opacity so each angle contributes.
  */
 registerStrategy('documentary', ctx => {
   const hero    = _heroNode(ctx);
@@ -100,11 +136,12 @@ registerStrategy('documentary', ctx => {
     'Natural observational light. Muted desaturated palette, high clarity.',
     'Photojournalistic aesthetic. No text, labels, or graphics.',
   ].filter(Boolean).join(' ');
-});
+}, { compositing: 'blend', opacity: 0.55 });
 
 /**
  * abstract — non-representational color-field painting.
  * Treats entities as conceptual inputs, not literal subjects.
+ * Compositing: accumulate — additive blending creates luminous color buildup.
  */
 registerStrategy('abstract', ctx => {
   const hero    = _heroNode(ctx);
@@ -117,11 +154,12 @@ registerStrategy('abstract', ctx => {
     'Inspired by Rothko and Kandinsky. Emotional, conceptual, non-representational.',
     'No labels, symbols, or legible marks of any kind.',
   ].join(' ');
-});
+}, { compositing: 'accumulate' });
 
 /**
  * blueprint — technical architectural/schematic style.
  * Cool palette, precise lines, diagrammatic.
+ * Compositing: replace — each slide gets a clean technical render.
  */
 registerStrategy('blueprint', ctx => {
   const hero    = _heroNode(ctx);
@@ -136,4 +174,4 @@ registerStrategy('blueprint', ctx => {
     'Grid overlay, precise geometry, hatching patterns.',
     'No color fills. No photographs. Pure technical illustration.',
   ].filter(Boolean).join(' ');
-});
+}, { compositing: 'replace' });

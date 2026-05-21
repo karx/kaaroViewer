@@ -9,9 +9,9 @@
  * so each mesh illuminates only the sphere region visible from the paint angle.
  * Multiple meshes from different angles accumulate cleanly — there is no limit.
  *
- *   renderOrder -30      base dark sphere (constant background)
- *   renderOrder -20…-1   painted meshes   (sequential, newest on top)
- *   renderOrder  0       nodes / edges
+ *   renderOrder -100000    base dark sphere (constant background)
+ *   renderOrder -99999…-1  painted meshes  (increments, newest on top)
+ *   renderOrder  0         nodes / edges
  *
  * Canonical camera positions
  * --------------------------
@@ -58,52 +58,11 @@
 
 import * as THREE from 'three';
 import { log } from '../logger.mjs';
-import { loadLLMConfig } from '../pipeline/gateway/index.mjs';
+import { _idbSave, _idbLoad, _storeProjectionRecord, PROJ_IDX_PREFIX } from './painter-storage.mjs';
+export { getImageKey, setImageKey } from './painter-storage.mjs';
 
 const ENDPOINT =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent';
-
-const IMG_KEY_STORE   = 'kv.kaaro.img';
-const PROJ_IDX_PREFIX = 'kv.kaaro.proj.'; // localStorage: + docId → JSON array
-
-// IndexedDB — image data-URLs keyed by UUID
-const IDB_NAME    = 'kv.kaaro.painter';
-const IDB_VERSION = 1;
-const IDB_STORE   = 'images';
-let _idb = null;
-
-function _openIDB() {
-  if (_idb) return Promise.resolve(_idb);
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(IDB_NAME, IDB_VERSION);
-    req.onupgradeneeded = e => e.target.result.createObjectStore(IDB_STORE);
-    req.onsuccess = e => { _idb = e.target.result; resolve(_idb); };
-    req.onerror   = e => reject(e.target.error);
-  });
-}
-
-async function _idbSave(key, value) {
-  try {
-    const db = await _openIDB();
-    const tx = db.transaction(IDB_STORE, 'readwrite');
-    tx.objectStore(IDB_STORE).put(value, key);
-    await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
-  } catch (err) {
-    log('SYSTEM', `[ScenePainter] IDB save failed: ${err.message}`);
-  }
-}
-
-async function _idbLoad(key) {
-  try {
-    const db = await _openIDB();
-    return new Promise((resolve, reject) => {
-      const tx  = db.transaction(IDB_STORE, 'readonly');
-      const req = tx.objectStore(IDB_STORE).get(key);
-      req.onsuccess = () => resolve(req.result ?? null);
-      req.onerror   = () => reject(req.error);
-    });
-  } catch { return null; }
-}
 
 const SPHERE_RADIUS  = 180;
 const CANONICAL_DIST = 65;
@@ -112,11 +71,11 @@ const FADE_RATE      = 1.6; // opacity/s → ≈0.625 s full fade
 // ── Canonical camera positions ────────────────────────────────────────────────
 
 const _GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
-const _SILVER_FRAC  = 0.6180339887;
+const _PHI_INV      = 0.6180339887; // 1/φ — inverse golden ratio
 
 function _canonicalDir(slideIdx) {
   const azimuth = slideIdx * _GOLDEN_ANGLE;
-  const sinElev = 2 * ((slideIdx * _SILVER_FRAC + 0.5) % 1) - 1;
+  const sinElev = 2 * ((slideIdx * _PHI_INV + 0.5) % 1) - 1;
   const cosElev = Math.sqrt(Math.max(0, 1 - sinElev * sinElev));
   return new THREE.Vector3(
     cosElev * Math.cos(azimuth),
@@ -136,6 +95,9 @@ export function getCanonicalCamera(slideIdx) {
 function _projViewFromPos(pos, target, liveCam) {
   const dir = pos.clone().normalize();
   const up  = new THREE.Vector3(0, 1, 0).addScaledVector(dir, -dir.y);
+  // Degenerate case (camera directly above/below): use Z as arbitrary up.
+  // The golden-angle spiral occasionally produces near-polar angles; Z-up gives
+  // a consistent (if arbitrary) texture orientation for those shots.
   if (up.lengthSq() < 1e-4) up.set(0, 0, 1);
   else up.normalize();
 
@@ -193,7 +155,7 @@ const FRAG_SRC = /* glsl */`
 
 let _scene        = null;
 let _geo          = null;            // shared SphereGeometry, never mutated
-let _renderOrder  = -20;             // decrements per new mesh (newest on top within range)
+let _renderOrder  = -99999;          // increments per new mesh; newest gets highest value → on top
 
 const _paints   = new Map(); // uuid     → { mesh, opacity, fadeDir, lastTick }
 const _slideMap = new Map(); // slideIdx → uuid   (latest paint per slide, for crossfade + clear)
@@ -217,7 +179,7 @@ export function initScenePainter(scene) {
       depthWrite: false,
     }),
   );
-  base.renderOrder = -30;
+  base.renderOrder = -100000;
   base.frustumCulled = false;
   scene.add(base);
 
@@ -237,8 +199,8 @@ export function tickScenePainter() {
     p.lastTick = now;
     p.opacity += p.fadeDir * dt * FADE_RATE;
 
-    if (p.opacity >= 1.0) {
-      p.opacity = 1.0;
+    if (p.opacity >= p.targetOpacity) {
+      p.opacity = p.targetOpacity;
       p.fadeDir = 0;
     } else if (p.opacity <= 0.0) {
       _scene.remove(p.mesh);
@@ -250,21 +212,6 @@ export function tickScenePainter() {
   }
 
   for (const uuid of toRemove) _paints.delete(uuid);
-}
-
-// ── Key management ────────────────────────────────────────────────────────────
-
-export function getImageKey() {
-  const stored = localStorage.getItem(IMG_KEY_STORE);
-  if (stored) return stored;
-  const cfg = loadLLMConfig();
-  if (cfg?.provider === 'gemini' && cfg.apiKey) return cfg.apiKey;
-  return '';
-}
-
-export function setImageKey(key) {
-  if (key) localStorage.setItem(IMG_KEY_STORE, key.trim());
-  else localStorage.removeItem(IMG_KEY_STORE);
 }
 
 // ── Prompt builder (legacy fallback) ─────────────────────────────────────────
@@ -308,7 +255,7 @@ export function buildPrompt(centralNode, frameNodes) {
  *                                            use live camera instead of golden-angle spiral
  */
 export async function generateScene(centralNode, frameNodes, apiKey, camera, slideIdx, docId, opts = {}) {
-  const { prompt: promptOverride, canonicalOverride = null } = opts;
+  const { prompt: promptOverride, canonicalOverride = null, compositingCfg = null } = opts;
 
   const key = apiKey || getImageKey();
   if (!key) throw new Error('No Gemini image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
@@ -336,7 +283,7 @@ export async function generateScene(centralNode, frameNodes, apiKey, camera, sli
   }
 
   _storeProjectionRecord(docId, slideIdx, uuid, projPos, projTarget);
-  _applyPaint(uuid, slideIdx, texture, projViewMatrix);
+  _applyPaint(uuid, slideIdx, texture, projViewMatrix, compositingCfg);
 
   return { cameraPos: projPos, cameraTarget: projTarget };
 }
@@ -431,7 +378,7 @@ export function clearAllSlides() {
  * If slideIdx is non-null and there was a previous mesh for that slide,
  * it is faded out (crossfade).
  */
-function _applyPaint(uuid, slideIdx, texture, projViewMatrix) {
+function _applyPaint(uuid, slideIdx, texture, projViewMatrix, compositingCfg = null) {
   // Fade out the previous mesh for this slide slot (if any)
   if (slideIdx != null) {
     const prevUuid = _slideMap.get(slideIdx);
@@ -442,10 +389,14 @@ function _applyPaint(uuid, slideIdx, texture, projViewMatrix) {
     _slideMap.set(slideIdx, uuid);
   }
 
+  const mode          = compositingCfg?.compositing ?? 'replace';
+  const targetOpacity = compositingCfg?.opacity      ?? 1.0;
+
   // Each UUID always gets its own new mesh — accumulation is the default
   const mat = new THREE.ShaderMaterial({
     vertexShader:   VERT_SRC,
     fragmentShader: FRAG_SRC,
+    blending:    mode === 'accumulate' ? THREE.AdditiveBlending : THREE.NormalBlending,
     side:       THREE.DoubleSide,
     depthTest:  false,
     depthWrite: false,
@@ -459,31 +410,13 @@ function _applyPaint(uuid, slideIdx, texture, projViewMatrix) {
   });
 
   const mesh = new THREE.Mesh(_geo, mat);
-  // Newest paint sits on top; clamp to [-29, -1] to stay between base and nodes
-  _renderOrder = Math.max(-29, _renderOrder - 1);
+  // Increment so newest paint has highest renderOrder — renders last, appears on top
+  _renderOrder += 1;
   mesh.renderOrder   = _renderOrder;
   mesh.frustumCulled = false;
   _scene.add(mesh);
 
-  _paints.set(uuid, { mesh, opacity: 0.0, fadeDir: 1, lastTick: performance.now() });
-}
-
-/**
- * Persist a paint record. Replaces any existing record for the same slideIdx
- * within this doc (keeps only the latest paint per slide slot).
- * Free-roam records (slideIdx = null) are appended without replacement.
- */
-function _storeProjectionRecord(docId, slideIdx, uuid, pos, target) {
-  if (!docId) return;
-  try {
-    const lsKey   = PROJ_IDX_PREFIX + docId;
-    const records = JSON.parse(localStorage.getItem(lsKey) ?? '[]');
-    const updated = slideIdx != null
-      ? records.filter(r => r.slideIdx !== slideIdx)  // replace latest for slide
-      : records;                                       // free-roam: append
-    updated.push({ uuid, slideIdx, pos: pos.toArray(), target: target.toArray() });
-    localStorage.setItem(lsKey, JSON.stringify(updated));
-  } catch { }
+  _paints.set(uuid, { mesh, opacity: 0.0, fadeDir: 1, lastTick: performance.now(), targetOpacity });
 }
 
 async function _fetchDataURL(prompt, key) {

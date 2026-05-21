@@ -9,9 +9,9 @@
 
 import { initScene, onNodeClick, onNodeDblClick, onNodeHover,
          focusOn, frameNodes, getCamera, getRenderer, getScene,
-         getControls, addTick, tickHover, animateCameraTo,
-         getVisibleNodeQids, setCameraLock, isCameraLocked } from './canvas/scene.mjs';
-import { addNodeMesh, getNodeMesh, getAllMeshes, setNodeState, clearAllNodes, removeNodeMesh,
+         addTick, tickHover,
+         isCameraLocked } from './canvas/scene.mjs';
+import { addNodeMesh, getNodeMesh, setNodeState, clearAllNodes, removeNodeMesh,
          updateNodeDegree, dimAllExcept, clearDim,
          setNodeColorOverride, clearNodeColorOverrides } from './canvas/nodes.mjs';
 import { addEdgeLine, syncEdgePositions, clearAllEdges, clearEdgesFor }         from './canvas/edges.mjs';
@@ -20,19 +20,16 @@ import { graph }                                                from './pipeline
 import { getEntityCore, getEntityNeighbors }                   from './pipeline/knowledge.mjs';
 import { resolve }                                              from './pipeline/resolver.mjs';
 import { inputBus }                                            from './pipeline/input.mjs';
-import { saveSession, listSessions, loadSession, deleteSession } from './pipeline/sessions.mjs';
 import { initDetail, showDetail, hideDetail, getCurrentQid }   from './canvas/detail.mjs';
 import { initTooltip, showTooltip, hideTooltip }               from './canvas/tooltip.mjs';
 import { pushCrumb, getCrumbs, clearCrumbs }                   from './canvas/breadcrumb.mjs';
 import { log }                                                  from './logger.mjs';
 import { resolveEntityType }                                    from './ontology.mjs';
 import { loadLocalDoc, LIBRARY, getDocMeta }                   from './pipeline/local-graph.mjs';
-import { initReport, renderReport, showReport, hideReport, isReportVisible,
+import { initReport, hideReport, isReportVisible,
          scrollToCluster } from './canvas/report.mjs';
-import { initSlides, renderSlides, showSlides, hideSlides, isSlidesVisible,
-         nextSlide, prevSlide, notifySceneResult,
-         getSlideCount, getSlideIds,
-         getActiveSlideIdx, getActiveSlide } from './canvas/slides.mjs';
+import { initSlides, hideSlides, isSlidesVisible,
+         nextSlide, prevSlide } from './canvas/slides.mjs';
 import { sourceManager }                                       from './pipeline/sources/source-manager.mjs';
 import { LiquipediaSource }                                    from './pipeline/sources/liquipedia.mjs';
 import { RedditSource }                                        from './pipeline/sources/reddit.mjs';
@@ -42,21 +39,22 @@ import { toggleCausalLayout, isCausalMode }                    from './canvas/ca
 import { initNarrative, toggleNarrative, narrativeNext,
          narrativePrev, stopNarrative, isNarrativeActive,
          loadTour }                                            from './canvas/narrative.mjs';
-import { explore, rethink, registerLLM,
+import { registerLLM,
          registerLLMDisambiguate, validateBrief }             from './pipeline/explore.mjs';
-import { runCompletion }                                       from './pipeline/completion.mjs';
-import { runEnrichment, applyPatches }                        from './pipeline/enrichment-coordinator.mjs';
 import { mountExploreUI }                                     from './canvas/explore-ui.mjs';
 import { mountSettings, toggleSettings }                      from './canvas/settings.mjs';
-import { initScenePainter, generateScene, rehydrateSlides, getCanonicalCamera,
-         restoreScene, clearSlide, clearAllSlides,
-         tickScenePainter, getImageKey,
-         getAllBackdrops }                                    from './canvas/scene-painter.mjs';
-import { EMBED_MODE, notifyBriefReady, signalReady }         from './embed.mjs';
-import { assemblePaintContext }                               from './canvas/paint-context.mjs';
-import { buildPrompt as buildStrategyPrompt,
-         setActiveStrategy, getActiveStrategy,
-         listStrategies } from './canvas/paint-strategies.mjs';
+import { initScenePainter, getCanonicalCamera,
+         tickScenePainter }                                  from './canvas/scene-painter.mjs';
+import { EMBED_MODE, signalReady }                           from './embed.mjs';
+import { getActiveBrief, getActivePatches, setActiveBrief, setActivePatches,
+         getLastLoadedDocId, setLastLoadedDocId, getCurrentDocMeta, setCurrentDocMeta,
+         getBriefMode, setBriefMode } from './canvas/app-state.mjs';
+import { initBriefController, showBrief, toggleReportMode } from './canvas/brief-controller.mjs';
+import { initSessionManager, toggleSessionsDrawer } from './canvas/session-manager.mjs';
+import { exportCanvasPNG, exportAssets } from './canvas/export.mjs';
+import { initPaintOrchestrator, triggerGlobalPaint, updatePaintHUD,
+         toggleCameraLock, cycleStrategy } from './canvas/paint-orchestrator.mjs';
+import { runExploration, runExpand, runRethink } from './canvas/exploration-pipeline.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -75,6 +73,25 @@ requestAnimationFrame(() => {
   initTooltip();
   initReport();
   initSlides();
+
+  // Restore persisted brief-mode preference
+  setBriefMode(sessionStorage.getItem('kv.briefMode') === 'reader' ? 'reader' : 'slides');
+
+  initBriefController();
+  initPaintOrchestrator();
+  initSessionManager({
+    onRestoreComplete: session => {
+      if (session.brief) {
+        showBrief(session.brief);
+        _renderClusterPills(session.brief);
+        _updateStatsStrip(session.brief);
+      }
+      _overlayMode = null;
+      _updateOverlayBtns();
+      updateFnBar();
+    },
+  });
+
   initNarrative(focusEntity);
   updateFnBar();
   _renderSourceToggles();
@@ -82,8 +99,8 @@ requestAnimationFrame(() => {
   // ── Mount explore UI ──────────────────────────────────────────────────────
   mountExploreUI({
     container: 'body',
-    onExpand:  deltas => _runExpand(deltas),
-    onRethink: deltas => _runRethink(deltas),
+    onExpand:  runExpand,
+    onRethink: runRethink,
   });
 
   // Mount settings panel (suppressed in embed mode — keys live in the host CF)
@@ -186,10 +203,10 @@ requestAnimationFrame(() => {
     if (_deeplinkEntry) {
       loadLocalDoc(_deeplinkEntry.path).then(meta => {
         if (!meta) return;
-        _lastLoadedDocId = meta.id;
-        _currentDocMeta  = meta;
+        setLastLoadedDocId(meta.id);
+        setCurrentDocMeta(meta);
         runForceRelax(160);
-        _showBrief(meta);
+        showBrief(meta);
         _renderClusterPills(meta);
         _updateStatsStrip(meta);
         updateFnBar();
@@ -348,16 +365,14 @@ inputBus.addEventListener('intent', async e => {
   // 2. Deterministic: Wikidata entity resolution (QID, wd:QID, or label match)
   const qids = await resolve(text);
   if (qids.length > 0) {
-    console.log(`[kaaro/intent] Wikidata resolved "${text}" → [${qids.join(', ')}] — loading entities, skipping LLM`);
     log('SYSTEM', `[intent] Wikidata match: ${qids.join(', ')} — loading entities`);
     for (const qid of qids) await loadEntity(qid);
     return;
   }
 
   // 3. Fallback: no deterministic match — hand off to LLM exploration pipeline
-  console.log(`[kaaro/intent] no Wikidata match for "${text}" — launching LLM exploration`);
   log('SYSTEM', `no wikidata match for "${text}" — launching exploration`);
-  _runExploration(text);
+  runExploration(text);
 });
 
 // ── Load source results into graph ────────────────────────────────────────────
@@ -420,151 +435,6 @@ if (voiceBtn) {
     }
   });
 }
-
-// ── Sessions ──────────────────────────────────────────────────────────────────
-
-async function _snapshotSession(name) {
-  const cam   = getCamera();
-  const ctrl  = getControls();
-  const nodes = [...graph.nodes.values()].map(n => ({
-    qid:         n.qid,
-    label:       n.label,
-    type:        n.type,
-    tier:        n.tier,
-    sentiment:   n.sentiment,
-    description: n.description,
-    image:       n.image,
-    metrics:     n.metrics,
-    confidence:  n.confidence,
-    wikidata:    n.wikidata,
-    _links:      n._links,
-    _enriched:   n._enriched,
-    _source:     n._source,
-    position:    getPosition(n.qid) ?? [0, 0, 0],
-  }));
-  const edges  = [...graph.edges.values()];
-  const camera = { position: cam.position.toArray(), target: ctrl.target.toArray() };
-  return saveSession({
-    name,
-    nodes, edges, camera,
-    breadcrumb: getCrumbs().map(c => c.qid),
-    brief:      _activeBrief   ?? null,
-    patches:    _activePatches ?? null,
-  });
-}
-
-document.getElementById('save-btn')?.addEventListener('click', async () => {
-  const name = prompt('Name this exploration:') || undefined;
-  const session = await _snapshotSession(name);
-  log('SYSTEM', `session saved: ${session.name}`, { id: session.id });
-  _renderSessionsDrawer();
-});
-
-async function _renderSessionsDrawer() {
-  const drawer = document.getElementById('sessions-drawer');
-  if (!drawer) return;
-  const list = await listSessions();
-  if (!list.length) {
-    drawer.innerHTML = '<p class="sd-empty">No saved sessions yet.</p>';
-    return;
-  }
-  drawer.innerHTML = list.map(s => `
-    <div class="sd-item" data-id="${s.id}">
-      <span class="sd-name" title="${_esc(s.name)}">${_esc(s.name)}</span>
-      <span class="sd-meta">
-        <span class="sd-date">${new Date(s.savedAt).toLocaleDateString()}</span>
-        <span class="sd-count">${s.nodes?.length ?? 0} nodes</span>
-        ${s.brief ? '<span class="sd-has-brief">◆ brief</span>' : ''}
-      </span>
-      <button class="sd-load" data-action="load"   data-id="${_esc(s.id)}">LOAD</button>
-      <button class="sd-del"  data-action="delete" data-id="${_esc(s.id)}" title="Delete">✕</button>
-    </div>
-  `).join('');
-
-  drawer.querySelectorAll('[data-action]').forEach(btn => {
-    btn.addEventListener('click', async e => {
-      e.stopPropagation();
-      const id = btn.dataset.id;
-      if (btn.dataset.action === 'delete') {
-        await deleteSession(id);
-        _renderSessionsDrawer();
-      }
-      if (btn.dataset.action === 'load') {
-        await _restoreSession(id);
-        toggleSessionsDrawer(false);
-      }
-    });
-  });
-}
-
-async function _restoreSession(id) {
-  const session = await loadSession(id);
-  if (!session) return;
-
-  clearAllNodes();
-  clearAllEdges();
-  graph.clear();
-  clearCrumbs();
-  clearLayout();
-  clearNodeColorOverrides();
-  _overlayMode = null;
-
-  for (const n of session.nodes) {
-    setPosition(n.qid, n.position ?? [0, 0, 0]);
-    graph.addNode(n.qid, { ...n, _state: 'visited' });
-  }
-  for (const e of session.edges) {
-    graph.addEdge(e.from, e.to, e.pid, e.relLabel);
-  }
-
-  const cam  = getCamera();
-  const ctrl = getControls();
-  if (session.camera) {
-    cam.position.fromArray(session.camera.position);
-    ctrl.target.fromArray(session.camera.target);
-    ctrl.update();
-  }
-
-  // Restore breadcrumbs
-  for (const qid of (session.breadcrumb ?? [])) {
-    const node = graph.getNode(qid);
-    if (node) pushCrumb(qid, node.label ?? qid, node.type);
-  }
-
-  // Restore brief + report if the session has one
-  if (session.brief) {
-    _activeBrief      = session.brief;
-    _activePatches    = session.patches ?? null;
-    _lastLoadedDocId  = session.brief.meta?.id ?? null;
-    _currentDocMeta   = session.brief;
-
-    // Rebuild nodeLookup in case it wasn't persisted
-    if (!_activeBrief.nodeLookup) {
-      _activeBrief.nodeLookup = Object.fromEntries(
-        (_activeBrief.nodes ?? []).map(n => [n.id, n])
-      );
-    }
-
-    _showBrief(_activeBrief);
-    _renderClusterPills(_activeBrief);
-    _updateStatsStrip(_activeBrief);
-  }
-
-  updateFnBar();
-  log('SYSTEM', `session restored: ${session.name} (${session.nodes?.length ?? 0} nodes${session.brief ? ', brief included' : ''})`);
-}
-
-let _drawerOpen = false;
-export function toggleSessionsDrawer(force) {
-  _drawerOpen = force !== undefined ? force : !_drawerOpen;
-  const drawer = document.getElementById('sessions-drawer');
-  const wrap   = document.getElementById('sessions-wrap');
-  if (!drawer || !wrap) return;
-  if (_drawerOpen) { _renderSessionsDrawer(); wrap.classList.add('open'); }
-  else             { wrap.classList.remove('open'); }
-}
-
-document.getElementById('sessions-btn')?.addEventListener('click', () => toggleSessionsDrawer());
 
 // ── Console API ───────────────────────────────────────────────────────────────
 
@@ -705,11 +575,11 @@ function _renderLibrary(tagFilter = null) {
           pv.querySelector('.lib-pv-load').textContent = 'LOADING…';
           const meta = await loadLocalDoc(path);
           if (meta) {
-            _lastLoadedDocId = meta.id;
-            _currentDocMeta  = meta;
+            setLastLoadedDocId(meta.id);
+            setCurrentDocMeta(meta);
             runForceRelax(160);
             toggleLibrary(false);
-            _showBrief(meta);
+            showBrief(meta);
             _renderClusterPills(meta);
             _updateStatsStrip(meta);
             updateFnBar();
@@ -738,8 +608,6 @@ document.getElementById('library-btn')?.addEventListener('click', () => toggleLi
 document.getElementById('library-close')?.addEventListener('click', () => toggleLibrary(false));
 
 // ── Cluster pills overlay (C-03 / IA-06) ──────────────────────────────────────
-
-let _currentDocMeta = null;
 
 function _focusCluster(cl) {
   if (!cl) return;
@@ -885,7 +753,7 @@ function _renderSourceToggles() {
   });
 }
 
-window.kaaro = { load: loadEntity, focus: focusEntity, expand: expandEntity, loadDoc: loadLocalDoc, graph, inputBus, sourceManager, loadSourceResults, explore: _runExploration, rethink: _runRethink };
+window.kaaro = { load: loadEntity, focus: focusEntity, expand: expandEntity, loadDoc: loadLocalDoc, graph, inputBus, sourceManager, loadSourceResults };
 
 // ── Keyboard navigation (active when entity is focused) ───────────────────────
 
@@ -987,19 +855,19 @@ document.addEventListener('keydown', e => {
     case 'l': case 'L': e.preventDefault(); toggleLibrary();    return;
     case 'p': case 'P':
       e.preventDefault();
-      if (e.shiftKey) { _cycleStrategy(); return; }
-      _triggerGlobalPaint();
+      if (e.shiftKey) { cycleStrategy(); return; }
+      triggerGlobalPaint();
       return;
     case 'c': case 'C':
       e.preventDefault();
-      _toggleCameraLock();
+      toggleCameraLock();
       return;
   }
 
   // Cluster shortcuts: digits 1–6
   if (/^[1-6]$/.test(e.key) && !e.ctrlKey && !e.altKey && !e.metaKey) {
     const idx = parseInt(e.key, 10) - 1;
-    const cl  = _currentDocMeta?.clusters?.[idx];
+    const cl  = getCurrentDocMeta()?.clusters?.[idx];
     if (cl) {
       e.preventDefault();
       const pill = document.querySelector(`.cl-pill[data-cluster-idx="${idx}"]`);
@@ -1075,103 +943,6 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ── Brief mode — slides (default) or reader ──────────────────────────────────
-
-// Track the last loaded doc so F9 can render it
-let _lastLoadedDocId = null;
-
-// Persisted UI preference: 'slides' | 'reader' — slides is the default format.
-let _briefMode = (sessionStorage.getItem('kv.briefMode') === 'reader') ? 'reader' : 'slides';
-
-function _setBriefMode(mode) {
-  _briefMode = (mode === 'reader') ? 'reader' : 'slides';
-  try { sessionStorage.setItem('kv.briefMode', _briefMode); } catch {}
-}
-
-function _isBriefVisible() {
-  return isSlidesVisible() || isReportVisible();
-}
-
-function _hideBrief() {
-  hideSlides();
-  hideReport();
-}
-
-async function _showBrief(meta) {
-  if (_briefMode === 'reader') {
-    hideSlides();
-    renderReport(meta);
-    showReport();
-  } else {
-    hideReport();
-    renderSlides(meta);
-    showSlides();
-    // Reload any previously-painted scenes from localStorage
-    const docId    = _lastLoadedDocId ?? meta?.id ?? meta?.meta?.id;
-    const restored = await rehydrateSlides(docId, getCamera());
-    for (const idx of restored) {
-      notifySceneResult(idx, 'done', undefined, { restored: true });
-    }
-  }
-}
-
-function toggleReportMode() {
-  const reportBtn = document.getElementById('report-btn');
-  if (_isBriefVisible()) {
-    _hideBrief();
-    reportBtn?.setAttribute('aria-expanded', 'false');
-    log('SYSTEM', 'brief OFF');
-  } else {
-    const docId = _lastLoadedDocId;
-    const meta  = docId ? getDocMeta(docId) : null;
-    if (!meta) {
-      log('SYSTEM', 'no doc loaded — press L to open the library');
-      return;
-    }
-    _showBrief(meta);
-    reportBtn?.setAttribute('aria-expanded', 'true');
-    log('SYSTEM', `${_briefMode}: ${meta.title}`);
-  }
-  updateFnBar();
-}
-
-// Switch between slides ↔ reader without closing the brief
-document.addEventListener('slides:mode', e => {
-  const requested = e.detail?.mode === 'reader' ? 'reader' : 'slides';
-  const docId = _lastLoadedDocId;
-  const meta  = docId ? getDocMeta(docId) : null;
-  if (!meta) return;
-  _setBriefMode(requested);
-  _showBrief(meta);
-  log('SYSTEM', `brief mode → ${requested}`);
-});
-
-// Reader → slides (or close) via the reader's sticky toggle bar
-document.addEventListener('report:mode', e => {
-  const mode = e.detail?.mode;
-  if (mode === 'close') {
-    _hideBrief();
-    updateFnBar();
-    log('SYSTEM', 'brief OFF');
-    return;
-  }
-  const docId = _lastLoadedDocId;
-  const meta  = docId ? getDocMeta(docId) : null;
-  if (!meta) return;
-  _setBriefMode('slides');
-  _showBrief(meta);
-  log('SYSTEM', 'brief mode → slides');
-});
-
-// Slides closed via the ✕ button → refresh fn-bar + log a hint so the user
-// knows how to reopen
-document.addEventListener('slides:closed', () => {
-  clearDim();
-  clearAllSlides();
-  updateFnBar();
-  log('SYSTEM', 'brief closed — F9 to reopen');
-});
-
 // Slides active-slide changed → frame the slide's node set (without closing slides)
 document.addEventListener('slides:frame', e => {
   const { nodeIds, slideIdx } = e.detail ?? {};
@@ -1193,203 +964,14 @@ document.addEventListener('slides:navigate', e => {
   focusEntity(qid);
 });
 
-// ── Paint pipeline ────────────────────────────────────────────────────────────
-
-/**
- * Assemble PaintContext from live state: slide (if any), camera, frustum, selection.
- * slideIdx null → free-roam context only (no slide data pulled).
- */
-function _assembleLiveContext(slideIdx = null) {
-  const slide        = slideIdx != null ? getActiveSlide() : null;
-  const slideNodes   = (slide?.frameNodes ?? []).map(id => graph.getNode(id)).filter(Boolean);
-  const slideCentral = slideNodes[0] ?? null;
-
-  const selectedQid  = getCurrentQid();
-  const selectedNode = selectedQid ? graph.getNode(selectedQid) : null;
-
-  const visibleQids  = getVisibleNodeQids(getAllMeshes());
-  const visibleNodes = visibleQids.map(q => graph.getNode(q)).filter(Boolean);
-
-  return assemblePaintContext({
-    slideIdx,
-    slideType:    slide?.type ?? null,
-    slideCentral,
-    slideNodes,
-    camera:       getCamera(),
-    visibleNodes,
-    selectedNode,
-  });
-}
-
-/**
- * Core paint execution: build enriched prompt → call generateScene → notify slide UI.
- *
- * @param {number|null} slideIdx        slide slot, or null for free-roam paints
- * @param {object}      centralNode
- * @param {object[]}    frameNodes
- * @param {object}      [canonicalOverride]  { pos, target } — skip golden-angle spiral
- */
-async function _executePaint(slideIdx, centralNode, frameNodes, canonicalOverride = null) {
-  const apiKey = getImageKey();
-  if (!apiKey) {
-    if (slideIdx != null) {
-      notifySceneResult(slideIdx, 'error', 'No image key — add one in ⚙ MODEL SETTINGS → Scene Painter');
-    }
-    log('SYSTEM', '[paint] no image key');
-    return;
-  }
-
-  // When camera is locked: capture the live camera position NOW as the canonical
-  // projection origin so the texture maps correctly to the current view.
-  const locked = isCameraLocked();
-  const effectiveCanonical = canonicalOverride ?? (locked
-    ? { pos: getCamera().position.clone(), target: getControls().target.clone() }
-    : null);
-
-  const ctx      = _assembleLiveContext(slideIdx);
-  const strategy = getActiveStrategy();
-  const prompt   = buildStrategyPrompt(ctx);
-
-  log('SYSTEM', `[paint] strategy=${strategy} slide=${slideIdx ?? 'free-roam'} locked=${locked}`, {
-    hero:    ctx.selectedNode?.label ?? ctx.slideCentral?.label,
-    visible: ctx.visibleNodes.length,
-    angle:   ctx.cameraAngle?.phrase,
-  });
-
-  // Fly to canonical before generation (slide paints, unlocked)
-  if (slideIdx != null && !effectiveCanonical) {
-    const canon = getCanonicalCamera(slideIdx);
-    animateCameraTo(canon.pos, canon.target, 700);
-  }
-
-  try {
-    const result = await generateScene(
-      centralNode, frameNodes, apiKey, getCamera(),
-      slideIdx, _lastLoadedDocId,
-      { prompt, canonicalOverride: effectiveCanonical },
-    );
-    if (slideIdx != null) {
-      notifySceneResult(slideIdx, 'done', undefined, result);
-    }
-    // Re-fly after generation (slide paints, unlocked)
-    if (slideIdx != null && !effectiveCanonical) {
-      animateCameraTo(result.cameraPos, result.cameraTarget, 600);
-    }
-    _updatePaintHUD();
-  } catch (err) {
-    log('ERROR', `[paint] ${err.message}`);
-    if (slideIdx != null) notifySceneResult(slideIdx, 'error', err.message);
-  }
-}
-
-/**
- * Global paint — P key or HUD button.
- * Slides visible → paints active slide (slot retained, enriched with live context).
- * Free roam      → slideIdx null, live camera as projection origin, accumulates.
- */
-async function _triggerGlobalPaint() {
-  if (isSlidesVisible()) {
-    const slideIdx = getActiveSlideIdx();
-    const slide    = getActiveSlide();
-    if (!slide?.frameNodes?.length) {
-      log('SYSTEM', '[paint] active slide has no paintable nodes');
-      return;
-    }
-    const centralNode = graph.getNode(slide.frameNodes[0]);
-    const frameNodes  = slide.frameNodes.map(id => graph.getNode(id)).filter(Boolean);
-    await _executePaint(slideIdx, centralNode, frameNodes);
-  } else {
-    const selectedQid  = getCurrentQid();
-    const selectedNode = selectedQid ? graph.getNode(selectedQid) : null;
-    const visibleQids  = getVisibleNodeQids(getAllMeshes());
-    const visibleNodes = visibleQids.map(q => graph.getNode(q)).filter(Boolean);
-
-    const centralNode = selectedNode ?? visibleNodes[0] ?? null;
-    if (!centralNode) { log('SYSTEM', '[paint] nothing in view to paint'); return; }
-
-    const cam  = getCamera();
-    const ctrl = getControls();
-    await _executePaint(null, centralNode, visibleNodes, {
-      pos:    cam.position.clone(),
-      target: ctrl.target.clone(),
-    });
-  }
-}
-
-// Slide paint button → uses enriched pipeline
-document.addEventListener('slides:paint-scene', async e => {
-  const { slideIdx, centralNodeId, frameNodeIds } = e.detail ?? {};
-  if (slideIdx == null || !centralNodeId) return;
-
-  const central    = graph.getNode(centralNodeId);
-  const frameNodes = (frameNodeIds ?? []).map(id => graph.getNode(id)).filter(Boolean);
-  await _executePaint(slideIdx, central, frameNodes);
-});
-
-// ── Paint HUD button + P key ──────────────────────────────────────────────────
-
-function _updatePaintHUD() {
-  const paintBtn = document.getElementById('paint-hud-btn');
-  const camBtn   = document.getElementById('cam-lock-btn');
-  if (paintBtn) {
-    const strategy = getActiveStrategy();
-    paintBtn.textContent = `◆ PAINT [${strategy}]`;
-    paintBtn.title = `Paint scene (P) — Shift+P to cycle strategy. Active: ${strategy}`;
-  }
-  if (camBtn) {
-    const locked = isCameraLocked();
-    camBtn.textContent = locked ? '◎ CAM' : '○ CAM';
-    camBtn.setAttribute('aria-pressed', String(locked));
-    camBtn.title = locked
-      ? 'Camera locked — auto-movement disabled. C to unlock.'
-      : 'Camera free — auto-movement enabled. C to lock.';
-  }
-}
-
-function _toggleCameraLock() {
-  setCameraLock(!isCameraLocked());
-  _updatePaintHUD();
-  updateFnBar();
-  log('SYSTEM', `[camera] ${isCameraLocked() ? 'locked' : 'unlocked'}`);
-}
-
-function _cycleStrategy() {
-  const all = listStrategies();
-  const cur = getActiveStrategy();
-  const next = all[(all.indexOf(cur) + 1) % all.length];
-  setActiveStrategy(next);
-  _updatePaintHUD();
-  log('SYSTEM', `[paint] strategy → ${next}`);
-}
-
-// Wire HUD button: click = paint, shift-click = cycle strategy
-document.getElementById('paint-hud-btn')?.addEventListener('click', e => {
-  if (e.shiftKey) { _cycleStrategy(); return; }
-  _triggerGlobalPaint();
-});
-
-document.getElementById('cam-lock-btn')?.addEventListener('click', _toggleCameraLock);
-
-// Initialize button labels on load
-_updatePaintHUD();
-
-// Restore a previously-painted scene when navigating back to its slide
-document.addEventListener('slides:restore-scene', e => {
-  const { slideIdx } = e.detail ?? {};
-  if (slideIdx == null) return;
-  restoreScene(slideIdx);
-  const canon = getCanonicalCamera(slideIdx);
-  animateCameraTo(canon.pos, canon.target, 800);
-});
-
 // Cross-document navigation from detail panel (IA-01)
 document.addEventListener('detail:navigate-doc', e => {
   const { docId } = e.detail ?? {};
   if (!docId) return;
   const meta = getDocMeta(docId);
   if (!meta) { log('SYSTEM', `doc ${docId} not yet loaded`); return; }
-  _lastLoadedDocId = docId;
-  _showBrief(meta);
+  setLastLoadedDocId(docId);
+  showBrief(meta);
   updateFnBar();
   log('SYSTEM', `cross-doc: switched to ${meta.title}`);
 });
@@ -1476,146 +1058,13 @@ document.addEventListener('report:beat-frame', e => {
   if (primaryQid) focusEntity(primaryQid);
 });
 
-// ── PNG export ────────────────────────────────────────────────────────────────
+// ── CustomEvent bridge — extracted modules dispatch these instead of calling main.mjs directly ──
 
-import { getScene as _getScene, getCamera as _getCam } from './canvas/scene.mjs';
-
-function exportCanvasPNG() {
-  const canvas = document.querySelector('.canvas-wrap canvas');
-  if (!canvas) { log('ERROR', 'no canvas found'); return; }
-
-  // Force a fresh render
-  const renderer = canvas.__renderer;
-
-  // Create overlay canvas with title + timestamp
-  const w = canvas.width, h = canvas.height;
-  const overlay = document.createElement('canvas');
-  overlay.width = w; overlay.height = h;
-  const ctx = overlay.getContext('2d');
-
-  // Draw the 3D canvas
-  ctx.drawImage(canvas, 0, 0);
-
-  // Title bar
-  ctx.fillStyle = 'rgba(0,0,0,0.7)';
-  ctx.fillRect(0, 0, w, 36);
-  ctx.fillRect(0, h - 28, w, 28);
-
-  ctx.font = 'bold 16px "IBM Plex Mono", monospace';
-  ctx.fillStyle = '#ff6600';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('kaaroViewer', 12, 18);
-
-  // Session info
-  const nodeCount = graph.nodes.size;
-  const edgeCount = graph.edges.size;
-  ctx.font = '12px "IBM Plex Mono", monospace';
-  ctx.fillStyle = '#ccccaa';
-  ctx.textAlign = 'right';
-  ctx.fillText(`${nodeCount} nodes · ${edgeCount} edges · ${new Date().toLocaleDateString()}`, w - 12, 18);
-
-  // Footer
-  ctx.textAlign = 'left';
-  ctx.font = '10px "IBM Plex Mono", monospace';
-  ctx.fillStyle = '#667755';
-  ctx.fillText('Generated by kaaroViewer — Knowledge Graph Explorer', 12, h - 10);
-
-  // Download
-  const link = document.createElement('a');
-  link.download = `kaaroViewer_${new Date().toISOString().slice(0, 10)}.png`;
-  link.href = overlay.toDataURL('image/png');
-  link.click();
-
-  log('SYSTEM', 'PNG exported');
-}
-
-// ── Asset export (F11) ────────────────────────────────────────────────────────
-// Bundles JSON + per-slide canvas PNGs + backdrop images into a ZIP for ffmpeg.
-
-async function exportAssets() {
-  if (!_currentDocMeta) { log('SYSTEM', 'no brief loaded — open a library doc first'); return; }
-
-  const docId    = _currentDocMeta.id;
-  const docTitle = _currentDocMeta.title ?? docId;
-  log('SYSTEM', `asset export started for "${docTitle}"`);
-
-  // Lazy-load JSZip from CDN
-  const { default: JSZip } = await import('https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm');
-  const zip = new JSZip();
-
-  // ── manifest.json ────────────────────────────────────────────────────────
-  const slideCount = getSlideCount();
-  const slideIds   = getSlideIds();
-  zip.file('manifest.json', JSON.stringify({
-    docId,
-    title:      docTitle,
-    exportedAt: new Date().toISOString(),
-    nodes:      graph.nodes.size,
-    edges:      graph.edges.size,
-    slideCount,
-    slideIds,
-    ffmpegHint: `ffmpeg -framerate 1/4 -pattern_type glob -i 'slide_*_canvas.png' -c:v libx264 -pix_fmt yuv420p out.mp4`,
-  }, null, 2));
-
-  // ── doc.json ──────────────────────────────────────────────────────────────
-  const libEntry = LIBRARY.find(l => l.id === docId);
-  if (libEntry?.path) {
-    try {
-      const raw = await fetch(libEntry.path).then(r => r.text());
-      zip.file('doc.json', raw);
-    } catch (err) {
-      log('SYSTEM', `asset export: doc.json fetch failed — ${err.message}`);
-    }
-  }
-
-  // ── canvas_overview.png ──────────────────────────────────────────────────
-  const renderer = getRenderer();
-  const cam      = getCamera();
-  const scene    = getScene();
-  const threeCanvas = document.querySelector('.canvas-wrap canvas');
-  if (threeCanvas) {
-    if (renderer) renderer.render(scene, cam);
-    zip.file('canvas_overview.png', threeCanvas.toDataURL('image/png').split(',')[1], { base64: true });
-  }
-
-  // ── Per-slide canvas renders ──────────────────────────────────────────────
-  const savedPos    = cam.position.clone();
-  const savedTarget = getControls().target.clone();
-
-  if (renderer && cam && scene && slideCount > 0) {
-    for (let i = 0; i < slideCount; i++) {
-      const { pos, target } = getCanonicalCamera(i);
-      cam.position.copy(pos);
-      cam.lookAt(target);
-      renderer.render(scene, cam);
-      const dataURL = renderer.domElement.toDataURL('image/png');
-      zip.file(`slide_${String(i).padStart(2,'0')}_canvas.png`, dataURL.split(',')[1], { base64: true });
-    }
-    // restore camera
-    cam.position.copy(savedPos);
-    cam.lookAt(savedTarget);
-    getControls().target.copy(savedTarget);
-    renderer.render(scene, cam);
-  }
-
-  // ── Backdrop images from IDB ──────────────────────────────────────────────
-  const backdrops = await getAllBackdrops(docId);
-  for (const { slideIdx, dataURL } of backdrops) {
-    const base64 = dataURL.includes(',') ? dataURL.split(',')[1] : dataURL;
-    zip.file(`slide_${String(slideIdx).padStart(2,'0')}_backdrop.png`, base64, { base64: true });
-  }
-
-  // ── Download ──────────────────────────────────────────────────────────────
-  const blob    = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
-  const url     = URL.createObjectURL(blob);
-  const link    = document.createElement('a');
-  link.href     = url;
-  link.download = `kaaroViewer-export-${docId}-${new Date().toISOString().slice(0, 10)}.zip`;
-  link.click();
-  URL.revokeObjectURL(url);
-
-  log('SYSTEM', `asset export complete — ${slideCount} slides, ${backdrops.length} backdrops`);
-}
+document.addEventListener('kaaro:fn-bar-update',        () => updateFnBar());
+document.addEventListener('kaaro:cluster-pills-update', e  => _renderClusterPills(e.detail?.brief));
+document.addEventListener('kaaro:stats-strip-update',   e  => _updateStatsStrip(e.detail?.brief));
+document.addEventListener('kaaro:overlay-reset',        () => { _overlayMode = null; _updateOverlayBtns(); });
+document.addEventListener('kaaro:focus-entity',         e  => { if (e.detail?.qid) focusEntity(e.detail.qid); });
 
 // ── Seed ──────────────────────────────────────────────────────────────────────
 // Auto-seed disabled — canvas starts empty. Use the explore input or press L to load from library.
@@ -1626,9 +1075,6 @@ function _esc(s) {
 }
 
 // ── Exploration pipeline ──────────────────────────────────────────────────────
-
-let _activeBrief       = null; // current working brief
-let _activePatches     = null; // current enrichment patches
 
 /**
  * Register Gemini as the LLM provider if gemini_api_key is in localStorage.
@@ -1644,196 +1090,14 @@ function _tryRegisterGemini() {
   }
 }
 
-/**
- * Load a completed working brief into the canvas + report panel.
- */
-async function _loadBriefIntoCanvas(brief) {
-  // Clear existing graph
-  clearAllNodes();
-  clearAllEdges();
-  graph.clear();
-  clearCrumbs();
-  clearLayout();
-  clearNodeColorOverrides();
-  _overlayMode = null;
-
-  // Place and add all nodes
-  const spine = new Set(brief.report_card?.spine ?? []);
-  for (const node of (brief.nodes ?? [])) {
-    const pos = placeNode(node.id, null);
-    graph.addNode(node.id, {
-      qid:             node.id,
-      label:           node.label,
-      type:            node.type ?? 'concept',
-      description:     node.description ?? '',
-      image:           node.image ?? null,
-      instanceofLabel: node.type ?? '',
-      instanceofQids:  [],
-      tier:            node.tier ?? 'primary',
-      sentiment:       node.sentiment ?? 'neutral',
-      metrics:         node.metrics ?? {},
-      wikidata:        node.wikidata ?? null,
-      _links:          node._links ?? [],
-      _source:         'explore',
-      _state:          spine.has(node.id) ? 'focused' : 'unvisited',
-      confidence:      node.confidence ?? 0.5,
-    });
-    setPosition(node.id, pos);
-  }
-
-  // Add edges
-  for (const edge of (brief.edges ?? [])) {
-    if (!graph.hasNode(edge.from) || !graph.hasNode(edge.to)) continue;
-    graph.addEdge(edge.from, edge.to, edge.rel ?? 'association', edge.label ?? edge.rel ?? '');
-  }
-
-  runForceRelax(180);
-
-  // Focus first spine node
-  const firstSpine = (brief.report_card?.spine ?? [])[0]
-    ?? brief.nodes?.[0]?.id;
-  if (firstSpine && graph.hasNode(firstSpine)) {
-    focusEntity(firstSpine);
-  }
-
-  log('SYSTEM', `[explore] canvas loaded: ${brief.nodes?.length ?? 0} nodes, ${brief.edges?.length ?? 0} edges`);
-}
-
-// ── Canvas loader helpers ─────────────────────────────────────────────────────
-
-const _clEl       = () => document.getElementById('canvas-loader');
-const _clLabelEl  = () => document.getElementById('cl-label');
-const _clProgEl   = () => document.getElementById('cl-progress');
-const _clSeedEl   = () => document.getElementById('cl-seed-echo');
-
-function _showLoader(seed, label = 'exploring…', pct = 5) {
-  const el = _clEl(); if (!el) return;
-  el.classList.remove('hidden');
-  const lbl = _clLabelEl(); if (lbl) lbl.textContent = label;
-  const prg = _clProgEl();  if (prg) prg.style.width = `${pct}%`;
-  const ech = _clSeedEl();  if (ech) ech.textContent = seed ?? '';
-}
-
-function _updateLoader(label, pct) {
-  const lbl = _clLabelEl(); if (lbl) lbl.textContent = label;
-  const prg = _clProgEl();  if (prg) prg.style.width = `${pct}%`;
-}
-
-function _hideLoader() {
-  const el = _clEl(); if (!el) return;
-  el.style.opacity = '0';
-  setTimeout(() => {
-    el.classList.add('hidden');
-    el.style.opacity = '';
-  }, 380);
-}
-
-/**
- * Full exploration pipeline: Stage 1 → canvas → Stage 3 (streaming) → Stage 4 → re-render.
- * Canvas is loaded after Stage 1 so streaming node-update events from Stage 3 land on
- * actual nodes rather than firing into an empty graph.
- */
-async function _runExploration(seed) {
-  log('SYSTEM', `[explore] starting full pipeline for: "${seed}"`);
-  _showLoader(seed, 'generating brief…', 5);
-
-  try {
-    // Stage 1: LLM brief generation
-    const brief = await explore(seed);
-    _activeBrief = brief;
-    _updateLoader('building graph…', 55);
-
-    // Load canvas immediately — Stage 3 streaming updates need nodes to be present
-    await _loadBriefIntoCanvas(brief);
-    _lastLoadedDocId = brief.meta.id;
-    _currentDocMeta  = brief;
-    _showBrief(brief);
-    _renderClusterPills(brief);
-    _updateStatsStrip(brief);
-    updateFnBar();
-    _updateLoader('enriching entities…', 72);
-
-    // Stage 3: Enrichment coordinator — streams explore:node-update to canvas
-    const enrichReport = await runEnrichment(brief, {
-      concurrency:    3,
-      stream:         true,
-      priorityFilter: null,
-    });
-    _activePatches = enrichReport.patches;
-    _updateLoader('finishing…', 90);
-
-    // Stage 4: Completion pass — fill narrative gaps
-    await runCompletion(brief, enrichReport.patches);
-
-    // Re-render brief with enriched node data (metrics, descriptions may have changed)
-    _showBrief(brief);
-    _renderClusterPills(brief);
-    _updateStatsStrip(brief);
-
-    _updateLoader('done', 100);
-    _hideLoader();
-    log('SYSTEM', `[explore] pipeline complete — ${brief.nodes?.length} nodes`);
-    notifyBriefReady(brief);
-
-  } catch (err) {
-    _updateLoader('exploration failed', 100);
-    _hideLoader();
-    log('ERROR', `[explore] pipeline failed: ${err.message}`, { message: err.message });
-  }
-}
-
-/**
- * EXPAND: run another enrichment pass, adding enrichment-discovered nodes.
- */
-async function _runExpand(deltas) {
-  if (!_activeBrief) { log('SYSTEM', '[explore] no active brief for EXPAND'); return; }
-  log('SYSTEM', '[explore] EXPAND triggered', { deltas: deltas?.length ?? 0 });
-
-  const enrichReport = await runEnrichment(_activeBrief, { concurrency: 3, stream: true });
-  _activePatches = enrichReport.patches;
-  await runCompletion(_activeBrief, enrichReport.patches);
-  await _loadBriefIntoCanvas(_activeBrief);
-
-  _showBrief(_activeBrief);
-  _renderClusterPills(_activeBrief);
-  _updateStatsStrip(_activeBrief);
-}
-
-/**
- * RETHINK: re-generate brief with enrichment context, then re-run pipeline.
- */
-async function _runRethink(deltas) {
-  if (!_activeBrief) { log('SYSTEM', '[explore] no active brief for RETHINK'); return; }
-  log('SYSTEM', '[explore] RETHINK triggered');
-
-  try {
-    const revised = await rethink(_activeBrief, _activePatches ?? {});
-    _activeBrief = revised;
-
-    const enrichReport = await runEnrichment(revised, { concurrency: 3, stream: true });
-    _activePatches = enrichReport.patches;
-    await runCompletion(revised, enrichReport.patches);
-    await _loadBriefIntoCanvas(revised);
-
-    _lastLoadedDocId = revised.meta.id;
-    _currentDocMeta  = revised;
-    _showBrief(revised);
-    _renderClusterPills(revised);
-    _updateStatsStrip(revised);
-    updateFnBar();
-  } catch (err) {
-    log('ERROR', `[explore] RETHINK failed: ${err.message}`);
-  }
-}
-
 // Expose on window.kaaro for console access
 Object.assign(window.kaaro, {
-  explore:         _runExploration,
-  rethink:         _runRethink,
-  expand:          _runExpand,
+  explore:                runExploration,
+  rethink:                runRethink,
+  expand:                 runExpand,
   registerLLM,
   registerLLMDisambiguate,
   validateBrief,
-  getActiveBrief:  () => _activeBrief,
-  getPatches:      () => _activePatches,
+  getActiveBrief,
+  getPatches:             getActivePatches,
 });

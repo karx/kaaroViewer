@@ -680,9 +680,9 @@ function _bindClicks() {
 
       const state = _paintState.get(slideIdx);
       // Don't re-fire while loading; allow retry on error or re-paint on done
-      if (state === 'loading') return;
+      if (state?.status === 'loading') return;
 
-      _paintState.set(slideIdx, 'loading');
+      _paintState.set(slideIdx, { status: 'loading' });
       btn.textContent = '◆ PAINTING…';
       btn.disabled    = true;
       btn.classList.remove('sl-paint-done', 'sl-paint-error');

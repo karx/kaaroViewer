@@ -13,6 +13,12 @@
  *   parent → iframe  { type: 'kaaro:llm-response', requestId, text?, error? }
  *   iframe → parent  { type: 'kaaro:brief-ready',  brief }
  *   iframe → parent  { type: 'kaaro:ready' }
+ *
+ * Security note: postMessage target origin is intentionally '*'.
+ * kaaroViewer is a publicly embeddable widget — restricting the origin would
+ * break arbitrary host projects. No PII flows through these messages (prompts are
+ * search terms; briefs are knowledge-graph metadata). Inbound messages are
+ * guarded by ALLOWED_ORIGINS, which is the correct security boundary.
  */
 
 const _params = new URLSearchParams(location.search);
