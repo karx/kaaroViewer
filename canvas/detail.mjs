@@ -10,7 +10,7 @@
  *   detail:pin       { qid }
  */
 
-import { getEntityStyle } from '../ontology.mjs';
+import { getEntityStyle, colorToCSS } from '../ontology.mjs';
 import { getCrossDocEntities, getDocMeta } from '../pipeline/local-graph.mjs';
 
 let _panel      = null;
@@ -35,7 +35,9 @@ export function showDetail(node, edges, graphGetNode) {
     return _showVaultDetail(node, edges, graphGetNode);
   }
 
-  const typeLabel = getEntityStyle(node.type ?? 'default').label;
+  const style     = getEntityStyle(node.type ?? 'default');
+  const typeLabel = style.label;
+  const typeColor = colorToCSS(style.color);
   const ts        = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
   // Source badge
@@ -100,9 +102,9 @@ export function showDetail(node, edges, graphGetNode) {
   _panel.innerHTML = `
     <div class="dp-terminal">
 
-      <div class="dp-header">
+      <div class="dp-header" style="border-left:3px solid ${typeColor}">
         <span class="dp-qid-code">${_esc(node.qid)}</span>
-        <span class="dp-type-label">${_esc(typeLabel)}</span>
+        <span class="dp-type-label" style="color:${typeColor}">${_esc(typeLabel)}</span>
         <span class="dp-source-badge" data-src="${_esc(src)}">${srcIcon} ${_esc(srcLabel).toUpperCase()}</span>
         <div class="dp-header-actions">
           <button class="dp-key-btn" data-action="pin"    title="Pin">F2 PIN</button>

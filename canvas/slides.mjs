@@ -147,6 +147,9 @@ export function isSlidesVisible() {
 }
 
 export function getActiveSlideIdx() { return _active; }
+export function getActiveSlide()   { return _slides[_active] ?? null; }
+export function getSlideCount()    { return _slides.length; }
+export function getSlideIds()      { return _slides.map(s => s.id); }
 
 export function nextSlide() { goToSlide(_active + 1); }
 export function prevSlide() { goToSlide(_active - 1); }
@@ -677,9 +680,9 @@ function _bindClicks() {
 
       const state = _paintState.get(slideIdx);
       // Don't re-fire while loading; allow retry on error or re-paint on done
-      if (state === 'loading') return;
+      if (state?.status === 'loading') return;
 
-      _paintState.set(slideIdx, 'loading');
+      _paintState.set(slideIdx, { status: 'loading' });
       btn.textContent = '◆ PAINTING…';
       btn.disabled    = true;
       btn.classList.remove('sl-paint-done', 'sl-paint-error');
