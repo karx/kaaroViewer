@@ -9,7 +9,8 @@
   {
     "imports": {
       "three":         "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/",
+      "jszip":         "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm"
     }
   }
   </script>
@@ -36,7 +37,19 @@
         <!-- ── Zero state: shown until the first entity loads ─────────────── -->
         <div id="zero-state" class="zero-state" role="region" aria-label="kaaroViewer start screen">
           <div class="zs-grid" aria-hidden="true"></div>
-          <div class="zs-body">
+
+          <!-- Boot ritual — shown briefly before the explore UI -->
+          <div id="zs-boot" class="zs-boot" aria-hidden="true">
+            <div class="zs-boot-line zs-bl-0">kaaroViewer  3.0.0</div>
+            <div class="zs-boot-line zs-bl-1">────────────────────────────────</div>
+            <div class="zs-boot-line zs-bl-2">&gt; ontology       <span class="zs-bl-ok">[OK]</span></div>
+            <div class="zs-boot-line zs-bl-3">&gt; canvas         <span class="zs-bl-ok">[OK]</span></div>
+            <div class="zs-boot-line zs-bl-4">&gt; knowledge bus  <span class="zs-bl-ok">[OK]</span></div>
+            <div class="zs-boot-line zs-bl-5">────────────────────────────────</div>
+            <div class="zs-boot-line zs-bl-6">READY <span class="zs-bl-cursor">█</span></div>
+          </div>
+
+          <div class="zs-body zs-body-hidden">
             <div class="zs-brand">
               <span class="zs-mark" aria-hidden="true">◆</span>
               <span class="zs-wordmark">kaaroViewer</span>
@@ -107,6 +120,8 @@
       <button id="library-btn"  aria-label="Open local document library (L)" title="Load local document (L)" aria-haspopup="dialog">L LIB</button>
       <button id="report-btn"    aria-label="Toggle intelligence brief (F9)" title="Toggle brief view" aria-expanded="false">F9 BRIEF</button>
       <button id="settings-btn"  aria-label="Open model settings" title="LLM / BYOM settings" aria-haspopup="dialog">⚙ MODEL</button>
+      <button id="paint-hud-btn" aria-label="Paint current view with Gemini (P)" title="Paint scene (P = paint, Shift+P = cycle strategy)">◆ PAINT</button>
+      <button id="cam-lock-btn"  aria-label="Toggle camera lock (C)" aria-pressed="false" title="Lock/unlock automatic camera movement (C)">○ CAM</button>
     </div>
 
     <!-- ── Function key hints ────────────────────────────────────────── -->

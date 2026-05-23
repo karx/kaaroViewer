@@ -236,6 +236,11 @@ export function getEntityStyle(type) {
   return ENTITY_TYPES[type] ?? ENTITY_TYPES.default;
 }
 
+/** Convert Three.js 0xRRGGBB integer to CSS '#rrggbb' string. */
+export function colorToCSS(hex) {
+  return '#' + (hex >>> 0).toString(16).padStart(6, '0');
+}
+
 export function getRelStyle(relType) {
   return REL_TYPES[relType] ?? REL_TYPES.default;
 }
