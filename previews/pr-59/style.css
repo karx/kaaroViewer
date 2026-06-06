@@ -1883,6 +1883,51 @@ html, body {
 }
 .sl-action-btn:hover { color: #ff8800; border-color: #663300; }
 
+/* Eval slide */
+
+.sl-eval-hdr {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 10px;
+}
+.sl-eval-label {
+  font-size: 10px; letter-spacing: 0.12em; color: #886644; font-weight: 600;
+}
+.sl-eval-doc-title {
+  font-size: 11px; color: #ccccaa; opacity: 0.7;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px;
+}
+.sl-eval-stars {
+  display: flex; gap: 6px; margin-bottom: 12px;
+}
+.sl-eval-star {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: #1e1e00; padding: 0;
+  transition: color 0.1s; line-height: 1;
+}
+.sl-eval-star:hover,
+.sl-eval-star.sl-eval-star-hover { color: #e8e000; }
+.sl-eval-star.sl-eval-star-on    { color: #e8e000; }
+
+.sl-eval-fields {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-bottom: 14px;
+}
+.sl-eval-textarea {
+  background: #0d0d00; border: 1px solid #2a2a00;
+  color: #ccccaa; font-family: inherit; font-size: 11px;
+  padding: 6px 8px; resize: vertical; border-radius: 2px;
+  outline: none; width: 100%; box-sizing: border-box;
+}
+.sl-eval-textarea:focus { border-color: #664400; }
+.sl-eval-textarea::placeholder { color: #445533; }
+
+.sl-eval-footer {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+}
+.sl-eval-hint {
+  font-size: 9px; color: #554433; letter-spacing: 0.06em;
+}
+
 /* Dot navigation strip */
 
 .sl-dots {

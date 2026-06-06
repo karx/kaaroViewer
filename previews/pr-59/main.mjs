@@ -55,7 +55,6 @@ import { exportCanvasPNG, exportAssets } from './canvas/export.mjs';
 import { initPaintOrchestrator, triggerGlobalPaint, updatePaintHUD,
          toggleCameraLock, cycleStrategy } from './canvas/paint-orchestrator.mjs';
 import { runExploration, runExpand, runRethink } from './canvas/exploration-pipeline.mjs';
-import { mountEvalModal, openEvalModal } from './canvas/eval-modal.mjs';
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
@@ -103,8 +102,6 @@ requestAnimationFrame(() => {
     onExpand:  runExpand,
     onRethink: runRethink,
   });
-
-  mountEvalModal();
 
   // Mount settings panel (suppressed in embed mode — keys live in the host CF)
   if (!EMBED_MODE) {
@@ -492,7 +489,6 @@ function _renderLibrary(tagFilter = null) {
         ${spine ? `<div class="lib-spine">⬡ ${_esc(spine)}</div>` : ''}
         ${tags ? `<div class="lib-item-tags">${tags}</div>` : ''}
       </div>
-      <button class="lib-eval-btn" title="Submit evaluation via GitHub Issue" data-id="${_esc(doc.id)}">EVAL</button>
       <button class="lib-preview-btn">▾</button>
       <button class="lib-link-btn" title="Copy deeplink" data-id="${_esc(doc.id)}">🔗</button>
     </div>`;
@@ -517,14 +513,6 @@ function _renderLibrary(tagFilter = null) {
 
   drawer.querySelectorAll('.lib-item').forEach(item => {
     const path = item.dataset.path;
-
-    // Eval button — opens eval modal for this doc
-    item.querySelector('.lib-eval-btn')?.addEventListener('click', e => {
-      e.stopPropagation();
-      const id  = e.currentTarget.dataset.id;
-      const doc = LIBRARY.find(d => d.id === id);
-      if (doc) openEvalModal(doc);
-    });
 
     // Copy deeplink button
     item.querySelector('.lib-link-btn')?.addEventListener('click', e => {
