@@ -5,7 +5,9 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "health": "node scripts/health-check.mjs --summary",
+    "health:json": "node scripts/health-check.mjs"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.0.0",
