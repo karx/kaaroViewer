@@ -192,6 +192,7 @@ Hypotheses H3–H8 are **deferred** to Phase 2+ and tracked in subsequent handof
 |---|---|---|---|
 | Phase 1 pilot | H1 — Mirror: at least 1 degraded entry surfaces | ✅ CONFIRMED — 3 degraded, 1 watch on first run. `aoe-2-redbull` (score 212), `poker-tooling` (score 132), `gig-worker-projects` (score 88) | H1 holds. Thresholds calibrated. |
 | Phase 1 pilot | H2 — Selection: ranking unambiguously picks worst entry | ✅ CONFIRMED — `aoe-2-redbull-april-2026` (4 validator warnings + density 1.40 + 3 climax beats) ranked first unambiguously | Scoring formula validated on real data. |
+| Phase 2 pilot | H3 — Mutation: re-encode improves density ≥ 0.3 and clears validator | ✅ CONFIRMED — density 1.40 → 2.50 (+1.10), validator exit 1 → exit 0, climax 3 → 1, unclustered 12 → 0. All four health signals resolved in one run. | Gap-targeting via explicit signal list is effective. |
 
 ---
 
