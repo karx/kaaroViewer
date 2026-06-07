@@ -196,6 +196,7 @@ Hypotheses H3–H8 are **deferred** to Phase 2+ and tracked in subsequent handof
 | Alone-Time run 2 | H3 — Mutation (poker-tooling): density 1.32 → 2.10, validator exit 1 → exit 0 | ✅ CONFIRMED — cross-cluster sweep (+33 edges) and event node addition cleared all gaps. | H3 holds on a second, distinct domain (gaming vs poker). |
 | Alone-Time run 3 | H3 — Mutation (gig-worker-projects): density 1.78 → 2.41, validator exit 1 → exit 0, climax 2 → 1 | ✅ CONFIRMED — third consecutive fix. Library: 8 ok · 1 watch · 0 degraded. | H3 holds across labour/regulatory domain. |
 | Alone-Time runs 1-3 | H4 — Memory: 3 handoffs sufficient for Dream Loop meta-analysis | ✅ CONFIRMED — `reveals` rel error identified across all 3 handoffs without re-reading JSONs. Dream Loop triggered. | Handoff schema captures enough signal. H4 holds. |
+| Dream Loop run 1 | H6 — Immune system: validator catches every degrading mutation | ✅ CONFIRMED — `reveals` promoted from warning to error. All 9 entries re-validated post-change, all exit 0. No regressions. Encoder habit permanently blocked at gate. | H6 holds. Constraint tightening is additive and non-breaking. |
 
 ---
 
