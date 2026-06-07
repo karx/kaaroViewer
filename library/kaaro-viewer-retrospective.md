@@ -1,73 +1,51 @@
----
-published: false
-title: "Encoding Retrospective: KaaroViewer — An Immersive Cognitive Interface"
-tags: [visualize-skill, encoding-retrospective, kaaro-viewer, self-referential]
-description: "Alone-Time run 4. Expanded a stale 7-node 2024 entry to a 22-node 2026 entry reflecting the full current architecture: paint system, eval loop, health-check, Alone-Time loop, Dream Loop."
-date: 2026-06-07
-layer: L1-Instance
-maturity: BUDDING
-para: Crystallized
----
+# Encoding Retrospective: kaaroViewer: A Self-Governing Spatial Intelligence Platform
 
-# Encoding Retrospective: KaaroViewer — An Immersive Cognitive Interface
-
-**Source**: `CLAUDE.md` + internal project codebase
+**Source**: `library/kaaro-viewer-2026.md`
 **Output**: `library/kaaro-viewer.json`
+**Encoded**: 2026-06-07
 
----
+## What Went Well
 
-## Alone-Time Re-encode — 2026-06-07
+The causal narrative source (`kaaro-viewer-2026.md`) was purpose-written to supply the WHY behind each architectural decision, not just the WHAT. This made the three-pass encoding significantly richer than run 4 (which sourced from CLAUDE.md). Spine entities were immediately legible from the document's structure: the platform, the central problem (personalized ontology), and the data model (intelligence brief). The tension arc maps naturally to the document's progression: open-world failure → LLM pivot → drift → three-part lock → self-governance → open question.
 
-**Health score before:** 54 (watch) · **After:** ok  
-**Signals fixed:** `density:1.71` → 2.09 · `nodes:7` → 22 · `beats:5` → 9 · `insights:2` → 5  
-**Commit:** `e63b8ce` on `kaaro/breathe-life`
+The cross-cluster sweep surfaced 17 inter-cluster edges that would not have been found by a single-pass read. The governance cluster (Dream Loop, Alone-Time, health-check) needed explicit edges to every other cluster to represent its role as a meta-layer over the whole system.
 
-### What this run was
+Wikidata lookups found QIDs for: open-world-assumption (Q1069864), Wikidata itself (Q2013), SPARQL (Q54871), Three.js (Q1245512), force-directed-layout (Q906415). All private/project-specific nodes correctly marked `null`.
 
-Unlike runs 1-3 (which were corrective patches — fixing a rel, adding missing edges, adjusting a tension value), run 4 was a full architectural expansion. The original entry was written in 2024 against the A-Frame era of the project. By 2026, the system had acquired: a Three.js canvas migration, a paint system (Gemini image synthesis), an eval modal (UGC GitHub Issues), and the entire life architecture (health-check, Alone-Time, Dream Loop). None of these existed in the original encoding.
+31 nodes vs. 22 in run 4 — the 9 additional nodes are entirely attributable to the richer source document. The narrative names `personalized-ontology`, `ontology-drift`, and `three-part-lock` as first-class concepts; CLAUDE.md does not.
 
-The source was `CLAUDE.md` — the project's own documentation — making this the most self-referential encoding in the library: kaaroViewer encoding itself.
+## What the Skill Could Have Done Better
 
-### What was added
+**Two distinct edges from visualize-skill to intelligence-brief** (`achieves` and `governs`) encode slightly different semantic facets of the same relationship. This is accurate but may cause visual clutter in the renderer. A single `governs` edge with a richer label would have been cleaner — but the validator permits multi-edge same-pair relationships, and both facets are real.
 
-**15 new nodes** (7 → 22):
-- `explore-pipeline`, `visualize-skill` — the two creation paths
-- `paint-system`, `paint-context`, `paint-strategies` — the Gemini synthesis layer
-- `eval-modal` — UGC evaluation → GitHub Issues
-- `health-check`, `alone-time-loop` — the life system
-- `validator` — the immune system (was not a node in original)
-- `completion-pipeline` — enrichment pipeline
-- `session-manager`, `brief-controller` — canvas features
-- `gemini` — LLM provider
-- `sparql` — algorithm used for Wikidata enrichment
-- `webxr` — the immersive standard
+**The `stable-diffusion` node** is primarily a conceptual reference (the paint strategies inherit its prompt engineering patterns) rather than a component the system actually calls. It sits at an awkward conceptual layer. An `association` edge with a descriptive label handles this adequately, but a richer semantic relationship closer to `derives_from` would be more precise. The ontology gap here is minor but worth noting for the Dream Loop's next vocabulary review.
 
-**34 new edges** (12 → 46):
-- Three-way creation path connections (explore/visualize → intelligence-brief)
-- Full paint system pipeline (context → strategies → system → three-js)
-- Life system chain (eval-modal → health-check → alone-time-loop → visualize-skill)
-- Validator's dual role (governs intelligence-brief AND enables alone-time gate)
-- A-Frame correctly superseded by Three.js
+**Node tier assignment for `completion-pipeline`**: set as `secondary` even though it is on the critical path of the explore pipeline. The `tier` field reflects narrative importance in this document, not operational criticality — correct by the SOP but potentially misleading for a system-architecture brief.
 
-**4 new beats** (5 → 9):
-- "Enrichment and the Completion Machine" (wikidata, sparql, completion-pipeline)
-- "Paint, Memory, and Navigation" (paint-system, session-manager, brief-controller)
-- "The Eval Signal" (eval-modal, health-check)
-- "The System Becomes Self-Aware" (alone-time-loop, health-check, validator) — **the climax beat**
+## How This Topic Could Have Been Better Visualized
 
-The original entry had the climax on "The Four Layers of Knowledge" (the data model). Re-encoding moved the climax to the life architecture beat — the moment the system became self-observing. This is correct: the JSON standard is a technical innovation; the autonomous self-improvement cycle is the narrative peak.
+**The three-part lock deserves a companion diagram.** The concept is architectural — three components that must update atomically. A triangle diagram with labeled vertices would carry the argument faster than any graph edge. Candidate: `library/diagrams/kaaro-viewer/three-part-lock.excalidraw`.
 
-**3 new insights** (2 → 5):
-- `pattern` — explore-visualize split separates exploration velocity from quality degradation
-- `opportunity` — life architecture as a template for other library-based knowledge tools
-- `paradox` — the same validator that blocks human errors is the LLM mutation guard
+**The two-path interaction model** (explore pipeline vs. visualize skill) is inherently a fork diagram. The current encoding represents both paths as nodes with edges to the same output (`intelligence-brief`), which works in the graph but does not visually emphasize the fork structure the way a flow diagram would.
 
-### What the self-encoding revealed
+**The self-referential encoding paradox** (insight i5) is a strong visual opportunity. The kaaro-viewer node should appear twice in a diagram: once as the subject being encoded, once as the system doing the encoding. A Möbius-strip or recursive diagram would land the paradox more viscerally than a text insight.
 
-Encoding kaaroViewer into its own schema exposed an interesting structural gap: the CLAUDE.md and codebase are architecturally rich but lack a concise narrative spine about *why* each component exists. The current documentation describes what components do — it does not describe the causal chain that made each one necessary. The story beats had to be constructed from first principles rather than extracted from an explicit narrative in the source.
+## Summary Table
 
-A future improvement: write a `library/kaaro-viewer-2026.md` narrative document that traces the journey from A-Frame prototype → Three.js canvas → paint system → eval loop → life architecture as an explicit causal chain. That document would make a much richer source for the next encoding cycle.
+| Dimension | Grade | Notes |
+|---|---|---|
+| Node coverage | A | 31 nodes covering all named tools, systems, and coined concepts. Run 4 (7 nodes) vs. this run (31 nodes) — the delta is entirely attributable to the richer source document. |
+| Edge density | B+ | 64 edges, density 2.06. Passes the gate. Governance cluster edges to other clusters are the highest-value additions from the cross-cluster sweep. |
+| Story arc quality | A | 10 beats, one climax (beat 7 — Three-Part Lock), clean low→climax→low arc. The self-governance climax is more accurate than a "canvas features" climax would have been. |
+| Insight title quality | A- | All five titles pass the headline test and state a named mechanism with a direction. i3 is slightly long but contains enough precision to justify it. |
+| Cluster design | A | 6 clusters by functional role, not document section: C1 (problem space), C2 (data architecture), C3 (encoding paths), C4 (canvas), C5 (image layer), C6 (governance). All 31 nodes placed, no overlaps. |
+| Entity visual-model opportunity | High | Strong candidates: three-js (logo), a-frame (logo), wikidata (logo), gemini (Google AI logo), stable-diffusion (community logo), kaaro-viewer (custom logo). The `three-part-lock` concept is the strongest candidate for a custom diagram — a labeled triangle would communicate its structure instantly. |
+| Slide / narrative surface | A- | 10 beats map cleanly to a horizontal slide deck. Beat 7 (climax) should carry the three-part lock triangle diagram. Beat 9 (paint system) would benefit from a 2×2 grid showing one canvas state in all four strategies side-by-side. These are the two beats where text alone leaves meaning on the table. |
 
-### Dream Loop signal
-- None. No `reveals` rel used. No invalid types. No density shortfall.
-- Signal counter remains at 0/3 post-Dream Loop reset.
+## Skill-Level Recommendations
+
+1. **Self-referential entry pattern**: When encoding a system that also runs the encoding process, the narrative source must be purpose-written — not scraped from project docs. This is now validated: the run 4 entry sourced from CLAUDE.md missed the causal story entirely. Add a note to the SOP's Reflective profile: "If the subject IS the encoding platform, write a causal narrative first, then encode from that narrative."
+
+2. **Concept nodes for coined terms**: This encoding used `concept` for `ontology-drift`, `three-part-lock`, `open-world-assumption`, `paint-strategies`, `private-knowledge-vault`, `personalized-ontology`. All are project-coined terms with no Wikidata analog. The Reflective profile already instructs this; the validation here confirms the instruction is correct and sufficient.
+
+3. **`completion-pipeline` as secondary node**: The completion pipeline is operationally critical but narratively supporting in this document. Future encodings of more technical architecture documents should consider whether `primary` is warranted for pipeline stages — it depends on whether the document's argument turns on them.
