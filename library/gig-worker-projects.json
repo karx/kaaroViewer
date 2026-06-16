@@ -84,7 +84,7 @@
       "title":     "The Earnings Trap",
       "node":      "earnings-erosion",
       "narration": "Platform payouts have dropped more than 50% over three years. The promotional promises of ₹100,000 per month used to recruit workers were withdrawn once market share was secured. Workers are now dependent on the platform, their alternatives foreclosed, and the pay floor has been quietly removed.",
-      "tension":   "climax",
+      "tension":   "high",
       "focus":     "tight"
     },
     {
@@ -483,7 +483,7 @@
     { "from": "3d-printing",        "to": "visor-wiper",       "rel": "creation",    "label": "produces",           "weight": 2, "directed": true },
     { "from": "3d-printing",        "to": "bag-stabilizer",    "rel": "creation",    "label": "produces",           "weight": 2, "directed": true },
     { "from": "3d-printing",        "to": "backpack-chest-clip","rel": "creation",   "label": "produces",           "weight": 2, "directed": true },
-    { "from": "3d-printing",        "to": "platform-power",    "rel": "reveals",     "label": "exposes negligence", "weight": 3, "directed": true },
+    { "from": "3d-printing",        "to": "platform-power",    "rel": "association", "label": "exposes negligence gap", "weight": 3, "directed": true },
 
     { "from": "tgpwu",              "to": "dec31-strike",      "rel": "creation",    "label": "organised",          "weight": 4, "directed": true },
     { "from": "tgpwu",              "to": "gig-worker",        "rel": "membership",  "label": "represents",         "weight": 4, "directed": true },
@@ -495,7 +495,25 @@
     { "from": "social-security-code","to": "swiggy-instamart", "rel": "governs",     "label": "regulates (paper)",  "weight": 2, "directed": true },
     { "from": "rajasthan-act",      "to": "gig-worker",        "rel": "governs",     "label": "protects (paper)",   "weight": 2, "directed": true },
 
-    { "from": "blinkit",            "to": "zepto",             "rel": "competes",    "label": "competes with",      "weight": 2 },
-    { "from": "zepto",              "to": "swiggy-instamart",  "rel": "competes",    "label": "competes with",      "weight": 2 }
+    { "from": "blinkit",            "to": "zepto",             "rel": "competes",    "label": "competes with",                 "weight": 2 },
+    { "from": "zepto",              "to": "swiggy-instamart",  "rel": "competes",    "label": "competes with",                 "weight": 2 },
+
+    { "from": "10min-promise",      "to": "msd",               "rel": "causes",      "label": "forces dangerous riding pace",  "weight": 4, "directed": true },
+    { "from": "10min-promise",      "to": "psych-stress",      "rel": "causes",      "label": "timer pressure manufactures anxiety", "weight": 4, "directed": true },
+    { "from": "blinkit",            "to": "algo-management",   "rel": "features",    "label": "deploys",                       "weight": 3, "directed": true },
+    { "from": "zepto",              "to": "algo-management",   "rel": "features",    "label": "deploys",                       "weight": 3, "directed": true },
+    { "from": "swiggy-instamart",   "to": "algo-management",   "rel": "features",    "label": "deploys",                       "weight": 3, "directed": true },
+    { "from": "tgpwu",              "to": "earnings-erosion",  "rel": "opposes",     "label": "protests wage theft",           "weight": 4, "directed": true },
+    { "from": "tgpwu",              "to": "platform-power",    "rel": "opposes",     "label": "challenges asymmetry",          "weight": 4, "directed": true },
+    { "from": "social-security-code","to": "earnings-erosion", "rel": "mitigates",   "label": "mandates welfare fund",         "weight": 2, "directed": true },
+    { "from": "msd",                "to": "psych-stress",      "rel": "causes",      "label": "chronic pain amplifies anxiety","weight": 3, "directed": true },
+    { "from": "dark-store",         "to": "psych-stress",      "rel": "causes",      "label": "confined conditions",           "weight": 3, "directed": true },
+    { "from": "dec31-strike",       "to": "blinkit",           "rel": "disrupts",    "label": "nationwide strike",             "weight": 3, "directed": true },
+    { "from": "dec31-strike",       "to": "zepto",             "rel": "disrupts",    "label": "nationwide strike",             "weight": 3, "directed": true },
+    { "from": "dec31-strike",       "to": "swiggy-instamart",  "rel": "disrupts",    "label": "nationwide strike",             "weight": 3, "directed": true },
+    { "from": "algo-management",    "to": "msd",               "rel": "causes",      "label": "enforces physical overload",    "weight": 4, "directed": true },
+    { "from": "blinkit",            "to": "earnings-erosion",  "rel": "causes",      "label": "pay policy drives erosion",     "weight": 3, "directed": true },
+    { "from": "3d-printing",        "to": "road-safety",       "rel": "mitigates",   "label": "visor + phone tools",           "weight": 2, "directed": true },
+    { "from": "social-security-code","to": "platform-power",   "rel": "mitigates",   "label": "regulatory check on power",     "weight": 2, "directed": true }
   ]
 }
