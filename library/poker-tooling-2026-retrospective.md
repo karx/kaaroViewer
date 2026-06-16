@@ -167,3 +167,34 @@ Every software tool node has a `metrics` object populated with useful numbers (s
 1. **Named-entity sweep pass** — After the initial node list, explicitly re-read the source once looking only for named proper nouns (people, branded tools, cases, legislation) and verify each has a node. The current SOP says "every named entity becomes a node" but the compression pressure of producing 30–40 nodes tends to override this.
 
 2. **Temporal milestone check** — For any source with a dateable narrative (legislation, product launches, tournament series), require at least one chain of `milestone` or `event` nodes with `precedes` edges before the beat structure is written. Otherwise the timeline lives only in narration and disappears from the graph layer entirely.
+
+---
+
+## Alone-Time Re-encode — 2026-06-07
+
+**Health score before:** 150 (degraded) · **After:** ok  
+**Signals fixed:** `validator:3w` → 0w · `density:1.32` → 2.10  
+**Commits:** `efbe355` (re-encode) + retrospective append
+
+### What was fixed
+
+1. **`reveals` rel on primedope→rake** — replaced with `association`. Same systematic error as run 1 (aoe-2-redbull). Both encodings used `reveals` from memory. SOP recommendation: add explicit "never write `reveals`" to Step 2b.
+
+2. **Missing temporal chain** — added `india-black-friday` event node (Aug 2025) to the regulatory cluster. Created precedes chain: `kr-lakshmanan-ruling → india-black-friday → coinpoker/acr-poker`. Also added `india-proga → causes → india-black-friday`. This satisfies the validator requirement for ≥1 event/milestone typed node when story beats reference year numbers.
+
+3. **Edge density 1.32 → 2.10** — 33 new edges added via cross-cluster sweep:
+   - **Risk Math ↔ Psychology**: `variance→tilt`, `rake→tilt`, `bankroll-management mitigates tilt`
+   - **GTO ↔ Risk Math**: `gto-strategy/gto-wizard mitigate variance`, `icm→bankroll-management`
+   - **GTO internal**: `piosolver→implements→gto-strategy`, `monkersolver→implements→gto-strategy`, training platforms `derives_from gto-strategy`
+   - **Data internal**: `hand2note/pokertracker-4/holdem-manager-3 → enables → hud-overlay`
+   - **Platform ↔ Data**: `gg-network prohibits hud-overlay`, `pokerstars permits hud-overlay`
+   - **Psychology ↔ Platform**: `primed-mind/tiltfree/elliot-roe → enables → professional-poker-player`
+   - **Regulatory ↔ Risk Math**: `india-proga disrupts bankroll-management`, `india-proga causes tilt`
+
+### What still could not be resolved
+
+The original retrospective's critique of named-entity compression remains valid and was NOT addressed by this run (Alone-Time is corrective, not speculative): ~20 named tools (PokerSnowie, ICMIZER 3, HRC, Flopzilla Pro, Equilab, GTO Lab, Octopi Poker, Focumon, Mindset+, Poker Coach+, Bankroll IQ, Poker Copilot, DriveHUD 2, Herman Miller Aeron) remain collapsed into concepts or absent. A full re-encode from the source would improve this significantly but is outside Alone-Time scope.
+
+### Dream Loop signal
+
+The `reveals` rel error appeared in both Alone-Time runs. This is the first repeated unresolved signal across consecutive handoffs. At 3 occurrences it triggers Dream Loop escalation per the protocol. Current count: **2/3**.
