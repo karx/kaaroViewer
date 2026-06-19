@@ -35,8 +35,6 @@ Supporting systems:
 - `entity_matching.mjs` — OpenTapioca NLP (via fragile CORS proxy)
 - `fetch_knowledge.mjs` — Wikidata SPARQL image + entity data
 - `logger.mjs` — structured session logging with DOM display and JSON export
-- `context_wordmap.mjs` — Google WordTree for phrase context
-- `controller/` — mobile speech-to-MQTT controller
 - Visualization pages: gig economy India, gig worker projects, 3D tools specs — real domain use cases
 
 ---
@@ -71,13 +69,6 @@ Rather than deep integrations with specific social platforms (whose APIs are res
 - [ ] Fix `fetch_knowledge.mjs` null return bug (line 59 returns `null` instead of `[]`)
 - [ ] Audit all `fetch` calls for missing error handling
 
-#### A-Frame Upgrade
-- [ ] Upgrade A-Frame from **0.9.2 → 1.6** (latest stable)
-- [ ] Audit component compatibility: `aframe-look-at-component`, rain-of-entities, rain-of-posts, sky-canvas, tcgcard
-- [ ] Verify VR mode still works post-upgrade
-
----
-
 ### PHASE 1: ENRICHMENT PIPELINE ✓ (shipped April 2026)
 *LLM-driven knowledge graph generation with multi-source enrichment*
 
@@ -102,7 +93,7 @@ Rather than deep integrations with specific social platforms (whose APIs are res
 - [ ] Define stream protocol: MQTT message format, batching, deduplication
 - [ ] Add backpressure handling (don't flood the 3D scene)
 - [ ] Log stream events via `logger.mjs` (MQTT type already defined)
-- [ ] Test with live MQTT controller (`controller/speech-to-text-to-mqtt.js`)
+- [ ] Test with live streaming controller
 
 ---
 

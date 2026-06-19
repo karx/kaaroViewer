@@ -265,7 +265,7 @@ def validate(file_path: str) -> tuple[list, list]:
     # Edge density
     if len(nodes) > 5 and edges:
         density = len(edges) / len(nodes)
-        if density < 1.5:
+        if density < 2.0:
             warnings.append(
                 f'Edge density {density:.1f}x ({len(edges)} edges / {len(nodes)} nodes) — '
                 f'aim for ≥2.0; run cross-cluster sweep to find missing connections'

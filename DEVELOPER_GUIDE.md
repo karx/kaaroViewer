@@ -1,6 +1,6 @@
 # KaaroViewer - Developer Guide
 
-> **⚠ STALE — written for A-Frame era (pre-2026).** The platform has migrated to Three.js canvas. The A-Frame components in `components/` still exist but the active development surface is `canvas/`, `pipeline/`, and `enrichers/`. See `README.md` and `pipeline/README.md` for the current architecture.
+> **⚠ STALE — written for A-Frame era (pre-2026).** The platform has migrated to Three.js canvas. The legacy A-Frame components (`components/`), MQTT controller (`controller/`), and helper modules (`pod_modules/`) were removed in v3 cleanup. The active development surface is `canvas/`, `pipeline/`, and `enrichers/`. See `README.md` and `pipeline/README.md` for the current architecture.
 
 ## Project Overview
 
@@ -26,13 +26,9 @@ kaaroViewer/
 ├── kaaro_stream.mjs              # Streaming data handling (currently empty)
 │
 ├── Components (A-Frame Custom Components)
-│   ├── components/
-│   │   ├── wikidata-entity.js   # 3D entity card visualization component
-│   │   ├── rain-of-entities.js  # Particle effect for entities
-│   │   ├── rain-of-posts.js     # Particle effect for social posts
-│   │   ├── sky-canvas.js        # Background canvas rendering
-│   │   ├── alongpath.js         # Path animation component
-│   │   └── tcgcard.js           # Trading card style display
+│   ├── components/              # Removed in v3 cleanup (was A-Frame components)
+│   ├── controller/              # Removed in v3 cleanup (was MQTT mobile controller)
+│   └── pod_modules/             # Removed in v3 cleanup (was third-party pod helpers)
 │
 ├── Core Functionality
 │   ├── entity_matching.mjs       # NLP entity recognition & Wikidata linking
@@ -69,7 +65,7 @@ kaaroViewer/
     └── DEVELOPER_GUIDE.md        # This file
 
 ### Specialized Visualizations
-- `entity-test.html` - Entity component testing sandbox
+- *Removed in v3 cleanup:* `entity-test.html` was the A-Frame component sandbox
 - `viz-gig-economy-india.html` - Example visualization: Gig economy data
 ```
 
@@ -97,7 +93,7 @@ Fetch Knowledge (fetch_knowledge.mjs)
     ↓ Images, metadata, properties
 Viewer Functions (2viewr_functions.mjs)
     ↓ 3D object creation
-A-Frame Components (wikidata-entity.js, etc.)
+A-Frame Components (removed in v3 cleanup)
     ↓
 3D Scene Rendering
 ```
@@ -167,10 +163,8 @@ A-Frame Components (wikidata-entity.js, etc.)
 - `updateChartWithStrings(strings[], focusWord)` - Updates word frequency chart
 - `getFocusWord()` - Retrieves current focus word
 
-#### 7. **components/wikidata-entity.js** (3D Entity Card)
-- A-Frame custom component for rendering entity cards
-- Creates 3D boxes with entity information
-- Displays label, type, description, and images
+#### 7. *Removed in v3 cleanup* — was `components/wikidata-entity.js` (A-Frame 3D entity card)
+- See `canvas/nodes.mjs` for the current Three.js entity rendering pipeline.
 
 **Schema Properties:**
 - `id` - Wikidata QID
@@ -181,15 +175,8 @@ A-Frame Components (wikidata-entity.js, etc.)
 - `image_url` - Primary entity image
 - `claims` - Additional properties
 
-#### 8. **controller/speech-to-text-to-mqtt.js** (Mobile Controller)
-- Web Speech API integration for voice input
-- MQTT client for real-time communication
-- Mobile UI for session control
-
-**Features:**
-- Device ID registration
-- Voice input processing
-- Real-time message relay to viewer
+#### 8. *Removed in v3 cleanup* — was `controller/speech-to-text-to-mqtt.js` (MQTT mobile controller)
+- Live streaming integration is on the roadmap (see `PRODUCT_ROADMAP.md` "Streaming / MQTT" section) but the legacy controller is gone.
 
 ## Data Sources & APIs
 
@@ -241,10 +228,7 @@ A-Frame Components (wikidata-entity.js, etc.)
    http://localhost:8000/index.html
    ```
 
-4. **Test the controller interface** (in another window/device)
-   ```
-   http://localhost:8000/controller/index.html
-   ```
+4. **Test the viewer** — open `index.html` from a static server. Mobile controller was removed in v3 cleanup.
 
 ### Environment Notes
 - No .env file needed - APIs use public endpoints
@@ -333,9 +317,8 @@ const response = await fetch(
 
 ## Testing
 
-- **Unit Testing**: No test framework currently configured
-- **Manual Testing**: Use `entity-test.html` for component testing
-- **Visual Testing**: `viz-gig-economy-india.html` for sample visualization
+- **Unit Testing**: Vitest — `npm test` (168+ tests, see `cleanup.test.mjs` for legacy-removal regression contract)
+- **Visual Testing**: `viz-gig-economy-india.html` for sample visualization (component-test sandbox removed in v3 cleanup)
 
 ## Future Enhancements
 
@@ -367,3 +350,16 @@ const response = await fetch(
 
 **Last Updated**: March 2026  
 **Maintained By**: KaaroViewer Community
+rch 2026  
+**Maintained By**: KaaroViewer Community
+ct
+- Check browser console for WebSocket errors
+- Confirm device/session IDs are properly set
+
+---
+
+**Last Updated**: March 2026  
+**Maintained By**: KaaroViewer Community
+rch 2026  
+**Maintained By**: KaaroViewer Community
+y**: KaaroViewer Community

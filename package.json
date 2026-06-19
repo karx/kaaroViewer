@@ -22,8 +22,7 @@
       "**/*.test.mjs"
     ],
     "exclude": [
-      "node_modules",
-      "pod_modules"
+      "node_modules"
     ]
   }
 }

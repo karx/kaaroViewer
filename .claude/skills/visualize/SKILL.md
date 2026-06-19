@@ -1,4 +1,5 @@
 ---
+name: visualize
 description: Encode a markdown document into a kaaroViewer intelligence brief. Produces a complete library JSON (nodes, edges, story, insights, clusters) and registers it in the LIBRARY. Use when given a markdown file path or raw text to visualize.
 argument-hint: <path/to/report.md | "inline text">
 allowed-tools: Read Write Edit Glob Bash(python3*)

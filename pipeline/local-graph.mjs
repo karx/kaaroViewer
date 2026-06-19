@@ -347,4 +347,11 @@ export const LIBRARY = [
     domain: 'Hardware / IoT',
     year:   '2026',
   },
+  {
+    id:     'pkm-system-prompt-engineering-projects',
+    title:  'PKM System Prompt — Engineering Projects',
+    path:   './library/pkm-system-prompt-engineering-projects.json',
+    domain: 'PKM / Agents',
+    year:   '2024',
+  },
 ];

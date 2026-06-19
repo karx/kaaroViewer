@@ -7,6 +7,19 @@
  */
 
 import { log } from '../logger.mjs';
+
+// Paint Indicator Helpers
+function _showPaintIndicator(label = 'generating scene…') {
+  const indicator = document.getElementById('paint-indicator');
+  const labelEl   = document.getElementById('paint-indicator-label');
+  if (indicator) indicator.classList.remove('hidden');
+  if (labelEl) labelEl.textContent = label;
+}
+
+function _hidePaintIndicator() {
+  const indicator = document.getElementById('paint-indicator');
+  if (indicator) indicator.classList.add('hidden');
+}
 import { graph } from '../pipeline/graph.mjs';
 import { assemblePaintContext } from './paint-context.mjs';
 import {
@@ -98,6 +111,9 @@ async function _executePaint(slideIdx, centralNode, frameNodes, canonicalOverrid
     animateCameraTo(canon.pos, canon.target, 700);
   }
 
+  // Show progress indicator
+  _showPaintIndicator();
+
   try {
     const result = await generateScene(
       centralNode, frameNodes, apiKey, getCamera(),
@@ -115,6 +131,8 @@ async function _executePaint(slideIdx, centralNode, frameNodes, canonicalOverrid
   } catch (err) {
     log('ERROR', `[paint] ${err.message}`);
     if (slideIdx != null) notifySceneResult(slideIdx, 'error', err.message);
+  } finally {
+    _hidePaintIndicator();
   }
 }
 

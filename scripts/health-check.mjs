@@ -12,11 +12,11 @@
  */
 
 import { readFileSync, writeFileSync, readdirSync } from 'fs';
-import { resolve, join, basename } from 'path';
+import { resolve, join, basename, dirname } from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
-const __dirname   = fileURLToPath(new URL('.', import.meta.url));
+const __dirname   = dirname(fileURLToPath(import.meta.url));
 const ROOT        = resolve(__dirname, '..');
 const LIBRARY_DIR = join(ROOT, 'library');
 const VALIDATOR   = join(ROOT, '.claude', 'hooks', 'validate-library-json.py');
@@ -36,7 +36,7 @@ const T = {
 const ANSI_RE = /\x1b\[[0-9;]*m/g;
 
 function runValidator(filePath) {
-  const cmds = ['python', 'python3'];
+  const cmds = ['python3', 'python'];
   for (const cmd of cmds) {
     const r = spawnSync(cmd, [VALIDATOR, filePath], { encoding: 'utf8', timeout: 15_000 });
     if (r.error?.code === 'ENOENT') continue;

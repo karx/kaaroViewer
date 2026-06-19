@@ -1,0 +1,954 @@
+{
+  "meta": {
+    "id": "pkm-system-prompt-engineering-projects",
+    "title": "PKM System Prompt — Engineering Projects",
+    "subtitle": "A PARA-adapted knowledge management framework for agent-assisted engineering that treats every code change as a knowledge enrichment opportunity",
+    "source": "library/pkm-engineering-seed.md",
+    "domain": "toolkit",
+    "year": "2024",
+    "tags": [
+      "pkm",
+      "para",
+      "agent-engineering",
+      "knowledge-graph",
+      "workflow"
+    ],
+    "tone": "analytical"
+  },
+  "report_card": {
+    "summary": "The PKM System Prompt reimagines PARA for the Agent Engineering Era: Projects become Pipelines (bounded runs), Resources become Skill Surfaces (composable capabilities), Archive becomes Crystallized (invocable decisions). Every git repo gets a CLAUDE.md that activates dual-track operation — build code and enrich the knowledge graph. Mandatory frontmatter (8 fields, controlled vocabularies) and a two-link WikiLink minimum convert markdown into a computable graph. Maturity levels (STUB→EVERGREEN) and layer ontology (L4→L1) function as a compilation pipeline for knowledge. Crystallized learnings compound across runs: each agent starts with the accumulated capability of all prior runs.",
+    "key_stats": [
+      "PARA Components: 4 (Pipelines, Areas, Skill Surfaces, Crystallized)",
+      "Frontmatter Fields: 8 mandatory",
+      "Maturity Levels: 4 (STUB <50w, SEED 50–249w, BUDDING 250–699w, EVERGREEN 700w+)",
+      "Layer Levels: 4 (L4 Identity, L3 Principle, L2 System, L1 Instance)",
+      "Minimum WikiLinks per Note: 2",
+      "eBrain Vault Folders: 5 (Inbox, Pipelines, Skill Surfaces, Areas, Crystallized)",
+      "Referenced Vault Notes: 5 (agent-field, computeTheory, ego-Field, GARDEN_GUIDELINES, kaaroViewer)",
+      "Prohibited Practices: 5 (no frontmatter, no untitled, no code-documentation, no uncrystallized close, no broken links)"
+    ],
+    "spine": [
+      "pkm-system-prompt",
+      "agent-engineering-parA"
+    ],
+    "protagonists": [
+      "skill-surfaces",
+      "crystallized",
+      "pipelines",
+      "frontmatter-standard",
+      "wikilink-convention"
+    ],
+    "antagonists": [],
+    "themes": [
+      "composability over storage",
+      "compounding knowledge capital",
+      "graph connectivity as protocol",
+      "maturity as compilation status",
+      "theory as load-bearing infrastructure"
+    ]
+  },
+  "story": [
+    {
+      "id": "beat-framework",
+      "title": "The Framework That Builds Itself",
+      "node": "pkm-system-prompt",
+      "nodes": [
+        "agent-engineering-parA",
+        "claude-md"
+      ],
+      "narration": "Every git repo gets a CLAUDE.md. The agent reads it on session start. Two tracks activate: build code, and enrich the knowledge surface. They are not separate jobs — every meaningful change is an opportunity to grow the graph. The prompt is the seed; the notes created during the run are what grows.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-parA-shift",
+      "title": "PARA Reimagined for Agents",
+      "node": "agent-engineering-parA",
+      "nodes": [
+        "pipelines",
+        "areas",
+        "skill-surfaces",
+        "crystallized"
+      ],
+      "narration": "Projects become Pipelines — bounded runs that start, loop, and end. Resources become Skill Surfaces — composable, callable knowledge, not passive bookmarks. Archive becomes Crystallized — static but invocable, encoded once and called forever. Areas keep their name but gain a new mandate: expose skill surfaces. The old PARA was for humans filing notes. This PARA is for agents composing capabilities.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-pipeline-life",
+      "title": "A Pipeline's Life",
+      "node": "pipelines",
+      "nodes": [
+        "git-vcs",
+        "skill-surfaces",
+        "crystallized",
+        "frontmatter-standard"
+      ],
+      "narration": "A feature branch opens — that's a Pipeline. The agent creates a Pipeline note with frontmatter: layer L1, maturity SEED, para Pipeline. As work progresses, the note matures toward BUDDING. When the branch merges, the Pipeline closes. Its learnings crystallize into a Skill Surface note. The next run invokes that Skill Surface without re-deriving. The git history and the knowledge graph advance in lockstep.",
+      "tension": "medium",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-skill-surfaces",
+      "title": "Skill Surfaces Are the Product",
+      "node": "skill-surfaces",
+      "nodes": [
+        "pipelines",
+        "areas",
+        "crystallized",
+        "agent-field"
+      ],
+      "narration": "A well-maintained Area is only as capable as the skill surfaces it exposes. Each Skill Surface note encodes one pattern — atomic, callable, reusable. An agent reads it and applies it without asking. HOWTOs, architecture decisions, reusable prompts: these are not documentation. They are compiled capabilities. The more skill surfaces an Area exposes, the further the next agent reaches.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-frontmatter-discipline",
+      "title": "Frontmatter as Contract",
+      "node": "frontmatter-standard",
+      "nodes": [
+        "yaml-standard",
+        "maturity-levels",
+        "layer-levels",
+        "wikilink-convention"
+      ],
+      "narration": "Eight mandatory fields. No untitled notes. No missing maturity. No notes without para classification. YAML frontmatter turns markdown into a queryable knowledge base. Layer L4 through L1 maps abstraction depth. Maturity STUB through EVERGREEN tracks evolution. Every note declares its place in the system. Without this contract, the graph is just text — with it, the graph is computable.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-wikilinks-graph",
+      "title": "Two Links Minimum — No Isolated Nodes",
+      "node": "wikilink-convention",
+      "nodes": [
+        "obsidian-wikilinks",
+        "pkm-system-prompt",
+        "agent-field",
+        "kaaro-viewer"
+      ],
+      "narration": "A note with zero links is invisible. The rule is absolute: link upstream to the system you belong to, sideways to sibling patterns, outward to vault concepts. Each [[WikiLink]] is an edge in the knowledge graph. The Obsidian syntax renders it traversable. kaaroViewer visualizes it. The graph grows only when every node reaches at least two others. Isolation is not an option — it's a protocol violation.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-crystallization",
+      "title": "Crystallized Knowledge Seeds the Next Run",
+      "node": "crystallized",
+      "nodes": [
+        "pipelines",
+        "skill-surfaces",
+        "ebrain-vault",
+        "garden-guidelines"
+      ],
+      "narration": "A closed Pipeline does not vanish — it crystallizes. Its experiment log, its decision record, its surprise capture: all encoded cleanly in the Crystallized folder. The next agent run (or human) invokes them without re-deriving. The eBrain vault structure mirrors this: Inbox → Pipelines → Skill Surfaces → Areas → Crystallized. Knowledge flows one direction, compounding. Garden Guidelines gate what publishes to the public graph.",
+      "tension": "climax",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-theoretical-foundation",
+      "title": "The Theory Beneath the Practice",
+      "node": "agent-field",
+      "nodes": [
+        "compute-theory",
+        "ego-field",
+        "pkm-system-prompt"
+      ],
+      "narration": "Three vault notes anchor the framework: Agent Field defines how agents compose skills and context. Compute Theory provides the underlying compute philosophy. Ego Field defines the boundary of a system's influence. The PKM prompt derives from all three. They are not decorative references — they are the load-bearing walls. When the practice falters, the theory tells you why.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-dont-rules",
+      "title": "What the Framework Forbids",
+      "node": "pkm-system-prompt",
+      "nodes": [
+        "frontmatter-standard",
+        "wikilink-convention",
+        "maturity-levels"
+      ],
+      "narration": "Do not create notes without frontmatter. Do not leave notes untitled. Do not write what the code already says — write why. Do not let a pipeline close without crystallization. Do not create links that don't resolve. These prohibitions are not bureaucratic — they are the immune system of the knowledge graph. Each violation creates an isolated node, a broken edge, a dead end. The framework survives because it refuses to accumulate rot.",
+      "tension": "medium",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-context-surface",
+      "title": "Context Is the Surface Area You Create",
+      "node": "pkm-system-prompt",
+      "nodes": [
+        "claude-md",
+        "skill-surfaces",
+        "crystallized",
+        "kaaro-viewer"
+      ],
+      "narration": "The prompt you write is the seed. The notes created or enriched during the run are what grows. Every agent run expands the project's knowledge surface area. The richer the surface you leave behind, the further the next run reaches. Write notes as if you are writing skills for the next agent — including yourself, next week. kaaroViewer renders the accumulated graph. The cycle closes. The next cycle begins.",
+      "tension": "low",
+      "focus": "wide"
+    }
+  ],
+  "insights": [
+    {
+      "id": "ins-filing-vs-composing",
+      "title": "Traditional PARA optimizes for filing; Agent PARA optimizes for composing capabilities",
+      "body": "The original PARA sorts notes into buckets for human retrieval. The Agent Engineering Era PARA restructures every bucket around what an agent can invoke: Pipelines produce Skill Surfaces; Areas expose callable patterns; Crystallized encodes invocable decisions. The shift is from storage to composability — the knowledge graph becomes a capability surface, not an archive.",
+      "type": "finding",
+      "severity": "high",
+      "evidence": [
+        "pkm-system-prompt",
+        "agent-engineering-parA",
+        "skill-surfaces",
+        "crystallized",
+        "pipelines"
+      ]
+    },
+    {
+      "id": "ins-isolation-protocol",
+      "title": "The two-link minimum rule is a graph connectivity protocol, not a style preference",
+      "body": "A note with zero or one WikiLink is a disconnected or leaf node in the knowledge graph. At scale, leaf nodes fragment the traversable surface. The mandatory two-link rule (upstream + sideways/outward) guarantees the graph remains a single connected component where any node can reach any other. This is a topological invariant, not a convention.",
+      "type": "warning",
+      "severity": "high",
+      "evidence": [
+        "wikilink-convention",
+        "pkm-system-prompt",
+        "obsidian-wikilinks",
+        "kaaro-viewer"
+      ]
+    },
+    {
+      "id": "ins-maturity-as-compilation",
+      "title": "Maturity levels (STUB→EVERGREEN) function as a compilation pipeline for knowledge",
+      "body": "STUB is a forward declaration. SEED captures the idea. BUDDING makes it usable. EVERGREEN is the compiled, optimized, reference-grade artifact. An agent encountering an EVERGREEN note can trust it as a stable capability. The maturity field in frontmatter is not metadata — it is a build status. Pipelines that close without promoting notes to at least BUDDING leave the knowledge graph in a perpetually uncompiled state.",
+      "type": "pattern",
+      "severity": "medium",
+      "evidence": [
+        "maturity-levels",
+        "frontmatter-standard",
+        "pipelines",
+        "skill-surfaces",
+        "crystallized"
+      ]
+    },
+    {
+      "id": "ins-layer-ontology",
+      "title": "The L4–L1 layer ontology maps directly to agent reasoning depth",
+      "body": "L4 Identity (philosophy) loads once per agent lifetime. L3 Principle (frameworks) loads per domain. L2 System (working systems) loads per project. L1 Instance (experiments) loads per run. The frontmatter layer field tells the agent what context window tier this note belongs to. Without this ontology, agents either drown in instance-level detail or lack the principles to generalize.",
+      "type": "finding",
+      "severity": "high",
+      "evidence": [
+        "layer-levels",
+        "frontmatter-standard",
+        "agent-field",
+        "pkm-system-prompt",
+        "areas"
+      ]
+    },
+    {
+      "id": "ins-crystallization-compounding",
+      "title": "Crystallized knowledge creates compounding returns across agent runs",
+      "body": "Each closed Pipeline deposits its learnings into Crystallized. The next run invokes them without re-derivation. Run N+1 starts with the accumulated capability of runs 1 through N. The eBrain folder structure (Inbox→Pipelines→Skill Surfaces→Areas→Crystallized) physicalizes this compounding. Projects that skip crystallization reset to zero every run. Projects that crystallize accelerate.",
+      "type": "opportunity",
+      "severity": "medium",
+      "evidence": [
+        "crystallized",
+        "pipelines",
+        "ebrain-vault",
+        "skill-surfaces",
+        "pkm-system-prompt"
+      ]
+    },
+    {
+      "id": "ins-frontmatter-contract",
+      "title": "Mandatory frontmatter converts markdown from prose into a queryable knowledge base",
+      "body": "Eight fields (published, title, tags, description, date, layer, maturity, para) transform a folder of .md files into a structured database. YAML provides the syntax; the controlled vocabularies (layer ∈ {L4,L3,L2,L1}, maturity ∈ {STUB,SEED,BUDDING,EVERGREEN}, para ∈ {Pipeline,Area,SkillSurface,Crystallized}) provide the schema. Without this contract, WikiLinks are just text — with it, they are typed edges in a computable graph.",
+      "type": "pattern",
+      "severity": "medium",
+      "evidence": [
+        "frontmatter-standard",
+        "yaml-standard",
+        "maturity-levels",
+        "layer-levels",
+        "wikilink-convention"
+      ]
+    },
+    {
+      "id": "ins-theory-practice-gap",
+      "title": "The framework fails silently when theoretical foundations (Agent Field, Compute Theory, Ego Field) are not maintained as living skill surfaces",
+      "body": "The PKM prompt cites [[agent-field]], [[computeTheory]], [[ego-Field]] as vault notes. If those notes are STUBs or missing, the framework loses its load-bearing walls. Agents will still follow the procedural rules (frontmatter, WikiLinks) but cannot reason about why the structure works or how to adapt it. The theory notes must be maintained at BUDDING or EVERGREEN maturity — they are not optional references, they are the compiler for the practice.",
+      "type": "warning",
+      "severity": "high",
+      "evidence": [
+        "agent-field",
+        "compute-theory",
+        "ego-field",
+        "pkm-system-prompt",
+        "maturity-levels"
+      ]
+    }
+  ],
+  "clusters": [
+    {
+      "id": "cluster-framework-core",
+      "label": "Framework Core",
+      "color": "#cc44ff",
+      "nodes": [
+        "pkm-system-prompt",
+        "agent-engineering-parA",
+        "claude-md"
+      ],
+      "description": "The master prompt and its PARA restructuring — the central nervous system of the agent-engineering knowledge graph."
+    },
+    {
+      "id": "cluster-parA-components",
+      "label": "PARA Components",
+      "color": "#00aaff",
+      "nodes": [
+        "pipelines",
+        "areas",
+        "skill-surfaces",
+        "crystallized"
+      ],
+      "description": "The four reimagined PARA buckets, each defined by what an agent can do with it: run, maintain, invoke, crystallize."
+    },
+    {
+      "id": "cluster-structural-standards",
+      "label": "Structural Standards",
+      "color": "#00cccc",
+      "nodes": [
+        "frontmatter-standard",
+        "wikilink-convention",
+        "maturity-levels",
+        "layer-levels",
+        "yaml-standard",
+        "obsidian-wikilinks"
+      ],
+      "description": "The syntactic and semantic contracts that make the graph computable: frontmatter schema, link protocol, maturity pipeline, layer ontology."
+    },
+    {
+      "id": "cluster-theoretical-foundation",
+      "label": "Theoretical Foundation",
+      "color": "#ffcc00",
+      "nodes": [
+        "agent-field",
+        "compute-theory",
+        "ego-field",
+        "garden-guidelines"
+      ],
+      "description": "The vault notes that anchor the framework's reasoning: agent composition model, compute philosophy, system boundaries, publication rules."
+    },
+    {
+      "id": "cluster-infrastructure",
+      "label": "Infrastructure Layer",
+      "color": "#888866",
+      "nodes": [
+        "ebrain-vault",
+        "git-vcs",
+        "kaaro-viewer"
+      ],
+      "description": "The substrate: the root vault, version control substrate, and visualization frontend."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "pkm-system-prompt",
+      "label": "PKM System Prompt",
+      "type": "concept",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "The master prompt template (CLAUDE.md) that instructs agents to maintain and enrich a project's PKM structure alongside code. It encodes the PARA-for-Agent-Engineering framework and WikiLink conventions.",
+      "metrics": {
+        "Word Count": "~800",
+        "Sections": "7"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "agent-engineering-parA",
+      "label": "Agent Engineering Era PARA",
+      "type": "concept",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "A restructured PARA framework where Projects become Pipelines (bounded runs), Resources become Skill Surfaces (composable, callable knowledge), and Archive becomes Crystallized (static but invocable). Areas retain name but gain skill-surface capability.",
+      "metrics": {
+        "Components": "4"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "pipelines",
+      "label": "Pipelines",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "Bounded runs with a goal — feature sprints, experiments, agent jobs. They create context, start, loop, and end. When closed, they crystallize learnings into Skills or Area notes. Maps to git feature branches, experiment logs, sprint notes.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "areas",
+      "label": "Areas",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "Long-term responsibilities maintained over time. In the Agent Engineering Era, an Area is only as capable as the skill surface it exposes — composable, callable knowledge, not passive docs. Maps to core modules, maintained systems, ongoing responsibilities.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "skill-surfaces",
+      "label": "Skill Surfaces",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Encoded knowledge — reusable pathways, composable patterns, callable context. What makes an agent run further, faster, deeper. Built once, invoked endlessly. Maps to pattern docs, architecture decisions, reusable prompts, HOWTOs.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "crystallized",
+      "label": "Crystallized",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Static but invocable knowledge — like a Skill. Past decisions encoded cleanly so the next agent run (or human) can call them without re-deriving. Maps to closed experiments, completed pipelines with learnings, deprecated patterns with reasons.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "frontmatter-standard",
+      "label": "YAML Frontmatter Standard",
+      "type": "standard",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Mandatory frontmatter for every project note: published, title, tags, description, date, layer (L4–L1), maturity (STUB–EVERGREEN), para (Pipeline|Area|SkillSurface|Crystallized). Enforces structured, queryable metadata.",
+      "metrics": {
+        "Fields": "8",
+        "Maturity Levels": "4",
+        "Layer Levels": "4"
+      },
+      "wikidata": "Q28640267"
+    },
+    {
+      "id": "wikilink-convention",
+      "label": "WikiLink Convention",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Every note must link to at least 2 other notes using [[WikiLink]] syntax. Links carry meaning: upstream to systems, sideways to siblings, outward to vault concepts. Zero-link notes are isolated and invisible.",
+      "metrics": {
+        "Min Links": "2"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "maturity-levels",
+      "label": "Maturity Levels",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Four-tier maturity scale: STUB (<50 words, placeholder), SEED (50–249 words, idea captured), BUDDING (250–699 words, usable), EVERGREEN (700+ words, durable reference). Drives note evolution from seed to reference.",
+      "metrics": {
+        "Levels": "4",
+        "STUB Max": "50 words",
+        "SEED Max": "249 words",
+        "BUDDING Max": "699 words"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "layer-levels",
+      "label": "Layer Levels",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Four-layer ontology: L4 Identity (philosophy), L3 Principle (frameworks outliving projects), L2 System (working systems maintained), L1 Instance (specific experiments, events, runs). Maps notes to abstraction depth.",
+      "metrics": {
+        "Layers": "4"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "ebrain-vault",
+      "label": "eBrain Vault",
+      "type": "platform",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The root PARA vault (D:/src/eBrain) that hosts all git repos as L1/L2 instances. Folders map to Agent Engineering roles: Inbox, Pipelines, Skill Surfaces, Areas, Crystallized.",
+      "metrics": {
+        "Folders": "5",
+        "Path": "D:/src/eBrain"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "agent-field",
+      "label": "Agent Field",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The Agent/Skill/Context model that underlies the PKM framework. Referenced as a vault note [[agent-field]] — the theoretical foundation for how agents compose skills and context.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "compute-theory",
+      "label": "Compute Theory",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The underlying compute philosophy referenced as [[computeTheory]] — provides the theoretical basis for the agent-engineering paradigm.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "ego-field",
+      "label": "Ego Field",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The area of effect a system creates, referenced as [[ego-Field]] — defines the boundary within which a system's influence operates.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "garden-guidelines",
+      "label": "Garden Guidelines",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Rules for how notes publish to the public graph, referenced as [[GARDEN_GUIDELINES]] — governs the transition from private vault to public knowledge garden.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "kaaro-viewer",
+      "label": "kaaroViewer",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "The browser-based knowledge graph explorer referenced as [[kaaroViewer]] — the visualization layer for the encoded intelligence briefs.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "claude-md",
+      "label": "CLAUDE.md",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The prompt file format that agents read on every session. Contains the PKM system prompt plus project-specific context. The seed that grows the knowledge surface each run.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "git-vcs",
+      "label": "Git",
+      "type": "software",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "Version control system. Pipelines map to feature branches; experiment logs and sprint notes live in Git. The substrate on which the PKM layer operates.",
+      "metrics": {},
+      "wikidata": "Q973571"
+    },
+    {
+      "id": "yaml-standard",
+      "label": "YAML",
+      "type": "standard",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "Data serialization standard used for frontmatter metadata. Provides the structured, queryable layer atop markdown notes.",
+      "metrics": {},
+      "wikidata": "Q208488"
+    },
+    {
+      "id": "obsidian-wikilinks",
+      "label": "Obsidian WikiLinks",
+      "type": "standard",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "WikiLink syntax [[...]] for bi-directional linking between notes. The graph-building primitive that turns isolated notes into a traversable knowledge network.",
+      "metrics": {},
+      "wikidata": null
+    }
+  ],
+  "edges": [
+    {
+      "from": "pkm-system-prompt",
+      "to": "agent-engineering-parA",
+      "rel": "creation",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "frontmatter-standard",
+      "rel": "implements",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "wikilink-convention",
+      "rel": "implements",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "maturity-levels",
+      "rel": "implements",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "layer-levels",
+      "rel": "implements",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "claude-md",
+      "rel": "creation",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "pipelines",
+      "rel": "features",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "areas",
+      "rel": "features",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "skill-surfaces",
+      "rel": "features",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "crystallized",
+      "rel": "features",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "agent-field",
+      "rel": "cites",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "compute-theory",
+      "rel": "cites",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "ego-field",
+      "rel": "cites",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "garden-guidelines",
+      "rel": "cites",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pkm-system-prompt",
+      "to": "kaaro-viewer",
+      "rel": "association",
+      "weight": 2,
+      "directed": false
+    },
+    {
+      "from": "agent-engineering-parA",
+      "to": "pipelines",
+      "rel": "membership",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "agent-engineering-parA",
+      "to": "areas",
+      "rel": "membership",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "agent-engineering-parA",
+      "to": "skill-surfaces",
+      "rel": "membership",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "agent-engineering-parA",
+      "to": "crystallized",
+      "rel": "membership",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "pipelines",
+      "to": "git-vcs",
+      "rel": "location",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pipelines",
+      "to": "skill-surfaces",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "pipelines",
+      "to": "crystallized",
+      "rel": "precedes",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "areas",
+      "to": "skill-surfaces",
+      "rel": "enables",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "areas",
+      "to": "pipelines",
+      "rel": "governs",
+      "label": "maintains long-term responsibilities",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "skill-surfaces",
+      "to": "crystallized",
+      "rel": "derives_from",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "skill-surfaces",
+      "to": "pipelines",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "crystallized",
+      "to": "pipelines",
+      "rel": "enables",
+      "label": "seeds next run",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "frontmatter-standard",
+      "to": "yaml-standard",
+      "rel": "implements",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "frontmatter-standard",
+      "to": "maturity-levels",
+      "rel": "features",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "frontmatter-standard",
+      "to": "layer-levels",
+      "rel": "features",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "wikilink-convention",
+      "to": "obsidian-wikilinks",
+      "rel": "implements",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "wikilink-convention",
+      "to": "pkm-system-prompt",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "claude-md",
+      "to": "git-vcs",
+      "rel": "location",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "claude-md",
+      "to": "pkm-system-prompt",
+      "rel": "features",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "ebrain-vault",
+      "to": "pipelines",
+      "rel": "location",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "ebrain-vault",
+      "to": "areas",
+      "rel": "location",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "ebrain-vault",
+      "to": "skill-surfaces",
+      "rel": "location",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "ebrain-vault",
+      "to": "crystallized",
+      "rel": "location",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "ebrain-vault",
+      "to": "git-vcs",
+      "rel": "association",
+      "weight": 2,
+      "directed": false
+    },
+    {
+      "from": "agent-field",
+      "to": "pkm-system-prompt",
+      "rel": "derives_from",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "compute-theory",
+      "to": "pkm-system-prompt",
+      "rel": "derives_from",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "ego-field",
+      "to": "pkm-system-prompt",
+      "rel": "derives_from",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "garden-guidelines",
+      "to": "pkm-system-prompt",
+      "rel": "governs",
+      "label": "publication rules",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "kaaro-viewer",
+      "to": "pkm-system-prompt",
+      "rel": "association",
+      "weight": 2,
+      "directed": false
+    },
+    {
+      "from": "git-vcs",
+      "to": "yaml-standard",
+      "rel": "association",
+      "weight": 1,
+      "directed": false
+    },
+    {
+      "from": "pipelines",
+      "to": "maturity-levels",
+      "rel": "association",
+      "label": "tracks STUB→EVERGREEN",
+      "weight": 2,
+      "directed": false
+    },
+    {
+      "from": "crystallized",
+      "to": "maturity-levels",
+      "rel": "association",
+      "label": "targets EVERGREEN",
+      "weight": 2,
+      "directed": false
+    },
+    {
+      "from": "layer-levels",
+      "to": "pipelines",
+      "rel": "qualifies",
+      "label": "L1 Instance",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "layer-levels",
+      "to": "areas",
+      "rel": "qualifies",
+      "label": "L2 System",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "layer-levels",
+      "to": "skill-surfaces",
+      "rel": "qualifies",
+      "label": "L3 Principle",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "layer-levels",
+      "to": "agent-field",
+      "rel": "qualifies",
+      "label": "L4 Identity",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "frontmatter-standard",
+      "to": "layer-levels",
+      "rel": "features",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "frontmatter-standard",
+      "to": "wikilink-convention",
+      "rel": "association",
+      "weight": 2,
+      "directed": false
+    }
+  ]
+}

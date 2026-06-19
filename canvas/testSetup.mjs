@@ -22,6 +22,10 @@ export function seedDOM() {
     <div id="library-close"></div>
     <div id="paint-hud-btn" aria-label="Paint"></div>
     <div id="cam-lock-btn" aria-pressed="false"></div>
+    <div id="paint-indicator" class="paint-indicator hidden">
+      <span class="paint-indicator-spinner"></span>
+      <span id="paint-indicator-label">generating scene…</span>
+    </div>
     <div id="stats-strip" class="hidden"></div>
     <div id="cluster-pills" class="hidden"></div>
     <div id="canvas-loader" class="hidden"></div>

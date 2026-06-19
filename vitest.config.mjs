@@ -4,6 +4,6 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     include:     ['**/*.test.mjs'],
-    exclude:     ['node_modules/**', 'pod_modules/**'],
+    exclude:     ['node_modules/**'],
   },
 });
