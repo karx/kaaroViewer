@@ -14,11 +14,14 @@
  */
 
 import { readFile, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { probe } from './probe.mjs';
 import { createTimeline, parseTimeline } from './timeline.mjs';
 import { compile, describePlan } from './compiler.mjs';
 import { executePlan } from './render.mjs';
 import { verifyDeliverable, formatChecks } from './verify.mjs';
+import { libraryToTimeline } from './beats.mjs';
+import { createTrace, saveTrace, loadTrace, attachVerification, formatTrace } from './trace.mjs';
 
 function parseArgs(argv) {
   const args = { _: [] };
@@ -37,9 +40,11 @@ function parseArgs(argv) {
 const USAGE = `usage:
   kaaro-vid probe <asset...>
   kaaro-vid new <id> [--out timeline.json] [--fps 30] [--width 1280] [--height 720]
-  kaaro-vid render <timeline.json> [--out final.mp4] [--work dir] [--dry-run]
-  kaaro-vid verify <deliverable> --timeline <timeline.json>
-  kaaro-vid scene <scene.mjs> --duration <sec> [--params <json>] [--fps 30] [--width 1280] [--height 720] [--out dir]`;
+  kaaro-vid beats <library-id> [--out timeline.json] [--fps 24] [--width 1280] [--height 720] [--library dir]
+  kaaro-vid render <timeline.json> [--out final.mp4] [--work dir] [--dry-run] [--trace trace.json]
+  kaaro-vid verify <deliverable> --timeline <timeline.json> [--trace trace.json]
+  kaaro-vid scene <scene.mjs> --duration <sec> [--params <json>] [--fps 30] [--width 1280] [--height 720] [--out dir]
+  kaaro-vid trace <trace.json>`;
 
 async function main() {
   const [cmd, ...rest] = process.argv.slice(2);
@@ -69,6 +74,22 @@ async function main() {
       return 0;
     }
 
+    case 'beats': {
+      const libraryId = args._[0];
+      if (!libraryId) throw new Error('beats: a library id is required (see pipeline/local-graph.mjs LIBRARY)');
+      const t = await libraryToTimeline(libraryId, {
+        libraryDir: args.library ?? 'library',
+        fps: Number(args.fps ?? 24),
+        width: Number(args.width ?? 1280),
+        height: Number(args.height ?? 720),
+      });
+      const out = args.out ?? `${t.meta.id}.timeline.json`;
+      await writeFile(out, JSON.stringify(t, null, 2) + '\n');
+      const total = t.tracks[0].clips.reduce((s, c) => s + c.source.duration, 0);
+      console.log(`story timeline: ${t.tracks[0].clips.length} clips, ~${Math.round(total)}s → ${out}`);
+      return 0;
+    }
+
     case 'render': {
       const file = args._[0];
       if (!file) throw new Error('render: a timeline.json path is required');
@@ -79,9 +100,19 @@ async function main() {
       });
       console.log(describePlan(plan));
       if (args['dry-run']) return 0;
-      await executePlan(plan, {
-        onStep: (step, i) => console.log(`▶ step ${i + 1}/${plan.steps.length}: ${step.kind}${step.clipId ? ` (${step.clipId})` : ''}`),
-      });
+
+      const trace = createTrace({ timelineId: plan.timeline.meta.id });
+      trace.operations.push({ op: 'compile', args: { timeline: file }, startedAt: trace.startedAt, ms: 0, ok: true, result: { steps: plan.steps.map(s => s.kind), output: plan.output } });
+      try {
+        await executePlan(plan, {
+          onStep: (step, i) => console.log(`▶ step ${i + 1}/${plan.steps.length}: ${step.kind}${step.clipId ? ` (${step.clipId})` : ''}`),
+          onStepDone: (step, i, ms) => trace.operations.push({ op: `step:${step.kind}`, args: step.clipId ? { clipId: step.clipId } : {}, startedAt: null, ms, ok: true }),
+        });
+      } finally {
+        const tracePath = args.trace ?? `${plan.output}.trace.json`;
+        await saveTrace(trace, tracePath);
+        console.log(`trace → ${tracePath}`);
+      }
       console.log(`rendered → ${plan.output}`);
       return 0;
     }
@@ -92,7 +123,21 @@ async function main() {
       const timeline = parseTimeline(JSON.parse(await readFile(args.timeline, 'utf8')));
       const result = await verifyDeliverable(file, timeline);
       console.log(formatChecks(result));
+
+      const tracePath = args.trace ?? `${file}.trace.json`;
+      if (existsSync(tracePath)) {
+        const trace = attachVerification(await loadTrace(tracePath), result);
+        await saveTrace(trace, tracePath);
+        console.log(`trace updated (golden=${trace.golden}) → ${tracePath}`);
+      }
       return result.ok ? 0 : 1;
+    }
+
+    case 'trace': {
+      const file = args._[0];
+      if (!file) throw new Error('trace: a trace.json path is required');
+      console.log(formatTrace(await loadTrace(file)));
+      return 0;
     }
 
     case 'scene': {

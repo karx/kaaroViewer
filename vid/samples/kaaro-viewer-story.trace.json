@@ -1,0 +1,186 @@
+{
+  "schema": 1,
+  "id": "trace-mrcjnl3m",
+  "startedAt": "2026-07-08T20:42:20.434Z",
+  "brief": null,
+  "timelineId": "kaaro-viewer-story",
+  "operations": [
+    {
+      "op": "compile",
+      "args": {
+        "timeline": "vid/samples/kaaro-viewer-story.timeline.json"
+      },
+      "startedAt": "2026-07-08T20:42:20.434Z",
+      "ms": 0,
+      "ok": true,
+      "result": {
+        "steps": [
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "concat",
+          "finalize"
+        ],
+        "output": "vid/samples/kaaro-viewer-story.mp4"
+      }
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "opening-title"
+      },
+      "startedAt": null,
+      "ms": 9754,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-1"
+      },
+      "startedAt": null,
+      "ms": 4088,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-2"
+      },
+      "startedAt": null,
+      "ms": 3469,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-3"
+      },
+      "startedAt": null,
+      "ms": 3717,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-4"
+      },
+      "startedAt": null,
+      "ms": 3407,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-5"
+      },
+      "startedAt": null,
+      "ms": 3564,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-6"
+      },
+      "startedAt": null,
+      "ms": 3517,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-7"
+      },
+      "startedAt": null,
+      "ms": 3606,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-8"
+      },
+      "startedAt": null,
+      "ms": 3358,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-9"
+      },
+      "startedAt": null,
+      "ms": 3189,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-10"
+      },
+      "startedAt": null,
+      "ms": 3905,
+      "ok": true
+    },
+    {
+      "op": "step:concat",
+      "args": {},
+      "startedAt": null,
+      "ms": 301,
+      "ok": true
+    },
+    {
+      "op": "step:finalize",
+      "args": {},
+      "startedAt": null,
+      "ms": 3,
+      "ok": true
+    }
+  ],
+  "verification": {
+    "ok": true,
+    "checks": [
+      {
+        "id": "has-video-stream",
+        "ok": true,
+        "detail": "video h264 640x360"
+      },
+      {
+        "id": "has-audio-stream",
+        "ok": true,
+        "detail": "audio aac 48000Hz"
+      },
+      {
+        "id": "resolution",
+        "ok": true,
+        "detail": "expected 640x360, got 640x360"
+      },
+      {
+        "id": "fps",
+        "ok": true,
+        "detail": "expected 24, got 24"
+      },
+      {
+        "id": "duration",
+        "ok": true,
+        "detail": "expected ~102.1s ±0.35, got 102.104667s"
+      },
+      {
+        "id": "decodes-cleanly",
+        "ok": true,
+        "detail": "full decode pass ok"
+      }
+    ]
+  },
+  "golden": true,
+  "finishedAt": "2026-07-08T20:43:07.534Z"
+}

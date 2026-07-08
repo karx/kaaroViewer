@@ -197,8 +197,8 @@ agent would mean hand-authoring thousands of examples.
 | 1 | Media core: probe/trim/concat/transcode + tests | `kaaro-vid probe/render` works on sample footage | ✅ `vid/` — see `vid/README.md` |
 | 2 | Timeline schema + validator + compiler → Render plan | Timeline fixtures compile to deterministic, dry-runnable plans | ✅ `vid/timeline.mjs` + `vid/compiler.mjs` |
 | 3 | Render harness: Scene Script → frames + offline audio → ffmpeg mux | A Canvas title card + synthesized audio renders to MP4 headlessly | ✅ `vid/harness.mjs` + `vid/scenes/title-card.mjs`; e2e test passes all verifiers |
-| 4 | Agent layer (`/vid` skill + `kaaro-vid agent`) + verifiers + trace logging | Agent completes 5 scripted evals unassisted | 🔶 verifiers done (`vid/verify.mjs`); skill/agent loop + traces pending |
-| 5 | kaaroViewer integration: `beats <library-id>` → narrated story video | One library entry rendered end-to-end | ⬜ |
+| 4 | Agent layer (`/vid` skill + `kaaro-vid agent`) + verifiers + trace logging | Agent completes 5 scripted evals unassisted | 🔶 verifiers, traces (`vid/trace.mjs`, golden flag) and `/vid` skill done; standalone `kaaro-vid agent` loop + scripted evals pending |
+| 5 | kaaroViewer integration: `beats <library-id>` → narrated story video | One library entry rendered end-to-end | ✅ `kaaro-vid beats` + `vid/scenes/beat-card.mjs`; v0 baseline in `vid/samples/` (golden, 6/6 verifiers). Narration is on-screen text — voiceover is the v1 axis (see `vid/samples/SAMPLES.md`) |
 | 6 | Corpus + fine-tune + eval comparison | Tuned model ≥ frontier baseline on eval suite | ⬜ |
 
 ---

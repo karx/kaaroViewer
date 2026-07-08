@@ -10,14 +10,16 @@ import { dirname, join } from 'node:path';
 import { transcode, trim, concat, framesToVideo, muxAudio, mixAudioIntoVideo } from './media-core.mjs';
 
 /**
- * Run every step of a plan in order. onStep(step, index) is called before
- * each step — the CLI uses it for progress output. Returns plan.output.
+ * Run every step of a plan in order. onStep(step, index) fires before each
+ * step, onStepDone(step, index, ms) after it — the CLI uses them for
+ * progress output and trace timing. Returns plan.output.
  */
-export async function executePlan(plan, { onStep } = {}) {
+export async function executePlan(plan, { onStep, onStepDone } = {}) {
   await mkdir(plan.workDir, { recursive: true });
 
   for (const [i, step] of plan.steps.entries()) {
     onStep?.(step, i);
+    const t0 = Date.now();
     switch (step.kind) {
       case 'generator': {
         const { renderScene } = await import('./harness.mjs');
@@ -63,6 +65,7 @@ export async function executePlan(plan, { onStep } = {}) {
       default:
         throw new Error(`executePlan: unknown step kind "${step.kind}"`);
     }
+    onStepDone?.(step, i, Date.now() - t0);
   }
   return plan.output;
 }

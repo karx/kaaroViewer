@@ -2,3 +2,4 @@ node_modules/
 scripts/sessions-data.json
 scripts/graph.html
 scripts/graph-data.json
+.kaaro-vid/

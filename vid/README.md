@@ -18,13 +18,24 @@ defined there; this README covers usage only.
 ```bash
 pnpm vid probe footage.mp4                 # structured media inspection (JSON)
 pnpm vid new my-video                      # scaffold my-video.timeline.json
+pnpm vid beats kaaro-viewer                # library brief → story-video timeline
 pnpm vid render my-video.timeline.json --out final.mp4 [--dry-run]
 pnpm vid verify final.mp4 --timeline my-video.timeline.json
 pnpm vid scene vid/scenes/title-card.mjs --duration 3 --params '{"title":"Hi"}'
+pnpm vid trace final.mp4.trace.json        # session trace summary
 ```
 
 `render` always prints the Render plan first; `--dry-run` stops there.
 `verify` exits 1 on any failed check — wire it into scripts/CI directly.
+
+Every `render` writes a session **trace** (`<out>.trace.json` by default):
+compile + per-step timings. A following `verify` stamps the verification
+result into it and sets `golden: true` on success — golden traces are the
+fine-tune corpus (plan §6) and the unit of progression tracking in
+[`samples/SAMPLES.md`](samples/SAMPLES.md).
+
+In Claude Code, `/vid <library-id | timeline.json | "brief">` runs a full
+agent session over this CLI (probe → plan → execute → verify).
 
 ## Timeline in 20 lines
 
@@ -78,5 +89,8 @@ See `scenes/title-card.mjs` for the reference implementation.
 | `render.mjs` | executes a Render plan |
 | `harness.mjs` | Scene Script → PNG frames + offline WAV (headless Chromium) |
 | `verify.mjs` | deliverable verifiers (streams, geometry, fps, duration, decode) |
+| `beats.mjs` | intelligence brief → story-video Timeline (`beats` command) |
+| `trace.mjs` | session traces: operations, timings, golden flag |
 | `cli.mjs` | `kaaro-vid` command surface |
-| `scenes/` | Scene Script library |
+| `scenes/` | Scene Script library (`title-card`, `beat-card`) |
+| `samples/` | committed baseline renders + progression log |
