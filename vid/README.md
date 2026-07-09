@@ -40,9 +40,11 @@ agent session over this CLI (probe → plan → execute → verify).
 
 ## Narration (TTS)
 
-`beats --narrate` synthesizes voiceover per card, measures each WAV with
-ffprobe, drives card durations from the **measured** VO length, and lays the
-clips on an audio track. Providers (`vid/tts.mjs`), first available wins:
+`beats --narrate` synthesizes voiceover **per caption chunk**, measures each
+WAV with ffprobe, drives card durations and caption timings from the measured
+lengths (captions flip exactly when the voice does — CT-V06), and lays the
+chunk clips on an audio track at their exact offsets. Providers
+(`vid/tts.mjs`), first available wins:
 
 | Provider | Needs | Quality |
 |---|---|---|
@@ -82,6 +84,13 @@ cycled. If you change a hue, re-validate before shipping.
 
 V1 semantics: one video track, clips play in order (no gaps); audio clips are
 mixed under the video at their `at` offset with `gain`.
+
+**Transitions:** a video clip may carry
+`"transition": { "kind": "crossfade" | "dipblack", "duration": 0.6 }` —
+the blend *into* that clip from the previous one (first clip can't have one).
+Any transition switches the sequence from concat to an xfade+acrossfade
+filter graph; each transition overlaps the previous clip by its duration, and
+the verifier's duration expectation models that overlap.
 
 ## Scene Scripts
 

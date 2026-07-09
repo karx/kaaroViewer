@@ -155,6 +155,55 @@ artifacts before regenerating goldens.
 
 ---
 
+## CT-V06 · Caption ↔ voice lockstep
+
+**GIVEN** A narrated beat card; the voice finishes one sentence group and starts the next
+
+![golden: beat card with timed captions](goldens/beat-card-captions.png)
+
+**PERCEIVE**
+- The caption flips at the same moment the voice begins the new sentence — not seconds before or after
+- The active position dot advances in the same beat
+- While a chunk is being spoken, its caption holds still (no mid-sentence churn)
+
+**UNDERSTAND** "The text *is* the voice." Reading and listening are one channel, not two competing ones.
+
+**FEEL** In sync. Never searching the screen for what was just said.
+
+**FAIL IF**
+- [ ] A caption changes while the voice is mid-sentence of the previous chunk
+- [ ] Caption timing is estimated from text length when a measured VO exists
+- [ ] The last caption vanishes while the voice is still speaking
+
+**GUARD** per-chunk synthesis: each caption chunk is its own measured WAV, so boundaries are exact by construction (`beats.test.mjs › caption timings`); band geometry: `visual.test.mjs › beat-card-captions`
+**STATUS**: PASSING — per-chunk VO + timed captions, golden locked 2026-07-09
+
+---
+
+## CT-V07 · Transitions — cards breathe, not cut
+
+**GIVEN** One beat card ends and the next begins (crossfade, ~0.6s)
+
+**PERCEIVE**
+- The outgoing card dissolves into the incoming one over the shared dark surface — no hard cut, no flash
+- The drone of one card hands over to the next without a click or gap
+- The progress bar appears continuous across the boundary
+
+**UNDERSTAND** "Same film, next chapter" — continuity of place, advance of story.
+
+**FEEL** Carried. The film breathes between thoughts instead of snapping.
+
+**FAIL IF**
+- [ ] A visible luminance jump at the boundary (fade through white/gray)
+- [ ] Audio clicks, gaps, or doubled loudness during the overlap
+- [ ] Transition longer than the card's own fade-in (swallows the entrance)
+- [ ] Total duration drifts from the Timeline's expectation (verifier must model overlaps)
+
+**GUARD** `timeline.test.mjs` (transition vocabulary), `verify.test.mjs` (overlap-aware expected duration), e2e xfade render check
+**STATUS**: PASSING — xfade+acrossfade concat, verified 2026-07-09
+
+---
+
 ## Working protocol
 
 1. **New visual element** → write its CT-V entry first (perceive/understand/feel + FAIL IF), then the Scene Script, then lock a golden.

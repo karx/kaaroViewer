@@ -55,7 +55,12 @@ export function compile(timelineInput, { workDir = '.kaaro-vid/work', output } =
   });
 
   const sequence = join(workDir, 'sequence.mp4');
-  steps.push({ kind: 'concat', inputs: [...normalized], out: sequence });
+  const transitions = videoTrack.clips.map(c => c.transition ?? null);
+  if (transitions.some(Boolean) && normalized.length > 1) {
+    steps.push({ kind: 'xfade', inputs: [...normalized], transitions, out: sequence, fps, vcodec, acodec, crf });
+  } else {
+    steps.push({ kind: 'concat', inputs: [...normalized], out: sequence });
+  }
 
   const finalOut = output ?? join(workDir, `${t.meta.id}.${container}`);
   if (audioClips.length) {
@@ -74,6 +79,7 @@ export function describePlan(plan) {
       case 'generator': return `${i + 1}. generator  ${s.clipId}: ${s.scene} (${s.duration}s @ ${s.fps}fps ${s.width}x${s.height}) → ${s.out}`;
       case 'normalize': return `${i + 1}. normalize  ${s.clipId}: ${s.src} [${s.in ?? 0}${s.outSec != null ? `–${s.outSec}` : '…'}] → ${s.out}`;
       case 'concat':    return `${i + 1}. concat     ${s.inputs.length} clips → ${s.out}`;
+      case 'xfade':     return `${i + 1}. xfade      ${s.inputs.length} clips, ${s.transitions.filter(Boolean).length} transitions → ${s.out}`;
       case 'audiomix':  return `${i + 1}. audiomix   ${s.clips.length} audio clips under ${s.video} → ${s.out}`;
       case 'finalize':  return `${i + 1}. finalize   ${s.src} → ${s.out}`;
       default:          return `${i + 1}. ${s.kind}`;

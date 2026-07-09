@@ -26,6 +26,18 @@ describe('expectedDuration', () => {
     expect(expectedDuration(t)).toBe(2);
   });
 
+  it('subtracts transition overlaps from the expectation', () => {
+    const t = {
+      ...base,
+      tracks: [{ id: 'v1', kind: 'video', clips: [
+        { id: 'a', source: { kind: 'generator', scene: 's', duration: 5 } },
+        { id: 'b', source: { kind: 'generator', scene: 's', duration: 5 }, transition: { kind: 'crossfade', duration: 0.6 } },
+        { id: 'c', source: { kind: 'asset', path: 'f.mp4', in: 0, out: 4 }, transition: { kind: 'dipblack', duration: 0.4 } },
+      ]}],
+    };
+    expect(expectedDuration(t)).toBeCloseTo(5 + 5 + 4 - 0.6 - 0.4);
+  });
+
   it('ignores audio tracks', () => {
     const t = {
       ...base,

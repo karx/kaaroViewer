@@ -30,6 +30,27 @@ const TITLE_SEC = 4;
 const END_SEC = 7;
 const VO_LEAD_SEC = 0.8;              // silence before a card's VO starts
 const VO_TAIL_SEC = 1.0;              // breathing room after it ends
+const CHUNK_GAP_SEC = 0.35;           // pause between narration chunks
+const TRANSITION_SEC = 0.6;           // crossfade between cards
+
+/**
+ * narration → caption chunks of ~2 display lines, split on sentence ends.
+ * Must stay semantically identical to the fallback chunker in
+ * scenes/beat-card.mjs — the scene uses params.captions when provided
+ * (the aligned path) and its own chunker only for silent cards.
+ */
+export function chunkNarration(text, maxChars = 150) {
+  const sentences = String(text).match(/[^.!?]+[.!?]*/g) ?? [text];
+  const chunks = [];
+  let cur = '';
+  for (const s of sentences) {
+    const probe = cur ? cur + s : s;
+    if (probe.length > maxChars && cur) { chunks.push(cur.trim()); cur = s; }
+    else cur = probe;
+  }
+  if (cur.trim()) chunks.push(cur.trim());
+  return chunks;
+}
 
 export function beatDuration(narration = '') {
   const sec = narration.length / READ_RATE_CHARS_PER_SEC;
@@ -82,26 +103,38 @@ export async function briefToTimeline(brief, {
   if (!beats.length) throw new Error(`brief "${brief.meta?.id}" has no story beats`);
   const provider = narrate === true ? 'auto' : narrate;
 
-  // ── narration synthesis (measured durations, never estimated) ────────
-  const vo = new Map(); // cardId → { path, duration }
+  // ── narration synthesis: one WAV PER CAPTION CHUNK, so caption
+  //    boundaries are measured, never estimated (CT-V06) ───────────────
+  const r1 = x => Math.round(x * 10) / 10;
+  const r2 = x => Math.round(x * 100) / 100;
+  const vo = new Map(); // cardId → { segments: [{ path, start, duration, text }], captions, cardSec }
   if (narrate) {
     const jobs = [
       { id: 'opening-title', text: `${brief.meta.title ?? brief.meta.id}. ${brief.meta.subtitle ?? ''}`.trim() },
       ...beats.map((b, i) => ({ id: b.id ?? `beat-${i + 1}`, text: b.narration ?? '' })),
     ].filter(j => j.text);
+
     for (const job of jobs) {
-      const path = `${ttsDir}/${job.id}.wav`;
-      await synthesize(job.text, path, { provider });
-      const p = await probe(path);
-      vo.set(job.id, { path, duration: p.duration });
+      const chunks = chunkNarration(job.text);
+      const segments = [];
+      let cursor = VO_LEAD_SEC;
+      for (const [k, chunk] of chunks.entries()) {
+        const path = `${ttsDir}/${job.id}-${String(k).padStart(2, '0')}.wav`;
+        await synthesize(chunk, path, { provider });
+        const dur = (await probe(path)).duration;
+        segments.push({ path, start: r2(cursor), duration: dur, text: chunk });
+        cursor += dur + CHUNK_GAP_SEC;
+      }
+      const last = segments.at(-1);
+      vo.set(job.id, {
+        segments,
+        captions: segments.map(s => ({ text: s.text, start: s.start, end: r2(s.start + s.duration) })),
+        cardSec: Math.max(MIN_BEAT_SEC, r1(last.start + last.duration + VO_TAIL_SEC)),
+      });
     }
   }
 
-  const cardSec = (cardId, fallbackSec) => {
-    const v = vo.get(cardId);
-    if (!v) return fallbackSec;
-    return Math.max(MIN_BEAT_SEC, Math.round((VO_LEAD_SEC + v.duration + VO_TAIL_SEC) * 10) / 10);
-  };
+  const cardSec = (cardId, fallbackSec) => vo.get(cardId)?.cardSec ?? fallbackSec;
 
   // ── video track ───────────────────────────────────────────────────────
   const graphTotals = { nodes: (brief.nodes ?? []).length, edges: (brief.edges ?? []).length };
@@ -126,6 +159,7 @@ export async function briefToTimeline(brief, {
     const id = beat.id ?? `beat-${i + 1}`;
     clips.push({
       id,
+      transition: { kind: 'crossfade', duration: TRANSITION_SEC },
       source: {
         kind: 'generator',
         scene: `${sceneDir}/beat-card.mjs`,
@@ -135,6 +169,7 @@ export async function briefToTimeline(brief, {
           count: beats.length,
           title: beat.title ?? '',
           narration: beat.narration ?? '',
+          captions: vo.get(id)?.captions,     // measured, aligned (CT-V06)
           tension: beat.tension ?? 'low',
           accent: accentFor(brief, beat.node),
           docTitle: brief.meta.title ?? brief.meta.id,
@@ -148,6 +183,7 @@ export async function briefToTimeline(brief, {
   if (stats.length) {
     clips.push({
       id: 'closing-stats',
+      transition: { kind: 'crossfade', duration: TRANSITION_SEC },
       source: {
         kind: 'generator',
         scene: `${sceneDir}/end-card.mjs`,
@@ -161,22 +197,26 @@ export async function briefToTimeline(brief, {
     });
   }
 
-  // ── audio track: VO clips at each card's start offset ────────────────
+  // ── audio track: one VO clip per chunk, at the card's EFFECTIVE start
+  //    (transitions overlap cards, pulling later cards earlier) ─────────
   const tracks = [{ id: 'v1', kind: 'video', clips }];
   if (vo.size) {
-    let offset = 0;
     const voClips = [];
-    for (const clip of clips) {
+    let cardStart = 0;
+    for (const [i, clip] of clips.entries()) {
+      if (i > 0) cardStart -= clip.transition?.duration ?? 0;
       const v = vo.get(clip.id);
       if (v) {
-        voClips.push({
-          id: `vo-${clip.id}`,
-          source: { kind: 'asset', path: v.path, in: 0, out: v.duration },
-          gain: 1,
-          at: Math.round((offset + VO_LEAD_SEC) * 10) / 10,
-        });
+        for (const [k, seg] of v.segments.entries()) {
+          voClips.push({
+            id: `vo-${clip.id}-${k}`,
+            source: { kind: 'asset', path: seg.path, in: 0, out: seg.duration },
+            gain: 1,
+            at: r2(cardStart + seg.start),
+          });
+        }
       }
-      offset += clip.source.duration;
+      cardStart += clip.source.duration;
     }
     tracks.push({ id: 'vo', kind: 'audio', clips: voClips });
   }

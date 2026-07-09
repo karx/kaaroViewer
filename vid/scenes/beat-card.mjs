@@ -210,15 +210,30 @@ export function renderFrame({ ctx, t, duration, width: W, height: H, params }) {
     ctx.globalAlpha = fade;
   });
 
-  // ── caption band: narration in paced chunks ────────────────────────
-  const chunks = chunkNarration(narration);
+  // ── caption band ────────────────────────────────────────────────────
+  // Aligned mode: params.captions carries measured VO chunk timings
+  // ({ text, start, end }) — the caption flips exactly when the voice
+  // does (CT-V06). Fallback mode (silent cards): pace chunks linearly.
+  let chunks, ci, capAlpha;
+  if (Array.isArray(params.captions) && params.captions.length) {
+    const caps = params.captions;
+    chunks = caps.map(c => c.text);
+    ci = 0;
+    for (let i = 0; i < caps.length; i++) if (t >= caps[i].start - 0.15) ci = i;
+    const holdUntil = ci + 1 < caps.length ? caps[ci + 1].start : Math.min(duration, caps[ci].end + 1.0);
+    const inA = clamp01((t - (caps[ci].start - 0.15)) / 0.2);
+    const outA = clamp01((holdUntil - t) / 0.2);
+    capAlpha = t < caps[0].start - 0.15 ? 0 : Math.min(inA, outA);
+  } else {
+    chunks = chunkNarration(narration);
+    const capWindow = duration - 1.2;                  // 0.5s in, 0.7s out
+    const per = capWindow / Math.max(1, chunks.length);
+    ci = Math.min(chunks.length - 1, Math.floor(Math.max(0, t - 0.5) / per));
+    const local = (t - 0.5 - ci * per) / per;
+    capAlpha = clamp01(Math.min(local / 0.12, (1 - local) / 0.12, 1));
+  }
   if (chunks.length) {
     const capTop = H * 0.745;
-    const capWindow = duration - 1.2;                  // 0.5s in, 0.7s out
-    const per = capWindow / chunks.length;
-    const ci = Math.min(chunks.length - 1, Math.floor(Math.max(0, t - 0.5) / per));
-    const local = (t - 0.5 - ci * per) / per;
-    const capAlpha = clamp01(Math.min(local / 0.12, (1 - local) / 0.12, 1));
 
     ctx.font = `${Math.round(H / 26)}px monospace`;
     ctx.fillStyle = INK.body;

@@ -56,6 +56,19 @@ const PROBES = {
       tension: 'climax', accent: '#3498db', docTitle: 'Golden Doc', graph: FIXTURE_GRAPH,
     },
   },
+  'beat-card-captions': {
+    scene: join(VID, 'scenes/beat-card.mjs'), t: 4.0, duration: 10,
+    params: {
+      index: 5, count: 10, title: 'Aligned Captions',
+      narration: 'unused when captions are provided',
+      captions: [
+        { text: 'The first measured chunk, spoken and timed.', start: 0.8, end: 3.1 },
+        { text: 'The second chunk begins exactly when the voice does.', start: 3.45, end: 6.2 },
+        { text: 'And the third holds until the card breathes out.', start: 6.55, end: 8.8 },
+      ],
+      tension: 'medium', accent: '#27ae60', docTitle: 'Golden Doc', graph: FIXTURE_GRAPH,
+    },
+  },
   'end-card-stats': {
     scene: join(VID, 'scenes/end-card.mjs'), t: 2.5, duration: 7,
     params: { title: 'Golden Doc', stats: ['Tests: 204 passing', 'Nodes: 31 encoded', 'Edges: 64 wired', 'Beats: 10 told'], accent: '#f05500' },

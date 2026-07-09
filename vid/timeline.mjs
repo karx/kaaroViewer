@@ -38,6 +38,7 @@ export class TimelineError extends Error {
 
 const TRACK_KINDS = ['video', 'audio'];
 const SOURCE_KINDS = ['asset', 'generator'];
+const TRANSITION_KINDS = ['crossfade', 'dipblack'];
 
 /**
  * Validate a timeline object. Returns { ok, errors, timeline } where
@@ -98,6 +99,20 @@ export function validateTimeline(input) {
         src.params ??= {};
       }
       if (track.kind === 'audio') clip.gain ??= 1;
+
+      // transition INTO this clip from the previous one (video tracks only)
+      if (clip.transition != null) {
+        if (track.kind !== 'video') errors.push(`${cwhere}.transition is only valid on video clips`);
+        else if (ci === 0) errors.push(`${cwhere}.transition: the first clip has nothing to transition from`);
+        else {
+          if (!TRANSITION_KINDS.includes(clip.transition.kind)) {
+            errors.push(`${cwhere}.transition.kind must be one of ${TRANSITION_KINDS.join('|')}`);
+          }
+          if (!(clip.transition.duration > 0 && clip.transition.duration <= 2)) {
+            errors.push(`${cwhere}.transition.duration must be in (0, 2] seconds`);
+          }
+        }
+      }
     });
   });
 

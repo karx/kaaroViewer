@@ -62,6 +62,37 @@ describe('validateTimeline', () => {
     expect(all).toMatch(/audio tracks are not supported in V1/);
   });
 
+  it('validates transitions: video-only, not on first clip, sane kind/duration', () => {
+    const { errors } = validateTimeline({
+      meta: { id: 'x' },
+      tracks: [
+        { id: 'v1', kind: 'video', clips: [
+          { id: 'c1', source: { kind: 'generator', scene: 's.mjs', duration: 2 }, transition: { kind: 'crossfade', duration: 0.5 } },
+          { id: 'c2', source: { kind: 'generator', scene: 's.mjs', duration: 2 }, transition: { kind: 'wipe', duration: 3 } },
+        ]},
+        { id: 'a1', kind: 'audio', clips: [
+          { id: 'm', source: { kind: 'asset', path: 'm.wav', in: 0, out: 1 }, transition: { kind: 'crossfade', duration: 0.5 } },
+        ]},
+      ],
+    });
+    const all = errors.join('\n');
+    expect(all).toMatch(/first clip has nothing to transition from/);
+    expect(all).toMatch(/transition\.kind must be one of crossfade\|dipblack/);
+    expect(all).toMatch(/transition\.duration must be in \(0, 2\]/);
+    expect(all).toMatch(/only valid on video clips/);
+  });
+
+  it('accepts a valid crossfade', () => {
+    const { ok } = validateTimeline({
+      meta: { id: 'x' },
+      tracks: [{ id: 'v1', kind: 'video', clips: [
+        { id: 'c1', source: { kind: 'generator', scene: 's.mjs', duration: 2 } },
+        { id: 'c2', source: { kind: 'generator', scene: 's.mjs', duration: 2 }, transition: { kind: 'crossfade', duration: 0.6 } },
+      ]}],
+    });
+    expect(ok).toBe(true);
+  });
+
   it('parseTimeline throws TimelineError with the error list', () => {
     expect(() => parseTimeline({})).toThrow(TimelineError);
   });
@@ -95,6 +126,17 @@ describe('compile', () => {
 
   it('refuses an empty video track', () => {
     expect(() => compile(createTimeline({ id: 'empty' }))).toThrow(/no clips/);
+  });
+
+  it('emits xfade instead of concat when any clip carries a transition', () => {
+    const t = structuredClone(VALID);
+    t.tracks[0].clips[1].transition = { kind: 'crossfade', duration: 0.6 };
+    const plan = compile(t, { workDir: '/w' });
+    const xf = plan.steps.find(s => s.kind === 'xfade');
+    expect(xf).toBeTruthy();
+    expect(plan.steps.map(s => s.kind)).not.toContain('concat');
+    expect(xf.transitions).toEqual([null, { kind: 'crossfade', duration: 0.6 }]);
+    expect(xf.fps).toBe(30);
   });
 
   it('describePlan is dry-run readable', () => {

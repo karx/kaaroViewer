@@ -10,7 +10,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { available } from './ffmpeg.mjs';
 import { probe } from './probe.mjs';
-import { colorClip, trim, concat, transcode, extractAudio } from './media-core.mjs';
+import { colorClip, trim, concat, xfadeConcat, transcode, extractAudio } from './media-core.mjs';
 
 const hasFfmpeg = await available();
 
@@ -44,6 +44,16 @@ describe.skipIf(!hasFfmpeg)('media-core (requires ffmpeg)', () => {
     const out = await concat([a, b], join(dir, 'ab.mp4'));
     const p = await probe(out);
     expect(p.duration).toBeCloseTo(2, 0);
+  }, 30000);
+
+  it('xfadeConcat overlaps clips by the transition duration', async () => {
+    const a = await colorClip(join(dir, 'xa.mp4'), { color: 'red', duration: 2, fps: 24, tone: 330 });
+    const b = await colorClip(join(dir, 'xb.mp4'), { color: 'blue', duration: 2, fps: 24, tone: 550 });
+    const out = await xfadeConcat([a, b], [null, { kind: 'crossfade', duration: 0.5 }], join(dir, 'xab.mp4'), { fps: 24 });
+    const p = await probe(out);
+    expect(p.duration).toBeCloseTo(3.5, 0);   // 2 + 2 − 0.5
+    expect(p.video.fps).toBe(24);
+    expect(p.audio).not.toBeNull();
   }, 30000);
 
   it('transcode normalizes size, fps, and adds silent audio when asked', async () => {

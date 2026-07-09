@@ -11,14 +11,19 @@
 import { probe } from './probe.mjs';
 import { ffmpeg } from './ffmpeg.mjs';
 
-/** Expected sequence duration = sum of video clip durations (V1: no gaps). */
+/**
+ * Expected sequence duration = sum of video clip durations minus
+ * transition overlaps (each transition INTO a clip overlaps the previous
+ * clip by its duration).
+ */
 export function expectedDuration(timeline) {
   const videoTrack = timeline.tracks.find(tr => tr.kind === 'video');
-  return videoTrack.clips.reduce((sum, clip) => {
+  return videoTrack.clips.reduce((sum, clip, i) => {
     const src = clip.source;
-    if (src.kind === 'generator') return sum + src.duration;
-    if (src.out == null) return sum + 0; // unknown tail length — skip from expectation
-    return sum + (src.out - (src.in ?? 0));
+    const overlap = i > 0 && clip.transition ? clip.transition.duration : 0;
+    if (src.kind === 'generator') return sum + src.duration - overlap;
+    if (src.out == null) return sum - overlap; // unknown tail length — skip from expectation
+    return sum + (src.out - (src.in ?? 0)) - overlap;
   }, 0);
 }
 

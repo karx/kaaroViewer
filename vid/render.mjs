@@ -7,7 +7,7 @@
 
 import { mkdir, copyFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { transcode, trim, concat, framesToVideo, muxAudio, mixAudioIntoVideo } from './media-core.mjs';
+import { transcode, trim, concat, xfadeConcat, framesToVideo, muxAudio, mixAudioIntoVideo } from './media-core.mjs';
 
 /**
  * Run every step of a plan in order. onStep(step, index) fires before each
@@ -54,6 +54,11 @@ export async function executePlan(plan, { onStep, onStepDone } = {}) {
       }
       case 'concat':
         await concat(step.inputs, step.out);
+        break;
+      case 'xfade':
+        await xfadeConcat(step.inputs, step.transitions, step.out, {
+          fps: step.fps, vcodec: step.vcodec, acodec: step.acodec, crf: step.crf,
+        });
         break;
       case 'audiomix':
         await mixAudioIntoVideo(step.video, step.clips, step.out, { acodec: step.acodec });

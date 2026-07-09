@@ -16,7 +16,7 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/title-card.mjs",
-            "duration": 12.6,
+            "duration": 12.9,
             "params": {
               "title": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
               "subtitle": "From open-world NER to personalized ontology — the architecture of knowledge drift prevention",
@@ -28,15 +28,36 @@
         },
         {
           "id": "beat-1",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 27.9,
+            "duration": 28.6,
             "params": {
               "index": 1,
               "count": 10,
               "title": "Knowledge Meets the Open World",
               "narration": "The earliest kaaroViewer is built on an implicit assumption: knowledge worth visualizing exists in the open world. OpenTapioca matches text to Wikidata QIDs; SPARQL fetches structured facts — descriptions, images, linked identifiers. For public subjects, this works precisely because Wikidata already knows them. The system renders what it can look up.",
+              "captions": [
+                {
+                  "text": "The earliest kaaroViewer is built on an implicit assumption: knowledge worth visualizing exists in the open world.",
+                  "start": 0.8,
+                  "end": 8.22
+                },
+                {
+                  "text": "OpenTapioca matches text to Wikidata QIDs; SPARQL fetches structured facts — descriptions, images, linked identifiers.",
+                  "start": 8.57,
+                  "end": 18.85
+                },
+                {
+                  "text": "For public subjects, this works precisely because Wikidata already knows them. The system renders what it can look up.",
+                  "start": 19.2,
+                  "end": 27.58
+                }
+              ],
               "tension": "low",
               "accent": "#f05500",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -95,15 +116,31 @@
         },
         {
           "id": "beat-2",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 21.6,
+            "duration": 21.9,
             "params": {
               "index": 2,
               "count": 10,
               "title": "A-Frame and the First Spatial Canvas",
               "narration": "The first rendering layer is A-Frame, a declarative WebXR framework. Public entities from Wikidata become primitives in a 3D scene. The canvas is functional but abstract — labels on geometric shapes. Spatial layout begins to suggest that geometry alone cannot carry meaning.",
+              "captions": [
+                {
+                  "text": "The first rendering layer is A-Frame, a declarative WebXR framework. Public entities from Wikidata become primitives in a 3D scene.",
+                  "start": 0.8,
+                  "end": 10.18
+                },
+                {
+                  "text": "The canvas is functional but abstract — labels on geometric shapes. Spatial layout begins to suggest that geometry alone cannot carry meaning.",
+                  "start": 10.53,
+                  "end": 20.92
+                }
+              ],
               "tension": "low",
               "accent": "#27ae60",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -141,15 +178,36 @@
         },
         {
           "id": "beat-3",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 25.8,
+            "duration": 26.5,
             "params": {
               "index": 3,
               "count": 10,
               "title": "The Boundary Where Public Knowledge Ends",
               "narration": "Personal knowledge vaults, project notes, research documents — these texts have no QIDs. OpenTapioca cannot match them to Wikidata. SPARQL has nothing to retrieve. The open-world assumption fails at exactly the boundary where personal knowledge begins, and the system that works for public subjects cannot see private ones at all.",
+              "captions": [
+                {
+                  "text": "Personal knowledge vaults, project notes, research documents — these texts have no QIDs. OpenTapioca cannot match them to Wikidata.",
+                  "start": 0.8,
+                  "end": 11.44
+                },
+                {
+                  "text": "SPARQL has nothing to retrieve.",
+                  "start": 11.79,
+                  "end": 14.14
+                },
+                {
+                  "text": "The open-world assumption fails at exactly the boundary where personal knowledge begins, and the system that works for public subjects cannot see private ones at all.",
+                  "start": 14.48,
+                  "end": 25.53
+                }
+              ],
               "tension": "medium",
               "accent": "#f05500",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -197,15 +255,36 @@
         },
         {
           "id": "beat-4",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 33.2,
+            "duration": 33.9,
             "params": {
               "index": 4,
               "count": 10,
               "title": "LLM as Ontology Constructor",
               "narration": "An LLM is introduced to encode private text: identify entities, name types, trace relationships, construct narrative, surface insights. The intelligence brief format emerges — a seven-layer JSON document (meta, nodes, edges, story, insights, clusters, report_card) that becomes the system's lingua franca. The LLM can encode what NER cannot. The library grows beyond public knowledge into personal knowledge vaults.",
+              "captions": [
+                {
+                  "text": "An LLM is introduced to encode private text: identify entities, name types, trace relationships, construct narrative, surface insights.",
+                  "start": 0.8,
+                  "end": 11.57
+                },
+                {
+                  "text": "The intelligence brief format emerges — a seven-layer JSON document (meta, nodes, edges, story, insights, clusters, report_card) that becomes the system's lingua franca.",
+                  "start": 11.92,
+                  "end": 24.99
+                },
+                {
+                  "text": "The LLM can encode what NER cannot. The library grows beyond public knowledge into personal knowledge vaults.",
+                  "start": 25.34,
+                  "end": 32.88
+                }
+              ],
               "tension": "medium",
               "accent": "#e74c3c",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -237,15 +316,36 @@
         },
         {
           "id": "beat-5",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 29.8,
+            "duration": 30.7,
             "params": {
               "index": 5,
               "count": 10,
               "title": "Ontology Drift — The Liability of LLM Freedom",
               "narration": "Left unconstrained, the LLM invents types and relationships the renderer does not understand. Two documents on the same topic, encoded weeks apart, produce incompatible schemas. Early encodings produce edge densities as low as 1.32; others reach 2.41. The gap is not quality variance — it is ontological incoherence. Drift becomes the dominant library failure mode.",
+              "captions": [
+                {
+                  "text": "Left unconstrained, the LLM invents types and relationships the renderer does not understand.",
+                  "start": 0.8,
+                  "end": 7.53
+                },
+                {
+                  "text": "Two documents on the same topic, encoded weeks apart, produce incompatible schemas. Early encodings produce edge densities as low as 1.",
+                  "start": 7.88,
+                  "end": 17.94
+                },
+                {
+                  "text": "32; others reach 2.41. The gap is not quality variance — it is ontological incoherence. Drift becomes the dominant library failure mode.",
+                  "start": 18.29,
+                  "end": 29.74
+                }
+              ],
               "tension": "high",
               "accent": "#f05500",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -283,15 +383,46 @@
         },
         {
           "id": "beat-6",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 32.2,
+            "duration": 33.6,
             "params": {
               "index": 6,
               "count": 10,
               "title": "Three.js — The Visual Contract Made Direct",
               "narration": "A-Frame is superseded by a direct Three.js canvas providing full control: force-directed layout, tier-scaled geometry, sentiment aura rings, animated story beat transitions. Each node type maps to a geometry; each sentiment to an aura color. The visual contract makes the ontology concrete — a type that renders as a fallback primitive is visually anonymous. The renderer becomes an enforcement point, not just a display layer.",
+              "captions": [
+                {
+                  "text": "A-Frame is superseded by a direct Three.",
+                  "start": 0.8,
+                  "end": 3.7
+                },
+                {
+                  "text": "js canvas providing full control: force-directed layout, tier-scaled geometry, sentiment aura rings, animated story beat transitions.",
+                  "start": 4.05,
+                  "end": 14.45
+                },
+                {
+                  "text": "Each node type maps to a geometry; each sentiment to an aura color.",
+                  "start": 14.8,
+                  "end": 19.67
+                },
+                {
+                  "text": "The visual contract makes the ontology concrete — a type that renders as a fallback primitive is visually anonymous.",
+                  "start": 20.02,
+                  "end": 27.63
+                },
+                {
+                  "text": "The renderer becomes an enforcement point, not just a display layer.",
+                  "start": 27.98,
+                  "end": 32.6
+                }
+              ],
               "tension": "high",
               "accent": "#27ae60",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -345,15 +476,41 @@
         },
         {
           "id": "beat-7",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 41.7,
+            "duration": 42.7,
             "params": {
               "index": 7,
               "count": 10,
               "title": "The Three-Part Lock — Ontology Made Defensible",
               "narration": "The three-part lock crystallizes: validator (canonical VALID_TYPES/VALID_RELS — 38 types, 29 rels), SOP reference (semantic + visual explanation), renderer (geometry/style switches) — all three must update atomically. The Dream Loop runs its first execution: the `reveals` relationship, repeatedly used from memory, is promoted from warning to blocking error. Across 4 Alone-Time runs, the library moves from 3 degraded entries to 9 ok · 0 watch · 0 degraded. The personalized ontology has its first defensible form.",
+              "captions": [
+                {
+                  "text": "The three-part lock crystallizes: validator (canonical VALID_TYPES/VALID_RELS — 38 types, 29 rels), SOP reference (semantic + visual explanation), renderer (geometry/style switches) — all three must update atomically.",
+                  "start": 0.8,
+                  "end": 19.08
+                },
+                {
+                  "text": "The Dream Loop runs its first execution: the `reveals` relationship, repeatedly used from memory, is promoted from warning to blocking error.",
+                  "start": 19.43,
+                  "end": 29.21
+                },
+                {
+                  "text": "Across 4 Alone-Time runs, the library moves from 3 degraded entries to 9 ok · 0 watch · 0 degraded.",
+                  "start": 29.56,
+                  "end": 37.32
+                },
+                {
+                  "text": "The personalized ontology has its first defensible form.",
+                  "start": 37.67,
+                  "end": 41.71
+                }
+              ],
               "tension": "climax",
               "accent": "#e74c3c",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -428,15 +585,41 @@
         },
         {
           "id": "beat-8",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 32.6,
+            "duration": 33.6,
             "params": {
               "index": 8,
               "count": 10,
               "title": "Two Paths — Explore and Enforce",
               "narration": "The explore pipeline offers anyone a draft knowledge graph in seconds — Gemini, a single LLM call, approximate ontology adherence. The visualize skill offers a power user a library-grade brief — three-pass encoding, full validator enforcement, permanent registration. The distinction is not quality alone: it is how much of the personalized ontology is enforced. Both paths produce intelligence briefs; only one enforces the full ontology contract.",
+              "captions": [
+                {
+                  "text": "The explore pipeline offers anyone a draft knowledge graph in seconds — Gemini, a single LLM call, approximate ontology adherence.",
+                  "start": 0.8,
+                  "end": 10.04
+                },
+                {
+                  "text": "The visualize skill offers a power user a library-grade brief — three-pass encoding, full validator enforcement, permanent registration.",
+                  "start": 10.39,
+                  "end": 19.69
+                },
+                {
+                  "text": "The distinction is not quality alone: it is how much of the personalized ontology is enforced.",
+                  "start": 20.05,
+                  "end": 26.2
+                },
+                {
+                  "text": "Both paths produce intelligence briefs; only one enforces the full ontology contract.",
+                  "start": 26.54,
+                  "end": 32.64
+                }
+              ],
               "tension": "medium",
               "accent": "#3498db",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -500,15 +683,41 @@
         },
         {
           "id": "beat-9",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 38.5,
+            "duration": 39.4,
             "params": {
               "index": 9,
               "count": 10,
               "title": "Painting — Images for At-a-Glance Comprehension",
               "narration": "The paint system adds a comprehension channel that geometry cannot provide. PaintContext assembles three inputs — spatial positioning (nodes in camera frustum), textual context (slide narration + node description), cinematic camera angle — into a prompt informed by stable diffusion seed prompt patterns. 4 named strategies (cinematic/documentary/abstract/blueprint) produce genuinely different images from the same canvas state. Gemini generates the image; Three.js applies it as a mesh texture.",
+              "captions": [
+                {
+                  "text": "The paint system adds a comprehension channel that geometry cannot provide.",
+                  "start": 0.8,
+                  "end": 5.93
+                },
+                {
+                  "text": "PaintContext assembles three inputs — spatial positioning (nodes in camera frustum), textual context (slide narration + node description), cinematic camera angle — into a prompt informed by stable diffusion seed prompt patterns.",
+                  "start": 6.28,
+                  "end": 22.9
+                },
+                {
+                  "text": "4 named strategies (cinematic/documentary/abstract/blueprint) produce genuinely different images from the same canvas state.",
+                  "start": 23.24,
+                  "end": 33.1
+                },
+                {
+                  "text": "Gemini generates the image; Three.js applies it as a mesh texture.",
+                  "start": 33.46,
+                  "end": 38.44
+                }
+              ],
               "tension": "medium",
               "accent": "#8e44ad",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -578,15 +787,46 @@
         },
         {
           "id": "beat-10",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 37.9,
+            "duration": 39.2,
             "params": {
               "index": 10,
               "count": 10,
               "title": "The Ontology Problem Is Named, Not Solved",
               "narration": "9 library entries. 168 tests passing. 1 Dream Loop run complete. The ontology problem — maintaining a stable, evolvable, personalized vocabulary for private knowledge visualization — is now explicit and partially constrained. The vocabulary extension mechanism exists; the gaps that require it lie ahead. The eval loop surfaces the gap between ontological correctness (validator pass) and ontological quality (faithful encoding). The system is self-aware of its own limits.",
+              "captions": [
+                {
+                  "text": "9 library entries. 168 tests passing. 1 Dream Loop run complete.",
+                  "start": 0.8,
+                  "end": 7.84
+                },
+                {
+                  "text": "The ontology problem — maintaining a stable, evolvable, personalized vocabulary for private knowledge visualization — is now explicit and partially constrained.",
+                  "start": 8.19,
+                  "end": 19.67
+                },
+                {
+                  "text": "The vocabulary extension mechanism exists; the gaps that require it lie ahead.",
+                  "start": 20.02,
+                  "end": 25.97
+                },
+                {
+                  "text": "The eval loop surfaces the gap between ontological correctness (validator pass) and ontological quality (faithful encoding).",
+                  "start": 26.32,
+                  "end": 34.84
+                },
+                {
+                  "text": "The system is self-aware of its own limits.",
+                  "start": 35.19,
+                  "end": 38.23
+                }
+              ],
               "tension": "low",
               "accent": "#27ae60",
               "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
@@ -656,6 +896,10 @@
         },
         {
           "id": "closing-stats",
+          "transition": {
+            "kind": "crossfade",
+            "duration": 0.6
+          },
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/end-card.mjs",
@@ -679,125 +923,422 @@
       "kind": "audio",
       "clips": [
         {
-          "id": "vo-opening-title",
+          "id": "vo-opening-title-0",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/opening-title.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/opening-title-00.wav",
             "in": 0,
-            "out": 10.784172
+            "out": 4.380091
           },
           "gain": 1,
           "at": 0.8
         },
         {
-          "id": "vo-beat-1",
+          "id": "vo-opening-title-1",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-1.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/opening-title-01.wav",
             "in": 0,
-            "out": 26.080136
+            "out": 6.403764
           },
           "gain": 1,
-          "at": 13.4
+          "at": 5.53
         },
         {
-          "id": "vo-beat-2",
+          "id": "vo-beat-1-0",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-2.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-1-00.wav",
             "in": 0,
-            "out": 19.767891
+            "out": 7.421224
           },
           "gain": 1,
-          "at": 41.3
+          "at": 13.1
         },
         {
-          "id": "vo-beat-3",
+          "id": "vo-beat-1-1",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-3.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-1-01.wav",
             "in": 0,
-            "out": 24.040091
+            "out": 10.283311
           },
           "gain": 1,
-          "at": 62.9
+          "at": 20.87
         },
         {
-          "id": "vo-beat-4",
+          "id": "vo-beat-1-2",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-4.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-1-02.wav",
             "in": 0,
-            "out": 31.402766
+            "out": 8.375102
           },
           "gain": 1,
-          "at": 88.7
+          "at": 31.5
         },
         {
-          "id": "vo-beat-5",
+          "id": "vo-beat-2-0",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-5.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-2-00.wav",
             "in": 0,
-            "out": 27.958186
+            "out": 9.384762
           },
           "gain": 1,
-          "at": 121.9
+          "at": 41.1
         },
         {
-          "id": "vo-beat-6",
+          "id": "vo-beat-2-1",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-6.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-2-01.wav",
             "in": 0,
-            "out": 30.369932
+            "out": 10.392562
+          },
+          "gain": 1,
+          "at": 50.83
+        },
+        {
+          "id": "vo-beat-3-0",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-3-00.wav",
+            "in": 0,
+            "out": 10.635193
+          },
+          "gain": 1,
+          "at": 62.4
+        },
+        {
+          "id": "vo-beat-3-1",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-3-01.wav",
+            "in": 0,
+            "out": 2.346077
+          },
+          "gain": 1,
+          "at": 73.39
+        },
+        {
+          "id": "vo-beat-3-2",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-3-02.wav",
+            "in": 0,
+            "out": 11.046213
+          },
+          "gain": 1,
+          "at": 76.08
+        },
+        {
+          "id": "vo-beat-4-0",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-4-00.wav",
+            "in": 0,
+            "out": 10.772154
+          },
+          "gain": 1,
+          "at": 88.3
+        },
+        {
+          "id": "vo-beat-4-1",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-4-01.wav",
+            "in": 0,
+            "out": 13.0678
+          },
+          "gain": 1,
+          "at": 99.42
+        },
+        {
+          "id": "vo-beat-4-2",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-4-02.wav",
+            "in": 0,
+            "out": 7.539864
+          },
+          "gain": 1,
+          "at": 112.84
+        },
+        {
+          "id": "vo-beat-5-0",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-5-00.wav",
+            "in": 0,
+            "out": 6.734966
+          },
+          "gain": 1,
+          "at": 121.6
+        },
+        {
+          "id": "vo-beat-5-1",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-5-01.wav",
+            "in": 0,
+            "out": 10.056236
+          },
+          "gain": 1,
+          "at": 128.68
+        },
+        {
+          "id": "vo-beat-5-2",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-5-02.wav",
+            "in": 0,
+            "out": 11.44576
+          },
+          "gain": 1,
+          "at": 139.09
+        },
+        {
+          "id": "vo-beat-6-0",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-6-00.wav",
+            "in": 0,
+            "out": 2.896961
           },
           "gain": 1,
           "at": 151.7
         },
         {
-          "id": "vo-beat-7",
+          "id": "vo-beat-6-1",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-7.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-6-01.wav",
             "in": 0,
-            "out": 39.9122
+            "out": 10.403265
           },
           "gain": 1,
-          "at": 183.9
+          "at": 154.95
         },
         {
-          "id": "vo-beat-8",
+          "id": "vo-beat-6-2",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-8.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-6-02.wav",
             "in": 0,
-            "out": 30.796553
+            "out": 4.87102
           },
           "gain": 1,
-          "at": 225.6
+          "at": 165.7
         },
         {
-          "id": "vo-beat-9",
+          "id": "vo-beat-6-3",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-9.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-6-03.wav",
             "in": 0,
-            "out": 36.715601
+            "out": 7.611247
           },
           "gain": 1,
-          "at": 258.2
+          "at": 170.92
         },
         {
-          "id": "vo-beat-10",
+          "id": "vo-beat-6-4",
           "source": {
             "kind": "asset",
-            "path": ".kaaro-vid/tts/kaaro-viewer/beat-10.wav",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-6-04.wav",
             "in": 0,
-            "out": 36.06517
+            "out": 4.621723
           },
           "gain": 1,
-          "at": 296.7
+          "at": 178.88
+        },
+        {
+          "id": "vo-beat-7-0",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-7-00.wav",
+            "in": 0,
+            "out": 18.280045
+          },
+          "gain": 1,
+          "at": 184.7
+        },
+        {
+          "id": "vo-beat-7-1",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-7-01.wav",
+            "in": 0,
+            "out": 9.781043
+          },
+          "gain": 1,
+          "at": 203.33
+        },
+        {
+          "id": "vo-beat-7-2",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-7-02.wav",
+            "in": 0,
+            "out": 7.757642
+          },
+          "gain": 1,
+          "at": 213.46
+        },
+        {
+          "id": "vo-beat-7-3",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-7-03.wav",
+            "in": 0,
+            "out": 4.035601
+          },
+          "gain": 1,
+          "at": 221.57
+        },
+        {
+          "id": "vo-beat-8-0",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-8-00.wav",
+            "in": 0,
+            "out": 9.24254
+          },
+          "gain": 1,
+          "at": 226.8
+        },
+        {
+          "id": "vo-beat-8-1",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-8-01.wav",
+            "in": 0,
+            "out": 9.303356
+          },
+          "gain": 1,
+          "at": 236.39
+        },
+        {
+          "id": "vo-beat-8-2",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-8-02.wav",
+            "in": 0,
+            "out": 6.146395
+          },
+          "gain": 1,
+          "at": 246.05
+        },
+        {
+          "id": "vo-beat-8-3",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-8-03.wav",
+            "in": 0,
+            "out": 6.103356
+          },
+          "gain": 1,
+          "at": 252.54
+        },
+        {
+          "id": "vo-beat-9-0",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-9-00.wav",
+            "in": 0,
+            "out": 5.125079
+          },
+          "gain": 1,
+          "at": 259.8
+        },
+        {
+          "id": "vo-beat-9-1",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-9-01.wav",
+            "in": 0,
+            "out": 16.616553
+          },
+          "gain": 1,
+          "at": 265.28
+        },
+        {
+          "id": "vo-beat-9-2",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-9-02.wav",
+            "in": 0,
+            "out": 9.864263
+          },
+          "gain": 1,
+          "at": 282.24
+        },
+        {
+          "id": "vo-beat-9-3",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-9-03.wav",
+            "in": 0,
+            "out": 4.981043
+          },
+          "gain": 1,
+          "at": 292.46
+        },
+        {
+          "id": "vo-beat-10-0",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-10-00.wav",
+            "in": 0,
+            "out": 7.035782
+          },
+          "gain": 1,
+          "at": 298.6
+        },
+        {
+          "id": "vo-beat-10-1",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-10-01.wav",
+            "in": 0,
+            "out": 11.484717
+          },
+          "gain": 1,
+          "at": 305.99
+        },
+        {
+          "id": "vo-beat-10-2",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-10-02.wav",
+            "in": 0,
+            "out": 5.9478
+          },
+          "gain": 1,
+          "at": 317.82
+        },
+        {
+          "id": "vo-beat-10-3",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-10-03.wav",
+            "in": 0,
+            "out": 8.517052
+          },
+          "gain": 1,
+          "at": 324.12
+        },
+        {
+          "id": "vo-beat-10-4",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-10-04.wav",
+            "in": 0,
+            "out": 3.035782
+          },
+          "gain": 1,
+          "at": 332.99
         }
       ]
     }
