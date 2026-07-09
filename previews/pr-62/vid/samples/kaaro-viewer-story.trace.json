@@ -1,0 +1,196 @@
+{
+  "schema": 1,
+  "id": "trace-mrdghsw0",
+  "startedAt": "2026-07-09T12:01:37.920Z",
+  "brief": null,
+  "timelineId": "kaaro-viewer-story",
+  "operations": [
+    {
+      "op": "compile",
+      "args": {
+        "timeline": "vid/samples/kaaro-viewer-story.timeline.json"
+      },
+      "startedAt": "2026-07-09T12:01:37.920Z",
+      "ms": 0,
+      "ok": true,
+      "result": {
+        "steps": [
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "generator",
+          "xfade",
+          "audiomix"
+        ],
+        "output": "vid/samples/kaaro-viewer-story.mp4"
+      }
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "opening-title"
+      },
+      "startedAt": null,
+      "ms": 7109,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-1"
+      },
+      "startedAt": null,
+      "ms": 14337,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-2"
+      },
+      "startedAt": null,
+      "ms": 10892,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-3"
+      },
+      "startedAt": null,
+      "ms": 12671,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-4"
+      },
+      "startedAt": null,
+      "ms": 16381,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-5"
+      },
+      "startedAt": null,
+      "ms": 15007,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-6"
+      },
+      "startedAt": null,
+      "ms": 15541,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-7"
+      },
+      "startedAt": null,
+      "ms": 21084,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-8"
+      },
+      "startedAt": null,
+      "ms": 16032,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-9"
+      },
+      "startedAt": null,
+      "ms": 20355,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "beat-10"
+      },
+      "startedAt": null,
+      "ms": 20693,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "closing-stats"
+      },
+      "startedAt": null,
+      "ms": 3691,
+      "ok": true
+    },
+    {
+      "op": "step:xfade",
+      "args": {},
+      "startedAt": null,
+      "ms": 77578,
+      "ok": true
+    },
+    {
+      "op": "step:audiomix",
+      "args": {},
+      "startedAt": null,
+      "ms": 26513,
+      "ok": true
+    }
+  ],
+  "verification": {
+    "ok": true,
+    "checks": [
+      {
+        "id": "has-video-stream",
+        "ok": true,
+        "detail": "video h264 1280x720"
+      },
+      {
+        "id": "has-audio-stream",
+        "ok": true,
+        "detail": "audio aac 48000Hz"
+      },
+      {
+        "id": "resolution",
+        "ok": true,
+        "detail": "expected 1280x720, got 1280x720"
+      },
+      {
+        "id": "fps",
+        "ok": true,
+        "detail": "expected 24, got 24"
+      },
+      {
+        "id": "duration",
+        "ok": true,
+        "detail": "expected ~343.39999999999986s ±0.35, got 343.445s"
+      },
+      {
+        "id": "decodes-cleanly",
+        "ok": true,
+        "detail": "full decode pass ok"
+      }
+    ]
+  },
+  "golden": true,
+  "finishedAt": "2026-07-09T12:06:22.662Z"
+}
