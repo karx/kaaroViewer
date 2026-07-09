@@ -39,10 +39,14 @@ function resolveChromium(chromium) {
  * Returns { framesPattern, frameCount, audioPath } — framesPattern is a
  * printf-style path ready for media-core.framesToVideo(); audioPath is
  * null when the scene has no renderAudio export.
+ *
+ * frameTimes: optional array of exact times (seconds) to render instead
+ * of the full fps sequence — used for stills, golden frames, and visual
+ * regression probes. Audio is skipped in this mode.
  */
 export async function renderScene(scenePath, {
   params = {}, duration, fps = 30, width = 1280, height = 720,
-  outDir, sampleRate = 48000,
+  outDir, sampleRate = 48000, frameTimes = null,
 } = {}) {
   if (!(duration > 0)) throw new Error('renderScene: duration must be > 0');
   if (!outDir) throw new Error('renderScene: outDir is required');
@@ -50,7 +54,7 @@ export async function renderScene(scenePath, {
 
   const source = await readFile(resolve(scenePath), 'utf8');
   const moduleUrl = `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`;
-  const frameCount = Math.max(1, Math.round(duration * fps));
+  const frameCount = frameTimes ? frameTimes.length : Math.max(1, Math.round(duration * fps));
 
   const { chromium } = await import('playwright-core');
   const browser = await chromium.launch({
@@ -80,18 +84,19 @@ export async function renderScene(scenePath, {
 
     // ── frames ──────────────────────────────────────────────────────────
     for (let frame = 0; frame < frameCount; frame++) {
-      const dataUrl = await page.evaluate(async ({ frame, fps }) => {
-        const env = { ...window.__env, frame, t: frame / fps };
+      const t = frameTimes ? frameTimes[frame] : frame / fps;
+      const dataUrl = await page.evaluate(async ({ frame, t }) => {
+        const env = { ...window.__env, frame, t };
         await window.__scene.renderFrame(env);
         return env.canvas.toDataURL('image/png');
-      }, { frame, fps });
+      }, { frame, t });
       const png = Buffer.from(dataUrl.split(',')[1], 'base64');
       await writeFile(join(outDir, `frame_${String(frame).padStart(5, '0')}.png`), png);
     }
 
     // ── offline audio ───────────────────────────────────────────────────
     let audioPath = null;
-    const hasAudio = await page.evaluate(() => typeof window.__scene.renderAudio === 'function');
+    const hasAudio = !frameTimes && await page.evaluate(() => typeof window.__scene.renderAudio === 'function');
     if (hasAudio) {
       const wavBase64 = await page.evaluate(async ({ duration, sampleRate }) => {
         const offlineCtx = new OfflineAudioContext(2, Math.ceil(duration * sampleRate), sampleRate);

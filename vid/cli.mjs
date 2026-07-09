@@ -44,6 +44,7 @@ const USAGE = `usage:
   kaaro-vid render <timeline.json> [--out final.mp4] [--work dir] [--dry-run] [--trace trace.json]
   kaaro-vid verify <deliverable> --timeline <timeline.json> [--trace trace.json]
   kaaro-vid scene <scene.mjs> --duration <sec> [--params <json>] [--fps 30] [--width 1280] [--height 720] [--out dir]
+  kaaro-vid contact <video> [--out sheet.png] [--cols 5] [--rows 6] [--tile-width 320]
   kaaro-vid trace <trace.json>`;
 
 async function main() {
@@ -133,6 +134,19 @@ async function main() {
         console.log(`trace updated (golden=${trace.golden}) → ${tracePath}`);
       }
       return result.ok ? 0 : 1;
+    }
+
+    case 'contact': {
+      const video = args._[0];
+      if (!video) throw new Error('contact: a video path is required');
+      const { contactSheet } = await import('./visual.mjs');
+      const out = await contactSheet(video, args.out ?? video.replace(/\.\w+$/, '') + '.contact.png', {
+        cols: Number(args.cols ?? 5),
+        rows: Number(args.rows ?? 6),
+        tileWidth: Number(args['tile-width'] ?? 320),
+      });
+      console.log(`contact sheet → ${out}`);
+      return 0;
     }
 
     case 'trace': {

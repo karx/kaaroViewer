@@ -22,6 +22,7 @@ pnpm vid beats kaaro-viewer --narrate      # library brief → narrated story-vi
 pnpm vid render my-video.timeline.json --out final.mp4 [--dry-run]
 pnpm vid verify final.mp4 --timeline my-video.timeline.json
 pnpm vid scene vid/scenes/title-card.mjs --duration 3 --params '{"title":"Hi"}'
+pnpm vid contact final.mp4                 # contact sheet (whole film at a glance)
 pnpm vid trace final.mp4.trace.json        # session trace summary
 ```
 
@@ -114,4 +115,19 @@ See `scenes/title-card.mjs` for the reference implementation.
 | `trace.mjs` | session traces: operations, timings, golden flag |
 | `cli.mjs` | `kaaro-vid` command surface |
 | `scenes/` | Scene Script library (`title-card`, `beat-card`) |
+| `visual.mjs` | SSIM compare, golden verdicts, contact sheets |
+| `goldens/` | committed golden frames guarding every scene (see `CTDD.md`) |
 | `samples/` | committed baseline renders + progression log |
+
+## Visual TDD
+
+`vid/CTDD.md` holds the cognitive tests for the video surface (house
+GIVEN → PERCEIVE → UNDERSTAND → FEEL → FAIL IF format) with the golden
+frames embedded. `vid/visual.test.mjs` enforces them: every scene has a
+deterministic golden probe compared by SSIM on each test run, plus a
+same-t-twice determinism check. Changing a look intentionally:
+
+```bash
+KAARO_UPDATE_GOLDENS=1 npx vitest run vid/visual.test.mjs   # regenerate
+git diff --stat vid/goldens/                                # review images in the PR
+```
