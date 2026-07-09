@@ -197,26 +197,81 @@ agent would mean hand-authoring thousands of examples.
 | 1 | Media core: probe/trim/concat/transcode + tests | `kaaro-vid probe/render` works on sample footage | ✅ `vid/` — see `vid/README.md` |
 | 2 | Timeline schema + validator + compiler → Render plan | Timeline fixtures compile to deterministic, dry-runnable plans | ✅ `vid/timeline.mjs` + `vid/compiler.mjs` |
 | 3 | Render harness: Scene Script → frames + offline audio → ffmpeg mux | A Canvas title card + synthesized audio renders to MP4 headlessly | ✅ `vid/harness.mjs` + `vid/scenes/title-card.mjs`; e2e test passes all verifiers |
-| 4 | Agent layer (`/vid` skill + `kaaro-vid agent`) + verifiers + trace logging | Agent completes 5 scripted evals unassisted | 🔶 verifiers, traces (`vid/trace.mjs`, golden flag) and `/vid` skill done; standalone `kaaro-vid agent` loop + scripted evals pending |
-| 5 | kaaroViewer integration: `beats <library-id>` → narrated story video | One library entry rendered end-to-end | ✅ `kaaro-vid beats` + `vid/scenes/beat-card.mjs`; v0 baseline in `vid/samples/` (golden, 6/6 verifiers). Narration is on-screen text — voiceover is the v1 axis (see `vid/samples/SAMPLES.md`) |
-| 6 | Corpus + fine-tune + eval comparison | Tuned model ≥ frontier baseline on eval suite | ⬜ |
+| 4 | Agent layer (`/vid` skill + `kaaro-vid agent`) + verifiers + trace logging | Agent completes 5 scripted evals unassisted | 🔶 verifiers, traces (`vid/trace.mjs`, golden flag) and `/vid` skill done; standalone `kaaro-vid agent` loop + scripted evals pending (→ M1/M2 below) |
+| 5 | kaaroViewer integration: `beats <library-id>` → narrated story video | One library entry rendered end-to-end | ✅ v2: per-chunk narration with lockstep captions, crossfaded constellation cards, closing stats — `vid/samples/SAMPLES.md` tracks v0→v2 |
+| 6 | Corpus + fine-tune + eval comparison | Tuned model ≥ frontier baseline on eval suite | ⬜ gated on M1–M3 below; training run itself needs resources outside this repo |
+
+The original ❓Q1–Q4 were resolved by proceeding on the stated assumptions
+(agent-first; headless Chromium; kaaroViewer story videos first; in-repo
+under `vid/`) — ratified by the work since.
 
 ---
 
-## 8. Open questions
+## 8. Review — 2026-07-09 (post-v2)
 
-- **❓Q1 — Model plan.** Confirm *agent-first, fine-tune-later* (assumed). The
-  alternatives: literal fine-tune as the immediate deliverable (CLI is mainly a
-  data harness), or no fine-tune at all ("fine tuned" was loose phrasing).
-- **❓Q2 — Render runtime.** Confirm *headless Chromium (Playwright)* as the sole
-  harness initially, vs. node-native (`node-canvas` + audio emulation — lighter
-  but no WebGL/Three.js), vs. a tiered both.
-- **❓Q3 — Primary use case.** kaaroViewer story videos first (assumed, it's the
-  in-repo seam), general footage-editing agent first, or generative motion
-  graphics first?
-- **❓Q4 — Repo placement.** Does this live inside kaaroViewer (e.g. `vid/` +
-  `pipeline/` extensions, assumed for now) or as a separate repo/package that
-  kaaroViewer consumes?
+### What exists and holds
 
-Answer inline, in an issue, or in the next session — Phase 1 starts once Q1–Q4
-are settled (or after a week on the stated assumptions).
+Phases 1–3 and 5 are built, tested (228 passing), and disciplined:
+
+- **Tool layer**: probe/trim/concat/xfade/transcode/audio-mix; Timeline with
+  transitions; pure compiler → dry-runnable Render plans; headless harness
+  (Canvas + offline Web Audio); verifiers; traces with a golden flag; the
+  `kaaro-vid` CLI and `/vid` skill.
+- **Quality infrastructure beyond the original plan**: visual TDD
+  (`vid/CTDD.md` — 7 cognitive tests with embedded artifacts; SSIM golden
+  frames per scene; determinism check; contact sheets), a validated accent
+  palette, TTS provider abstraction, measured caption↔VO lockstep.
+- **Proof of the loop**: three sample generations (v0→v2) of the same source
+  with verifier-gated golden traces and visual progression records.
+
+### The honest gap: the fine-tune goal
+
+The stated goal is a **fine-tuned model**. What the corpus actually needs —
+and doesn't have yet:
+
+1. **Decision-level traces.** Current traces record *tool operations*
+   (compile/steps/verify), not the *agent's choices* (which brief → which
+   Timeline edits → why). Fine-tuning teaches decisions; the schema must
+   grow agent turns, and something must emit them.
+2. **An eval suite.** "Agent completes 5 scripted evals unassisted" is still
+   the Phase 4 exit and is the fitness function for any tuned model. Without
+   it, "better" is vibes.
+3. **Volume.** One narrated brief ≠ a corpus. Synthetic brief generation over
+   parameterized Recipes + more library entries + general-editing briefs.
+4. **Training resources.** GPU + open-weights training cannot run in this
+   environment. In-repo we produce corpus + baselines; the run happens
+   elsewhere.
+
+### Revised milestones
+
+| # | Milestone | Deliverable | Exit criterion |
+|---|---|---|---|
+| M1 | **Eval suite** | `vid/evals/` — 6–8 scripted briefs (story videos, trims/concats on generated footage, mixed edits) each with fixtures + expected-verifier spec; `kaaro-vid eval` runner emitting a scorecard | One command scores any agent/model version; current tooling passes the non-agentic evals |
+| M2 | **Agent loop + decision traces** | `kaaro-vid agent "<brief>"` driving the tool layer via a pluggable LLM (BYOM, mirroring the app's `registerLLM` pattern); trace schema v2 records turns (prompt, tool calls, results); `/vid` sessions harvestable into the same format | Agent completes the M1 evals unassisted; every session yields a decision-level trace |
+| M3 | **Corpus tooling** | trace→training-example converter (tool-use conversation format); synthetic brief generator over Recipes; corpus stats + dedup | ≥100 golden decision-traces exportable in one command |
+| M4 | **Fine-tune (external)** | corpus + eval baseline handed to a GPU environment; LoRA on an open-weights tool-caller; scored by M1 | tuned ≥ frontier baseline on the eval suite |
+
+Parallel quality axes (any order, each starts as a CT-V entry):
+**piper voice** (needs a network-policy allowance for huggingface.co or a
+voice file placed in the environment — everything else is ready),
+**continuous score with tension arc**, **per-beat Three.js scene renders**,
+**overlay track** (lower-thirds over footage — first general-editing visual).
+
+### Expectations to hold
+
+- In this environment: everything through M3, plus all quality axes except
+  piper's voice download. Renders of ~6 min cost ~4–5 min wall.
+- Outside this environment: the M4 training run; a piper voice unless policy
+  changes.
+- The eval suite (M1) is the highest-leverage next step: it closes Phase 4,
+  gates M2's "unassisted", and is the yardstick M4 is judged by.
+
+### Decisions for the owner
+
+- **D1 — Priority**: M1→M2→M3 in order (recommended), or a quality axis
+  first (e.g. Three.js beat renders for wow-factor)?
+- **D2 — Fine-tune commitment**: still the destination (M4), or is the
+  agentic system + evals the product and M4 optional? Affects how much M3
+  matters.
+- **D3 — Voices**: adjust the environment network policy to allow
+  huggingface.co (one-time ~60 MB voice fetch), or ship espeak until then?
