@@ -18,7 +18,7 @@ defined there; this README covers usage only.
 ```bash
 pnpm vid probe footage.mp4                 # structured media inspection (JSON)
 pnpm vid new my-video                      # scaffold my-video.timeline.json
-pnpm vid beats kaaro-viewer                # library brief → story-video timeline
+pnpm vid beats kaaro-viewer --narrate      # library brief → narrated story-video timeline
 pnpm vid render my-video.timeline.json --out final.mp4 [--dry-run]
 pnpm vid verify final.mp4 --timeline my-video.timeline.json
 pnpm vid scene vid/scenes/title-card.mjs --duration 3 --params '{"title":"Hi"}'
@@ -36,6 +36,27 @@ fine-tune corpus (plan §6) and the unit of progression tracking in
 
 In Claude Code, `/vid <library-id | timeline.json | "brief">` runs a full
 agent session over this CLI (probe → plan → execute → verify).
+
+## Narration (TTS)
+
+`beats --narrate` synthesizes voiceover per card, measures each WAV with
+ffprobe, drives card durations from the **measured** VO length, and lays the
+clips on an audio track. Providers (`vid/tts.mjs`), first available wins:
+
+| Provider | Needs | Quality |
+|---|---|---|
+| `piper` | `pip install piper-tts` + `KAARO_PIPER_VOICE=/path/voice.onnx` | neural, best offline |
+| `command` | `KAARO_TTS_CMD='curl … {text} … -o {out}'` | your cloud TTS |
+| `espeak` | `apt-get install espeak-ng` | robotic fallback, zero-config |
+
+Force one with `--narrate piper` etc. Voice WAVs land in `.kaaro-vid/tts/<id>/`.
+
+## Accent palette
+
+Scene accents come from `VIDEO_PALETTE` in `vid/beats.mjs` — seven hues
+validated (lightness band, chroma, CVD separation, contrast) against the
+dark surface `#0a0a0f`, assigned to clusters in brief order and never
+cycled. If you change a hue, re-validate before shipping.
 
 ## Timeline in 20 lines
 

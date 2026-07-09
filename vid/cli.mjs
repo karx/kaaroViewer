@@ -40,7 +40,7 @@ function parseArgs(argv) {
 const USAGE = `usage:
   kaaro-vid probe <asset...>
   kaaro-vid new <id> [--out timeline.json] [--fps 30] [--width 1280] [--height 720]
-  kaaro-vid beats <library-id> [--out timeline.json] [--fps 24] [--width 1280] [--height 720] [--library dir]
+  kaaro-vid beats <library-id> [--narrate [piper|command|espeak]] [--out timeline.json] [--fps 24] [--width 1280] [--height 720] [--library dir] [--tts-dir dir]
   kaaro-vid render <timeline.json> [--out final.mp4] [--work dir] [--dry-run] [--trace trace.json]
   kaaro-vid verify <deliverable> --timeline <timeline.json> [--trace trace.json]
   kaaro-vid scene <scene.mjs> --duration <sec> [--params <json>] [--fps 30] [--width 1280] [--height 720] [--out dir]
@@ -82,6 +82,8 @@ async function main() {
         fps: Number(args.fps ?? 24),
         width: Number(args.width ?? 1280),
         height: Number(args.height ?? 720),
+        narrate: args.narrate ?? false,   // true | provider name
+        ...(args['tts-dir'] ? { ttsDir: args['tts-dir'] } : {}),
       });
       const out = args.out ?? `${t.meta.id}.timeline.json`;
       await writeFile(out, JSON.stringify(t, null, 2) + '\n');

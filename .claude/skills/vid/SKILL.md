@@ -23,7 +23,7 @@ collapse passes.
 
 | Input looks like | Do |
 |---|---|
-| a library id (matches `library/{id}.json`) | `pnpm vid beats <id>` → story timeline |
+| a library id (matches `library/{id}.json`) | `pnpm vid beats <id> --narrate` → narrated story timeline (drop `--narrate` only if explicitly asked for a silent cut; needs a TTS provider — `apt-get install espeak-ng` at minimum, see `vid/README.md` for better voices) |
 | a `*.timeline.json` path | use it directly |
 | a natural-language brief | build a timeline yourself (below) |
 
