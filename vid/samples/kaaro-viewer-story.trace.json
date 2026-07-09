@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "id": "trace-mrcjnl3m",
-  "startedAt": "2026-07-08T20:42:20.434Z",
+  "id": "trace-mrd3uyzm",
+  "startedAt": "2026-07-09T06:07:57.346Z",
   "brief": null,
   "timelineId": "kaaro-viewer-story",
   "operations": [
@@ -10,7 +10,7 @@
       "args": {
         "timeline": "vid/samples/kaaro-viewer-story.timeline.json"
       },
-      "startedAt": "2026-07-08T20:42:20.434Z",
+      "startedAt": "2026-07-09T06:07:57.346Z",
       "ms": 0,
       "ok": true,
       "result": {
@@ -26,8 +26,9 @@
           "generator",
           "generator",
           "generator",
+          "generator",
           "concat",
-          "finalize"
+          "audiomix"
         ],
         "output": "vid/samples/kaaro-viewer-story.mp4"
       }
@@ -38,7 +39,7 @@
         "clipId": "opening-title"
       },
       "startedAt": null,
-      "ms": 9754,
+      "ms": 10384,
       "ok": true
     },
     {
@@ -47,7 +48,7 @@
         "clipId": "beat-1"
       },
       "startedAt": null,
-      "ms": 4088,
+      "ms": 18597,
       "ok": true
     },
     {
@@ -56,7 +57,7 @@
         "clipId": "beat-2"
       },
       "startedAt": null,
-      "ms": 3469,
+      "ms": 13735,
       "ok": true
     },
     {
@@ -65,7 +66,7 @@
         "clipId": "beat-3"
       },
       "startedAt": null,
-      "ms": 3717,
+      "ms": 20760,
       "ok": true
     },
     {
@@ -74,7 +75,7 @@
         "clipId": "beat-4"
       },
       "startedAt": null,
-      "ms": 3407,
+      "ms": 19821,
       "ok": true
     },
     {
@@ -83,7 +84,7 @@
         "clipId": "beat-5"
       },
       "startedAt": null,
-      "ms": 3564,
+      "ms": 18306,
       "ok": true
     },
     {
@@ -92,7 +93,7 @@
         "clipId": "beat-6"
       },
       "startedAt": null,
-      "ms": 3517,
+      "ms": 18901,
       "ok": true
     },
     {
@@ -101,7 +102,7 @@
         "clipId": "beat-7"
       },
       "startedAt": null,
-      "ms": 3606,
+      "ms": 26256,
       "ok": true
     },
     {
@@ -110,7 +111,7 @@
         "clipId": "beat-8"
       },
       "startedAt": null,
-      "ms": 3358,
+      "ms": 19744,
       "ok": true
     },
     {
@@ -119,7 +120,7 @@
         "clipId": "beat-9"
       },
       "startedAt": null,
-      "ms": 3189,
+      "ms": 24802,
       "ok": true
     },
     {
@@ -128,21 +129,30 @@
         "clipId": "beat-10"
       },
       "startedAt": null,
-      "ms": 3905,
+      "ms": 23256,
+      "ok": true
+    },
+    {
+      "op": "step:generator",
+      "args": {
+        "clipId": "closing-stats"
+      },
+      "startedAt": null,
+      "ms": 4859,
       "ok": true
     },
     {
       "op": "step:concat",
       "args": {},
       "startedAt": null,
-      "ms": 301,
+      "ms": 917,
       "ok": true
     },
     {
-      "op": "step:finalize",
+      "op": "step:audiomix",
       "args": {},
       "startedAt": null,
-      "ms": 3,
+      "ms": 32475,
       "ok": true
     }
   ],
@@ -152,7 +162,7 @@
       {
         "id": "has-video-stream",
         "ok": true,
-        "detail": "video h264 640x360"
+        "detail": "video h264 1280x720"
       },
       {
         "id": "has-audio-stream",
@@ -162,17 +172,17 @@
       {
         "id": "resolution",
         "ok": true,
-        "detail": "expected 640x360, got 640x360"
+        "detail": "expected 1280x720, got 1280x720"
       },
       {
         "id": "fps",
         "ok": true,
-        "detail": "expected 24, got 24"
+        "detail": "expected 24, got 23.963"
       },
       {
         "id": "duration",
         "ok": true,
-        "detail": "expected ~102.1s ±0.35, got 102.104667s"
+        "detail": "expected ~340.8s ±0.35, got 340.773s"
       },
       {
         "id": "decodes-cleanly",
@@ -182,5 +192,5 @@
     ]
   },
   "golden": true,
-  "finishedAt": "2026-07-08T20:43:07.534Z"
+  "finishedAt": "2026-07-09T06:12:18.451Z"
 }

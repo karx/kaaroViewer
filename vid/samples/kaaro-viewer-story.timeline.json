@@ -1,8 +1,8 @@
 {
   "meta": {
     "fps": 24,
-    "width": 640,
-    "height": 360,
+    "width": 1280,
+    "height": 720,
     "id": "kaaro-viewer-story",
     "title": "kaaroViewer: A Self-Governing Spatial Intelligence Platform — story video"
   },
@@ -16,11 +16,13 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/title-card.mjs",
-            "duration": 3,
+            "duration": 12.6,
             "params": {
               "title": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
               "subtitle": "From open-world NER to personalized ontology — the architecture of knowledge drift prevention",
-              "tone": 196
+              "meta": "Knowledge Engineering  ·  2026  ·  10 beats  ·  31N · 64E",
+              "accent": "#f05500",
+              "tone": 0
             }
           }
         },
@@ -29,15 +31,65 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 10,
+            "duration": 27.9,
             "params": {
               "index": 1,
               "count": 10,
               "title": "Knowledge Meets the Open World",
               "narration": "The earliest kaaroViewer is built on an implicit assumption: knowledge worth visualizing exists in the open world. OpenTapioca matches text to Wikidata QIDs; SPARQL fetches structured facts — descriptions, images, linked identifiers. For public subjects, this works precisely because Wikidata already knows them. The system renders what it can look up.",
               "tension": "low",
-              "accent": "#e74c3c",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#f05500",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "open-world-assumption",
+                    "label": "Open-World Assumption",
+                    "tier": "primary",
+                    "focus": true
+                  },
+                  {
+                    "id": "opentapioca",
+                    "label": "OpenTapioca",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "wikidata",
+                    "label": "Wikidata",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "sparql",
+                    "label": "SPARQL",
+                    "tier": "secondary",
+                    "focus": false
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "opentapioca",
+                    "to": "open-world-assumption",
+                    "rel": "enables"
+                  },
+                  {
+                    "from": "wikidata",
+                    "to": "open-world-assumption",
+                    "rel": "enables"
+                  },
+                  {
+                    "from": "sparql",
+                    "to": "open-world-assumption",
+                    "rel": "enables"
+                  },
+                  {
+                    "from": "opentapioca",
+                    "to": "wikidata",
+                    "rel": "association"
+                  }
+                ]
+              }
             }
           }
         },
@@ -46,15 +98,44 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 9.1,
+            "duration": 21.6,
             "params": {
               "index": 2,
               "count": 10,
               "title": "A-Frame and the First Spatial Canvas",
               "narration": "The first rendering layer is A-Frame, a declarative WebXR framework. Public entities from Wikidata become primitives in a 3D scene. The canvas is functional but abstract — labels on geometric shapes. Spatial layout begins to suggest that geometry alone cannot carry meaning.",
               "tension": "low",
-              "accent": "#8e44ad",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#27ae60",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "a-frame",
+                    "label": "A-Frame",
+                    "tier": "secondary",
+                    "focus": true
+                  },
+                  {
+                    "id": "webxr",
+                    "label": "WebXR",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "kaaro-viewer",
+                    "label": "kaaroViewer",
+                    "tier": "spine",
+                    "focus": false
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "a-frame",
+                    "to": "webxr",
+                    "rel": "enables"
+                  }
+                ]
+              }
             }
           }
         },
@@ -63,15 +144,54 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 10,
+            "duration": 25.8,
             "params": {
               "index": 3,
               "count": 10,
               "title": "The Boundary Where Public Knowledge Ends",
               "narration": "Personal knowledge vaults, project notes, research documents — these texts have no QIDs. OpenTapioca cannot match them to Wikidata. SPARQL has nothing to retrieve. The open-world assumption fails at exactly the boundary where personal knowledge begins, and the system that works for public subjects cannot see private ones at all.",
               "tension": "medium",
-              "accent": "#e74c3c",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#f05500",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "private-knowledge-vault",
+                    "label": "Private Knowledge Vault",
+                    "tier": "secondary",
+                    "focus": true
+                  },
+                  {
+                    "id": "open-world-assumption",
+                    "label": "Open-World Assumption",
+                    "tier": "primary",
+                    "focus": false
+                  },
+                  {
+                    "id": "opentapioca",
+                    "label": "OpenTapioca",
+                    "tier": "secondary",
+                    "focus": false
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "opentapioca",
+                    "to": "open-world-assumption",
+                    "rel": "enables"
+                  },
+                  {
+                    "from": "private-knowledge-vault",
+                    "to": "open-world-assumption",
+                    "rel": "contradicts"
+                  },
+                  {
+                    "from": "opentapioca",
+                    "to": "private-knowledge-vault",
+                    "rel": "opposes"
+                  }
+                ]
+              }
             }
           }
         },
@@ -80,15 +200,38 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 10,
+            "duration": 33.2,
             "params": {
               "index": 4,
               "count": 10,
               "title": "LLM as Ontology Constructor",
               "narration": "An LLM is introduced to encode private text: identify entities, name types, trace relationships, construct narrative, surface insights. The intelligence brief format emerges — a seven-layer JSON document (meta, nodes, edges, story, insights, clusters, report_card) that becomes the system's lingua franca. The LLM can encode what NER cannot. The library grows beyond public knowledge into personal knowledge vaults.",
               "tension": "medium",
-              "accent": "#3498db",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#e74c3c",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "intelligence-brief",
+                    "label": "Intelligence Brief",
+                    "tier": "spine",
+                    "focus": true
+                  },
+                  {
+                    "id": "gemini",
+                    "label": "Gemini",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "private-knowledge-vault",
+                    "label": "Private Knowledge Vault",
+                    "tier": "secondary",
+                    "focus": false
+                  }
+                ],
+                "edges": []
+              }
             }
           }
         },
@@ -97,15 +240,44 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 10,
+            "duration": 29.8,
             "params": {
               "index": 5,
               "count": 10,
               "title": "Ontology Drift — The Liability of LLM Freedom",
               "narration": "Left unconstrained, the LLM invents types and relationships the renderer does not understand. Two documents on the same topic, encoded weeks apart, produce incompatible schemas. Early encodings produce edge densities as low as 1.32; others reach 2.41. The gap is not quality variance — it is ontological incoherence. Drift becomes the dominant library failure mode.",
               "tension": "high",
-              "accent": "#e74c3c",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#f05500",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "ontology-drift",
+                    "label": "Ontology Drift",
+                    "tier": "primary",
+                    "focus": true
+                  },
+                  {
+                    "id": "intelligence-brief",
+                    "label": "Intelligence Brief",
+                    "tier": "spine",
+                    "focus": false
+                  },
+                  {
+                    "id": "validator",
+                    "label": "Validator",
+                    "tier": "primary",
+                    "focus": false
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "validator",
+                    "to": "intelligence-brief",
+                    "rel": "governs"
+                  }
+                ]
+              }
             }
           }
         },
@@ -114,15 +286,60 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 10,
+            "duration": 32.2,
             "params": {
               "index": 6,
               "count": 10,
               "title": "Three.js — The Visual Contract Made Direct",
               "narration": "A-Frame is superseded by a direct Three.js canvas providing full control: force-directed layout, tier-scaled geometry, sentiment aura rings, animated story beat transitions. Each node type maps to a geometry; each sentiment to an aura color. The visual contract makes the ontology concrete — a type that renders as a fallback primitive is visually anonymous. The renderer becomes an enforcement point, not just a display layer.",
               "tension": "high",
-              "accent": "#8e44ad",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#27ae60",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "three-js",
+                    "label": "Three.js",
+                    "tier": "primary",
+                    "focus": true
+                  },
+                  {
+                    "id": "a-frame",
+                    "label": "A-Frame",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "force-directed-layout",
+                    "label": "Force-Directed Layout",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "kaaro-viewer",
+                    "label": "kaaroViewer",
+                    "tier": "spine",
+                    "focus": false
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "three-js",
+                    "to": "a-frame",
+                    "rel": "supersedes"
+                  },
+                  {
+                    "from": "three-js",
+                    "to": "kaaro-viewer",
+                    "rel": "enables"
+                  },
+                  {
+                    "from": "three-js",
+                    "to": "force-directed-layout",
+                    "rel": "implements"
+                  }
+                ]
+              }
             }
           }
         },
@@ -131,15 +348,81 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 10,
+            "duration": 41.7,
             "params": {
               "index": 7,
               "count": 10,
               "title": "The Three-Part Lock — Ontology Made Defensible",
               "narration": "The three-part lock crystallizes: validator (canonical VALID_TYPES/VALID_RELS — 38 types, 29 rels), SOP reference (semantic + visual explanation), renderer (geometry/style switches) — all three must update atomically. The Dream Loop runs its first execution: the `reveals` relationship, repeatedly used from memory, is promoted from warning to blocking error. Across 4 Alone-Time runs, the library moves from 3 degraded entries to 9 ok · 0 watch · 0 degraded. The personalized ontology has its first defensible form.",
               "tension": "climax",
-              "accent": "#3498db",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#e74c3c",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "three-part-lock",
+                    "label": "Three-Part Lock",
+                    "tier": "primary",
+                    "focus": true
+                  },
+                  {
+                    "id": "dream-loop",
+                    "label": "Dream Loop",
+                    "tier": "primary",
+                    "focus": false
+                  },
+                  {
+                    "id": "alone-time-loop",
+                    "label": "Alone-Time Loop",
+                    "tier": "primary",
+                    "focus": false
+                  },
+                  {
+                    "id": "validator",
+                    "label": "Validator",
+                    "tier": "primary",
+                    "focus": false
+                  },
+                  {
+                    "id": "sop-reference",
+                    "label": "SOP Reference",
+                    "tier": "secondary",
+                    "focus": false
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "three-part-lock",
+                    "to": "validator",
+                    "rel": "features"
+                  },
+                  {
+                    "from": "three-part-lock",
+                    "to": "sop-reference",
+                    "rel": "features"
+                  },
+                  {
+                    "from": "dream-loop",
+                    "to": "three-part-lock",
+                    "rel": "governs"
+                  },
+                  {
+                    "from": "dream-loop",
+                    "to": "alone-time-loop",
+                    "rel": "derives_from"
+                  },
+                  {
+                    "from": "dream-loop",
+                    "to": "validator",
+                    "rel": "achieves"
+                  },
+                  {
+                    "from": "alone-time-loop",
+                    "to": "validator",
+                    "rel": "achieves"
+                  }
+                ]
+              }
             }
           }
         },
@@ -148,15 +431,70 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 10,
+            "duration": 32.6,
             "params": {
               "index": 8,
               "count": 10,
               "title": "Two Paths — Explore and Enforce",
               "narration": "The explore pipeline offers anyone a draft knowledge graph in seconds — Gemini, a single LLM call, approximate ontology adherence. The visualize skill offers a power user a library-grade brief — three-pass encoding, full validator enforcement, permanent registration. The distinction is not quality alone: it is how much of the personalized ontology is enforced. Both paths produce intelligence briefs; only one enforces the full ontology contract.",
               "tension": "medium",
-              "accent": "#27ae60",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#3498db",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "explore-pipeline",
+                    "label": "Explore Pipeline",
+                    "tier": "primary",
+                    "focus": true
+                  },
+                  {
+                    "id": "visualize-skill",
+                    "label": "Visualize Skill",
+                    "tier": "primary",
+                    "focus": false
+                  },
+                  {
+                    "id": "intelligence-brief",
+                    "label": "Intelligence Brief",
+                    "tier": "spine",
+                    "focus": false
+                  },
+                  {
+                    "id": "gemini",
+                    "label": "Gemini",
+                    "tier": "secondary",
+                    "focus": false
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "explore-pipeline",
+                    "to": "intelligence-brief",
+                    "rel": "achieves"
+                  },
+                  {
+                    "from": "visualize-skill",
+                    "to": "intelligence-brief",
+                    "rel": "achieves"
+                  },
+                  {
+                    "from": "gemini",
+                    "to": "explore-pipeline",
+                    "rel": "enables"
+                  },
+                  {
+                    "from": "explore-pipeline",
+                    "to": "visualize-skill",
+                    "rel": "association"
+                  },
+                  {
+                    "from": "visualize-skill",
+                    "to": "intelligence-brief",
+                    "rel": "governs"
+                  }
+                ]
+              }
             }
           }
         },
@@ -165,15 +503,76 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 10,
+            "duration": 38.5,
             "params": {
               "index": 9,
               "count": 10,
               "title": "Painting — Images for At-a-Glance Comprehension",
               "narration": "The paint system adds a comprehension channel that geometry cannot provide. PaintContext assembles three inputs — spatial positioning (nodes in camera frustum), textual context (slide narration + node description), cinematic camera angle — into a prompt informed by stable diffusion seed prompt patterns. 4 named strategies (cinematic/documentary/abstract/blueprint) produce genuinely different images from the same canvas state. Gemini generates the image; Three.js applies it as a mesh texture.",
               "tension": "medium",
-              "accent": "#e67e22",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#8e44ad",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "paint-system",
+                    "label": "Paint System",
+                    "tier": "primary",
+                    "focus": true
+                  },
+                  {
+                    "id": "paint-context",
+                    "label": "PaintContext",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "paint-strategies",
+                    "label": "Paint Strategies",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "gemini",
+                    "label": "Gemini",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "stable-diffusion",
+                    "label": "Stable Diffusion",
+                    "tier": "secondary",
+                    "focus": false
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "paint-context",
+                    "to": "paint-system",
+                    "rel": "enables"
+                  },
+                  {
+                    "from": "paint-strategies",
+                    "to": "paint-system",
+                    "rel": "enables"
+                  },
+                  {
+                    "from": "gemini",
+                    "to": "paint-system",
+                    "rel": "enables"
+                  },
+                  {
+                    "from": "stable-diffusion",
+                    "to": "paint-strategies",
+                    "rel": "association"
+                  },
+                  {
+                    "from": "gemini",
+                    "to": "paint-strategies",
+                    "rel": "association"
+                  }
+                ]
+              }
             }
           }
         },
@@ -182,17 +581,223 @@
           "source": {
             "kind": "generator",
             "scene": "vid/scenes/beat-card.mjs",
-            "duration": 10,
+            "duration": 37.9,
             "params": {
               "index": 10,
               "count": 10,
               "title": "The Ontology Problem Is Named, Not Solved",
               "narration": "9 library entries. 168 tests passing. 1 Dream Loop run complete. The ontology problem — maintaining a stable, evolvable, personalized vocabulary for private knowledge visualization — is now explicit and partially constrained. The vocabulary extension mechanism exists; the gaps that require it lie ahead. The eval loop surfaces the gap between ontological correctness (validator pass) and ontological quality (faithful encoding). The system is self-aware of its own limits.",
               "tension": "low",
-              "accent": "#8e44ad",
-              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform"
+              "accent": "#27ae60",
+              "docTitle": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "graph": {
+                "nodes": [
+                  {
+                    "id": "kaaro-viewer",
+                    "label": "kaaroViewer",
+                    "tier": "spine",
+                    "focus": true
+                  },
+                  {
+                    "id": "alone-time-loop",
+                    "label": "Alone-Time Loop",
+                    "tier": "primary",
+                    "focus": false
+                  },
+                  {
+                    "id": "dream-loop",
+                    "label": "Dream Loop",
+                    "tier": "primary",
+                    "focus": false
+                  },
+                  {
+                    "id": "health-check",
+                    "label": "Health Check",
+                    "tier": "secondary",
+                    "focus": false
+                  },
+                  {
+                    "id": "eval-modal",
+                    "label": "Eval Modal",
+                    "tier": "secondary",
+                    "focus": false
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "health-check",
+                    "to": "alone-time-loop",
+                    "rel": "governs"
+                  },
+                  {
+                    "from": "dream-loop",
+                    "to": "alone-time-loop",
+                    "rel": "derives_from"
+                  },
+                  {
+                    "from": "alone-time-loop",
+                    "to": "kaaro-viewer",
+                    "rel": "governs"
+                  },
+                  {
+                    "from": "eval-modal",
+                    "to": "alone-time-loop",
+                    "rel": "association"
+                  },
+                  {
+                    "from": "kaaro-viewer",
+                    "to": "eval-modal",
+                    "rel": "features"
+                  }
+                ]
+              }
             }
           }
+        },
+        {
+          "id": "closing-stats",
+          "source": {
+            "kind": "generator",
+            "scene": "vid/scenes/end-card.mjs",
+            "duration": 7,
+            "params": {
+              "title": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+              "stats": [
+                "Library entries (2026): 9 ok · 0 degraded · 0 watch",
+                "Test suite: 168 passing",
+                "VALID_TYPES: 38 node types",
+                "VALID_RELS: 29 edge relationships"
+              ],
+              "accent": "#f05500"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "vo",
+      "kind": "audio",
+      "clips": [
+        {
+          "id": "vo-opening-title",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/opening-title.wav",
+            "in": 0,
+            "out": 10.784172
+          },
+          "gain": 1,
+          "at": 0.8
+        },
+        {
+          "id": "vo-beat-1",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-1.wav",
+            "in": 0,
+            "out": 26.080136
+          },
+          "gain": 1,
+          "at": 13.4
+        },
+        {
+          "id": "vo-beat-2",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-2.wav",
+            "in": 0,
+            "out": 19.767891
+          },
+          "gain": 1,
+          "at": 41.3
+        },
+        {
+          "id": "vo-beat-3",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-3.wav",
+            "in": 0,
+            "out": 24.040091
+          },
+          "gain": 1,
+          "at": 62.9
+        },
+        {
+          "id": "vo-beat-4",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-4.wav",
+            "in": 0,
+            "out": 31.402766
+          },
+          "gain": 1,
+          "at": 88.7
+        },
+        {
+          "id": "vo-beat-5",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-5.wav",
+            "in": 0,
+            "out": 27.958186
+          },
+          "gain": 1,
+          "at": 121.9
+        },
+        {
+          "id": "vo-beat-6",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-6.wav",
+            "in": 0,
+            "out": 30.369932
+          },
+          "gain": 1,
+          "at": 151.7
+        },
+        {
+          "id": "vo-beat-7",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-7.wav",
+            "in": 0,
+            "out": 39.9122
+          },
+          "gain": 1,
+          "at": 183.9
+        },
+        {
+          "id": "vo-beat-8",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-8.wav",
+            "in": 0,
+            "out": 30.796553
+          },
+          "gain": 1,
+          "at": 225.6
+        },
+        {
+          "id": "vo-beat-9",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-9.wav",
+            "in": 0,
+            "out": 36.715601
+          },
+          "gain": 1,
+          "at": 258.2
+        },
+        {
+          "id": "vo-beat-10",
+          "source": {
+            "kind": "asset",
+            "path": ".kaaro-vid/tts/kaaro-viewer/beat-10.wav",
+            "in": 0,
+            "out": 36.06517
+          },
+          "gain": 1,
+          "at": 296.7
         }
       ]
     }

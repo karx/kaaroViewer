@@ -3,3 +3,5 @@ scripts/sessions-data.json
 scripts/graph.html
 scripts/graph-data.json
 .kaaro-vid/
+vid/samples/*.mp4
+!vid/samples/*.preview.mp4
