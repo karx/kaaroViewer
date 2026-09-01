@@ -66,11 +66,11 @@ export async function loadLocalDoc(path) {
 
   log('SYSTEM', `doc "${meta.title}" — ${nodes.length} nodes, ${edges.length} edges, ${insights.length} insights, ${story.length} story beats`);
 
-  // ── Determine spine for placement hints ────────────────────────────────────
+  // ── Determine spine for placement hints ──────────────────────────────────
   const spineIds = new Set(report_card.spine ?? []);
   const firstSpineId = report_card.spine?.[0] ?? null;
 
-  // ── Place + add nodes ───────────────────────────────────────────────────────
+  // ── Place + add nodes ───────────────────────────────────────────────
   // Pass 1: spine nodes first (near origin)
   for (const n of nodes) {
     if (!spineIds.has(n.id) || graph.hasNode(n.id)) continue;
@@ -86,7 +86,7 @@ export async function loadLocalDoc(path) {
     _addDocNode(n, meta, pos);
   }
 
-  // ── Add edges ───────────────────────────────────────────────────────────────
+  // ── Add edges ───────────────────────────────────────────────────────
   for (const e of edges) {
     if (!graph.hasNode(e.from) || !graph.hasNode(e.to)) continue;
     graph.addEdge(e.from, e.to, e.rel ?? 'default', e.label ?? e.rel ?? '', {
@@ -127,7 +127,7 @@ export async function loadLocalDoc(path) {
     }
   }
 
-  // ── Index wikidata QIDs for cross-document entity linking ──────────────────
+  // ── Index wikidata QIDs for cross-document entity linking ─────────────────
   for (const n of nodes) {
     if (n.wikidata) {
       const entry = _wikidataIndex.get(n.wikidata) ?? new Set();
@@ -136,7 +136,7 @@ export async function loadLocalDoc(path) {
     }
   }
 
-  // ── Store enriched meta for UI consumption ──────────────────────────────────
+  // ── Store enriched meta for UI consumption ─────────────────────────────────
   const nodeLookup = {};
   for (const n of nodes) nodeLookup[n.id] = n;
   for (const ins of insights) {
@@ -155,12 +155,12 @@ export async function loadLocalDoc(path) {
   return enrichedMeta;
 }
 
-// ── Derived Analytics Engine ──────────────────────────────────────────────────
+// ── Derived Analytics Engine ──────────────────────────────────────────
 
 function _deriveAnalytics(nodes, edges, clusters, insights, story) {
   const a = {};
 
-  // ── Degree centrality ────────────────────────────────────────────────────
+  // ── Degree centrality ────────────────────────────────────────
   const degree = {};
   for (const n of nodes) degree[n.id] = 0;
   for (const e of edges) {
@@ -192,7 +192,7 @@ function _deriveAnalytics(nodes, edges, clusters, insights, story) {
     walk(root);
   }
 
-  // ── Cross-cluster edges ──────────────────────────────────────────────────
+  // ── Cross-cluster edges ──────────────────────────────────────────
   const nodeToCluster = {};
   for (const cl of clusters) {
     for (const nid of (cl.nodes ?? [])) nodeToCluster[nid] = cl.id;
@@ -226,23 +226,23 @@ function _deriveAnalytics(nodes, edges, clusters, insights, story) {
     }
   }
 
-  // ── Sentiment distribution ───────────────────────────────────────────────
+  // ── Sentiment distribution ───────────────────────────────────────
   a.sentimentDist = { positive: 0, negative: 0, neutral: 0, contested: 0 };
   for (const n of nodes) a.sentimentDist[n.sentiment ?? 'neutral'] = (a.sentimentDist[n.sentiment ?? 'neutral'] ?? 0) + 1;
 
-  // ── Tier distribution ────────────────────────────────────────────────────
+  // ── Tier distribution ────────────────────────────────────────────
   a.tierDist = { spine: 0, primary: 0, secondary: 0, context: 0 };
   for (const n of nodes) a.tierDist[n.tier ?? 'primary'] = (a.tierDist[n.tier ?? 'primary'] ?? 0) + 1;
 
-  // ── Relationship type distribution ───────────────────────────────────────
+  // ── Relationship type distribution ───────────────────────────────
   a.relTypeDist = {};
   for (const e of edges) a.relTypeDist[e.rel ?? 'default'] = (a.relTypeDist[e.rel ?? 'default'] ?? 0) + 1;
 
-  // ── Tension curve ────────────────────────────────────────────────────────
+  // ── Tension curve ────────────────────────────────────────────────
   const TENSION_VAL = { low: 1, medium: 2, high: 3, climax: 4 };
   a.tensionCurve = story.map(b => TENSION_VAL[b.tension] ?? 1);
 
-  // ── Temporal sequence ────────────────────────────────────────────────────
+  // ── Temporal sequence ────────────────────────────────────────────
   a.temporalSequence = edges
     .filter(e => e.temporal)
     .map(e => ({ edge: e, date: e.temporal }))
@@ -251,7 +251,7 @@ function _deriveAnalytics(nodes, edges, clusters, insights, story) {
   return a;
 }
 
-// ── Internal helpers ───────────────────────────────────────────────────────────
+// ── Internal helpers ───────────────────────────────────────────────
 
 function _addDocNode(n, meta, pos) {
   graph.addNode(n.id, {
@@ -346,5 +346,12 @@ export const LIBRARY = [
     path:   './library/esp-ecosystem.json',
     domain: 'Hardware / IoT',
     year:   '2026',
+  },
+  {
+    id:     'pragmatic-maxim',
+    title:  'The Pragmatic Maxim',
+    path:   './library/pragmatic-maxim.json',
+    domain: 'Philosophy / Logic',
+    year:   '1878',
   },
 ];
