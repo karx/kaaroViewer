@@ -61,6 +61,14 @@ export const ENTITY_TYPES = {
   standard:     { color: 0x88aacc, radius: 0.50, label: 'Standard',     code: 'STND' },
   dataset:      { color: 0x00cccc, radius: 0.48, label: 'Dataset',      code: 'DATA' },
   model:        { color: 0x44ddcc, radius: 0.52, label: 'Model',        code: 'MODL' },
+  // ── Meta-System (Tier 1 — Dream Loop 2026-06-19) ──────────────────────────
+  framework:    { color: 0xcc44ff, radius: 0.65, label: 'Framework',    code: 'FRMK' },
+  prompt:       { color: 0xffaa00, radius: 0.50, label: 'Prompt',       code: 'PRMP' },
+  process:      { color: 0x00cccc, radius: 0.55, label: 'Process',      code: 'PROC' },
+  // Meta-System Tier 2
+  hardware:     { color: 0x886644, radius: 0.65, label: 'Hardware',     code: 'HWRE' },
+  tool:         { color: 0xffaa00, radius: 0.55, label: 'Tool',         code: 'TOOL' },
+  system:       { color: 0x44aaff, radius: 0.70, label: 'System',       code: 'SYST' },
   // ── Analytical / narrative types ──────────────────────────────────────────
   insight:      { color: 0xffffff, radius: 0.62, label: 'Insight',      code: 'ISGT' },
   milestone:    { color: 0xffee00, radius: 0.50, label: 'Milestone',    code: 'MLST' },
@@ -163,6 +171,17 @@ export const REL_TYPES = {
   achieves:     { color: 0xffee00, label: 'ACHIEVES',      code: 'ACHV' },
   cites:        { color: 0x888866, label: 'CITES',         code: 'CITE' },
   contradicts:  { color: 0xff4466, label: 'CONTRADICTS',   code: 'CNTR' },
+  enforces:     { color: 0xff6600, label: 'ENFORCES',      code: 'ENFC' },
+  transforms:   { color: 0x00cccc, label: 'TRANSFORMS',    code: 'TRNS' },
+  creates:      { color: 0xffcc00, label: 'CREATES',       code: 'CRET' },
+  maps_to:      { color: 0xaa88ff, label: 'MAPS TO',       code: 'MAPS' },
+  visualizes:   { color: 0x00ccff, label: 'VISUALIZES',    code: 'VISU' },
+  renders:      { color: 0xff8800, label: 'RENDERS',       code: 'RNDR' },
+  underpins:    { color: 0xcc44ff, label: 'UNDERPINS',     code: 'UNDR' },
+  supports:     { color: 0x00ff88, label: 'SUPPORTS',      code: 'SUPP' },
+  updates:      { color: 0xff8800, label: 'UPDATES',       code: 'UPDT' },
+  simplifies:   { color: 0x00aaff, label: 'SIMPLIFIES',    code: 'SMPL' },
+  describes:    { color: 0xaa88ff, label: 'DESCRIBES',     code: 'DESC' },
   default:      { color: 0x446644, label: 'RELATED TO',    code: 'REL'  },
 };
 

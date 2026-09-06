@@ -47,6 +47,12 @@
 | `metric` | Sphere (small) | Yellow | Quantitative indicators |
 | `civ` | Sphere | Brown | Game civilizations |
 | `dlc` | Sphere | Purple | Game DLC content |
+| `framework` | Icosahedron | Magenta | Structured methodology (PARA, GTD, Scrum) |
+| `prompt` | Tetrahedron | Amber | Executable LLM instruction documents |
+| `process` | Torus | Cyan | Repeatable multi-step workflows |
+| `hardware` | Box | Brown | Physical devices, chips, boards |
+| `tool` | Octahedron | Amber | Interactive instruments (IDEs, CLIs, dashboards) |
+| `system` | Dodecahedron | Blue | Composite of interacting components |
 
 ---
 
@@ -120,6 +126,17 @@ Reserve weight 4–5 for ≤20% of total edges.
 | `features` | → | Includes, showcases |
 | `broadcasts` | → | Media coverage |
 | `temporal` | → | Time-based link only |
+| `enforces` | → | Framework actively mandates a standard/rule |
+| `transforms` | → | Process changes input to a new form of the same essence |
+| `creates` | → | Process brings a new artifact into existence |
+| `maps_to` | ↔ | Structural/semantic correspondence, not location |
+| `visualizes` | → | Tool renders abstract structure as a visual |
+| `renders` | → | Specification-driven output (prompt → scene) |
+| `underpins` | → | Foundational dependency — without A, B cannot exist |
+| `supports` | → | Tool/platform actively supports a component |
+| `updates` | → | Process versions or iterates an artifact |
+| `simplifies` | → | Tool abstracts or reduces process complexity |
+| `describes` | → | Document describes a system |
 
 ---
 

@@ -109,6 +109,13 @@ For each circled entity from Phase 0, create a node entry. Then assign:
 | `tournament` | Competitions with bracket structure | Torus knot |
 | `player` | Competitive individuals in esport/sport context | Sphere |
 | `film` / `book` / `music` | Creative works | Dodecahedron |
+| **Meta-System — Tier 1 (Dream Loop 2026-06-19)** | | |
+| `framework` | Structured methodology that governs workflows (PARA, GTD, Scrum) | Icosahedron |
+| `prompt` | Executable instruction document for LLM agents (CLAUDE.md, system prompts) | Tetrahedron |
+| `process` | Repeatable multi-step workflow that transforms inputs to outputs | Torus |
+| `hardware` | Physical devices, chips, boards (ESP32, Raspberry Pi, sensors) | Box |
+| `tool` | Interactive instruments used by agents (IDEs, CLI tools, dashboards) | Octahedron |
+| `system` | Composite of interacting components functioning as a whole | Dodecahedron |
 
 **When none fit:** use `concept`. Never use `default` — it signals an incomplete classification.
 
@@ -206,6 +213,18 @@ For each boxed causal claim and every meaningful relationship, create an edge.
 | Enables / facilitates | `enables` | Infrastructure → outcome |
 | Precedes / leads to | `precedes` | Temporal sequence |
 | Insight reveals / supports | `reveals` | Auto-created by insights[] — don't add manually |
+| **Meta-System — Tier 1 (Dream Loop 2026-06-19)** | | |
+| Framework enforces standard/rule | `enforces` | Active mandate with compliance checking (not passive governance) |
+| Process transforms input to output | `transforms` | Same essence, new form (caterpillar → butterfly) |
+| Process creates artifact | `creates` | Brings new entity into existence |
+| Structural correspondence (maps A to B) | `maps_to` | Semantic/structural mapping, not location |
+| Tool visualizes structure | `visualizes` | Renders abstract structure as visual representation |
+| Tool renders from spec | `renders` | Specification-driven output (prompt → scene) |
+| Theory underpins practice/framework | `underpins` | Foundational dependency (without A, B cannot exist) |
+| Tool/platform supports component | `supports` | Active compatibility/support relationship |
+| Process updates artifact | `updates` | Version/iteration update |
+| Tool simplifies process | `simplifies` | Makes easier/abstracts complexity |
+| Document describes system | `describes` | Documentation relationship |
 
 ### 4.2 Weight — the most important field you'll set
 
@@ -539,6 +558,17 @@ Run through this before adding to LIBRARY:
 - Antagonist: the opposing force, the context of resistance
 - Key insight types: `pattern` (recurring behaviour), `conclusion` (historical verdict), `paradox` (legacy vs impact)
 - Story arc: Origins → Rise → Crisis → Turning point → Legacy
+
+### Meta-System / Reference Architecture report (NEW — Dream Loop 2026-06-19)
+- **Node count:** 25–35
+- **Core types:** `framework`, `prompt`, `process`, `system`, `tool`, `concept`, `standard`
+- **Core rels:** `enforces`, `transforms`, `creates`, `maps_to`, `visualizes`, `renders`, `underpins`, `informs`, `governs`, `precedes`
+- **Cluster strategy:** By architectural layer (Framework → Process → Tool → Ecosystem)
+- **Story arc:** Problem (fragmented) → Framework (structure) → Process (workflow) → Tool (execution) → Leverage (compound)
+- **Insight types:** Must include `warning` (fragility), `finding` (leverage points), `pattern` (recurring structure)
+- **Protagonists:** The framework, the prompt, the process pipeline
+- **Antagonists:** Fragmentation, implicit knowledge, unvalidated practices
+- **Themes:** Composability, compounding leverage, graph as protocol, maturity as compilation
 
 ---
 

@@ -45,6 +45,10 @@ VALID_TYPES = {
     'ruling', 'regulation',
     # Technical knowledge
     'algorithm', 'standard', 'dataset', 'model',
+    # Meta-System (Tier 1 — Dream Loop 2026-06-19)
+    'framework', 'prompt', 'process',
+    # Meta-System Tier 2
+    'hardware', 'tool', 'system',
 }
 
 VALID_RELS = {
@@ -55,6 +59,10 @@ VALID_RELS = {
     # Structural / technical
     'implements', 'supersedes', 'permits', 'prohibits',
     'derives_from', 'achieves', 'cites', 'contradicts',
+    # Meta-System (Tier 1 — Dream Loop 2026-06-19)
+    'enforces', 'transforms', 'creates', 'maps_to', 'visualizes', 'renders', 'underpins',
+    # Meta-System Tier 2
+    'supports', 'updates', 'simplifies', 'describes',
 }
 
 VALID_TIERS      = {'spine', 'primary', 'secondary', 'anchor', 'insight'}

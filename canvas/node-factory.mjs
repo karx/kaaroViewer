@@ -51,6 +51,13 @@ const TYPE_GEOMETRY = {
   video: 'plane', channel: 'plane', post: 'plane', dataset: 'plane',
   // Explicit sphere fallbacks (intentional, not default)
   metric: 'sphere', solution: 'sphere', sport: 'sphere', model: 'sphere',
+  // Meta-System (Dream Loop 2026-06-19) — mapped to existing primitives
+  framework: 'icosahedron',
+  prompt: 'tetrahedron',
+  process: 'torus',
+  hardware: 'box',
+  tool: 'octahedron',
+  system: 'dodecahedron',
 };
 
 const FLAT_SHADED = new Set(['octahedron', 'tetrahedron', 'icosahedron', 'dodecahedron', 'box']);
