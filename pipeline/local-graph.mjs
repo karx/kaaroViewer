@@ -347,4 +347,11 @@ export const LIBRARY = [
     domain: 'PKM / Agents',
     year:   '2024',
   },
+  {
+    id:     'adhd-assistant-bot',
+    title:  'ADHD Assistant Bot',
+    path:   './library/adhd-assistant-bot.json',
+    domain: 'Assistive Technology',
+    year:   '2026',
+  },
 ];

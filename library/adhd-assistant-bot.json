@@ -1,0 +1,716 @@
+{
+  "meta": {
+    "id": "adhd-assistant-bot",
+    "title": "ADHD Assistant Bot",
+    "subtitle": "Physical chief-of-staff device for executive dysfunction",
+    "source": "ADHD-alfred.md",
+    "domain": "assistive-technology",
+    "year": "2026",
+    "tags": ["adhd", "product-vision", "assistive-tech", "hardware"],
+    "tone": "analytical"
+  },
+  "report_card": {
+    "summary": "The document argues that ADHD executive dysfunction cannot be solved by passive note-taking tools. It proposes a physical ADHD assistant bot that ingests workspace, calendar, and sensor inputs and then actively nudges the user toward the few tasks requiring human attention. The design centers on a proactive chief-of-staff persona powered by Hermes and Cortex, with hardware feedback to prevent laptop-tab distraction.",
+    "key_stats": [
+      "Meetings per day: 4–5",
+      "Check-in cadence: every 1–2 hours",
+      "Top priorities surfaced: 3 items",
+      "Output modes: 2 (historical + real-time)",
+      "Input streams: 6 sources",
+      "Hardware modules: 4 devices",
+      "Success metric: deadlines pushed/week"
+    ],
+    "spine": ["adhd-assistant-bot", "adhd-executive-dysfunction"],
+    "protagonists": ["adhd-assistant-bot"],
+    "antagonists": ["adhd-executive-dysfunction"],
+    "themes": ["proactive nudging", "context synthesis", "physical-first interaction", "delegation and triage"]
+  },
+  "story": [
+    {
+      "id": "beat-problem",
+      "title": "Executive dysfunction stalls action",
+      "node": "adhd-executive-dysfunction",
+      "nodes": ["adhd-executive-dysfunction", "adhd-assistant-bot"],
+      "narration": "ADHD executive dysfunction makes prioritization and task initiation collapse even when the user knows what matters. The document frames this as the core failure the ADHD Assistant Bot must directly mitigate.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-passive-tools",
+      "title": "Passive tools capture but never push",
+      "node": "granola",
+      "nodes": ["granola", "notion", "obsidian"],
+      "narration": "Granola, Notion, and Obsidian capture context, but they never nudge or push back. The system keeps absorbing data while the user drifts to low-priority work.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-physical-device",
+      "title": "A physical chief of staff avoids tab distraction",
+      "node": "adhd-assistant-bot",
+      "nodes": ["adhd-assistant-bot", "harvey-specter"],
+      "narration": "The proposal shifts to a dedicated physical device that behaves like a chief of staff. A starter persona such as Harvey Specter anchors the tone, while the bot evolves through user behavior.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-inputs",
+      "title": "Unified inputs feed the worldview",
+      "node": "slack",
+      "nodes": ["slack", "discord", "microsoft-teams", "gmail", "outlook", "granola"],
+      "narration": "Workspace chat (Slack, Discord, Microsoft Teams), email (Gmail, Outlook), and meeting capture (Granola) feed a unified worldview. The assistant learns what matters across workstreams and calendar shifts.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-processing",
+      "title": "Hermes and Cortex run the reasoning loop",
+      "node": "hermes",
+      "nodes": ["hermes", "cortex", "gtd-gst-cycle"],
+      "narration": "Hermes acts as the agent brain while Cortex supplies the reasoning layer. The system runs a GTD/GST cycle to capture, triage, and delegate tasks in a structured loop.",
+      "tension": "high",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-nudges",
+      "title": "Proactive nudges keep the user on track",
+      "node": "buzzer",
+      "nodes": ["buzzer", "lcd-16x2-display", "movement-sensor", "adhd-assistant-bot"],
+      "narration": "The bot checks in every 1–2 hours with voice prompts and physical feedback. A buzzer, LCD 16x2 display, and movement sensor keep attention anchored without opening another laptop tab.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-demo",
+      "title": "Live demo proves the chief-of-staff moment",
+      "node": "adhd-assistant-bot",
+      "nodes": ["adhd-assistant-bot", "hermes", "cortex"],
+      "narration": "On stage, the bot wakes as the presenter walks out and confirms the three agenda items in real time. The system re-prioritizes displaced tasks instantly, showing the hardware brain and reasoning layer working together.",
+      "tension": "climax",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-next-steps",
+      "title": "Build plan splits capture, reasoning, and output",
+      "node": "gtd-gst-cycle",
+      "nodes": ["gtd-gst-cycle", "hermes", "buzzer"],
+      "narration": "The team divides input capture, GTD/GST processing, and output nudges into parallel build tasks. The plan prioritizes a local, composable architecture before expanding to other neurodivergent profiles.",
+      "tension": "medium",
+      "focus": "wide"
+    }
+  ],
+  "insights": [
+    {
+      "id": "ins-passive-tools-fail",
+      "title": "Passive capture tools create a false sense of progress without action",
+      "body": "Granola, Notion, and Obsidian are framed as input sinks that never push users into motion. The product vision rejects passive capture in favor of proactive nudges that surface only the tasks requiring human judgment.",
+      "type": "finding",
+      "evidence": ["granola", "notion", "obsidian", "adhd-assistant-bot"],
+      "severity": "medium"
+    },
+    {
+      "id": "ins-physical-device-focus",
+      "title": "A physical device reduces tab-based distraction and boosts adherence",
+      "body": "By moving the assistant into a single-purpose object, the system avoids the laptop-tab trap that fuels ADHD context switching. The hardware layer becomes the anchor for attention and follow-through.",
+      "type": "pattern",
+      "evidence": ["adhd-assistant-bot", "buzzer", "lcd-16x2-display", "movement-sensor"],
+      "severity": "medium"
+    },
+    {
+      "id": "ins-proactive-priority-filter",
+      "title": "The three-item filter is the core behavior that creates trust",
+      "body": "The chief-of-staff persona only surfaces the three tasks needing human input, which builds confidence that the system is protecting focus rather than demanding it. This filter defines the bot’s personality more than any explicit setting.",
+      "type": "opportunity",
+      "evidence": ["adhd-assistant-bot", "hermes", "cortex"],
+      "severity": "low"
+    },
+    {
+      "id": "ins-deadline-metric-warning",
+      "title": "Measuring success by deadlines pushed can entrench avoidance loops",
+      "body": "The proposed metric tracks deadlines pushed per week, which can normalize deferral if not balanced by completion signals. Without guardrails, the system could reward delay rather than progress.",
+      "type": "warning",
+      "evidence": ["adhd-assistant-bot", "adhd-executive-dysfunction"],
+      "severity": "high"
+    },
+    {
+      "id": "ins-hermes-cortex-dependency",
+      "title": "Hermes and Cortex define the bottleneck for real-time reprioritization",
+      "body": "All calendar shifts and task triage depend on the Hermes agent brain and the Cortex reasoning layer staying responsive. If either lags, the promise of live reprioritization collapses.",
+      "type": "conclusion",
+      "evidence": ["hermes", "cortex", "adhd-assistant-bot"],
+      "severity": "high"
+    }
+  ],
+  "clusters": [
+    {
+      "id": "cluster-core-problem",
+      "label": "Executive dysfunction and persona anchors",
+      "color": "#ffcc00",
+      "nodes": ["adhd-executive-dysfunction", "harvey-specter"],
+      "description": "The core cognitive problem and the persona template that shapes the assistant’s behavioral tone."
+    },
+    {
+      "id": "cluster-core-system",
+      "label": "Assistant brain and processing loop",
+      "color": "#00aaff",
+      "nodes": ["adhd-assistant-bot", "hermes", "cortex", "gtd-gst-cycle"],
+      "description": "The main system components and the GTD/GST process that orchestrate triage and delegation."
+    },
+    {
+      "id": "cluster-input-stack",
+      "label": "Context ingestion stack",
+      "color": "#00cccc",
+      "nodes": [
+        "granola",
+        "slack",
+        "discord",
+        "microsoft-teams",
+        "gmail",
+        "outlook",
+        "notion",
+        "obsidian",
+        "wearables",
+        "pendants"
+      ],
+      "description": "Digital and sensor inputs that feed the assistant’s worldview and prioritization context."
+    },
+    {
+      "id": "cluster-output-hardware",
+      "label": "Physical output layer",
+      "color": "#00ff88",
+      "nodes": ["buzzer", "hall-sensor", "lcd-16x2-display", "movement-sensor"],
+      "description": "Hardware components that deliver nudges and embodied feedback without laptop distraction."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "adhd-executive-dysfunction",
+      "label": "ADHD Executive Dysfunction",
+      "type": "issue",
+      "tier": "spine",
+      "sentiment": "negative",
+      "description": "The compounding failure to prioritize and initiate tasks despite knowing what matters, causing drift toward low-priority work.",
+      "metrics": {
+        "Context switches": "4–5 meetings/day"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "adhd-assistant-bot",
+      "label": "ADHD Assistant Bot",
+      "type": "system",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "A dedicated physical chief-of-staff device that synthesizes context and pushes proactive nudges to keep the user focused on the top three priorities.",
+      "metrics": {
+        "Check-in cadence": "every 1–2 hours",
+        "Priority limit": "3 tasks"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "harvey-specter",
+      "label": "Harvey Specter",
+      "type": "person",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "A starter personality template used to bootstrap the assistant’s chief-of-staff tone before it evolves from user behavior.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "granola",
+      "label": "Granola",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Meeting capture tool whose passive context logging is cited as insufficient without proactive nudges.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "slack",
+      "label": "Slack",
+      "type": "platform",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Workspace chat platform feeding real-time context into the assistant’s worldview.",
+      "metrics": {},
+      "wikidata": "Q180563"
+    },
+    {
+      "id": "discord",
+      "label": "Discord",
+      "type": "platform",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Community chat platform named as a composable workspace input.",
+      "metrics": {},
+      "wikidata": "Q55191286"
+    },
+    {
+      "id": "microsoft-teams",
+      "label": "Microsoft Teams",
+      "type": "platform",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Enterprise collaboration platform that contributes meeting and chat context.",
+      "metrics": {},
+      "wikidata": "Q65050415"
+    },
+    {
+      "id": "gmail",
+      "label": "Gmail",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Email platform integrated into the assistant’s capture stack.",
+      "metrics": {},
+      "wikidata": "Q9339"
+    },
+    {
+      "id": "outlook",
+      "label": "Outlook",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Email and calendar platform that supplies scheduling data.",
+      "metrics": {},
+      "wikidata": "Q198418"
+    },
+    {
+      "id": "notion",
+      "label": "Notion",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Knowledge base tool cited as part of the passive capture category.",
+      "metrics": {},
+      "wikidata": "Q69046712"
+    },
+    {
+      "id": "obsidian",
+      "label": "Obsidian",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Markdown knowledge base that contributes context but lacks proactive nudging.",
+      "metrics": {},
+      "wikidata": "Q109672934"
+    },
+    {
+      "id": "hermes",
+      "label": "Hermes",
+      "type": "system",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "Local agent brain that orchestrates input capture and task reprioritization.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "cortex",
+      "label": "Cortex",
+      "type": "system",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "Reasoning layer that powers Hermes with decision logic and triage scoring.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "wearables",
+      "label": "Wearables",
+      "type": "hardware",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Optional sensors that feed sleep and health data into ADHD trigger prediction.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "pendants",
+      "label": "Pendants",
+      "type": "hardware",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Physical sensor pendants that provide passive health and context signals.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "buzzer",
+      "label": "Buzzer",
+      "type": "hardware",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Hardware actuator for physical nudges and completion feedback.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "hall-sensor",
+      "label": "Hall Sensor",
+      "type": "hardware",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Magnetic sensor used for presence or interaction detection in the device.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "lcd-16x2-display",
+      "label": "LCD 16x2 Display",
+      "type": "hardware",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Small screen used to surface current priorities and status cues.",
+      "metrics": {
+        "Display size": "16x2 characters"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "movement-sensor",
+      "label": "Movement Sensor",
+      "type": "hardware",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Sensor that detects motion to time nudges or infer attention state.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "gtd-gst-cycle",
+      "label": "GTD/GST Cycle",
+      "type": "process",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "A daily capture, triage, and delegation loop that structures the assistant’s task processing.",
+      "metrics": {},
+      "wikidata": null
+    }
+  ],
+  "edges": [
+    {
+      "from": "adhd-executive-dysfunction",
+      "to": "adhd-assistant-bot",
+      "rel": "causes",
+      "label": "drives need for proactive support",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "adhd-assistant-bot",
+      "to": "adhd-executive-dysfunction",
+      "rel": "mitigates",
+      "label": "reduces initiation failure",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "gtd-gst-cycle",
+      "to": "adhd-executive-dysfunction",
+      "rel": "mitigates",
+      "label": "structured capture",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "adhd-assistant-bot",
+      "to": "gtd-gst-cycle",
+      "rel": "implements",
+      "label": "daily triage loop",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "cortex",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "reasoning layer",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "hermes",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "agent orchestration",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "cortex",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "decision engine",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "adhd-assistant-bot",
+      "to": "harvey-specter",
+      "rel": "features",
+      "label": "starter persona template",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "granola",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "meeting context",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "slack",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "workspace signals",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "discord",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "community context",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "microsoft-teams",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "meeting and chat logs",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "gmail",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "email backlog",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "outlook",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "calendar reshuffles",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "notion",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "knowledge base context",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "obsidian",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "markdown notes",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "granola",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "meeting feed",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "slack",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "chat signals",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "discord",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "community updates",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "microsoft-teams",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "enterprise context",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "gmail",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "email signal",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "outlook",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "calendar signal",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "notion",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "doc context",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "obsidian",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "note graph",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "wearables",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "sleep signals",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "pendants",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "health signals",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "wearables",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "trigger prediction",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "pendants",
+      "to": "hermes",
+      "rel": "enables",
+      "label": "passive context",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "adhd-assistant-bot",
+      "to": "buzzer",
+      "rel": "features",
+      "label": "haptic nudge",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "adhd-assistant-bot",
+      "to": "hall-sensor",
+      "rel": "features",
+      "label": "presence detection",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "adhd-assistant-bot",
+      "to": "lcd-16x2-display",
+      "rel": "features",
+      "label": "status display",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "adhd-assistant-bot",
+      "to": "movement-sensor",
+      "rel": "features",
+      "label": "attention sensing",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "buzzer",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "feedback loop",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "hall-sensor",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "interaction signal",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "lcd-16x2-display",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "visual cues",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "movement-sensor",
+      "to": "adhd-assistant-bot",
+      "rel": "enables",
+      "label": "motion triggers",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "hermes",
+      "to": "gtd-gst-cycle",
+      "rel": "implements",
+      "label": "daily workflow",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "cortex",
+      "to": "gtd-gst-cycle",
+      "rel": "enables",
+      "label": "triage logic",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "adhd-assistant-bot",
+      "to": "wearables",
+      "rel": "features",
+      "label": "sensor integration",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "adhd-assistant-bot",
+      "to": "pendants",
+      "rel": "features",
+      "label": "passive sensing",
+      "weight": 2,
+      "directed": true
+    }
+  ]
+}
