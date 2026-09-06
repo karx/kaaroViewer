@@ -2,3 +2,19 @@ node_modules/
 scripts/sessions-data.json
 scripts/graph.html
 scripts/graph-data.json
+
+# Agent-loop runtime (locks, checkpoints, live event logs)
+.alone-time.lock
+.alone-time-checkpoint.json
+.dream-loop.lock
+library/handoffs/orchestration-events.jsonl
+
+# Visualize skill scratch workspace
+.claude/skills/visualize/nodes.json
+.claude/skills/visualize/edges.json
+.claude/skills/visualize/narrative.json
+.claude/skills/visualize/encoding-workspace.md
+ENCODING_SOP.md.tmp
+
+# Local editor / agent tool state
+.pi/
