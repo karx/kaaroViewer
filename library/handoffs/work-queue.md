@@ -11,11 +11,12 @@
 
 | Priority | Task ID | Type | Modality | Target | Description | Status | Added | Source |
 |---|---|---|---|---|---|---|---|---|
-| 1 | T-001 | VISUALIZE | 👤 HITL | pkm-engineering-prompt | Human runs `/visualize library/pkm-engineering-seed.md` — fix cross-refs, types, rels, tone, density | 🟡 Ready | 2026-06-16 | health.json |
+| 1 | T-001 | VISUALIZE | 👤 HITL | pkm-engineering-prompt | Human runs `/visualize library/pkm-engineering-seed.md` — fix cross-refs, types, rels, tone, density | ✅ Done | 2026-06-19 | health.json |
 | 2 | T-002 | VISUALIZE | 👤 HITL | esp-ecosystem | Human runs `/visualize` — needs source .md (original: kaaroBrain `2 Resources/Hardware/ESP/README.md`) | ⚪ Waiting | 2026-06-16 | health.json |
 | 3 | T-003 | ADDRESS_EVAL | 👤 HITL | — | gh CLI auth needed — eval polling unavailable | ⚪ Blocked | 2026-06-16 | health.json |
 | 4 | T-004 | IMPROVE_PIPELINE | 🤖 Autonomous | validator density gate | Add density ≥2.0 pre-check to `/visualize` skill — prevents low-density commits | ✅ Done | 2026-06-17 | STRATEGY.md |
 | 5 | T-005 | DETECT_ONTOLOGY_GAPS | 🤖 Autonomous | type/rel gaps | Scan last 10 handoffs + validator warnings → propose missing types (framework, prompt, process, system, tool) + rels (enforces, transforms, creates, maps_to, visualizes, renders) | ✅ Done | 2026-06-19 | STRATEGY.md |
+| 11 | T-011 | DREAM_LOOP | 🤖 Autonomous | ontology extension | Atomic update: added 5 types (framework, prompt, process, hardware, tool, system) + 11 rels (enforces, transforms, creates, maps_to, visualizes, renders, underpins, supports, updates, simplifies, describes) to VALID_TYPES/VALID_RELS, updated SOP + renderer | ✅ Done | 2026-06-19 | T-005 proposal |
 | 6 | T-006 | IMPROVE_PIPELINE | 🤖 Autonomous | health-check metrics | Add engineering metrics (bundle size, test duration, coverage) to health.json | ⚪ Waiting | 2026-06-16 | STRATEGY.md |
 | 7 | T-007 | OPTIMIZE_COMPUTE | 🤖 Autonomous | graph layout | Evaluate causal layout vs force-directed for brief rendering — prototype in canvas/ | ⚪ Waiting | 2026-06-17 | STRATEGY.md |
 | 8 | T-008 | SYNTHESIZE | 🤖 Autonomous | esports domain | aoe-2-redbull + future esports entries → shared `tournament`, `player`, `venue` cluster | ⚪ Waiting | 2026-06-07 | Dream Loop signal |
@@ -76,7 +77,9 @@
 | 2026-06-07 | — | REPAIR | poker-tooling-2026 | density 1.32→2.10, validator 1→0, temporal chain added | alone-time-2026-06-07-run2.md |
 | 2026-06-07 | — | REPAIR | gig-worker-projects | density 1.78→2.41, validator 1→0, climax 2→1 | alone-time-2026-06-07-run3.md |
 | 2026-06-07 | — | REPAIR | kaaro-viewer | nodes 7→22, density 1.71→2.09, full architecture encoded | alone-time-2026-06-07-run4.md |
+| 2026-06-19 | T-001 | VISUALIZE | pkm-engineering-prompt | Created pkm-system-prompt-engineering-projects.json — 20 nodes, 53 edges, density 2.65, 10 beats, 7 insights, validator ✅ | this run |
 | 2026-06-19 | T-005 | DETECT_ONTOLOGY_GAPS | type/rel gaps | Proposed 10 Tier 1 additions (5 types, 5 rels) + Meta-System profile → .claude/proposals/ontology-gaps.md | this run |
+| 2026-06-19 | T-011 | DREAM_LOOP | ontology extension | Atomic update: 6 types (framework, prompt, process, hardware, tool, system) + 11 rels (enforces, transforms, creates, maps_to, visualizes, renders, underpins, supports, updates, simplifies, describes) across VALID_TYPES/VALID_RELS + SOP + renderer | this run |
 | 2026-06-07 | — | DREAM_LOOP | ontology (reveals) | `reveals` promoted warning→error; SOP updated; all 9 entries pass | dream-loop-2026-06-07.md |
 
 ---

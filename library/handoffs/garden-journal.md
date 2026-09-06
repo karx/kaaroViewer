@@ -106,4 +106,82 @@
 
 ---
 
+## 2026-06-19 — Dream Loop: Ontology Extension Applied (T-011)
+
+**Context:** Human present. T-001 VISUALIZE completed (pkm-system-prompt-engineering-projects.json passes validator ✅). T-005 proposal ready. Dream Loop orchestrator timed out on Nemotron model — applied changes manually per proposal.
+
+**Action:** Atomic ontology update across 4 files:
+1. `.claude/hooks/validate-library-json.py` — VALID_TYPES + VALID_RELS
+2. `ENCODING_SOP.md` — Type/rel tables + Meta-System profile
+3. `.claude/skills/visualize/sop-reference.md` — Same
+4. `ontology.mjs` — Visual encoding (colors, shapes, codes)
+
+**Added (Tier 1 + Tier 2 = 16 new):**
+
+| Type | Rel | Category |
+|---|---|---|
+| `framework` | `enforces` | Tier 1 |
+| `prompt` | `transforms` | Tier 1 |
+| `process` | `creates` | Tier 1 |
+| `hardware` | `maps_to` | Tier 2 |
+| `tool` | `visualizes` | Tier 2 |
+| `system` | `renders` | Tier 2 |
+| — | `underpins` | Tier 1 |
+| — | `supports` | Tier 2 |
+| — | `updates` | Tier 2 |
+| — | `simplifies` | Tier 2 |
+| — | `describes` | Tier 2 |
+
+**New Meta-System Encoding Profile:** For reference architecture docs (PKM prompt, ESP ecosystem). Node count 25–35. Core types/rels per proposal. Story arc: Problem → Framework → Process → Tool → Leverage.
+
+**Verification:** All 178 tests pass. pkm-system-prompt-engineering-projects.json validates ✅. esp-ecosystem.json type/rel warnings **fixed** (hardware, tool, supports, updates, simplifies now recognized). Remaining esp-ecosystem issues are content (cross-refs in report_card, tone, climax, density) — requires T-002 VISUALIZE.
+
+**Next:** Human runs T-002 VISUALIZE esp-ecosystem (needs source .md from T-010).
+
+---
+
 *Gardener: Append dated entry after each run. Dream Loop: Read full journal for weak signals.*
+## 2026-06-19 19:32:27 — Alone-Time failed: The "paths[1]" argument must be of type string. Received an instance of Object
+
+**Details:** {
+  "error": "TypeError [ERR_INVALID_ARG_TYPE]: The \"paths[1]\" argument must be of type string. Received an instance of Object\n    at resolve (node:path:1272:7)\n    at saveCheckpoint (file:///Users/arshigoyal/kaaro/src/kaaroViewer/scripts/lib/checkpoint.mjs:16:20)\n    at HardenedAloneTime.initializeCheckpoint (file:///Users/arshigoyal/kaaro/src/kaaroViewer/scripts/alone-time-hardened.mjs:190:11)\n    at async HardenedAloneTime.loadOrInitializeCheckpoint (file:///Users/arshigoyal/kaaro/src/kaaroViewer/scripts/alone-time-hardened.mjs:149:25)\n    at async HardenedAloneTime.run (file:///Users/arshigoyal/kaaro/src/kaaroViewer/scripts/alone-time-hardened.mjs:80:7)"
+}
+
+**Action:** investigate
+
+
+
+## 2026-06-19 20:01:41 — Phase SELECT retry 1/2: SELECT timeout after 180000ms
+
+**Details:** {
+  "phase": "SELECT",
+  "error": "SELECT timeout after 180000ms",
+  "retry": 1
+}
+
+**Action:** retry
+
+
+
+## 2026-06-19 20:04:46 — Phase SELECT retry 2/2: SELECT timeout after 180000ms
+
+**Details:** {
+  "phase": "SELECT",
+  "error": "SELECT timeout after 180000ms",
+  "retry": 2
+}
+
+**Action:** retry
+
+
+
+## 2026-06-19 20:04:51 — No autonomous tasks available
+
+**Details:** {
+  "humanPresent": false,
+  "hitlAvailable": false
+}
+
+**Action:** wait
+
+
