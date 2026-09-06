@@ -15,7 +15,7 @@ import { acquireLock, releaseLock, forceReleaseLock } from './lib/lock.mjs';
 import { runAgentSession } from './lib/agent-session.mjs';
 import { runGates } from './lib/gates.mjs';
 import { writeDreamLoopHandoff, readLastJournalEntries, getLatestHandoff } from './lib/artifacts.mjs';
-import { readFileSync, writeFileSync, existsSync, readdirSync, unlinkSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, unlinkSync, mkdirSync } from 'fs';
 import { resolve as pathResolve } from 'path';
 
 const LOCK_FILE = '.dream-loop.lock';
@@ -186,7 +186,7 @@ async function phaseApply(runId) {
 async function ingestDreamContext() {
   const [handoffs, genesis, journal] = await Promise.all([
     readLastNHandoffs(10),
-    readFile('genesis.md'),
+    existsSync(pathResolve(process.cwd(), 'genesis.md')) ? readFileSync(pathResolve(process.cwd(), 'genesis.md'), 'utf-8') : '',
     readLastJournalEntries(20)
   ]);
   
