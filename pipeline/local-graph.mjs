@@ -334,13 +334,6 @@ export const LIBRARY = [
     year:   '2026',
   },
   {
-    id:     'pkm-engineering-prompt',
-    title:  'PKM System Prompt — Engineering Projects',
-    path:   './library/pkm-engineering-prompt.json',
-    domain: 'PKM / Agents',
-    year:   '2026',
-  },
-  {
     id:     'esp-ecosystem',
     title:  'ESP: Microcontroller Ecosystem',
     path:   './library/esp-ecosystem.json',
