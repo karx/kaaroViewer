@@ -7,13 +7,30 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "health": "node scripts/health-check.mjs --summary",
-    "health:json": "node scripts/health-check.mjs"
+    "health:json": "node scripts/health-check.mjs",
+    "alone-time": "node scripts/alone-time-hardened.mjs",
+    "alone-time:resume": "node scripts/alone-time-hardened.mjs --resume",
+    "alone-time:force": "node scripts/alone-time-hardened.mjs --force",
+    "alone-time:dry-run": "node scripts/alone-time-hardened.mjs --dry-run",
+    "hitl:start": "node scripts/lib/hitl-coordinator.mjs start",
+    "hitl:stop": "node scripts/lib/hitl-coordinator.mjs stop",
+    "hitl:status": "node scripts/lib/hitl-coordinator.mjs status",
+    "hitl:handoff": "node scripts/lib/hitl-coordinator.mjs handoff",
+    "hitl:complete": "node scripts/lib/hitl-coordinator.mjs complete",
+    "dream-loop": "node scripts/dream-loop.mjs",
+    "dream-loop:approve": "node scripts/dream-loop.mjs --approve",
+    "dream-loop:dry-run": "node scripts/dream-loop.mjs --dry-run",
+    "scheduler:start": "node scripts/scheduler.mjs",
+    "audit:query": "node scripts/lib/audit-query.mjs",
+    "audit:export": "node scripts/lib/audit-export.mjs"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.0.0",
+    "chokidar": "^3.6.0",
     "fake-indexeddb": "^6.2.5",
     "jsdom": "^25.0.0",
     "jszip": "^3.10.1",
+    "node-cron": "^3.0.3",
     "vitest": "^2.0.0"
   },
   "vitest": {
