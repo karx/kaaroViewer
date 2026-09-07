@@ -28,7 +28,10 @@
       "Bash(xargs grep -l \"skill\\\\|agent\\\\|tool\")",
       "Bash(npm test *)",
       "Bash(python .claude/hooks/validate-library-json.py library/gig-worker-projects.json)",
-      "Bash(echo \"EXIT: $?\")"
+      "Bash(echo \"EXIT: $?\")",
+      "PowerShell(pnpm test *)",
+      "PowerShell(git *)",
+      "Bash(echo \"---tracked?rc=$?\")"
     ]
   }
 }
