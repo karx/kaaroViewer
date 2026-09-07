@@ -1,4 +1,7 @@
-
+> **Source research, already shipped.** This raw research dump fed `IMPROVEMENT_PLAN.md`
+> and `EXPLORATION_PIPELINE_PLAN.md`, both of which are complete/crystallized — the NED
+> pipeline it describes shipped as `pipeline/ned-resolver.mjs` (Stage 2 of the enrichment
+> pipeline). Kept as the citation trail behind those decisions, not as active guidance.
 
 # Architecting Automated Intelligence and World-View Building Systems
 

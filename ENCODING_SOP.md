@@ -3,6 +3,15 @@
 
 ---
 
+> **⚠ Ontology tables below are not canonical — they predate the `/visualize` Claude
+> skill and have drifted (e.g. missing the `framework`/`tool`/`process`/`system`/
+> `hardware`/`prompt` types and several rels added since). For current entity types,
+> rel types, and visual encoding, use `.claude/skills/visualize/sop-reference.md` — it
+> is read automatically by the skill and is the file `CLAUDE.md`'s ontology-extension
+> rule keeps in lock-step with the validator and renderer. This document's process
+> guidance (pre-flight annotation, phase structure, common mistakes) is still valid and
+> not duplicated there.
+
 ## Why This Matters
 
 kaaroViewer encodes knowledge at **four layers simultaneously**:

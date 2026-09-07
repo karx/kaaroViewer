@@ -1,3 +1,14 @@
+---
+published: false
+title: "User Feedback — Untriaged"
+tags: [feedback, ux, backlog]
+description: "Raw user feedback on the entry experience, mobile responsiveness, and packaging as a library. Not yet triaged against current codebase state or IMPROVEMENT_PLAN.md."
+date: 2026-04-12
+layer: L1-Instance
+maturity: STUB
+para: Pipeline
+---
+
 ### User Feedback
 The project provides a good and interesting interface at entry. 
 

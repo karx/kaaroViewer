@@ -6,6 +6,20 @@
 (`VIDEO_AGENT_PLAN.md`, `LIFE.md`, `IMPROVEMENT_PLAN.md`, `EXPLORATION_PIPELINE_PLAN.md`,
 `CLOUD_SYNC_GEMMA_PLAN.md`, `GARDEN_INTEGRATION.md`), library validator sweep.
 
+> **Status update — 2026-09-07.** This document was written 2026-07-13 but committed to a
+> branch that never merged — it only landed on `master` today, as part of a markdown
+> gardening pass. Two corrections against what's actually on `master` now:
+> - **R2 and R3 are done.** Dream Loop run #2 (technical-systems ontology: +6 types, +6
+>   rels) shipped, and `pkm-engineering-prompt`/`esp-ecosystem` were re-encoded under it —
+>   see `GENERATIONS.md` Generation 1.2 and `library/handoffs/dream-loop-2026-09-07.md`.
+>   `grok-harness` is still unregistered (open — see §4 Wishlist).
+> - **The "Garden log" and "Library health" sections below describe a pass whose other
+>   commits (registering `tdd-handoffs`, removing the mangled `handoffs/` artifact
+>   directory) never reached `master` either** — `tdd-handoffs.json` does not exist in
+>   this repo. Treat those two line items as historical intent, not current state.
+>   `kaaro-sessions-platform` registration did land. Current library count on master: **11
+>   registered** (9 ok, 2 degraded — density only, 0 critical), not 13.
+
 ---
 
 ## 1. Big Wins — what shipped and holds
@@ -145,12 +159,12 @@ improve as a byproduct of use.
 ## 6. Roadmap
 
 ### Now (July 2026) — close the loops that are one step from done
-| # | Item | Why now | Exit criterion |
-|---|---|---|---|
-| R1 | Commit in-flight vid work (`beats.mjs` fix, `tts-sapi.ps1` + wire as provider) | Working tree carries unmerged value | `pnpm test` green; SAPI selectable in `--narrate` |
-| R2 | **Dream Loop run #2: technical-systems ontology** | Trigger condition met (3 entries, same gap) | New VALID_TYPES/RELS + SOP + renderer in one commit; all 13 entries revalidated, none regress |
-| R3 | Re-encode `pkm-engineering-prompt`, `esp-ecosystem`; retrospective + register `grok-harness` | Unblocked by R2 | All three exit 0, density ≥ 2.0, library 13/13 ok |
-| R4 | **vid M1: eval suite** (`vid/evals/`, `kaaro-vid eval` scorecard) | Highest-leverage per VIDEO_AGENT_PLAN — closes Phase 4, gates M2, yardstick for M4 | One command scores any agent/model version |
+| # | Item | Why now | Exit criterion | Status (2026-09-07) |
+|---|---|---|---|---|
+| R1 | Commit in-flight vid work (`beats.mjs` fix, `tts-sapi.ps1` + wire as provider) | Working tree carries unmerged value | `pnpm test` green; SAPI selectable in `--narrate` | Not verified this pass — see `vid/` directly |
+| R2 | **Dream Loop run #2: technical-systems ontology** | Trigger condition met (3 entries, same gap) | New VALID_TYPES/RELS + SOP + renderer in one commit; all 13 entries revalidated, none regress | ✅ **Done** — `GENERATIONS.md` Generation 1.2 |
+| R3 | Re-encode `pkm-engineering-prompt`, `esp-ecosystem`; retrospective + register `grok-harness` | Unblocked by R2 | All three exit 0, density ≥ 2.0, library 13/13 ok | **Partial** — both re-encoded (esp-ecosystem exit 0; pkm-engineering-prompt exit 1, density still <2.0, needs an Alone-Time pass). `grok-harness` still unregistered. |
+| R4 | **vid M1: eval suite** (`vid/evals/`, `kaaro-vid eval` scorecard) | Highest-leverage per VIDEO_AGENT_PLAN — closes Phase 4, gates M2, yardstick for M4 | One command scores any agent/model version | Open — next highest-leverage item |
 
 ### Next (Aug–Sep 2026)
 - **vid M2**: `kaaro-vid agent "<brief>"` — pluggable BYOM loop + decision-level trace schema v2; passes M1 evals unassisted

@@ -20,5 +20,5 @@ The user continually interacts with voice, text, and clicks on entities and acti
 ## Related
 
 - [[README]] — current implementation state
-- [[seed]] → [[PRODUCT_ROADMAP]] — vision operationalized as phases
+- [[seed]] → [[VISION_AND_ROADMAP]] — vision operationalized as phases (supersedes `PRODUCT_ROADMAP.md`)
 - [[GARDEN_INTEGRATION]] — personal memory layer (knowledge garden integration)

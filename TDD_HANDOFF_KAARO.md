@@ -2,7 +2,8 @@
 
 > The recommended structure for planning and executing a multi-step change in
 > this project as a sequence of test-driven work packages handed to agents.
-> `RUNTIME_PLAN.md` is the first concrete instance of this schema.
+> `CLOUD_SYNC_GEMMA_PLAN.md` is the first concrete instance of this schema
+> (a `RUNTIME_PLAN.md` was referenced here previously but was never created).
 
 ## Why this exists
 
