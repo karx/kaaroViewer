@@ -1,0 +1,452 @@
+{
+  "meta": {
+    "id": "tdd-handoffs",
+    "title": "TDD Handoffs: Tests as Agent Contracts",
+    "subtitle": "Seams, fakes, and the three-layer taxonomy that turns tests into handoff specifications",
+    "source": "Inbox/TDD Handoffs.md",
+    "domain": "Software Engineering / AI Agent Collaboration",
+    "year": "2026",
+    "tags": [
+      "tdd",
+      "testing",
+      "ai-agents",
+      "seams",
+      "fakes",
+      "handoff",
+      "test-architecture",
+      "determinism"
+    ],
+    "tone": "analytical"
+  },
+  "report_card": {
+    "summary": "TDD Handoffs turn the act of writing tests first into the mechanism for delegating clean module boundaries to AI agents. By forcing seams (ABCs or protocols) to be named before any implementation and backing each with a minimal Fake, the unit layer stays under two seconds and the test becomes the complete handoff spec. The three-layer taxonomy and committed fixtures keep the fast loop pure; crash-here tests and atomic patterns extend the same discipline to stateful operations. The result is that the tests/ tree itself functions as living documentation and the contract that survives context switches.",
+    "key_stats": [
+      { "label": "Named seams in the example", "value": "4 (Extractor, Deployer, HookBus, WorldRegistry)" },
+      { "label": "Target unit loop time", "value": "< 2s" },
+      { "label": "Committed fixture size", "value": "~1 MB (tiny_world)" },
+      { "label": "Explicit handoff steps", "value": "5" },
+      { "label": "Test taxonomy layers", "value": "3 (unit, integration, fakes)" },
+      { "label": "What must stay out of unit tests", "value": "API routes, UI, adapter details (RCON, Docker flags)" },
+      { "label": "Reliability test dimension", "value": "crash-here for state mutation" }
+    ],
+    "spine": ["tdd-handoff", "seam", "fake"],
+    "protagonists": ["tdd-handoff", "seam", "fake", "unit-test-layer", "fakes-layer"],
+    "antagonists": ["concrete-io-dependency"],
+    "themes": [
+      "TDD",
+      "Agent Handoffs",
+      "Seams",
+      "Test Architecture",
+      "Deterministic Fixtures",
+      "Fast Feedback Loops"
+    ]
+  },
+  "story": [
+    {
+      "id": "beat-core-insight",
+      "title": "Tests Are the Handoff Spec",
+      "node": "tdd-handoff",
+      "nodes": ["tdd-handoff", "seam", "fake"],
+      "narration": "Tests written before implementation are not merely quality gates. They are the handoff specification. If a developer or agent cannot write a failing test for a unit before touching it, the module boundary is not yet clean enough. The TDD Handoff makes this test-first clarity the explicit contract passed to the implementer.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-seam-first",
+      "title": "Name the Seams Explicitly",
+      "node": "seam",
+      "nodes": ["seam", "extractor", "deployer", "hookbus", "world-registry"],
+      "narration": "Before any test is written, the seams are named as ABCs or protocols. In this codebase the four seams are Extractor for reading world saves into structured data, Deployer for writing runtime environments, HookBus for event dispatch and veto, and WorldRegistry for world discovery. Each seam is now a stable interface that can be substituted.",
+      "tension": "low",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-write-fakes",
+      "title": "Write the Fake First",
+      "node": "fake",
+      "nodes": ["fake", "fakes-layer", "extractor", "deployer", "hookbus", "world-registry"],
+      "narration": "For each named seam a minimal Fake implementation is placed in tests/fakes/. FakeExtractor, FakeDeployer, FakeHookBus, and FakeWorldRegistry contain just enough behaviour for orchestration tests to run. The fakes turn the abstract seam contracts into something an agent can import and exercise immediately.",
+      "tension": "medium",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-taxonomy",
+      "title": "The Three-Layer Taxonomy",
+      "node": "unit-test-layer",
+      "nodes": ["unit-test-layer", "integration-test-layer", "fakes-layer"],
+      "narration": "Tests are deliberately partitioned. The unit layer uses only fakes and runs in under two seconds. The integration layer, marked with pytest markers, touches real Docker containers, the filesystem, and the game server; it is a pre-merge gate only. The fakes layer is the contract surface that makes the split sustainable.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-fixture-world",
+      "title": "Deterministic World Fixture",
+      "node": "tiny-world-fixture",
+      "nodes": ["tiny-world-fixture", "extractor", "unit-test-layer"],
+      "narration": "A committed one-megabyte Minecraft world save lives at tests/fixtures/tiny_world/. Because the fixture is checked in, every run of the extractor tests produces identical structured output. Agents receive the same deterministic starting state that a human collaborator would see, with no live game server required.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-reliability",
+      "title": "Crash-Here Tests Surface Atomic Needs",
+      "node": "crash-here-test",
+      "nodes": ["crash-here-test", "atomic-write-patterns", "deployer"],
+      "narration": "Any state-mutating seam receives an explicit crash-here test: what observable state remains if the process dies mid-operation? The answer forces staging-directory-plus-rename and idempotent replay patterns into the Deployer and similar components. Happy-path TDD alone never asks this question.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-handoff",
+      "title": "The Handoff Is Only Tests and Seams",
+      "node": "tdd-handoff",
+      "nodes": ["tdd-handoff", "seam", "fake", "extractor", "deployer", "hookbus", "world-registry", "unit-test-layer", "fast-feedback-loop"],
+      "narration": "The agent receives the failing tests, the four seam interfaces, and their fakes. No implementation hints, no Docker setup instructions, no prose architecture document. The agent fills in core/ while the sub-two-second loop supplies immediate red-green feedback. Four seams, five explicit steps, one clean contract.",
+      "tension": "climax",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-what-not",
+      "title": "Protect the Fast Loop",
+      "node": "seam-test-rule",
+      "nodes": ["seam-test-rule", "unit-test-layer", "fast-feedback-loop", "integration-test-layer"],
+      "narration": "API routing glue, UI behaviour, and adapter details such as specific Docker flags or RCON command formats are deliberately excluded from the unit suite. They are exercised only through manual smoke tests or the integration layer. Keeping them out is what keeps the agent loop genuinely fast and stable under infrastructure change.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-living-spec",
+      "title": "The Tests Directory Is the Spec",
+      "node": "tests-as-living-spec",
+      "nodes": ["tests-as-living-spec", "tdd-handoff", "seam", "fake", "tiny-world-fixture", "fakes-layer"],
+      "narration": "When seams, fakes, and fixtures are committed, the tests/ tree becomes more authoritative than any markdown file. Resuming a session or onboarding a collaborator starts by reading the contracts and the fakes. The living specification travels with the code and remains executable by both humans and agents.",
+      "tension": "low",
+      "focus": "wide"
+    }
+  ],
+  "insights": [
+    {
+      "id": "ins-seam-clarity",
+      "title": "Naming a seam before any implementation forces the boundary to be crisp enough to serve as an agent contract",
+      "body": "The inability to write a failing test against a seam signals that the design boundary is still fuzzy. By requiring the ABC or protocol to be written first, the TDD Handoff converts an otherwise subjective sense of 'clean' into a mechanical precondition that an agent can act on without further clarification.",
+      "type": "finding",
+      "severity": "high",
+      "evidence": ["seam", "tdd-handoff", "extractor", "fake", "seam-test-rule"]
+    },
+    {
+      "id": "ins-pollution-kills-loop",
+      "title": "Placing I/O, UI, or adapter concerns inside the unit test layer makes the sub-two-second agent feedback loop impossible",
+      "body": "The rule is absolute: tests that touch Docker, the filesystem, RCON commands, or UI belong exclusively in the integration layer. Once the unit suite waits for real infrastructure, agents lose the rapid red-green cycle that makes iterative handoff viable. The taxonomy exists to protect that speed.",
+      "type": "warning",
+      "severity": "high",
+      "evidence": ["unit-test-layer", "integration-test-layer", "seam-test-rule", "fast-feedback-loop", "fakes-layer"]
+    },
+    {
+      "id": "ins-fixture-determinism",
+      "title": "A committed deterministic fixture turns extractor tests into pure functions any agent can run without the game server",
+      "body": "The one-megabyte tiny_world save removes live game state as a variable. Every test run, whether by a human or an autonomous agent, starts from the same world bytes and produces the same structured output. This property is what makes the handoff to an agent repeatable and debuggable.",
+      "type": "pattern",
+      "severity": "medium",
+      "evidence": ["tiny-world-fixture", "extractor", "unit-test-layer"]
+    },
+    {
+      "id": "ins-crash-here-atomicity",
+      "title": "Crash-here tests for state-mutating seams force atomic write patterns that happy-path TDD never discovers",
+      "body": "By asking what remains observable after an abrupt termination, the reliability dimension surfaces the need for staging directories, atomic renames, and idempotent replays. These patterns are invisible to tests that only verify the success path yet become critical once an agent is mutating persistent state on your behalf.",
+      "type": "finding",
+      "severity": "medium",
+      "evidence": ["crash-here-test", "atomic-write-patterns", "deployer"]
+    },
+    {
+      "id": "ins-living-contract",
+      "title": "When seams and fakes are present, the tests directory becomes the living specification that outlives any prose handoff document",
+      "body": "The combination of named interfaces, minimal fakes, deterministic fixtures, and the three-layer split means the tests/ tree itself communicates the intended behaviour, the isolation strategy, and the reliability requirements. Onboarding or resumption begins with executable contracts rather than stale architecture notes.",
+      "type": "conclusion",
+      "severity": "high",
+      "evidence": ["tests-as-living-spec", "tdd-handoff", "seam", "fake", "fakes-layer", "tiny-world-fixture"]
+    },
+    {
+      "id": "ins-five-step-handoff",
+      "title": "The five-step handoff sequence (name seam, write fake, write failing test, hand off, agent implements) is itself a reusable planning artifact",
+      "body": "Each step has a concrete deliverable that can be reviewed before the next begins. If a failing test cannot yet be written, the design is not ready for handoff. The sequence turns vague delegation into a checklist whose completion can be verified by both the delegator and the receiving agent.",
+      "type": "opportunity",
+      "severity": "medium",
+      "evidence": ["tdd-handoff", "seam", "fake", "unit-test-layer"]
+    }
+  ],
+  "clusters": [
+    {
+      "id": "handoff-practice",
+      "label": "The TDD Handoff Practice",
+      "color": "#00aaff",
+      "nodes": ["tdd-handoff", "seam-test-rule", "tests-as-living-spec", "fast-feedback-loop", "concrete-io-dependency"],
+      "description": "The core practice and its governing rules. TDD Handoff reframes tests as contracts, the seam-plus-fake rule protects the loop, and the tests tree becomes the living specification. Concrete I/O dependencies are the antagonist that the rule exists to exclude."
+    },
+    {
+      "id": "seam-architecture",
+      "label": "Explicit Seams",
+      "color": "#ffcc00",
+      "nodes": ["seam", "extractor", "deployer", "hookbus", "world-registry"],
+      "description": "The four named seams that anchor the example: Extractor, Deployer, HookBus, and WorldRegistry. Each is expressed as an ABC or protocol so that a minimal fake can stand in for the real implementation during testing and handoff."
+    },
+    {
+      "id": "contract-layer",
+      "label": "Fakes and the Fast Contract Layer",
+      "color": "#00ff88",
+      "nodes": ["fake", "fakes-layer", "unit-test-layer", "orchestration-tests"],
+      "description": "The fakes layer, the unit test layer it enables, and the orchestration tests that validate seam composition. Minimal in-memory implementations of every seam keep orchestration tests fast, pure, and runnable by agents without Docker or a live game server."
+    },
+    {
+      "id": "test-taxonomy",
+      "label": "Three-Layer Test Taxonomy",
+      "color": "#cc44ff",
+      "nodes": ["unit-test-layer", "integration-test-layer", "fakes-layer"],
+      "description": "The deliberate partition into unit (fakes only, <2 s), integration (real infrastructure, pre-merge only), and the fakes layer that makes the partition sustainable. The taxonomy protects agent iteration speed."
+    },
+    {
+      "id": "grounding-reliability",
+      "label": "Determinism and Partial-Failure Resilience",
+      "color": "#ff6600",
+      "nodes": ["tiny-world-fixture", "crash-here-test", "atomic-write-patterns"],
+      "description": "The grounding fixture that supplies deterministic world data and the reliability tests that force atomic write patterns. Together they extend the handoff discipline from pure logic into stateful, crash-prone operations."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "tdd-handoff",
+      "label": "TDD Handoff",
+      "type": "solution",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "The practice of handing a module boundary to an AI coding agent (or new developer) by treating the pre-written failing test against an explicit seam as the complete contract. Tests written before implementation become the handoff specification rather than an after-the-fact quality gate.",
+      "metrics": {
+        "Target Loop Time": "< 2s"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "seam",
+      "label": "Seam",
+      "type": "concept",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "An explicitly named module boundary expressed as an ABC or protocol. Naming the seam first forces the boundary to be crisp enough that behavior can be tested or substituted without editing the seam location itself.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "fake",
+      "label": "Fake Seam",
+      "type": "solution",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "A minimal in-memory implementation of a seam that allows tests to run against the contract alone. Once the fake exists, orchestration tests can execute without Docker, real filesystems, or live game servers, keeping the feedback loop under two seconds.",
+      "metrics": {
+        "Enables Loop": "< 2s"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "extractor",
+      "label": "Extractor",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "The seam responsible for reading a Minecraft world save and emitting structured data. One of the four explicitly named seams in the Art of Mine(craft) codebase that received its own FakeExtractor.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "deployer",
+      "label": "Deployer",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "The seam that writes the runtime environment. Paired with a FakeDeployer so that orchestration tests can validate deployment logic without touching real infrastructure.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "hookbus",
+      "label": "HookBus",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "The seam for event dispatch and veto. Explicit naming allows tests to subscribe, publish, and assert veto behaviour through a fake without wiring the full event system.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "world-registry",
+      "label": "World Registry",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "The seam for world discovery. Provides the contract through which available worlds are enumerated and selected, isolated for testing via its fake counterpart.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "unit-test-layer",
+      "label": "Unit Test Layer",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The fast, pure tests directory (tests/unit/) that runs entirely on fakes. Total run time target is under two seconds; the layer that agents can iterate inside without waiting for containers or real game state.",
+      "metrics": {
+        "Run Time Target": "< 2s"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "integration-test-layer",
+      "label": "Integration Test Layer",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "The @pytest.mark.integration layer that exercises real Docker containers, filesystems, and the actual game server. Runs only as a pre-merge gate; kept out of the agent fast loop.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "fakes-layer",
+      "label": "Fakes Layer",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The tests/fakes/ directory containing FakeExtractor, FakeDeployer, FakeHookBus, and FakeWorldRegistry. The existence of these fakes is what makes the unit layer fast and the handoff to an agent practical.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "tiny-world-fixture",
+      "label": "Tiny World Fixture",
+      "type": "dataset",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "A committed ~1 MB Minecraft world save located at tests/fixtures/tiny_world/. It supplies deterministic input to extractor tests so that agents and humans obtain identical results without requiring a live game instance.",
+      "metrics": {
+        "Size": "~1 MB",
+        "Purpose": "deterministic extractor tests"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "atomic-write-patterns",
+      "label": "Atomic Write Patterns",
+      "type": "solution",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Staging directory followed by atomic rename, combined with idempotent replay. These patterns surface when crash-here tests are written for state-mutating seams and protect against partial execution during agent-driven changes.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "crash-here-test",
+      "label": "Crash-Here Test",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "An explicit test dimension for any state-mutating module: 'what is the observable state if the process dies right here?' The answer drives the introduction of atomic patterns that happy-path TDD alone never requires.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "seam-test-rule",
+      "label": "Seam + Fake Rule",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "The standing rule: never write a test against a concrete class that touches I/O. Always target the seam interface plus its fake. This rule keeps the unit layer pure and the agent handoff contract clean.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "tests-as-living-spec",
+      "label": "Tests as Living Specification",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "When seams, fakes, and fixtures are in place, the tests/ directory itself becomes the authoritative contract and onboarding documentation. Resuming a session or handing off to a collaborator starts in tests/, not in prose docs.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "fast-feedback-loop",
+      "label": "Fast Feedback Loop",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "The sub-two-second iteration cycle made possible by fakes and pure unit tests. This loop is the prerequisite for effective agent collaboration; anything that lengthens it (I/O, real servers, UI) is excluded from the unit suite by design.",
+      "metrics": {
+        "Duration Target": "< 2s"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "orchestration-tests",
+      "label": "Orchestration Tests",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Tests that exercise multiple seams together through their fakes. They validate that the handoff contracts compose correctly and are the primary vehicle used during the TDD Handoff itself.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "concrete-io-dependency",
+      "label": "Concrete I/O Dependency",
+      "type": "issue",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "Any direct dependency on real filesystems, Docker, RCON, or UI frameworks inside a unit under test. Such dependencies violate the seam-test-rule and destroy the fast feedback loop required for agent handoff.",
+      "metrics": {},
+      "wikidata": null
+    }
+  ],
+  "edges": [
+    { "from": "tdd-handoff", "to": "seam", "rel": "features", "weight": 5, "directed": true, "label": "handoff is built on explicit seams" },
+    { "from": "seam", "to": "fake", "rel": "enables", "weight": 5, "directed": true, "label": "named seam makes a minimal fake possible" },
+    { "from": "fake", "to": "tdd-handoff", "rel": "enables", "weight": 5, "directed": true, "label": "fakes make the handoff executable" },
+    { "from": "fake", "to": "extractor", "rel": "implements", "weight": 4, "directed": true, "label": "FakeExtractor implements the Extractor seam contract" },
+    { "from": "fake", "to": "deployer", "rel": "implements", "weight": 4, "directed": true, "label": "FakeDeployer implements the Deployer seam contract" },
+    { "from": "fake", "to": "hookbus", "rel": "implements", "weight": 4, "directed": true, "label": "FakeHookBus implements the HookBus seam contract" },
+    { "from": "fake", "to": "world-registry", "rel": "implements", "weight": 4, "directed": true, "label": "FakeWorldRegistry implements the WorldRegistry seam contract" },
+    { "from": "extractor", "to": "seam", "rel": "membership", "weight": 3, "directed": true },
+    { "from": "deployer", "to": "seam", "rel": "membership", "weight": 3, "directed": true },
+    { "from": "hookbus", "to": "seam", "rel": "membership", "weight": 3, "directed": true },
+    { "from": "world-registry", "to": "seam", "rel": "membership", "weight": 3, "directed": true },
+    { "from": "tiny-world-fixture", "to": "extractor", "rel": "enables", "weight": 4, "directed": true, "label": "provides deterministic world save input" },
+    { "from": "tiny-world-fixture", "to": "unit-test-layer", "rel": "enables", "weight": 4, "directed": true, "label": "makes extractor tests runnable without live game" },
+    { "from": "fakes-layer", "to": "unit-test-layer", "rel": "enables", "weight": 5, "directed": true, "label": "fakes are what keep unit tests pure and fast" },
+    { "from": "unit-test-layer", "to": "fast-feedback-loop", "rel": "achieves", "weight": 5, "directed": true },
+    { "from": "seam-test-rule", "to": "unit-test-layer", "rel": "governs", "weight": 4, "directed": true, "label": "tests must target seam plus fake, never concrete I/O" },
+    { "from": "seam-test-rule", "to": "fast-feedback-loop", "rel": "enables", "weight": 4, "directed": true },
+    { "from": "unit-test-layer", "to": "integration-test-layer", "rel": "precedes", "weight": 2, "directed": true, "label": "unit layer runs first and locally; integration is pre-merge only" },
+    { "from": "integration-test-layer", "to": "fast-feedback-loop", "rel": "disrupts", "weight": 3, "directed": true, "label": "integration concerns must not leak into the fast loop" },
+    { "from": "tdd-handoff", "to": "fast-feedback-loop", "rel": "achieves", "weight": 5, "directed": true },
+    { "from": "tdd-handoff", "to": "tests-as-living-spec", "rel": "features", "weight": 4, "directed": true },
+    { "from": "tests-as-living-spec", "to": "tdd-handoff", "rel": "enables", "weight": 3, "directed": true },
+    { "from": "crash-here-test", "to": "atomic-write-patterns", "rel": "causes", "weight": 4, "directed": true, "label": "the reliability question forces staging-plus-rename and idempotency" },
+    { "from": "atomic-write-patterns", "to": "deployer", "rel": "implements", "weight": 3, "directed": true },
+    { "from": "crash-here-test", "to": "deployer", "rel": "features", "weight": 3, "directed": true },
+    { "from": "seam", "to": "unit-test-layer", "rel": "enables", "weight": 4, "directed": true },
+    { "from": "fake", "to": "unit-test-layer", "rel": "enables", "weight": 5, "directed": true },
+    { "from": "extractor", "to": "unit-test-layer", "rel": "association", "weight": 2, "directed": false },
+    { "from": "deployer", "to": "unit-test-layer", "rel": "association", "weight": 2, "directed": false },
+    { "from": "hookbus", "to": "unit-test-layer", "rel": "association", "weight": 2, "directed": false },
+    { "from": "world-registry", "to": "unit-test-layer", "rel": "association", "weight": 2, "directed": false },
+    { "from": "fakes-layer", "to": "fake", "rel": "membership", "weight": 3, "directed": true },
+    { "from": "unit-test-layer", "to": "tests-as-living-spec", "rel": "features", "weight": 3, "directed": true },
+    { "from": "tiny-world-fixture", "to": "tests-as-living-spec", "rel": "enables", "weight": 3, "directed": true },
+    { "from": "seam", "to": "tests-as-living-spec", "rel": "enables", "weight": 3, "directed": true },
+    { "from": "fake", "to": "tests-as-living-spec", "rel": "enables", "weight": 3, "directed": true },
+    { "from": "tdd-handoff", "to": "orchestration-tests", "rel": "enables", "weight": 3, "directed": true },
+    { "from": "fake", "to": "orchestration-tests", "rel": "enables", "weight": 4, "directed": true },
+    { "from": "unit-test-layer", "to": "orchestration-tests", "rel": "features", "weight": 3, "directed": true },
+    { "from": "concrete-io-dependency", "to": "unit-test-layer", "rel": "disrupts", "weight": 4, "directed": true, "label": "direct I/O inside unit tests destroys the fast loop" },
+    { "from": "seam-test-rule", "to": "concrete-io-dependency", "rel": "mitigates", "weight": 5, "directed": true, "label": "the rule exists to keep concrete I/O out of the fast layer" },
+    { "from": "concrete-io-dependency", "to": "fast-feedback-loop", "rel": "disrupts", "weight": 5, "directed": true },
+    { "from": "orchestration-tests", "to": "fast-feedback-loop", "rel": "achieves", "weight": 3, "directed": true }
+  ]
+}

@@ -354,4 +354,18 @@ export const LIBRARY = [
     domain: 'Developer Tools / AI Analytics',
     year:   '2026',
   },
+  {
+    id:     'tdd-handoffs',
+    title:  'TDD Handoffs: Tests as Agent Contracts',
+    path:   './library/tdd-handoffs.json',
+    domain: 'Software Engineering / AI Agent Collaboration',
+    year:   '2026',
+  },
+  {
+    id:     'grok-harness',
+    title:  'How the Grok Harness Works',
+    path:   './library/grok-harness.json',
+    domain: 'Developer Tools / AI Agents',
+    year:   '2026',
+  },
 ];

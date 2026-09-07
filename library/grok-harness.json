@@ -1,0 +1,218 @@
+{
+  "meta": {
+    "id": "grok-harness",
+    "title": "How the Grok Harness Works",
+    "subtitle": "xAI's terminal agent: tools, sessions, skills, and the loop that ships code",
+    "source": "Grok Build user guide + README",
+    "domain": "Agent Systems",
+    "year": "2026",
+    "tags": ["grok", "xai", "agent", "harness", "cli", "tui", "tools"],
+    "tone": "educational"
+  },
+  "report_card": {
+    "summary": "The Grok Harness is a terminal-based agentic coding system from xAI. A model loop drives tools — file edits, shell, search, subagents, skills — under permission and project rules, with three surfaces: interactive TUI, headless scripts, and ACP for IDEs.",
+    "key_stats": [
+      "Surfaces: TUI · Headless · ACP",
+      "Loop: prompt → tools → result",
+      "Extensibility: Skills · MCP · Hooks",
+      "Parallelism: Subagents + worktrees"
+    ],
+    "spine": ["grok-harness", "tool-loop", "agent-surfaces"],
+    "protagonists": ["grok-harness", "tool-loop", "skills"],
+    "antagonists": ["unbounded-autonomy"],
+    "themes": ["Agent Harness", "Tool Use", "Developer Experience", "Safety"]
+  },
+  "story": [
+    {
+      "id": "beat-01-what",
+      "title": "What Is a Harness?",
+      "node": "grok-harness",
+      "nodes": ["grok-harness", "tool-loop", "model-core"],
+      "narration": "A harness is not the model. It is everything around the model that makes coding possible: a terminal UI, a tool runtime, permissions, session memory, and project rules. Grok Build is xAI's agentic harness — the scaffolding that turns language into file edits and verified shell work.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-02-surfaces",
+      "title": "Three Ways In",
+      "node": "agent-surfaces",
+      "nodes": ["interactive-tui", "headless-mode", "agent-mode-acp"],
+      "narration": "You meet the harness three ways. The interactive TUI is the daily driver — scrollback, prompts, and live tool streams. Headless mode runs one prompt for scripts and CI. Agent mode speaks ACP over stdio or WebSocket so IDEs and custom clients can own the session.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-03-loop",
+      "title": "The Tool Loop",
+      "node": "tool-loop",
+      "nodes": ["tool-loop", "built-in-tools", "model-core"],
+      "narration": "Every turn is the same loop. You send a prompt. The model reasons, then calls tools: read files, search the repo, run shell, edit code, spawn subagents. Results stream back into context. The model continues until the task is done or you cancel. That loop is the heart of the harness.",
+      "tension": "medium",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-04-tools",
+      "title": "Built-in Superpowers",
+      "node": "built-in-tools",
+      "nodes": ["built-in-tools", "mcp-servers", "sandbox"],
+      "narration": "Built-in tools cover the coding surface: filesystem, grep, terminal, web search, GitHub MCP, image and video generation. MCP servers plug in external systems. Sandbox profiles can lock filesystem and network when you need isolation. The harness chooses the tool; you approve the risk.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-05-skills",
+      "title": "Skills and Project Rules",
+      "node": "skills",
+      "nodes": ["skills", "agents-md", "hooks"],
+      "narration": "Skills are reusable playbooks — a SKILL.md that teaches a repeatable procedure like visualize or vid. Project rules in AGENTS.md or CLAUDE.md inject local conventions into every session. Hooks run lifecycle scripts. Together they encode how your team works without retyping it every prompt.",
+      "tension": "medium",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-06-subagents",
+      "title": "Parallel Minds",
+      "node": "subagents",
+      "nodes": ["subagents", "tool-loop", "sandbox"],
+      "narration": "When work fans out, the harness spawns subagents. Each child gets its own context window, agent type, and optional worktree isolation. Explore, plan, and general-purpose roles run in parallel; the parent keeps only the summary. Context stays sharp because the hard work happens off the main thread.",
+      "tension": "high",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-07-safety",
+      "title": "Permissions and Trust",
+      "node": "permissions",
+      "nodes": ["permissions", "sandbox", "unbounded-autonomy"],
+      "narration": "Autonomy without brakes is chaos. The harness gates destructive and shared-state actions: force push, package downgrades, messages to the outside world. You can auto-approve with care, deny by default, or sandbox the whole run. The model proposes; the harness enforces the boundary you set.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-08-sessions",
+      "title": "Memory Across Turns",
+      "node": "sessions",
+      "nodes": ["sessions", "interactive-tui", "headless-mode"],
+      "narration": "Sessions persist under your home directory. Resume yesterday's work, continue the last chat in this repo, or fork a branch of the conversation. Headless runs can pin session IDs for automation. The harness is not amnesiac — it carries the thread so you can leave and come back.",
+      "tension": "climax",
+      "focus": "wide"
+    }
+  ],
+  "insights": [
+    {
+      "id": "ins-harness-not-model",
+      "title": "The harness is the product surface",
+      "body": "Model quality matters, but day-to-day coding speed comes from tools, permissions, skills, and session continuity — the harness layer.",
+      "type": "finding",
+      "evidence": ["grok-harness", "tool-loop", "skills"],
+      "severity": "high"
+    },
+    {
+      "id": "ins-three-surfaces",
+      "title": "One core, three entry points",
+      "body": "TUI, headless, and ACP share the same tool loop — choose the surface for the job without relearning the agent.",
+      "type": "finding",
+      "evidence": ["agent-surfaces", "interactive-tui", "headless-mode"],
+      "severity": "medium"
+    },
+    {
+      "id": "ins-skills-encode-team",
+      "title": "Skills encode institutional knowledge",
+      "body": "A skill turns a multi-step tribal procedure into an invocable package the agent follows without re-prompting.",
+      "type": "finding",
+      "evidence": ["skills", "agents-md"],
+      "severity": "high"
+    },
+    {
+      "id": "ins-safety",
+      "title": "Permissions are part of the architecture",
+      "body": "Without permission gates and sandboxing, tool-using agents are unsafe by default on shared systems.",
+      "type": "warning",
+      "evidence": ["permissions", "sandbox", "unbounded-autonomy"],
+      "severity": "high"
+    }
+  ],
+  "clusters": [
+    {
+      "id": "cluster-core",
+      "label": "Core Loop",
+      "color": "#f05500",
+      "nodes": ["grok-harness", "tool-loop", "model-core", "built-in-tools"],
+      "description": "Model + tool runtime that executes coding work"
+    },
+    {
+      "id": "cluster-surfaces",
+      "label": "Surfaces",
+      "color": "#3498db",
+      "nodes": ["agent-surfaces", "interactive-tui", "headless-mode", "agent-mode-acp"],
+      "description": "How humans and clients attach to the harness"
+    },
+    {
+      "id": "cluster-ext",
+      "label": "Extensibility",
+      "color": "#27ae60",
+      "nodes": ["skills", "agents-md", "hooks", "mcp-servers", "subagents"],
+      "description": "Customization and parallel work"
+    },
+    {
+      "id": "cluster-safety",
+      "label": "Safety & Memory",
+      "color": "#8e44ad",
+      "nodes": ["permissions", "sandbox", "sessions", "unbounded-autonomy"],
+      "description": "Trust boundaries and continuity"
+    }
+  ],
+  "nodes": [
+    { "id": "grok-harness", "label": "Grok Harness", "type": "system", "tier": "primary", "sentiment": "positive", "description": "xAI terminal agentic coding system wrapping the model with tools, UI, and policy." },
+    { "id": "model-core", "label": "Model Core", "type": "concept", "tier": "primary", "sentiment": "neutral", "description": "The language model that reasons and selects tools; not the harness itself." },
+    { "id": "tool-loop", "label": "Tool Loop", "type": "process", "tier": "primary", "sentiment": "positive", "description": "Prompt → model → tool calls → results → continue until done." },
+    { "id": "built-in-tools", "label": "Built-in Tools", "type": "system", "tier": "secondary", "sentiment": "positive", "description": "Filesystem, shell, search, web, media, and integration tools." },
+    { "id": "agent-surfaces", "label": "Agent Surfaces", "type": "concept", "tier": "primary", "sentiment": "neutral", "description": "TUI, headless, and ACP entry points into the same core." },
+    { "id": "interactive-tui", "label": "Interactive TUI", "type": "system", "tier": "secondary", "sentiment": "positive", "description": "Full-screen terminal UI with scrollback and live tool streams." },
+    { "id": "headless-mode", "label": "Headless Mode", "type": "system", "tier": "secondary", "sentiment": "positive", "description": "Single-prompt non-interactive runs for scripts and CI." },
+    { "id": "agent-mode-acp", "label": "Agent Mode (ACP)", "type": "system", "tier": "secondary", "sentiment": "positive", "description": "JSON-RPC agent server for IDEs and custom clients." },
+    { "id": "skills", "label": "Skills", "type": "concept", "tier": "primary", "sentiment": "positive", "description": "Reusable SKILL.md procedures discovered from project and user dirs." },
+    { "id": "agents-md", "label": "AGENTS.md / Rules", "type": "artifact", "tier": "secondary", "sentiment": "positive", "description": "Project instructions injected into the agent system prompt." },
+    { "id": "hooks", "label": "Hooks", "type": "system", "tier": "secondary", "sentiment": "neutral", "description": "Lifecycle scripts for project events and automation." },
+    { "id": "mcp-servers", "label": "MCP Servers", "type": "system", "tier": "secondary", "sentiment": "positive", "description": "External tool servers (GitHub, issue trackers, etc.)." },
+    { "id": "subagents", "label": "Subagents", "type": "process", "tier": "primary", "sentiment": "positive", "description": "Child sessions with isolated context for parallel work." },
+    { "id": "permissions", "label": "Permissions", "type": "concept", "tier": "primary", "sentiment": "caution", "description": "Allow/deny gates for risky tool actions." },
+    { "id": "sandbox", "label": "Sandbox", "type": "system", "tier": "secondary", "sentiment": "caution", "description": "OS-level isolation for filesystem and network." },
+    { "id": "sessions", "label": "Sessions", "type": "system", "tier": "secondary", "sentiment": "positive", "description": "Persisted conversation state under ~/.grok/sessions." },
+    { "id": "unbounded-autonomy", "label": "Unbounded Autonomy", "type": "risk", "tier": "secondary", "sentiment": "negative", "description": "Running tools without permission gates on shared systems." }
+  ],
+  "edges": [
+    { "from": "grok-harness", "to": "model-core", "rel": "wraps", "label": "wraps", "weight": 5, "directed": true },
+    { "from": "grok-harness", "to": "tool-loop", "rel": "implements", "label": "implements", "weight": 5, "directed": true },
+    { "from": "tool-loop", "to": "built-in-tools", "rel": "invokes", "label": "invokes", "weight": 4, "directed": true },
+    { "from": "tool-loop", "to": "model-core", "rel": "driven-by", "label": "driven by", "weight": 5, "directed": true },
+    { "from": "grok-harness", "to": "agent-surfaces", "rel": "exposes", "label": "exposes", "weight": 4, "directed": true },
+    { "from": "agent-surfaces", "to": "interactive-tui", "rel": "includes", "label": "includes", "weight": 3, "directed": true },
+    { "from": "agent-surfaces", "to": "headless-mode", "rel": "includes", "label": "includes", "weight": 3, "directed": true },
+    { "from": "agent-surfaces", "to": "agent-mode-acp", "rel": "includes", "label": "includes", "weight": 3, "directed": true },
+    { "from": "grok-harness", "to": "skills", "rel": "loads", "label": "loads", "weight": 4, "directed": true },
+    { "from": "skills", "to": "agents-md", "rel": "complements", "label": "complements", "weight": 3, "directed": true },
+    { "from": "grok-harness", "to": "hooks", "rel": "runs", "label": "runs", "weight": 2, "directed": true },
+    { "from": "built-in-tools", "to": "mcp-servers", "rel": "extends-via", "label": "extends via", "weight": 3, "directed": true },
+    { "from": "tool-loop", "to": "subagents", "rel": "spawns", "label": "spawns", "weight": 4, "directed": true },
+    { "from": "permissions", "to": "tool-loop", "rel": "gates", "label": "gates", "weight": 5, "directed": true },
+    { "from": "sandbox", "to": "tool-loop", "rel": "isolates", "label": "isolates", "weight": 3, "directed": true },
+    { "from": "permissions", "to": "unbounded-autonomy", "rel": "mitigates", "label": "mitigates", "weight": 4, "directed": true },
+    { "from": "grok-harness", "to": "sessions", "rel": "persists", "label": "persists", "weight": 3, "directed": true },
+    { "from": "interactive-tui", "to": "sessions", "rel": "uses", "label": "uses", "weight": 2, "directed": true },
+    { "from": "headless-mode", "to": "sessions", "rel": "uses", "label": "uses", "weight": 2, "directed": true },
+    { "from": "subagents", "to": "sandbox", "rel": "may-use", "label": "may use", "weight": 2, "directed": true },
+    { "from": "agents-md", "to": "tool-loop", "rel": "shapes", "label": "shapes", "weight": 3, "directed": true },
+    { "from": "hooks", "to": "skills", "rel": "association", "label": "related", "weight": 2, "directed": false },
+    { "from": "mcp-servers", "to": "permissions", "rel": "subject-to", "label": "subject to", "weight": 2, "directed": true },
+    { "from": "agent-mode-acp", "to": "tool-loop", "rel": "drives", "label": "drives", "weight": 3, "directed": true },
+    { "from": "interactive-tui", "to": "tool-loop", "rel": "drives", "label": "drives", "weight": 3, "directed": true },
+    { "from": "headless-mode", "to": "tool-loop", "rel": "drives", "label": "drives", "weight": 3, "directed": true },
+    { "from": "skills", "to": "tool-loop", "rel": "guides", "label": "guides", "weight": 4, "directed": true },
+    { "from": "unbounded-autonomy", "to": "built-in-tools", "rel": "risks", "label": "risks", "weight": 3, "directed": true },
+    { "from": "sessions", "to": "model-core", "rel": "feeds-context", "label": "feeds context", "weight": 3, "directed": true },
+    { "from": "subagents", "to": "built-in-tools", "rel": "uses", "label": "uses", "weight": 3, "directed": true },
+    { "from": "sandbox", "to": "unbounded-autonomy", "rel": "mitigates", "label": "mitigates", "weight": 3, "directed": true },
+    { "from": "grok-harness", "to": "permissions", "rel": "enforces", "label": "enforces", "weight": 4, "directed": true },
+    { "from": "grok-harness", "to": "subagents", "rel": "orchestrates", "label": "orchestrates", "weight": 4, "directed": true },
+    { "from": "mcp-servers", "to": "built-in-tools", "rel": "association", "label": "alongside", "weight": 2, "directed": false }
+  ]
+}

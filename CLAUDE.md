@@ -7,7 +7,7 @@ A browser-based knowledge graph explorer. Users type a topic; an LLM pipeline ge
 **No build step.** Open `index.html` in any browser or static server.
 
 ```
-pnpm test        # vitest run — 168 tests, all pass
+pnpm test        # vitest run — 228 tests (219 pass, 9 env-gated skips: ffmpeg/Chromium/TTS)
 pnpm test:watch  # watch mode
 ```
 

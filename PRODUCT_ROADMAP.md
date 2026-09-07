@@ -1,8 +1,13 @@
 # KaaroViewer — Product Roadmap
 
+> **⚠ SUPERSEDED (July 2026)** — written for the A-Frame / OpenTapioca era. The platform
+> has since migrated to the Three.js canvas + LLM enrichment pipeline, and the video
+> agent (`vid/`) and life system (`LIFE.md`) did not exist when this was planned.
+> Current direction: [`VISION_AND_ROADMAP.md`](VISION_AND_ROADMAP.md). Kept for history.
+
 **Prepared**: March 29, 2026
 **Revised**: April 23, 2026
-**Status**: Active Planning
+**Status**: Superseded — see banner
 **Vision**: A real-time immersive knowledge graph platform — speak or type anything, explore it in 3D VR
 
 ---
