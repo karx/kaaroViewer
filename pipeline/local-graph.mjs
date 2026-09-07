@@ -354,4 +354,11 @@ export const LIBRARY = [
     domain: 'Developer Tools / AI Analytics',
     year:   '2026',
   },
+  {
+    id:     'grok-harness',
+    title:  'How the Grok Harness Works',
+    path:   './library/grok-harness.json',
+    domain: 'Agent Systems',
+    year:   '2026',
+  },
 ];
