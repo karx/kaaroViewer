@@ -18,7 +18,17 @@
       "Bash(node:*)",
       "Skill(visualize)",
       "Bash(npx tsx *)",
-      "Bash(py .claude/hooks/validate-library-json.py library/advanced-git-workflows.json)"
+      "Bash(py .claude/hooks/validate-library-json.py library/advanced-git-workflows.json)",
+      "Read(//d/src/art-of-intent/frontend//**)",
+      "Read(//d/src/art-of-intent/frontend/js/**)",
+      "Bash(npx svelte-check *)",
+      "Bash(pnpm test *)",
+      "Bash(cd /d D:\\\\src\\\\kaaroViewer)",
+      "Bash(npx vitest *)",
+      "Bash(xargs grep -l \"skill\\\\|agent\\\\|tool\")",
+      "Bash(npm test *)",
+      "Bash(python .claude/hooks/validate-library-json.py library/gig-worker-projects.json)",
+      "Bash(echo \"EXIT: $?\")"
     ]
   }
 }

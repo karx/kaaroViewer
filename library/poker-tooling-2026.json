@@ -364,7 +364,8 @@
         "pokerbaazi",
         "adda52",
         "coinpoker",
-        "acr-poker"
+        "acr-poker",
+        "india-black-friday"
       ],
       "description": "The legal and jurisdictional forces shaping where and how poker can be played: India's sweeping RMG ban, the judicial resistance to it, and the offshore platforms that benefited."
     },
@@ -952,6 +953,22 @@
       },
       "wikidata": null,
       "image": null
+    },
+    {
+      "id": "india-black-friday",
+      "label": "India's Black Friday (Aug 2025)",
+      "type": "event",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "The moment PROGA received Presidential assent in August 2025 and India's entire real-money gaming industry shut down overnight — PokerBaazi, Adda52, Dream11, MPL, and PokerStars India all suspended operations simultaneously. Dubbed India's Black Friday by the global poker community.",
+      "metrics": {
+        "Date": "August 2025",
+        "Platforms shut down": "PokerBaazi, Adda52, Dream11, MPL, PokerStars India",
+        "Industry value wiped": "$3.7 billion",
+        "Jobs affected": "200,000+"
+      },
+      "wikidata": null,
+      "image": null
     }
   ],
   "edges": [
@@ -1138,7 +1155,7 @@
     {
       "from": "primedope",
       "to": "rake",
-      "rel": "reveals",
+      "rel": "association",
       "label": "rake comparison calculator exposes hidden cost multiplier",
       "weight": 3,
       "directed": true,
@@ -1484,6 +1501,39 @@
       "directed": true,
       "temporal": false,
       "notes": null
-    }
+    },
+    { "from": "variance",           "to": "tilt",                     "rel": "causes",      "label": "downswings trigger emotional compromise",                      "weight": 4, "directed": true },
+    { "from": "rake",               "to": "tilt",                     "rel": "causes",      "label": "unavoidable losing to rake is demoralizing",                   "weight": 3, "directed": true },
+    { "from": "bankroll-management","to": "tilt",                     "rel": "mitigates",   "label": "proper sizing reduces emotional investment per hand",           "weight": 3, "directed": true },
+    { "from": "primedope",          "to": "bankroll-management",      "rel": "enables",     "label": "Monte Carlo output informs buy-in safety thresholds",          "weight": 3, "directed": true },
+    { "from": "primedope",          "to": "professional-poker-player","rel": "enables",     "label": "variance calculator and rake comparison tools",               "weight": 3, "directed": true },
+    { "from": "gto-strategy",       "to": "variance",                 "rel": "mitigates",   "label": "reducing EV mistakes reduces outcome variance",                "weight": 3, "directed": true },
+    { "from": "gto-wizard",         "to": "variance",                 "rel": "mitigates",   "label": "flagging costly deviations tightens decision quality",          "weight": 3, "directed": true },
+    { "from": "icm",                "to": "bankroll-management",      "rel": "enables",     "label": "chip-to-cash model informs tournament stake-sizing decisions",  "weight": 2, "directed": true },
+    { "from": "piosolver",          "to": "gto-strategy",             "rel": "implements",  "label": "CFR algorithm computes Nash equilibria",                       "weight": 4, "directed": true },
+    { "from": "monkersolver",       "to": "gto-strategy",             "rel": "implements",  "label": "PLO and multiway GTO tree computation",                       "weight": 3, "directed": true },
+    { "from": "hand2note",          "to": "hud-overlay",              "rel": "enables",     "label": "powers dynamic positional HUD stat display",                   "weight": 3, "directed": true },
+    { "from": "pokertracker-4",     "to": "hud-overlay",              "rel": "enables",     "label": "powers static HUD stat overlay via PostgreSQL",               "weight": 3, "directed": true },
+    { "from": "holdem-manager-3",   "to": "hud-overlay",              "rel": "enables",     "label": "powers situational view HUD stat overlay",                    "weight": 3, "directed": true },
+    { "from": "primed-mind",        "to": "professional-poker-player","rel": "enables",     "label": "NLP and hypnotherapy for pre-session conditioning",            "weight": 3, "directed": true },
+    { "from": "tiltfree",           "to": "professional-poker-player","rel": "enables",     "label": "in-session tilt control and stop-loss accountability",         "weight": 3, "directed": true },
+    { "from": "elliot-roe",         "to": "professional-poker-player","rel": "enables",     "label": "elite mindset coaching for high-stakes performance",           "weight": 2, "directed": true },
+    { "from": "pokerstars",         "to": "professional-poker-player","rel": "enables",     "label": "largest network — primary online grind venue",                "weight": 3, "directed": true },
+    { "from": "hud-overlay",        "to": "bankroll-management",      "rel": "enables",     "label": "win-rate and leak data informs game selection and BRM",        "weight": 2, "directed": true },
+    { "from": "raise-your-edge",    "to": "gto-strategy",             "rel": "derives_from","label": "MTT tournament courses built on GTO solver frameworks",        "weight": 3, "directed": true },
+    { "from": "run-it-once",        "to": "gto-strategy",             "rel": "derives_from","label": "elite video content built on GTO solution trees",             "weight": 3, "directed": true },
+    { "from": "upswing-poker",      "to": "gto-strategy",             "rel": "derives_from","label": "Upswing Lab courses built on GTO baselines",                  "weight": 3, "directed": true },
+    { "from": "raise-your-edge",    "to": "icm",                      "rel": "derives_from","label": "Tournament Masterclass built on ICM push-fold theory",        "weight": 3, "directed": true },
+    { "from": "gg-network",         "to": "hud-overlay",              "rel": "prohibits",   "label": "full third-party HUD ban across all GG Network clients",       "weight": 4, "directed": true },
+    { "from": "pokerstars",         "to": "hud-overlay",              "rel": "permits",     "label": "static HUDs permitted — dynamic situational HUDs banned",     "weight": 3, "directed": true },
+    { "from": "india-proga",        "to": "bankroll-management",      "rel": "disrupts",    "label": "overnight ban invalidates all India-market bankroll assumptions","weight": 4, "directed": true },
+    { "from": "india-proga",        "to": "tilt",                     "rel": "causes",      "label": "professional lives destroyed overnight — extreme tilt trigger", "weight": 3, "directed": true },
+    { "from": "pokerbaazi",         "to": "india",                    "rel": "location",    "label": "Indian domestic poker platform",                               "weight": 2, "directed": true },
+    { "from": "adda52",             "to": "india",                    "rel": "location",    "label": "Indian domestic poker and rummy platform",                    "weight": 2, "directed": true },
+    { "from": "coinpoker",          "to": "acr-poker",                "rel": "competes",    "label": "competing offshore platforms for displaced Indian player liquidity","weight": 2, "directed": false },
+    { "from": "india-proga",        "to": "india-black-friday",       "rel": "causes",      "label": "PROGA enactment triggered simultaneous industry shutdown",      "weight": 5, "directed": true },
+    { "from": "kr-lakshmanan-ruling","to": "india-black-friday",      "rel": "precedes",    "label": "29-year skill doctrine annulled by PROGA and Black Friday",     "weight": 3, "directed": true },
+    { "from": "india-black-friday", "to": "coinpoker",                "rel": "enables",     "label": "ban paradox: shutdown captured liquidity into offshore crypto",  "weight": 4, "directed": true },
+    { "from": "india-black-friday", "to": "acr-poker",                "rel": "enables",     "label": "ban paradox: shutdown captured liquidity into offshore WPN",    "weight": 4, "directed": true }
   ]
 }

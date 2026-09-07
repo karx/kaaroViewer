@@ -23,6 +23,8 @@
 
 import { getEntityStyle } from '../ontology.mjs';
 
+const GITHUB_ISSUES_URL = 'https://github.com/karx/kaaroViewer/issues/new';
+
 let _wrap   = null;   // #slides-wrap
 let _track  = null;   // .sl-track
 let _index  = null;   // .sl-index
@@ -34,6 +36,7 @@ let _observer = null;
 let _currentDoc = null;
 let _suppressObserverUntil = 0;   // ms timestamp; observer ignores entries before this
 const _paintState = new Map();     // slideIdx → 'idle'|'loading'|'done'|'error'
+let _evalRating = 0;
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
@@ -98,6 +101,7 @@ export function initSlides() {
 export function renderSlides(doc) {
   if (!_track || !doc) return;
   _currentDoc = doc;
+  _evalRating = 0;
   _slides = _buildSlides(doc);
   _paintState.clear();
   _track.innerHTML = _slides.map((s, i) => _renderSlide(s, i, _slides.length)).join('');
@@ -260,6 +264,14 @@ function _buildSlides(doc) {
     frameNodes: [],
   });
 
+  // Eval — always last
+  slides.push({
+    id: 'eval',
+    type: 'eval',
+    title: 'Evaluate this brief',
+    frameNodes: [],
+  });
+
   return slides;
 }
 
@@ -276,6 +288,7 @@ function _renderSlide(slide, idx, total) {
       case 'cluster':   return _renderCluster(slide.cluster, _currentDoc);
       case 'analytics': return _renderAnalytics(_currentDoc);
       case 'closer':    return _renderCloser(_currentDoc);
+      case 'eval':      return _renderEval(_currentDoc);
       default:          return '';
     }
   })();
@@ -455,6 +468,84 @@ function _renderCloser(doc) {
       <a class="sl-action-btn" href="${_e(url)}" target="_self">Share link</a>
     </div>
   `;
+}
+
+function _renderEval(doc) {
+  const stars = [1, 2, 3, 4, 5].map(n =>
+    `<button class="sl-eval-star" data-val="${n}" aria-label="${n} star${n > 1 ? 's' : ''}" title="${n} star${n > 1 ? 's' : ''}">★</button>`
+  ).join('');
+  return `
+    <div class="sl-eval-hdr">
+      <span class="sl-eval-label">◆ EVAL</span>
+      <span class="sl-eval-doc-title">${_e(doc.title ?? '')}</span>
+    </div>
+    <div class="sl-eval-stars" role="group" aria-label="Star rating 1 to 5">${stars}</div>
+    <div class="sl-eval-fields">
+      <textarea class="sl-eval-textarea sl-eval-worked" rows="2" placeholder="What worked — useful, illuminating, or well-structured aspects…"></textarea>
+      <textarea class="sl-eval-textarea sl-eval-confused" rows="2" placeholder="What was confusing — missing context, surprising gaps, wrong connections…"></textarea>
+      <textarea class="sl-eval-textarea sl-eval-nodes" rows="2" placeholder="Interesting nodes / insights that stood out…"></textarea>
+      <textarea class="sl-eval-textarea sl-eval-notes" rows="2" placeholder="Observations — encoding gaps, ontology mismatches, accuracy issues…"></textarea>
+    </div>
+    <div class="sl-eval-footer">
+      <button class="sl-eval-submit-btn sl-action-btn">Submit via GitHub ↗</button>
+      <span class="sl-eval-hint">Opens a pre-filled GitHub Issue in a new tab</span>
+    </div>
+  `;
+}
+
+function _syncEvalStars() {
+  _track?.querySelectorAll('.sl-eval-star').forEach(s => {
+    s.classList.toggle('sl-eval-star-on', +s.dataset.val <= _evalRating);
+  });
+}
+
+function _submitEvalSlide() {
+  const doc = _currentDoc;
+  if (!doc) return;
+  const evalEl = _track?.querySelector('.sl-slide-eval');
+  if (!evalEl) return;
+
+  const rating   = _evalRating
+    ? '⭐'.repeat(_evalRating) + ` (${_evalRating}/5)`
+    : '_not rated_';
+  const worked   = evalEl.querySelector('.sl-eval-worked')?.value.trim()   || '_not filled_';
+  const confused = evalEl.querySelector('.sl-eval-confused')?.value.trim() || '_not filled_';
+  const nodes    = evalEl.querySelector('.sl-eval-nodes')?.value.trim()    || '_not filled_';
+  const notes    = evalEl.querySelector('.sl-eval-notes')?.value.trim()    || '_not filled_';
+  const date     = new Date().toISOString().slice(0, 10);
+
+  const issueTitle = `[eval] ${doc.title} — ${date}`;
+  const body = [
+    `## Library Eval: ${doc.title}`,
+    ``,
+    `| Field | Value |`,
+    `|---|---|`,
+    `| Doc ID | \`${doc.id}\` |`,
+    `| Domain | ${doc.domain} |`,
+    `| Year | ${doc.year} |`,
+    `| Eval date | ${date} |`,
+    ``,
+    `## Rating`,
+    rating,
+    ``,
+    `## What worked`,
+    worked,
+    ``,
+    `## What was confusing`,
+    confused,
+    ``,
+    `## Interesting nodes / insights`,
+    nodes,
+    ``,
+    `## Observations`,
+    notes,
+    ``,
+    `---`,
+    `*Submitted from kaaroViewer via the EVAL slide.*`,
+  ].join('\n');
+
+  const url = `${GITHUB_ISSUES_URL}?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(body)}&labels=eval`;
+  window.open(url, '_blank', 'noopener');
 }
 
 // ── Chart helpers ────────────────────────────────────────────────────────────
@@ -705,6 +796,30 @@ function _bindClicks() {
       const idx = parseInt(el.dataset.dotIdx, 10);
       if (!isNaN(idx)) goToSlide(idx);
     });
+  });
+
+  // Eval — star rating
+  _track.querySelectorAll('.sl-eval-star').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      _evalRating = +btn.dataset.val;
+      _syncEvalStars();
+    });
+    btn.addEventListener('mouseenter', () => {
+      const hovered = +btn.dataset.val;
+      _track.querySelectorAll('.sl-eval-star').forEach(s =>
+        s.classList.toggle('sl-eval-star-hover', +s.dataset.val <= hovered)
+      );
+    });
+    btn.addEventListener('mouseleave', () => {
+      _track.querySelectorAll('.sl-eval-star').forEach(s => s.classList.remove('sl-eval-star-hover'));
+    });
+  });
+
+  // Eval — submit
+  _track.querySelector('.sl-eval-submit-btn')?.addEventListener('click', e => {
+    e.stopPropagation();
+    _submitEvalSlide();
   });
 }
 
