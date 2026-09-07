@@ -347,4 +347,11 @@ export const LIBRARY = [
     domain: 'Hardware / IoT',
     year:   '2026',
   },
+  {
+    id:     'kaaro-sessions-platform',
+    title:  'kaaroSessions: Intelligence Graph for Claude Code Sessions',
+    path:   './library/kaaro-sessions-platform.json',
+    domain: 'Developer Tools / AI Analytics',
+    year:   '2026',
+  },
 ];
