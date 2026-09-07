@@ -32,15 +32,24 @@
  */
 
 import { log } from '../logger.mjs';
-import { routeToProvider, loadLLMConfig } from './gateway/index.mjs';
+import { routeToProvider, loadLLMConfig, isSharedGatewayEnabled } from './gateway/index.mjs';
+
+// System prompt sent to the shared Kaaro gateway (path 3 below). explore.mjs's
+// local paths pack everything into a single prompt string; the shared
+// gateway's gatewayCall requires a non-empty systemPrompt + userPrompt pair,
+// so this just names the role — it doesn't change what the model is asked.
+const SHARED_GATEWAY_SYSTEM_PROMPT =
+  "You are kaaroViewer's knowledge-graph exploration assistant. Follow the user's instructions exactly and respond in the exact format requested.";
 
 // ── LLM interface ─────────────────────────────────────────────────────────────
 
 /**
  * Call the configured LLM. Resolution order:
  *   1. window.kaaro_llm (host-injected — highest priority, stays for compat)
- *   2. Gateway config stored in localStorage (kv.llm)
- *   3. Legacy localStorage.gemini_api_key
+ *   2. Gateway config stored in localStorage (kv.llm) — local/direct BYOM
+ *   3. Shared Kaaro gateway (opt-in via settings UI — server-side encrypted
+ *      key + traceability, see pipeline/gateway/remote.mjs)
+ *   4. Legacy localStorage.gemini_api_key
  *
  * The _fetchFn parameter is injectable for unit tests.
  */
@@ -51,7 +60,7 @@ async function _callLLM(prompt, { temperature = 0.7, maxTokens = 8192 } = {}, _f
     return window.kaaro_llm(prompt, { temperature, maxTokens });
   }
 
-  // 2. Gateway BYOM config
+  // 2. Local gateway BYOM config
   const config = loadLLMConfig();
   console.log('[kaaro/explore] _callLLM → path 2: loadLLMConfig() =', config ? `provider=${config.provider} apiKey=${config.apiKey ? '***' : 'MISSING'}` : 'null');
   if (config?.provider && config?.apiKey) {
@@ -60,10 +69,20 @@ async function _callLLM(prompt, { temperature = 0.7, maxTokens = 8192 } = {}, _f
     return result.text;
   }
 
-  // 3. Legacy Gemini key fallback
+  // 3. Shared Kaaro gateway (opt-in, no local key required — it's stored
+  // server-side encrypted under the shared project)
+  if (isSharedGatewayEnabled()) {
+    console.log('[kaaro/explore] _callLLM → path 3: shared Kaaro gateway');
+    log('ENRICHER', '[explore] using shared Kaaro gateway (art-of-intent project)');
+    const { callSharedGateway } = await import('./gateway/remote.mjs');
+    const result = await callSharedGateway(SHARED_GATEWAY_SYSTEM_PROMPT, prompt);
+    return result.text;
+  }
+
+  // 4. Legacy Gemini key fallback
   const legacyKey = (() => { try { return localStorage.getItem('gemini_api_key'); } catch { return null; } })();
   if (legacyKey) {
-    console.log('[kaaro/explore] _callLLM → path 3: legacy gemini_api_key');
+    console.log('[kaaro/explore] _callLLM → path 4: legacy gemini_api_key');
     log('ENRICHER', '[explore] using legacy gemini_api_key — migrate to saveLLMConfig() for full BYOM');
     const result = await routeToProvider('gemini', prompt, { apiKey: legacyKey }, _fetchFn);
     return result.text;
@@ -74,6 +93,7 @@ async function _callLLM(prompt, { temperature = 0.7, maxTokens = 8192 } = {}, _f
     'No LLM provider configured. Options:\n' +
     '  • window.kaaro.registerLLM(fn) — inject any async function\n' +
     '  • saveLLMConfig({ provider, apiKey }) — BYOM via settings UI\n' +
+    '  • setSharedGatewayEnabled(true) — use the shared Kaaro gateway\n' +
     '  • localStorage.gemini_api_key — legacy Gemini key'
   );
 }

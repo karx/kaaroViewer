@@ -9,8 +9,10 @@
  *   toggleSettings(force?)   — open / close the drawer
  */
 
-import { routeToProvider, loadLLMConfig, saveLLMConfig, clearLLMConfig, PROVIDERS }
+import { routeToProvider, loadLLMConfig, saveLLMConfig, clearLLMConfig, PROVIDERS,
+         isSharedGatewayEnabled, setSharedGatewayEnabled }
   from '../pipeline/gateway/index.mjs';
+import { saveSharedGatewaySettings } from '../pipeline/gateway/remote.mjs';
 import { getImageKey, setImageKey } from './scene-painter.mjs';
 import { log } from '../logger.mjs';
 
@@ -90,7 +92,20 @@ function _render() {
              value="${_esc(cfg.endpoint ?? '')}">
     </div>`;
 
+  const sharedGateway = isSharedGatewayEnabled();
+  const keyHelp = sharedGateway
+    ? 'Stored server-side, AES-256-GCM encrypted (art-of-intent\'s shared gateway) — never kept in this browser after Save.'
+    : meta.keyHelp;
+
   wrap.querySelector('.settings-body').innerHTML = `
+    <div class="set-row set-row-checkbox">
+      <label for="set-shared-gateway">
+        <input id="set-shared-gateway" type="checkbox" ${sharedGateway ? 'checked' : ''}>
+        Use shared Kaaro gateway
+      </label>
+      <span class="set-help">Server-side encrypted key + cross-session traceability, shared with art-of-intent. Off = key stays in this browser only.</span>
+    </div>
+
     <div class="set-row">
       <label for="set-provider">Provider</label>
       <select id="set-provider">${providerOptions}</select>
@@ -100,8 +115,8 @@ function _render() {
       <label for="set-apikey">${_esc(meta.keyLabel)}</label>
       <input id="set-apikey" type="password" autocomplete="off"
              placeholder="${_esc(meta.keyPlaceholder)}"
-             value="${_esc(cfg.apiKey ?? '')}">
-      <span class="set-help">${_esc(meta.keyHelp)}</span>
+             value="${_esc(sharedGateway ? '' : (cfg.apiKey ?? ''))}">
+      <span class="set-help">${_esc(keyHelp)}</span>
     </div>
 
     ${endpointRow}
@@ -151,6 +166,12 @@ function _bindEvents() {
     if (endpointRow) endpointRow.style.display = meta.needsEndpoint ? '' : 'none';
   });
 
+  _q('#set-shared-gateway')?.addEventListener('change', e => {
+    setSharedGatewayEnabled(e.target.checked);
+    log('SYSTEM', `[settings] shared Kaaro gateway ${e.target.checked ? 'enabled' : 'disabled'}`);
+    _render();
+  });
+
   _q('#set-save-btn')?.addEventListener('click', _onSave);
   _q('#set-test-btn')?.addEventListener('click', _onTest);
   _q('#set-clear-btn')?.addEventListener('click', _onClear);
@@ -173,15 +194,34 @@ function _setStatus(msg, type = 'info') {
   el.className   = `set-status set-status-${type}`;
 }
 
-function _onSave() {
+async function _onSave() {
   const cfg = _readForm();
   if (!cfg.apiKey && cfg.provider !== 'custom') {
     _setStatus('API key is required.', 'error'); return;
   }
-  saveLLMConfig(cfg);
-  _setStatus('Saved.', 'ok');
-  log('SYSTEM', `[settings] LLM config saved — provider: ${cfg.provider}`);
-  setTimeout(() => _setStatus(''), 3000);
+
+  if (isSharedGatewayEnabled()) {
+    _setStatus('Saving to shared gateway…', 'info');
+    const btn = _q('#set-save-btn');
+    if (btn) btn.disabled = true;
+    try {
+      await saveSharedGatewaySettings(cfg);
+      clearLLMConfig(); // the key now lives server-side encrypted, not in this browser
+      _setStatus('Saved to shared gateway.', 'ok');
+      log('SYSTEM', `[settings] shared gateway config saved — provider: ${cfg.provider}`);
+    } catch (e) {
+      _setStatus(`Error: ${e.message.slice(0, 120)}`, 'error');
+      log('ERROR', `[settings] shared gateway save failed: ${e.message}`);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  } else {
+    saveLLMConfig(cfg);
+    _setStatus('Saved.', 'ok');
+    log('SYSTEM', `[settings] LLM config saved — provider: ${cfg.provider}`);
+  }
+
+  setTimeout(() => { _setStatus(''); _render(); }, 3000);
 }
 
 async function _onTest() {
@@ -219,8 +259,15 @@ async function _onTest() {
   }
 }
 
-function _onClear() {
+async function _onClear() {
   clearLLMConfig();
+  if (isSharedGatewayEnabled()) {
+    try {
+      await saveSharedGatewaySettings({ provider: null });
+    } catch (e) {
+      log('ERROR', `[settings] shared gateway clear failed: ${e.message}`);
+    }
+  }
   _setStatus('Config cleared.', 'warn');
   log('SYSTEM', '[settings] LLM config cleared');
   setTimeout(() => { _setStatus(''); _render(); }, 1500);

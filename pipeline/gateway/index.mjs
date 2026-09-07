@@ -85,6 +85,31 @@ export function clearLLMConfig() {
   try { localStorage.removeItem(STORAGE_KEY); } catch {}
 }
 
+// ── Shared Kaaro Gateway opt-in flag ───────────────────────────────────────
+// Independent of the local kv.llm config above: when enabled, calls route
+// through art-of-intent's gatewayCall Cloud Function (server-side encrypted
+// key, cross-session traceability) instead of directly from the browser.
+// See ./remote.mjs and canvas/kaaro-firebase.mjs.
+
+const SHARED_GATEWAY_KEY = 'kv.llm.shared';
+
+/**
+ * @returns {boolean} whether the shared Kaaro gateway is opted into
+ */
+export function isSharedGatewayEnabled() {
+  try { return localStorage.getItem(SHARED_GATEWAY_KEY) === 'true'; } catch { return false; }
+}
+
+/**
+ * @param {boolean} enabled
+ */
+export function setSharedGatewayEnabled(enabled) {
+  try {
+    if (enabled) localStorage.setItem(SHARED_GATEWAY_KEY, 'true');
+    else localStorage.removeItem(SHARED_GATEWAY_KEY);
+  } catch { /* localStorage unavailable */ }
+}
+
 /**
  * Build a gateway-compatible generate function from stored config.
  * Returns null if no provider is configured.
