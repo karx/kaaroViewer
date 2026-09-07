@@ -1,0 +1,959 @@
+{
+  "meta": {
+    "id": "mount-everest-and-base-camps",
+    "title": "The Roof of the World: Mount Everest and Its Base Camps",
+    "subtitle": "Two camps, one summit, and the widening gap between elite mountaineering and mass commercial guiding",
+    "source": "library/mount-everest-and-base-camps.md",
+    "domain": "Geography / Mountaineering",
+    "year": "2026",
+    "tags": [
+      "everest",
+      "mountaineering",
+      "himalaya",
+      "nepal",
+      "tibet",
+      "sherpa",
+      "climbing"
+    ],
+    "tone": "narrative"
+  },
+  "report_card": {
+    "summary": "Mount Everest is climbed from two base camps — Nepali South Base Camp and Tibetan North Base Camp — each staging a different route, national permitting regime, and climbing culture. Since Hillary and Norgay's 1953 first ascent, the mountain has moved from an expedition-era physiological frontier to a commercial guiding market, and that shift has repeatedly collided with the mountain's fixed hazards: the Khumbu Icefall, the death zone above 8,000 m, and a warming glacier. The result is a recurring pattern — 1996, 2014, 2015, 2019 — in which rising climber volume and thin regulation turn known hazards into mass-casualty events, while the Sherpa community absorbs the largest share of the risk.",
+    "key_stats": [
+      { "label": "Summit elevation", "value": "8,849 m (29,032 ft)" },
+      { "label": "First ascent", "value": "29 May 1953" },
+      { "label": "1996 disaster deaths", "value": "8 in one day (10–11 May)" },
+      { "label": "2014 Khumbu Icefall avalanche deaths", "value": "16 Nepali guides/porters" },
+      { "label": "2015 earthquake avalanche deaths at Base Camp", "value": "19+" },
+      { "label": "2019 season deaths amid queuing", "value": "11" },
+      { "label": "Kami Rita Sherpa's summit count", "value": "30+" },
+      { "label": "Nepal's waste deposit per climber", "value": "$4,000 (refundable)" }
+    ],
+    "spine": [
+      "mount-everest",
+      "south-base-camp",
+      "north-base-camp"
+    ],
+    "protagonists": [
+      "Edmund Hillary and Tenzing Norgay",
+      "Kami Rita Sherpa and the Icefall Doctors",
+      "The Sherpa community of the Khumbu"
+    ],
+    "antagonists": [
+      "The death zone above 8,000 m",
+      "The Khumbu Icefall",
+      "Overcrowding from unregulated permit volume",
+      "Climate-driven glacier melt"
+    ],
+    "themes": [
+      "Commercialization outpacing safety margin",
+      "Sherpa labor and disproportionate risk",
+      "Climate change destabilizing fixed hazards",
+      "Regulation lagging demand"
+    ]
+  },
+  "story": [
+    {
+      "id": "beat-1",
+      "title": "Two Doors to the Roof of the World",
+      "node": "mount-everest",
+      "nodes": [
+        "mount-everest",
+        "south-base-camp",
+        "north-base-camp"
+      ],
+      "narration": "Every Everest attempt begins at one of two base camps: South Base Camp in Nepal at 5,364 m, or North Base Camp in Tibet at 5,150 m. The two sides differ in access, hazard profile, and administering government, but converge on the same 8,849 m summit.",
+      "tension": "low",
+      "focus": "foundation"
+    },
+    {
+      "id": "beat-2",
+      "title": "The Nepali Approach and the Icefall Doctors",
+      "node": "khumbu-icefall",
+      "nodes": [
+        "south-base-camp",
+        "khumbu-icefall",
+        "icefall-doctors",
+        "lukla"
+      ],
+      "narration": "From South Base Camp, climbers face the Khumbu Icefall almost immediately — a shifting field of house-sized ice seracs crossed dozens of times per expedition on ladders and ropes maintained by the Icefall Doctors, a dedicated Sherpa team. The trek in itself, from Lukla's airstrip, already sets the Nepali side apart from the vehicle-accessible north.",
+      "tension": "low",
+      "focus": "hazard"
+    },
+    {
+      "id": "beat-3",
+      "title": "1953: Hillary and Norgay Reach the Summit",
+      "node": "milestone-1953-first-ascent",
+      "nodes": [
+        "edmund-hillary",
+        "tenzing-norgay",
+        "john-hunt",
+        "milestone-1953-first-ascent"
+      ],
+      "narration": "On 29 May 1953, Edmund Hillary and Tenzing Norgay reach the summit via the South Col route, part of John Hunt's British expedition. It is the foundational event of Everest mountaineering — the moment the mountain moves from an unclimbed problem to a proven, still-lethal objective.",
+      "tension": "medium",
+      "focus": "milestone"
+    },
+    {
+      "id": "beat-4",
+      "title": "Mallory's Unanswered Question",
+      "node": "event-1924-mallory-irvine-disappearance",
+      "nodes": [
+        "george-mallory",
+        "andrew-irvine",
+        "event-1924-mallory-irvine-disappearance",
+        "event-1999-mallory-body-found"
+      ],
+      "narration": "Nearly three decades earlier, George Mallory and Andrew Irvine disappeared high on the North Ridge in 1924, leaving open whether they summited before dying. Mallory's body was found in 1999; Irvine's has never been located, and the question outlives both the men and the 1953 ascent that settled the matter for the record books.",
+      "tension": "medium",
+      "focus": "open-question"
+    },
+    {
+      "id": "beat-5",
+      "title": "Messner and Habeler Break the Oxygen Barrier",
+      "node": "milestone-1978-no-oxygen-ascent",
+      "nodes": [
+        "reinhold-messner",
+        "peter-habeler",
+        "milestone-1978-no-oxygen-ascent",
+        "death-zone"
+      ],
+      "narration": "In 1978, Reinhold Messner and Peter Habeler summit without supplemental oxygen, a feat many mountaineers of the era considered physiologically impossible above 8,000 m. Their ascent reframes the upper limits of unassisted human performance inside the death zone.",
+      "tension": "medium",
+      "focus": "performance"
+    },
+    {
+      "id": "beat-6",
+      "title": "1996: A Storm Catches the Commercial Era",
+      "node": "event-1996-everest-disaster",
+      "nodes": [
+        "rob-hall",
+        "scott-fischer",
+        "adventure-consultants",
+        "mountain-madness",
+        "event-1996-everest-disaster"
+      ],
+      "narration": "A rogue storm traps multiple guided groups near the summit on 10–11 May 1996, killing eight climbers in a single day, including Adventure Consultants founder Rob Hall and Mountain Madness founder Scott Fischer. Jon Krakauer survives and chronicles it in \"Into Thin Air,\" cementing the disaster as the defining cautionary tale about commercial climbing volume.",
+      "tension": "high",
+      "focus": "disaster"
+    },
+    {
+      "id": "beat-7",
+      "title": "Sherpa Labor Bears the Weight",
+      "node": "event-2014-khumbu-avalanche",
+      "nodes": [
+        "sherpa-community",
+        "icefall-doctors",
+        "kami-rita-sherpa",
+        "event-2014-khumbu-avalanche"
+      ],
+      "narration": "On 18 April 2014, an avalanche in the Khumbu Icefall kills sixteen Nepali guides and porters, triggering a labor action that shuts down that season's climbing. The disaster exposes how disproportionately the Sherpa community — the Icefall Doctors, the rope-fixers, record-holder Kami Rita Sherpa's own peers — absorbs the mountain's fatal risk in direct support of paying clients.",
+      "tension": "high",
+      "focus": "labor"
+    },
+    {
+      "id": "beat-8",
+      "title": "2015: The Mountain Shakes Base Camp Itself",
+      "node": "event-2015-earthquake-avalanche",
+      "nodes": [
+        "event-2015-earthquake-avalanche",
+        "south-base-camp",
+        "nepal"
+      ],
+      "narration": "A magnitude-7.8 earthquake on 25 April 2015 triggers an avalanche that strikes South Base Camp directly, killing at least 19 people — the single deadliest day in Everest's history. The season is closed to summit attempts, and the disaster proves that even Base Camp, long treated as a place of relative safety, sits inside the mountain's hazard zone.",
+      "tension": "climax",
+      "focus": "disaster"
+    },
+    {
+      "id": "beat-9",
+      "title": "2019: The Queue in the Death Zone",
+      "node": "event-2019-traffic-jam",
+      "nodes": [
+        "nirmal-purja",
+        "event-2019-traffic-jam",
+        "death-zone",
+        "issue-overcrowding-crisis"
+      ],
+      "narration": "In May 2019, a photograph by Nirmal Purja showing roughly 200 climbers queued along a single fixed rope near the summit goes viral, crystallizing years of overcrowding concern. Eleven climbers die that season, several after prolonged exposure waiting in the death zone.",
+      "tension": "medium",
+      "focus": "crowding"
+    },
+    {
+      "id": "beat-10",
+      "title": "The World's Highest Garbage Dump",
+      "node": "issue-waste-crisis",
+      "nodes": [
+        "issue-waste-crisis",
+        "khumbu-glacier",
+        "regulation-permit-waste-deposit"
+      ],
+      "narration": "Decades of abandoned oxygen canisters, tents, and human waste earn Everest the label \"the world's highest garbage dump.\" Climate change compounds the problem: the warming Khumbu Glacier is melting and exposing previously buried waste and bodies while destabilizing the icefall above South Base Camp.",
+      "tension": "medium",
+      "focus": "waste"
+    },
+    {
+      "id": "beat-11",
+      "title": "Regulating a Mountain That Won't Sit Still",
+      "node": "regulation-permit-waste-deposit",
+      "nodes": [
+        "nepal-department-of-tourism",
+        "regulation-permit-waste-deposit",
+        "nepal"
+      ],
+      "narration": "Nepal's Department of Tourism responds with a $4,000 refundable waste deposit per climber and periodic cleanup expeditions, but leaves the deeper driver — permit volume, routinely 300–400 per season — largely untouched.",
+      "tension": "low",
+      "focus": "regulation"
+    },
+    {
+      "id": "beat-12",
+      "title": "An Elite Frontier Sold as a Guided Package",
+      "node": "mount-everest",
+      "nodes": [
+        "milestone-1978-no-oxygen-ascent",
+        "kami-rita-sherpa",
+        "issue-overcrowding-crisis",
+        "mount-everest"
+      ],
+      "narration": "Messner's unassisted 1978 ascent and Kami Rita Sherpa's 30-plus fixed-rope summits sit at opposite poles of what climbing Everest now means: an elite athletic frontier on one hand, a guided, oxygen-assisted package on the other. Nearly every modern controversy about who Everest is for runs through that unresolved tension.",
+      "tension": "low",
+      "focus": "closing"
+    }
+  ],
+  "insights": [
+    {
+      "id": "ins-death-zone-queuing",
+      "title": "Everest's death-zone queuing turns a fixed-rope bottleneck into a fatality multiplier",
+      "body": "Above 8,000 m, every extra hour without supplemental oxygen sharply raises the risk of high-altitude cerebral and pulmonary edema. The 2019 photograph of roughly 200 climbers queued on a single rope made visible what had been building for years: narrow summit-day terrain cannot absorb rising permit volume without converting wait time directly into death-zone mortality risk.",
+      "type": "warning",
+      "evidence": [
+        "event-2019-traffic-jam",
+        "death-zone",
+        "issue-overcrowding-crisis",
+        "nirmal-purja"
+      ],
+      "severity": "high"
+    },
+    {
+      "id": "ins-sherpa-risk",
+      "title": "Sherpa guides absorb a disproportionate share of Everest's fatal risk while remaining structurally invisible in summit narratives",
+      "body": "The Icefall Doctors fix the route through the Khumbu Icefall; Sherpa porters and guides cross it repeatedly to ferry supplies for clients who cross it once or twice. The 2014 avalanche, which killed sixteen Nepali guides and porters, made explicit a pattern that summit-count narratives (including Kami Rita Sherpa's own record) tend to obscure: occupational risk on Everest is not evenly distributed between clients and the Sherpa workforce that supports them.",
+      "type": "finding",
+      "evidence": [
+        "sherpa-community",
+        "event-2014-khumbu-avalanche",
+        "icefall-doctors",
+        "kami-rita-sherpa"
+      ],
+      "severity": "high"
+    },
+    {
+      "id": "ins-1996-failed-to-slow-growth",
+      "title": "The 1996 disaster failed to slow commercial guiding growth — permit volume kept rising for decades after eight deaths in a day",
+      "body": "Rob Hall and Scott Fischer's deaths, and the wide readership of \"Into Thin Air,\" made 1996 the most publicized cautionary tale in Everest's history. Yet Nepal's permit issuance expanded rather than contracted in the following decades, routinely exceeding 300–400 per season by the late 2010s — the opposite of what the disaster's warning would predict.",
+      "type": "paradox",
+      "evidence": [
+        "event-1996-everest-disaster",
+        "adventure-consultants",
+        "mountain-madness",
+        "issue-overcrowding-crisis"
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "ins-glacier-melt-double-hazard",
+      "title": "Climate-driven glacier melt is simultaneously destabilizing the Khumbu Icefall and exhuming decades of buried expedition waste",
+      "body": "Warming temperatures act on the same glacier in two directions at once: they destabilize the ice structures of the Khumbu Icefall, a hazard climbers must cross regardless, and they melt back the ice that had been quietly burying oxygen canisters, tents, and bodies for decades, converting a hidden waste problem into a visible one.",
+      "type": "finding",
+      "evidence": [
+        "khumbu-glacier",
+        "khumbu-icefall",
+        "issue-waste-crisis"
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "ins-regulation-treats-symptom",
+      "title": "Nepal's $4,000 waste-deposit rule shifts cleanup incentives onto individual climbers but leaves permit volume — the deeper driver of crowding — unregulated",
+      "body": "The waste deposit is a targeted, climber-level fix for a visible symptom (trash on the mountain). It does nothing to address the root cause repeatedly implicated in 1996, 2019, and the general death-zone queuing pattern: the number of permits Nepal's Department of Tourism issues each season.",
+      "type": "pattern",
+      "evidence": [
+        "regulation-permit-waste-deposit",
+        "nepal-department-of-tourism",
+        "issue-overcrowding-crisis"
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "ins-two-definitions-of-climbing",
+      "title": "Messner and Habeler's unassisted 1978 summit and today's oxygen-assisted guided ascents represent two incompatible definitions of what climbing Everest means",
+      "body": "One tradition treats Everest as the outer limit of unassisted human physiology; the other treats it as a fixed-rope, oxygen-supported package sold to clients with widely varying experience. Both traditions use the same mountain, the same base camps, and often the same season — and the tension between them underlies most current debate about how Everest should be regulated.",
+      "type": "paradox",
+      "evidence": [
+        "milestone-1978-no-oxygen-ascent",
+        "reinhold-messner",
+        "issue-overcrowding-crisis",
+        "mount-everest"
+      ],
+      "severity": "medium"
+    }
+  ],
+  "clusters": [
+    {
+      "id": "cluster-geography",
+      "label": "Geography & Camps",
+      "color": "#4a90d9",
+      "nodes": [
+        "mount-everest",
+        "south-base-camp",
+        "north-base-camp",
+        "khumbu-icefall",
+        "khumbu-glacier",
+        "death-zone",
+        "second-step",
+        "south-col-route",
+        "north-ridge-route",
+        "rongbuk-monastery",
+        "lukla",
+        "namche-bazaar",
+        "nepal",
+        "tibet-autonomous-region"
+      ],
+      "description": "The two base camps, the routes and hazards above them, and the national territories that administer access to each side of the mountain."
+    },
+    {
+      "id": "cluster-first-ascent",
+      "label": "First Ascent Era",
+      "color": "#c9a227",
+      "nodes": [
+        "edmund-hillary",
+        "tenzing-norgay",
+        "john-hunt",
+        "milestone-1953-first-ascent",
+        "george-mallory",
+        "andrew-irvine",
+        "event-1924-mallory-irvine-disappearance",
+        "event-1999-mallory-body-found"
+      ],
+      "description": "The people and events that established Everest as a climbable, then conquered, objective — from Mallory and Irvine's unresolved 1924 disappearance to Hillary and Norgay's confirmed 1953 summit."
+    },
+    {
+      "id": "cluster-extreme-performance",
+      "label": "Extreme Performance",
+      "color": "#2e8b57",
+      "nodes": [
+        "reinhold-messner",
+        "peter-habeler",
+        "milestone-1978-no-oxygen-ascent"
+      ],
+      "description": "The athletic frontier tradition of climbing Everest at the limit of unassisted human physiology."
+    },
+    {
+      "id": "cluster-commercial-disaster",
+      "label": "Commercial Guiding & the 1996 Disaster",
+      "color": "#c0392b",
+      "nodes": [
+        "adventure-consultants",
+        "mountain-madness",
+        "rob-hall",
+        "scott-fischer",
+        "event-1996-everest-disaster",
+        "jon-krakauer",
+        "book-into-thin-air"
+      ],
+      "description": "The rise of commercial guiding companies and the storm that turned their business model into a cautionary tale."
+    },
+    {
+      "id": "cluster-sherpa-labor",
+      "label": "Sherpa Labor & Safety",
+      "color": "#8e44ad",
+      "nodes": [
+        "sherpa-community",
+        "icefall-doctors",
+        "kami-rita-sherpa",
+        "event-2014-khumbu-avalanche",
+        "event-2015-earthquake-avalanche"
+      ],
+      "description": "The Sherpa workforce that operates the Nepali side of the mountain, and the disasters that most starkly exposed the risk they carry."
+    },
+    {
+      "id": "cluster-crowding-regulation",
+      "label": "Crowding, Waste & Regulation",
+      "color": "#e07b39",
+      "nodes": [
+        "issue-overcrowding-crisis",
+        "event-2019-traffic-jam",
+        "nirmal-purja",
+        "issue-waste-crisis",
+        "regulation-permit-waste-deposit",
+        "nepal-department-of-tourism"
+      ],
+      "description": "The modern crisis cluster: rising climber volume, the waste it leaves behind, and Nepal's limited regulatory response to both."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "mount-everest",
+      "label": "Mount Everest",
+      "type": "place",
+      "tier": "spine",
+      "sentiment": "neutral",
+      "description": "The highest mountain above sea level on Earth, straddling the Nepal–China border in the Mahalangur Himal; the summit objective every route and camp in this report ultimately serves.",
+      "metrics": {
+        "Elevation": "8,849 m (29,032 ft)",
+        "Location": "Nepal–China border, Mahalangur Himal",
+        "First ascent": "29 May 1953"
+      },
+      "wikidata": "Q513"
+    },
+    {
+      "id": "south-base-camp",
+      "label": "South Base Camp",
+      "type": "place",
+      "tier": "spine",
+      "sentiment": "neutral",
+      "description": "The Nepali staging camp at roughly 5,364 m on the Khumbu Glacier, reached by trek from Lukla; the busier, more commercialized of the two base camps and the launch point for the South Col route.",
+      "metrics": {
+        "Elevation": "5,364 m (17,598 ft)",
+        "Access": "Multi-day trek from Lukla"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "north-base-camp",
+      "label": "North Base Camp",
+      "type": "place",
+      "tier": "spine",
+      "sentiment": "neutral",
+      "description": "The Tibetan staging camp at roughly 5,150 m near Rongbuk Monastery, reachable by vehicle; launch point for the North Ridge route, administered under Chinese permitting.",
+      "metrics": {
+        "Elevation": "5,150 m (16,900 ft)",
+        "Access": "Reachable by vehicle"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "khumbu-icefall",
+      "label": "Khumbu Icefall",
+      "type": "place",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "A constantly shifting field of house-sized ice seracs and crevasses directly above South Base Camp, crossed dozens of times per expedition on fixed ladders maintained by the Icefall Doctors.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "khumbu-glacier",
+      "label": "Khumbu Glacier",
+      "type": "place",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "The glacier underlying South Base Camp and feeding the Khumbu Icefall; warming temperatures are melting it, destabilizing the icefall and exposing decades of buried expedition waste.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "death-zone",
+      "label": "The Death Zone",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "The region above 8,000 m where atmospheric oxygen is roughly a third of sea-level pressure and the human body cannot acclimatize, only deteriorate; the setting for nearly every fatal Everest incident.",
+      "metrics": {
+        "Altitude threshold": "8,000 m",
+        "Oxygen pressure": "~1/3 of sea level"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "second-step",
+      "label": "The Second Step",
+      "type": "place",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "A near-vertical rock band above 8,600 m on the North Ridge route, long the route's defining technical obstacle until a fixed ladder made it passable for commercial climbers.",
+      "metrics": {
+        "Altitude": "~8,600 m"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "south-col-route",
+      "label": "South Col Route",
+      "type": "place",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The standard climbing route from South Base Camp through the Khumbu Icefall and South Col to the summit; the route of the 1953 first ascent.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "north-ridge-route",
+      "label": "North Ridge Route",
+      "type": "place",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The standard climbing route from North Base Camp over the North Ridge, past the Second Step, to the summit.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "rongbuk-monastery",
+      "label": "Rongbuk Monastery",
+      "type": "place",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "A Tibetan monastery near North Base Camp that marks the traditional starting point of the North Side approach.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "lukla",
+      "label": "Lukla",
+      "type": "place",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The Nepali town whose airstrip is the starting point of the multi-day trek to South Base Camp.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "namche-bazaar",
+      "label": "Namche Bazaar",
+      "type": "place",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The principal Sherpa trading town on the trek route between Lukla and South Base Camp.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "nepal",
+      "label": "Nepal",
+      "type": "country",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The country administering the South Side of Everest, including South Base Camp, the Sagarmatha Zone, and the climbing permit system.",
+      "metrics": {},
+      "wikidata": "Q837"
+    },
+    {
+      "id": "tibet-autonomous-region",
+      "label": "Tibet Autonomous Region",
+      "type": "place",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The Chinese administrative region on Everest's north side, controlling access to North Base Camp and the North Ridge route.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "edmund-hillary",
+      "label": "Edmund Hillary",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "New Zealand mountaineer who, with Tenzing Norgay, made the first confirmed summit of Everest in 1953.",
+      "metrics": {},
+      "wikidata": "Q131691"
+    },
+    {
+      "id": "tenzing-norgay",
+      "label": "Tenzing Norgay",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Nepali Sherpa climber who, with Edmund Hillary, made the first confirmed summit of Everest in 1953; his ascent anchors the Sherpa community's mountaineering legacy.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "john-hunt",
+      "label": "John Hunt",
+      "type": "person",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "British expedition leader who organized and led the 1953 expedition that put Hillary and Norgay on the summit.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "milestone-1953-first-ascent",
+      "label": "1953 First Ascent",
+      "type": "milestone",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The first confirmed ascent of Everest, on 29 May 1953, via the South Col route — the foundational event of Everest mountaineering.",
+      "metrics": {
+        "Date": "29 May 1953",
+        "Route": "South Col"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "george-mallory",
+      "label": "George Mallory",
+      "type": "person",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "British mountaineer who disappeared with Andrew Irvine high on the North Ridge in 1924; whether he reached the summit before dying remains unresolved.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "andrew-irvine",
+      "label": "Andrew Irvine",
+      "type": "person",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "British mountaineer who disappeared with George Mallory on the North Ridge in 1924; his body has never been located.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "event-1924-mallory-irvine-disappearance",
+      "label": "1924 Mallory & Irvine Disappearance",
+      "type": "event",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "The 1924 disappearance of Mallory and Irvine high on the North Ridge, leaving open the question of whether they summited 29 years before Hillary and Norgay's confirmed ascent.",
+      "metrics": {
+        "Year": "1924"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "event-1999-mallory-body-found",
+      "label": "1999 Discovery of Mallory's Body",
+      "type": "event",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The 1999 discovery of George Mallory's body on Everest, which narrowed but did not resolve the mystery of the 1924 disappearance.",
+      "metrics": {
+        "Year": "1999"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "reinhold-messner",
+      "label": "Reinhold Messner",
+      "type": "person",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Italian mountaineer who, with Peter Habeler, made the first ascent of Everest without supplemental oxygen in 1978, redefining the limits of unassisted high-altitude performance.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "peter-habeler",
+      "label": "Peter Habeler",
+      "type": "person",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Austrian mountaineer who, with Reinhold Messner, made the first ascent of Everest without supplemental oxygen in 1978.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "milestone-1978-no-oxygen-ascent",
+      "label": "1978 No-Oxygen Ascent",
+      "type": "milestone",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "The 1978 first ascent of Everest without supplemental oxygen by Messner and Habeler, disproving the era's assumption that the summit was physiologically impossible unassisted.",
+      "metrics": {
+        "Year": "1978"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "rob-hall",
+      "label": "Rob Hall",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "New Zealand mountain guide, founder of Adventure Consultants, who died on Everest during the 1996 disaster.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "scott-fischer",
+      "label": "Scott Fischer",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "American mountain guide, founder of Mountain Madness, who died on Everest during the 1996 disaster.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "event-1996-everest-disaster",
+      "label": "1996 Everest Disaster",
+      "type": "event",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "A rogue storm caught multiple guided groups near the summit on 10–11 May 1996, killing eight climbers in a single day — the defining cautionary narrative about commercial climbing volume and compressed summit windows.",
+      "metrics": {
+        "Date": "10–11 May 1996",
+        "Deaths": "8"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "jon-krakauer",
+      "label": "Jon Krakauer",
+      "type": "person",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "American journalist and client-climber who survived the 1996 disaster and chronicled it in \"Into Thin Air.\"",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "book-into-thin-air",
+      "label": "Into Thin Air",
+      "type": "book",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Jon Krakauer's account of the 1996 Everest disaster, which became the defining cautionary narrative about commercial high-altitude guiding.",
+      "metrics": {
+        "Author": "Jon Krakauer"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "adventure-consultants",
+      "label": "Adventure Consultants",
+      "type": "company",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Commercial guiding company founded by Rob Hall, central to the 1996 Everest disaster.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "mountain-madness",
+      "label": "Mountain Madness",
+      "type": "company",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Commercial guiding company founded by Scott Fischer, central to the 1996 Everest disaster.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "icefall-doctors",
+      "label": "Icefall Doctors",
+      "type": "organization",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "A dedicated Sherpa team that fixes ropes and ladders through the Khumbu Icefall each season, maintaining the passage every South Side expedition depends on.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "kami-rita-sherpa",
+      "label": "Kami Rita Sherpa",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Nepali Sherpa mountaineer who holds the record for most Everest summits by any individual, having passed 30 by the mid-2020s.",
+      "metrics": {
+        "Summits": "30+ (by mid-2020s)"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "event-2014-khumbu-avalanche",
+      "label": "2014 Khumbu Icefall Avalanche",
+      "type": "event",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "An avalanche in the Khumbu Icefall on 18 April 2014 killed sixteen Nepali guides and porters, triggering a labor action that shut down that season's climbing.",
+      "metrics": {
+        "Date": "18 April 2014",
+        "Deaths": "16"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "event-2015-earthquake-avalanche",
+      "label": "2015 Earthquake Avalanche",
+      "type": "event",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "The magnitude-7.8 Nepal earthquake of 25 April 2015 triggered an avalanche that struck South Base Camp directly, killing at least 19 people — the deadliest single day in Everest's history.",
+      "metrics": {
+        "Date": "25 April 2015",
+        "Magnitude": "7.8",
+        "Deaths": "19+"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "nirmal-purja",
+      "label": "Nirmal Purja",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "Nepali mountaineer who photographed the viral 2019 image of roughly 200 climbers queued on a single fixed rope near the summit.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "event-2019-traffic-jam",
+      "label": "2019 Summit Traffic Jam",
+      "type": "event",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "A May 2019 photograph of a roughly 200-climber queue near the summit went viral, crystallizing years of overcrowding concern; eleven climbers died that season, several attributed to prolonged death-zone exposure while queuing.",
+      "metrics": {
+        "Date": "May 2019",
+        "Queue size": "~200 climbers",
+        "Season deaths": "11"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "issue-overcrowding-crisis",
+      "label": "Overcrowding Crisis",
+      "type": "issue",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "The buildup of climber volume on narrow summit-day terrain, driven by rising permit issuance and commercial guiding growth, that produces death-zone queuing and elevated fatality risk.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "issue-waste-crisis",
+      "label": "\"World's Highest Garbage Dump\" Crisis",
+      "type": "issue",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "Decades of abandoned oxygen canisters, tents, ropes, and human waste on Everest's upper camps, earning the mountain the informal label \"the world's highest garbage dump.\"",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "nepal-department-of-tourism",
+      "label": "Nepal Department of Tourism",
+      "type": "government",
+      "tier": "secondary",
+      "sentiment": "contested",
+      "description": "The Nepali government agency that issues South Side climbing permits and administers waste-deposit and cleanup requirements, generating significant revenue but facing criticism for not capping climber volume.",
+      "metrics": {},
+      "wikidata": null
+    },
+    {
+      "id": "regulation-permit-waste-deposit",
+      "label": "Waste Deposit Regulation",
+      "type": "regulation",
+      "tier": "primary",
+      "sentiment": "contested",
+      "description": "Nepal's requirement that each climber post a $4,000 waste deposit, refunded only if a minimum weight of trash is brought back — a mechanism aimed at the waste crisis that leaves permit volume itself unregulated.",
+      "metrics": {
+        "Deposit": "$4,000 per climber"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "sherpa-community",
+      "label": "Sherpa Community",
+      "type": "organization",
+      "tier": "primary",
+      "sentiment": "contested",
+      "description": "The Sherpa people of the Khumbu region who form the operational backbone of South Side climbing — porters, Icefall Doctors, and guides — while bearing a disproportionate share of the mountain's fatal risk.",
+      "metrics": {},
+      "wikidata": null
+    }
+  ],
+  "edges": [
+    { "from": "south-base-camp", "to": "mount-everest", "rel": "location", "weight": 3, "directed": true },
+    { "from": "north-base-camp", "to": "mount-everest", "rel": "location", "weight": 3, "directed": true },
+    { "from": "khumbu-icefall", "to": "south-base-camp", "rel": "location", "weight": 4, "directed": true },
+    { "from": "khumbu-glacier", "to": "south-base-camp", "rel": "location", "weight": 2, "directed": true },
+    { "from": "second-step", "to": "north-ridge-route", "rel": "location", "weight": 3, "directed": true },
+    { "from": "south-col-route", "to": "mount-everest", "rel": "location", "weight": 3, "directed": true },
+    { "from": "rongbuk-monastery", "to": "north-base-camp", "rel": "location", "weight": 2, "directed": true },
+    { "from": "lukla", "to": "south-base-camp", "rel": "precedes", "weight": 2, "directed": true, "label": "starting point of the trek to" },
+    { "from": "namche-bazaar", "to": "south-base-camp", "rel": "precedes", "weight": 2, "directed": true, "label": "trek waypoint before" },
+    { "from": "nepal", "to": "south-base-camp", "rel": "governs", "weight": 4, "directed": true, "label": "issues climbing permits and administers the Sagarmatha Zone" },
+    { "from": "tibet-autonomous-region", "to": "north-base-camp", "rel": "governs", "weight": 3, "directed": true, "label": "administers North Side permits under Chinese authority" },
+    { "from": "nepal-department-of-tourism", "to": "nepal", "rel": "association", "weight": 2, "directed": false },
+    { "from": "nepal-department-of-tourism", "to": "regulation-permit-waste-deposit", "rel": "creation", "weight": 3, "directed": true },
+    { "from": "regulation-permit-waste-deposit", "to": "issue-waste-crisis", "rel": "mitigates", "weight": 3, "directed": true },
+    { "from": "regulation-permit-waste-deposit", "to": "south-base-camp", "rel": "governs", "weight": 3, "directed": true, "label": "mandates a $4,000 refundable waste deposit per climber" },
+    { "from": "edmund-hillary", "to": "milestone-1953-first-ascent", "rel": "achieves", "weight": 5, "directed": true },
+    { "from": "tenzing-norgay", "to": "milestone-1953-first-ascent", "rel": "achieves", "weight": 5, "directed": true },
+    { "from": "john-hunt", "to": "milestone-1953-first-ascent", "rel": "leadership", "weight": 3, "directed": true, "label": "led the 1953 British expedition" },
+    { "from": "milestone-1953-first-ascent", "to": "mount-everest", "rel": "location", "weight": 4, "directed": true },
+    { "from": "south-base-camp", "to": "milestone-1953-first-ascent", "rel": "precedes", "weight": 3, "directed": true, "label": "expedition staged from" },
+    { "from": "event-1924-mallory-irvine-disappearance", "to": "milestone-1953-first-ascent", "rel": "precedes", "weight": 4, "directed": true, "label": "unresolved fate preceded the confirmed first ascent by 29 years" },
+    { "from": "george-mallory", "to": "event-1924-mallory-irvine-disappearance", "rel": "association", "weight": 4, "directed": true },
+    { "from": "andrew-irvine", "to": "event-1924-mallory-irvine-disappearance", "rel": "association", "weight": 4, "directed": true },
+    { "from": "event-1924-mallory-irvine-disappearance", "to": "event-1999-mallory-body-found", "rel": "precedes", "weight": 3, "directed": true },
+    { "from": "event-1999-mallory-body-found", "to": "george-mallory", "rel": "association", "weight": 3, "directed": true },
+    { "from": "reinhold-messner", "to": "milestone-1978-no-oxygen-ascent", "rel": "achieves", "weight": 5, "directed": true },
+    { "from": "peter-habeler", "to": "milestone-1978-no-oxygen-ascent", "rel": "achieves", "weight": 4, "directed": true },
+    { "from": "milestone-1978-no-oxygen-ascent", "to": "mount-everest", "rel": "location", "weight": 3, "directed": true },
+    { "from": "milestone-1978-no-oxygen-ascent", "to": "death-zone", "rel": "contradicts", "weight": 4, "directed": true, "label": "disproved the assumption that the summit was impossible without supplemental oxygen" },
+    { "from": "milestone-1953-first-ascent", "to": "milestone-1978-no-oxygen-ascent", "rel": "precedes", "weight": 2, "directed": true },
+    { "from": "adventure-consultants", "to": "event-1996-everest-disaster", "rel": "association", "weight": 4, "directed": true },
+    { "from": "mountain-madness", "to": "event-1996-everest-disaster", "rel": "association", "weight": 4, "directed": true },
+    { "from": "rob-hall", "to": "adventure-consultants", "rel": "leadership", "weight": 4, "directed": true, "label": "founder" },
+    { "from": "scott-fischer", "to": "mountain-madness", "rel": "leadership", "weight": 4, "directed": true, "label": "founder" },
+    { "from": "rob-hall", "to": "event-1996-everest-disaster", "rel": "association", "weight": 5, "directed": true },
+    { "from": "scott-fischer", "to": "event-1996-everest-disaster", "rel": "association", "weight": 5, "directed": true },
+    { "from": "event-1996-everest-disaster", "to": "death-zone", "rel": "location", "weight": 4, "directed": true },
+    { "from": "south-base-camp", "to": "event-1996-everest-disaster", "rel": "precedes", "weight": 2, "directed": true },
+    { "from": "jon-krakauer", "to": "event-1996-everest-disaster", "rel": "association", "weight": 4, "directed": true, "label": "survived the disaster as a client-journalist" },
+    { "from": "jon-krakauer", "to": "book-into-thin-air", "rel": "creation", "weight": 5, "directed": true },
+    { "from": "book-into-thin-air", "to": "event-1996-everest-disaster", "rel": "association", "weight": 4, "directed": true, "label": "chronicles the disaster" },
+    { "from": "event-1996-everest-disaster", "to": "issue-overcrowding-crisis", "rel": "precedes", "weight": 3, "directed": true, "label": "early warning that commercial volume outpaced margin for error" },
+    { "from": "icefall-doctors", "to": "khumbu-icefall", "rel": "association", "weight": 4, "directed": true, "label": "fixes ropes and ladders through the icefall each season" },
+    { "from": "sherpa-community", "to": "icefall-doctors", "rel": "membership", "weight": 3, "directed": true },
+    { "from": "kami-rita-sherpa", "to": "sherpa-community", "rel": "membership", "weight": 3, "directed": true },
+    { "from": "kami-rita-sherpa", "to": "mount-everest", "rel": "achieves", "weight": 5, "directed": true, "label": "record 30+ summits" },
+    { "from": "sherpa-community", "to": "south-base-camp", "rel": "association", "weight": 4, "directed": true, "label": "operational backbone of Nepali-side expeditions" },
+    { "from": "event-2014-khumbu-avalanche", "to": "khumbu-icefall", "rel": "location", "weight": 5, "directed": true },
+    { "from": "event-2014-khumbu-avalanche", "to": "sherpa-community", "rel": "causes", "weight": 5, "directed": true, "label": "killed sixteen Nepali guides and porters, triggering a labor action" },
+    { "from": "event-2015-earthquake-avalanche", "to": "south-base-camp", "rel": "causes", "weight": 5, "directed": true, "label": "avalanche struck Base Camp directly, killing at least 19" },
+    { "from": "event-2015-earthquake-avalanche", "to": "nepal", "rel": "location", "weight": 3, "directed": true },
+    { "from": "nirmal-purja", "to": "event-2019-traffic-jam", "rel": "creation", "weight": 4, "directed": true, "label": "photographed the viral summit-queue image" },
+    { "from": "issue-overcrowding-crisis", "to": "event-2019-traffic-jam", "rel": "causes", "weight": 5, "directed": true },
+    { "from": "event-2019-traffic-jam", "to": "death-zone", "rel": "location", "weight": 4, "directed": true },
+    { "from": "khumbu-glacier", "to": "issue-waste-crisis", "rel": "causes", "weight": 3, "directed": true, "label": "melting exposes previously buried waste and bodies" },
+    { "from": "khumbu-glacier", "to": "khumbu-icefall", "rel": "disrupts", "weight": 3, "directed": true, "label": "warming destabilizes the icefall's ice structures" },
+    { "from": "issue-waste-crisis", "to": "south-base-camp", "rel": "location", "weight": 3, "directed": true },
+    { "from": "issue-waste-crisis", "to": "mount-everest", "rel": "disrupts", "weight": 3, "directed": true, "label": "earned the mountain the label \"world's highest garbage dump\"" },
+    { "from": "nepal", "to": "issue-overcrowding-crisis", "rel": "causes", "weight": 4, "directed": true, "label": "issues 300+ permits per season with few experience prerequisites" },
+    { "from": "issue-overcrowding-crisis", "to": "khumbu-icefall", "rel": "disrupts", "weight": 3, "directed": true, "label": "queuing increases repeat icefall crossings and exposure time" },
+    { "from": "death-zone", "to": "mount-everest", "rel": "location", "weight": 4, "directed": true },
+    { "from": "north-ridge-route", "to": "mount-everest", "rel": "location", "weight": 3, "directed": true },
+    { "from": "south-col-route", "to": "south-base-camp", "rel": "precedes", "weight": 3, "directed": true, "label": "route climbed begins at" },
+    { "from": "north-ridge-route", "to": "north-base-camp", "rel": "precedes", "weight": 3, "directed": true, "label": "route climbed begins at" },
+    { "from": "milestone-1953-first-ascent", "to": "south-col-route", "rel": "association", "weight": 3, "directed": true },
+    { "from": "tibet-autonomous-region", "to": "nepal", "rel": "competes", "weight": 2, "directed": false, "label": "rival administrative approach to Everest access" },
+    { "from": "milestone-1953-first-ascent", "to": "adventure-consultants", "rel": "precedes", "weight": 2, "directed": true, "label": "first ascent preceded the shift to commercial guiding by four decades" },
+    { "from": "tenzing-norgay", "to": "sherpa-community", "rel": "membership", "weight": 4, "directed": true },
+    { "from": "milestone-1978-no-oxygen-ascent", "to": "issue-overcrowding-crisis", "rel": "contradicts", "weight": 3, "directed": true, "label": "elite minimalist ethos stands in tension with mass commercial ascents" },
+    { "from": "sherpa-community", "to": "event-1996-everest-disaster", "rel": "association", "weight": 3, "directed": true, "label": "Sherpa guides supported the stranded commercial expeditions" },
+    { "from": "issue-overcrowding-crisis", "to": "sherpa-community", "rel": "disrupts", "weight": 3, "directed": true, "label": "higher client volume increases occupational risk exposure for Sherpa guides" },
+    { "from": "lukla", "to": "namche-bazaar", "rel": "precedes", "weight": 2, "directed": true },
+    { "from": "namche-bazaar", "to": "nepal", "rel": "location", "weight": 2, "directed": true },
+    { "from": "rongbuk-monastery", "to": "tibet-autonomous-region", "rel": "location", "weight": 2, "directed": true },
+    { "from": "second-step", "to": "mount-everest", "rel": "location", "weight": 3, "directed": true },
+    { "from": "andrew-irvine", "to": "george-mallory", "rel": "association", "weight": 3, "directed": false, "label": "climbing partner" },
+    { "from": "john-hunt", "to": "edmund-hillary", "rel": "leadership", "weight": 3, "directed": true },
+    { "from": "john-hunt", "to": "tenzing-norgay", "rel": "leadership", "weight": 3, "directed": true },
+    { "from": "peter-habeler", "to": "reinhold-messner", "rel": "association", "weight": 3, "directed": false, "label": "climbing partner for the 1978 no-oxygen ascent" },
+    { "from": "book-into-thin-air", "to": "rob-hall", "rel": "association", "weight": 3, "directed": true },
+    { "from": "book-into-thin-air", "to": "scott-fischer", "rel": "association", "weight": 3, "directed": true },
+    { "from": "mountain-madness", "to": "south-base-camp", "rel": "precedes", "weight": 2, "directed": true, "label": "staged expedition from" },
+    { "from": "adventure-consultants", "to": "south-base-camp", "rel": "precedes", "weight": 2, "directed": true, "label": "staged expedition from" },
+    { "from": "nepal-department-of-tourism", "to": "issue-overcrowding-crisis", "rel": "causes", "weight": 3, "directed": true, "label": "permit issuance volume drives climber numbers" },
+    { "from": "kami-rita-sherpa", "to": "khumbu-icefall", "rel": "association", "weight": 3, "directed": true, "label": "crosses the icefall dozens of times each season" },
+    { "from": "icefall-doctors", "to": "south-base-camp", "rel": "association", "weight": 3, "directed": true, "label": "based out of" },
+    { "from": "nirmal-purja", "to": "mount-everest", "rel": "achieves", "weight": 3, "directed": true, "label": "completed rapid multi-peak ascents including Everest" },
+    { "from": "regulation-permit-waste-deposit", "to": "nepal", "rel": "association", "weight": 2, "directed": true, "label": "implemented under Nepali administration" }
+  ]
+}
