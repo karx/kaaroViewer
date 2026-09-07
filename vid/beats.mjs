@@ -179,7 +179,18 @@ export async function briefToTimeline(brief, {
     });
   });
 
-  const stats = (brief.report_card?.key_stats ?? []).slice(0, 4);
+  // end-card expects "Label: value" strings; library briefs often use {label,value}
+  const stats = (brief.report_card?.key_stats ?? [])
+    .slice(0, 4)
+    .map(s => {
+      if (s == null) return '';
+      if (typeof s === 'string') return s;
+      if (typeof s === 'object' && (s.label != null || s.value != null)) {
+        return [s.label, s.value].filter(x => x != null && x !== '').join(': ');
+      }
+      return String(s);
+    })
+    .filter(Boolean);
   if (stats.length) {
     clips.push({
       id: 'closing-stats',
