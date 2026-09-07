@@ -51,6 +51,13 @@ const TYPE_GEOMETRY = {
   video: 'plane', channel: 'plane', post: 'plane', dataset: 'plane',
   // Explicit sphere fallbacks (intentional, not default)
   metric: 'sphere', solution: 'sphere', sport: 'sphere', model: 'sphere',
+  // Technical systems — reuse existing geometry vocabulary by nearest analogue
+  framework: 'icosahedron',  // complex/structural, like standard/law
+  tool: 'box',               // technical/mechanical, like software
+  process: 'octahedron',     // active/in-motion, like event
+  system: 'torus',           // networked/containing, like platform
+  hardware: 'box',           // technical/mechanical, like software
+  prompt: 'tetrahedron',     // pointed/directive, like insight/algorithm
 };
 
 const FLAT_SHADED = new Set(['octahedron', 'tetrahedron', 'icosahedron', 'dodecahedron', 'box']);

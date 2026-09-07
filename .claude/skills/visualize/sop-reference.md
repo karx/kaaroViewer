@@ -47,6 +47,12 @@
 | `metric` | Sphere (small) | Yellow | Quantitative indicators |
 | `civ` | Sphere | Brown | Game civilizations |
 | `dlc` | Sphere | Purple | Game DLC content |
+| `framework` | Icosahedron | Violet | Named methodologies/systems of practice (PARA, Arduino Framework, MicroPython) |
+| `tool` | Box | Teal-green | Concrete software/IDE a person operates (PlatformIO, kaaroViewer, Arduino IDE) |
+| `process` | Octahedron | Amber | A repeatable procedure or workflow (crystallization, OTA updates, WikiLinks graph-building) |
+| `system` | Torus | Blue | A containing whole made of sub-parts (eBrain Vault, an OS, a platform stack) |
+| `hardware` | Box | Slate blue | Physical devices/chips (ESP32, PyBoard) — distinct from `tool` (software) |
+| `prompt` | Tetrahedron | Magenta | A directive/instructional artifact that shapes agent behavior (a system prompt, CLAUDE.md) |
 
 ---
 
@@ -120,6 +126,12 @@ Reserve weight 4–5 for ≤20% of total edges.
 | `features` | → | Includes, showcases |
 | `broadcasts` | → | Media coverage |
 | `temporal` | → | Time-based link only |
+| `transforms` | → | A process converts/reworks B into a new form (framework transforms passive resources into skill surfaces) |
+| `updates` | → | A keeps B current without replacing it (an area README is updated; firmware is updated) |
+| `contains` | → | Structural containment — a system/vault holds sub-parts (vault contains its framework) |
+| `visualizes` | → | A tool renders/displays B (kaaroViewer visualizes a knowledge surface) |
+| `underpins` | → | Foundational/conceptual support — B depends on A existing (agent-field underpins a prompt) |
+| `simplifies` | → | A tool reduces the complexity of using B (a wrapper simplifies raw hardware) |
 
 ---
 

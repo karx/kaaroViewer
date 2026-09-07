@@ -61,6 +61,13 @@ export const ENTITY_TYPES = {
   standard:     { color: 0x88aacc, radius: 0.50, label: 'Standard',     code: 'STND' },
   dataset:      { color: 0x00cccc, radius: 0.48, label: 'Dataset',      code: 'DATA' },
   model:        { color: 0x44ddcc, radius: 0.52, label: 'Model',        code: 'MODL' },
+  // ── Technical systems types (engineering / PKM / infra docs) ─────────────
+  framework:    { color: 0x9977ee, radius: 0.55, label: 'Framework',    code: 'FRMK' },
+  tool:         { color: 0x00ddaa, radius: 0.48, label: 'Tool',         code: 'TOOL' },
+  process:      { color: 0xffaa44, radius: 0.46, label: 'Process',      code: 'PROC' },
+  system:       { color: 0x3388ff, radius: 0.62, label: 'System',       code: 'SYS'  },
+  hardware:     { color: 0x66aacc, radius: 0.55, label: 'Hardware',     code: 'HDWR' },
+  prompt:       { color: 0xcc66ff, radius: 0.50, label: 'Prompt',       code: 'PRMP' },
   // ── Analytical / narrative types ──────────────────────────────────────────
   insight:      { color: 0xffffff, radius: 0.62, label: 'Insight',      code: 'ISGT' },
   milestone:    { color: 0xffee00, radius: 0.50, label: 'Milestone',    code: 'MLST' },
@@ -163,6 +170,13 @@ export const REL_TYPES = {
   achieves:     { color: 0xffee00, label: 'ACHIEVES',      code: 'ACHV' },
   cites:        { color: 0x888866, label: 'CITES',         code: 'CITE' },
   contradicts:  { color: 0xff4466, label: 'CONTRADICTS',   code: 'CNTR' },
+  // ── Technical systems (engineering / PKM / infra docs) ────────────────────
+  transforms:   { color: 0x00ccaa, label: 'TRANSFORMS',    code: 'TRFM' },
+  updates:      { color: 0x00aaff, label: 'UPDATES',       code: 'UPDT' },
+  contains:     { color: 0x888866, label: 'CONTAINS',      code: 'CNTN' },
+  visualizes:   { color: 0xff6600, label: 'VISUALIZES',    code: 'VIZ'  },
+  underpins:    { color: 0xaa88ff, label: 'UNDERPINS',     code: 'UNDP' },
+  simplifies:   { color: 0x00ff66, label: 'SIMPLIFIES',    code: 'SMPL' },
   default:      { color: 0x446644, label: 'RELATED TO',    code: 'REL'  },
 };
 

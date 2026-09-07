@@ -45,6 +45,8 @@ VALID_TYPES = {
     'ruling', 'regulation',
     # Technical knowledge
     'algorithm', 'standard', 'dataset', 'model',
+    # Technical systems (engineering / PKM / infra docs)
+    'framework', 'tool', 'process', 'system', 'hardware', 'prompt',
 }
 
 VALID_RELS = {
@@ -55,6 +57,8 @@ VALID_RELS = {
     # Structural / technical
     'implements', 'supersedes', 'permits', 'prohibits',
     'derives_from', 'achieves', 'cites', 'contradicts',
+    # Technical systems (engineering / PKM / infra docs)
+    'transforms', 'updates', 'contains', 'visualizes', 'underpins', 'simplifies',
 }
 
 VALID_TIERS      = {'spine', 'primary', 'secondary', 'anchor', 'insight'}
