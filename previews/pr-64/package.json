@@ -1,0 +1,29 @@
+{
+  "name": "kaaro-viewer",
+  "version": "3.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "health": "node scripts/health-check.mjs --summary",
+    "health:json": "node scripts/health-check.mjs"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.0",
+    "fake-indexeddb": "^6.2.5",
+    "jsdom": "^25.0.0",
+    "jszip": "^3.10.1",
+    "vitest": "^2.0.0"
+  },
+  "vitest": {
+    "environment": "jsdom",
+    "include": [
+      "**/*.test.mjs"
+    ],
+    "exclude": [
+      "node_modules",
+      "pod_modules"
+    ]
+  }
+}
