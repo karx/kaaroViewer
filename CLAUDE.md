@@ -24,6 +24,18 @@ Use `/visualize` to encode a markdown document into a permanent library entry.
 
 The skill reads the SOP reference automatically. You do not need to load it manually.
 
+**Discord front door**: `/visualize` is also reachable from Discord — see
+`discord-bot/README.md`. A bot process runs the same SOP headlessly (configurable
+engine: real Claude Code by default, or `pi-coding-agent`) and always lands the
+result as a **pull request**, never a direct push. Never wire the bot to auto-merge.
+
+**Class A vs class B**: prefixing the argument with `B-class:` (e.g. `/visualize
+B-class: <path>`) switches to the minimalistic flow documented in SKILL.md —
+6–15 nodes, no mandatory retrospective, no edge-density/story-arc/insight-mix
+gates, `meta.class: "B"`. Same schema, same validator, relaxed thresholds. Class
+A (the default, no prefix) is the full library-grade three-pass encoding this
+section otherwise describes.
+
 ### What /visualize produces
 
 | Output | Path |

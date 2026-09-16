@@ -1,0 +1,1637 @@
+{
+  "meta": {
+    "id": "hacking-starry-night",
+    "title": "Hacking Starry Night",
+    "subtitle": "An AI co-pilot that stares faster — extending human puzzle intuition instead of replacing the hunt",
+    "source": "Hacking Starry Night - An AI Co-pilot.md",
+    "domain": "Computer Vision / Human-Computer Interaction",
+    "year": "2026",
+    "tags": [
+      "computer-vision",
+      "van-gogh",
+      "puzzle",
+      "ebrain",
+      "co-pilot",
+      "gemini",
+      "kaaro-puzzle"
+    ],
+    "tone": "narrative",
+    "class": "A"
+  },
+  "report_card": {
+    "summary": "Eight years and two failed attempts at a 2,000-piece Van Gogh Starry Night jigsaw produced a usable theory of the problem: in an impressionist sky, brush-stroke direction beats color. kaaroPuzzle turns that human staring strategy into a probabilistic computer-vision engine; kaaroVanGogh is the instance tuned to this painting. Dining-table capture kills exact template matching 100% of the time, so the system returns a heatmap of likely regions rather than an answer. The point is a co-pilot, not an autopilot — search is removed, the hunt and the click stay human.",
+    "key_stats": [
+      {
+        "label": "Puzzle size",
+        "value": "2,000 pieces"
+      },
+      {
+        "label": "Years owned / stalled",
+        "value": "8+ years"
+      },
+      {
+        "label": "Prior failed attempts",
+        "value": "2"
+      },
+      {
+        "label": "Impressionist sky share",
+        "value": "~80% turbulent blue"
+      },
+      {
+        "label": "Template-matching failure",
+        "value": "100% under table capture"
+      },
+      {
+        "label": "Brush-direction weight",
+        "value": "3× color histogram"
+      },
+      {
+        "label": "Scale mismatch",
+        "value": "400×400 px piece vs ~12×12 px reference window"
+      },
+      {
+        "label": "Live match confidence",
+        "value": "29% (R22 C9) / 22.4% (R35 C16)"
+      }
+    ],
+    "spine": [
+      "kaaro-puzzle",
+      "starry-night-puzzle",
+      "staring-strategy"
+    ],
+    "protagonists": [
+      "kaaro-puzzle",
+      "staring-strategy",
+      "co-pilot-not-autopilot"
+    ],
+    "antagonists": [
+      "swirling-sky",
+      "real-world-chaos",
+      "template-matching"
+    ],
+    "themes": [
+      "Human-AI Collaboration",
+      "Computer Vision in the Wild",
+      "Engine vs Instance",
+      "Impressionist Texture Matching",
+      "Co-pilot not Autopilot"
+    ]
+  },
+  "story": [
+    {
+      "id": "beat-01-eight-years",
+      "title": "Attempt #3, Eight Years Late",
+      "node": "starry-night-puzzle",
+      "nodes": [
+        "attempt-1",
+        "attempt-2",
+        "ebrain-series"
+      ],
+      "narration": "Kartik and his wife have owned a 2,000-piece Starry Night jigsaw for over eight years. They have attempted it twice and surrendered both times — not for lack of stubbornness, but because the puzzle is unfair. Attempt #3 is an eBrain experiment: if UrbanCompany will not send a professional puzzle solver, build a cognitive co-pilot instead. Cheating is rebranded as collaboration, and finishing is now the strategy.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-02-brutal-canvas",
+      "title": "No Regions, Only Weather",
+      "node": "swirling-sky",
+      "nodes": [
+        "the-starry-night",
+        "vincent-van-gogh",
+        "starry-night-puzzle"
+      ],
+      "narration": "Ordinary puzzles sort themselves: blue sky, green trees, red barn. The Starry Night refuses that luxury. Van Gogh's canvas is a continuous flow of swirling gradients with no sharp boundaries; every piece bleeds into the next. Roughly 80% of the 2,000 pieces are some shade of turbulent blue. Hold two sky pieces side by side and they are nearly identical. The sky is where pieces go to die.",
+      "tension": "low",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-03-staring",
+      "title": "Brush Strokes Beat Color",
+      "node": "staring-strategy",
+      "nodes": [
+        "the-starry-night",
+        "swirling-sky",
+        "vincent-van-gogh"
+      ],
+      "narration": "After two failures a human heuristic appears: stare at the reference poster for one to two minutes while holding a piece, and read direction and texture rather than hue. White highlights — stars, moon — lock in first. The dark village silhouette is manageable. The massive undifferentiated sky is not. The brain is already doing pattern matching on flow. That is precisely what computer vision is for. The missing tool is not an AI that can see. It is one that can stare faster.",
+      "tension": "medium",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-04-two-projects",
+      "title": "Engine, Then Instance",
+      "node": "engine-instance-split",
+      "nodes": [
+        "kaaro-puzzle",
+        "kaaro-vangogh",
+        "water-lilies"
+      ],
+      "narration": "A one-off script would solve this box and rot. The work splits in two. kaaroPuzzle is a generalized backend: upload, feature extraction, probabilistic match, heatmap. It knows nothing about Van Gogh — only textures, colors, and probabilities. kaaroVanGogh is the instance: the high-resolution Starry Night reference, impressionist-tuned parameters (high variance, low edge contrast), a 2,000-piece grid, and live progress state. The next instance is already named: Monet's Water Lilies.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-05-table-chaos",
+      "title": "The Dining Table Is the Adversary",
+      "node": "real-world-chaos",
+      "nodes": [
+        "template-matching",
+        "wooden-table",
+        "piece-extraction"
+      ],
+      "narration": "Tutorials never mention the table. A lamp throws a warm shadow across half the piece. The piece is upside-down from the pile. The phone is at a 30-degree angle, not orthographic. Brown wood bleeds into the piece's brown border. The photograph is about 400×400 pixels; the corresponding reference window is about 12×12. Exact template matching — slide a crop until pixels agree — fails 100% of the time in these conditions.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-06-oom-and-mask",
+      "title": "OOM, Then a Wooden Mask",
+      "node": "oom-art-project",
+      "nodes": [
+        "google-art-project",
+        "piece-extraction",
+        "wooden-table",
+        "kaaro-vangogh"
+      ],
+      "narration": "The first reference pass is a Google Art Project export of Starry Night, and the analysis process runs out of memory. After a restart the server is up and already scoring pieces: Row 22 Column 9 at 29%, Row 35 Column 16 at 22.4%. Those numbers are low on purpose — the matcher is still looking at the whole photograph, wooden table included. Piece extraction is the next cut: the table is high-R, medium-G, low-B brown; Van Gogh is blues, greens, yellows. Color-distance from the dominant background builds a mask; erosion and dilation clean it.",
+      "tension": "high",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-07-digital-staring",
+      "title": "The Stare Becomes a Vector",
+      "node": "feature-distance-vector",
+      "nodes": [
+        "staring-strategy",
+        "probabilistic-matching",
+        "gradient-orientation",
+        "color-histogram",
+        "edge-density"
+      ],
+      "narration": "kaaroPuzzle stops asking where a piece exactly matches and asks where it most likely belongs. Each piece yields a Feature Distance Vector: color-histogram distance, edge-density (calm field versus raging sky), and gradient orientation for brush-stroke flow. For Van Gogh, gradient orientation is weighted 3× color — the staring insight compiled into an algorithm. A sliding window over the high-res painting scores every position. The output is not a coordinate. It is a heatmap of the top 3 candidate regions with confidence.",
+      "tension": "climax",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-08-copilot",
+      "title": "Search Removed, Hunt Intact",
+      "node": "co-pilot-not-autopilot",
+      "nodes": [
+        "kaaro-puzzle",
+        "searching-vs-hunting",
+        "flow-state",
+        "heatmap-output",
+        "local-wifi"
+      ],
+      "narration": "The constraint that shapes the whole stack is one-handed phone use while the other hand holds a piece. React and Vite on the glass, Node and Express on the laptop, Google Cloud Vision and Gemini in the CV path, puzzle state as a JSON file, local Wi-Fi so there is no cloud round-trip. The co-pilot says: try the bottom-left quadrant, near the church spire, 87% confidence. Finding the exact slot, and the click, remain human. Twenty minutes of staring at an ocean of blue per piece is what dies.",
+      "tension": "medium",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-09-extend-not-replace",
+      "title": "The Machine Stares Faster",
+      "node": "ebrain-series",
+      "nodes": [
+        "staring-strategy",
+        "kaaro-puzzle",
+        "water-lilies",
+        "github"
+      ],
+      "narration": "The algorithms that looked elegant on paper fell apart the first time a lamp cast a shadow. The deeper lesson is the eBrain thesis: the best tools do not replace human ability — they extend it. The staring strategy was correct all along; the AI just stares faster. The engine is intended to ship open source as kaaro-puzzle. Eight years. Three attempts. One co-pilot. They are going to finish this puzzle.",
+      "tension": "low",
+      "focus": "wide"
+    }
+  ],
+  "insights": [
+    {
+      "id": "ins-brush-beats-color",
+      "title": "Brush-stroke orientation, not hue, is the discriminative signal in this impressionist jigsaw — and it is encoded as a 3× weight on gradient orientation",
+      "body": "Two failed attempts taught a counter-intuitive sorting rule: in Starry Night, color is nearly useless because ~80% of pieces are turbulent blue. Direction and texture of Van Gogh's brush work are what the eye actually uses. kaaroPuzzle does not invent a new theory of the puzzle; it compiles that human heuristic into the Feature Distance Vector, giving gradient orientation three times the weight of the color histogram.",
+      "type": "finding",
+      "severity": "high",
+      "evidence": [
+        "staring-strategy",
+        "gradient-orientation",
+        "feature-distance-vector",
+        "swirling-sky"
+      ]
+    },
+    {
+      "id": "ins-template-dies",
+      "title": "Exact template matching fails 100% of the time under dining-table capture, so any solver that assumes orthographic crops is dead on arrival",
+      "body": "Lighting from a warm lamp, arbitrary rotation, a 30-degree phone angle, wood bleeding into the piece border, and a 400×400 versus 12×12 scale gap are not edge cases — they are the operating environment. Sliding-window pixel equality never fires. The live 29% and 22.4% scores while the table is still in frame are the honest measurement of that gap, and they are why extraction and probabilistic scoring exist.",
+      "type": "warning",
+      "severity": "high",
+      "evidence": [
+        "template-matching",
+        "real-world-chaos",
+        "wooden-table",
+        "oom-art-project"
+      ]
+    },
+    {
+      "id": "ins-engine-instance",
+      "title": "Splitting kaaroPuzzle from kaaroVanGogh is what turns a one-off cheat into reusable cognitive infrastructure",
+      "body": "The engine is forbidden to know about Van Gogh. Feature extraction, match, and heatmap stay generic; the painting, the 2,000-piece grid, impressionist parameter tuning, and progress JSON live in the instance. That boundary is the difference between a script that finishes one box and a system that can take Monet's Water Lilies next without a rewrite of the core.",
+      "type": "pattern",
+      "severity": "medium",
+      "evidence": [
+        "engine-instance-split",
+        "kaaro-puzzle",
+        "kaaro-vangogh",
+        "water-lilies"
+      ]
+    },
+    {
+      "id": "ins-copilot-paradox",
+      "title": "The co-pilot is most useful when it refuses to place the piece — it deletes searching and preserves hunting",
+      "body": "Looking at the box would already give the answer. The joy of puzzling is the hunt and the click, not the twenty-minute scan across two thousand near-identical blues. Heatmaps of the top three regions (the 87% church-spire prompt) shrink the search space without stealing the placement. Autopilot would make the project pointless; co-pilot restores flow.",
+      "type": "paradox",
+      "severity": "high",
+      "evidence": [
+        "co-pilot-not-autopilot",
+        "searching-vs-hunting",
+        "heatmap-output",
+        "flow-state"
+      ]
+    },
+    {
+      "id": "ins-stare-was-right",
+      "title": "The staring strategy was correct all along; computer vision is simply the same loop at machine speed",
+      "body": "This is the eBrain claim in miniature. Kartik did not need a model that 'understands' Starry Night. He needed a faster version of a skill he had already developed with his eyes: dwell, compare texture and flow, update a belief about location. Building for the physical world is humbling because clean algorithms meet optical noise, but the architecture is an extension of existing human competence rather than a replacement for it.",
+      "type": "conclusion",
+      "severity": "high",
+      "evidence": [
+        "staring-strategy",
+        "ebrain-series",
+        "kaaro-puzzle",
+        "probabilistic-matching"
+      ]
+    },
+    {
+      "id": "ins-water-lilies-test",
+      "title": "Monet's Water Lilies is the generalization test: if impressionist-tuned 3× gradient weights are truly engine logic, they should transfer without a Van Gogh rewrite",
+      "body": "The essay names Water Lilies as the next puzzle on purpose. If kaaroVanGogh's high-variance, low-edge-contrast knobs are instance config, a new instance file should be enough. If they have leaked into kaaroPuzzle, the engine/instance split is theatre. The open-source kaaro-puzzle repo is the public version of that bet.",
+      "type": "opportunity",
+      "severity": "medium",
+      "evidence": [
+        "water-lilies",
+        "kaaro-puzzle",
+        "engine-instance-split",
+        "github"
+      ]
+    }
+  ],
+  "clusters": [
+    {
+      "id": "cluster-canvas",
+      "label": "The Brutal Canvas",
+      "color": "#ff4488",
+      "description": "The painting, the 2,000-piece object, Van Gogh's hand, the undifferentiated sky, and the next impressionist box.",
+      "nodes": [
+        "the-starry-night",
+        "starry-night-puzzle",
+        "vincent-van-gogh",
+        "swirling-sky",
+        "water-lilies"
+      ]
+    },
+    {
+      "id": "cluster-stall",
+      "label": "Eight-Year Stall",
+      "color": "#888866",
+      "description": "The timeline of surrender and return, plus the missing human-solver market that justified building a tool instead.",
+      "nodes": [
+        "attempt-1",
+        "attempt-2",
+        "attempt-3",
+        "urban-company",
+        "github"
+      ]
+    },
+    {
+      "id": "cluster-cognition",
+      "label": "Digital Staring",
+      "color": "#cc44ff",
+      "description": "The human heuristic, the eBrain thesis, and the co-pilot contract that keeps hunting human.",
+      "nodes": [
+        "staring-strategy",
+        "co-pilot-not-autopilot",
+        "searching-vs-hunting",
+        "flow-state",
+        "ebrain-series",
+        "heatmap-output"
+      ]
+    },
+    {
+      "id": "cluster-engine",
+      "label": "Matching Engine",
+      "color": "#00aaff",
+      "description": "Generalized service, Van Gogh instance, and the feature vector that compiles brush-direction into weights.",
+      "nodes": [
+        "kaaro-puzzle",
+        "kaaro-vangogh",
+        "engine-instance-split",
+        "probabilistic-matching",
+        "feature-distance-vector",
+        "gradient-orientation",
+        "color-histogram",
+        "edge-density"
+      ]
+    },
+    {
+      "id": "cluster-chaos",
+      "label": "Capture Chaos",
+      "color": "#aa7744",
+      "description": "Physical-world noise, the algorithm it kills, the table, the Art Project OOM, and the mask that cuts wood from paint.",
+      "nodes": [
+        "real-world-chaos",
+        "template-matching",
+        "wooden-table",
+        "oom-art-project",
+        "google-art-project",
+        "piece-extraction",
+        "google"
+      ]
+    },
+    {
+      "id": "cluster-stack",
+      "label": "One-Handed Stack",
+      "color": "#00cccc",
+      "description": "The mobile-first, local-network toolchain optimized for holding a piece in the other hand.",
+      "nodes": [
+        "google-cloud-vision",
+        "gemini",
+        "react",
+        "vite",
+        "nodejs",
+        "express",
+        "json-store",
+        "local-wifi"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "kaaro-puzzle",
+      "label": "kaaroPuzzle",
+      "type": "platform",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "Generalized computer-vision backend for physical jigsaws: image upload, feature extraction (histograms, edge gradients, texture frequency), probabilistic matching against a reference, and heatmap output. Knows nothing about Van Gogh — only textures, colors, and probabilities.",
+      "metrics": {
+        "Layer": "Engine",
+        "Output": "Top-3 region heatmap",
+        "Constraint": "One-handed mobile use"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "starry-night-puzzle",
+      "label": "2,000-Piece Starry Night",
+      "type": "concept",
+      "tier": "spine",
+      "sentiment": "contested",
+      "description": "The physical jigsaw Kartik and his wife have owned for 8+ years. Two thousand impressionist brush-stroke fragments, ~80% turbulent blue, attempted twice and abandoned. Attempt #3 is the occasion for the co-pilot.",
+      "metrics": {
+        "Pieces": "2,000",
+        "Years owned": "8+",
+        "Failed attempts": "2"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "staring-strategy",
+      "label": "Staring Strategy",
+      "type": "concept",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "Human heuristic earned from two failures: stare at the reference for 1–2 minutes and match brush-stroke direction and texture, not hue. Stars and moon lock first; the village is tractable; the sky is not. The entire CV design is this loop at machine speed.",
+      "metrics": {
+        "Dwell": "1–2 minutes/piece",
+        "Signal": "Flow + texture > color"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "kaaro-vangogh",
+      "label": "kaaroVanGogh",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Instance configuration for this puzzle: high-resolution Starry Night reference, impressionist-tuned parameters (high variance, low edge contrast), 2,000-piece grid mapping, and JSON progress state. Messy painting-specific knobs stay here so they cannot pollute the engine.",
+      "metrics": {
+        "Grid": "2,000 pieces",
+        "Tuning": "High variance, low edge contrast"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "the-starry-night",
+      "label": "The Starry Night",
+      "type": "artwork",
+      "tier": "primary",
+      "sentiment": "contested",
+      "description": "Van Gogh's 1889 Saint-Rémy painting — continuous swirling gradients, no sharp region boundaries. As a jigsaw source it is uniquely hostile: beauty and impossibility are the same property. Also the high-resolution reference the matcher scans, including a Google Art Project export that OOMed the first analysis pass.",
+      "metrics": {
+        "Painted": "June 1889",
+        "Site": "Saint-Rémy-de-Provence"
+      },
+      "wikidata": "Q45585",
+      "image": null
+    },
+    {
+      "id": "vincent-van-gogh",
+      "label": "Vincent van Gogh",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "Dutch post-impressionist whose directional, high-energy brush work is the actual matching key. The co-pilot is less a color matcher than a reader of his hand.",
+      "metrics": {
+        "Lived": "1853–1890",
+        "Movement": "Post-Impressionism"
+      },
+      "wikidata": "Q5582",
+      "image": null
+    },
+    {
+      "id": "swirling-sky",
+      "label": "Undifferentiated Sky",
+      "type": "issue",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "The massive, swirling, region-less sky that occupies most of the puzzle. ~80% of pieces are some shade of turbulent blue with no barn/tree/sky shortcut. This is the antagonist that produced two surrenders and forced the staring strategy.",
+      "metrics": {
+        "Share of pieces": "~80%",
+        "Sort-by-color": "Useless"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "probabilistic-matching",
+      "label": "Probabilistic Matching",
+      "type": "algorithm",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "kaaroPuzzle's core question-shift: not 'where does this piece exactly match?' but 'where does it most likely belong?' A sliding window over the reference scores a Feature Distance Vector at each position and emits a confidence heatmap instead of a single coordinate.",
+      "metrics": {
+        "Question": "Most likely region",
+        "Output": "Top-3 heatmap"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "feature-distance-vector",
+      "label": "Feature Distance Vector",
+      "type": "algorithm",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Three-signal comparison used at every reference window: color-histogram distance, edge-density match, and gradient orientation. The weighting is the product insight — for Van Gogh, brush direction is worth 3× color, compiling the human stare into arithmetic.",
+      "metrics": {
+        "Signals": "3",
+        "Gradient:color": "3:1"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "gradient-orientation",
+      "label": "Gradient Orientation",
+      "type": "algorithm",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The brush-stroke-direction signal. Do the strokes flow the same way as this region of the painting? Weighted 3× the color histogram for this instance because that is how the human solver already stares.",
+      "metrics": {
+        "Weight vs color": "3×"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "real-world-chaos",
+      "label": "Real-World Chaos",
+      "type": "issue",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "The actual hard part of applied CV: lamp shadow, upside-down pieces, 30° phone perspective, wooden table bleeding into borders, and a brutal scale gap. Algorithms that looked elegant on paper die here. Optical noise, environmental noise, human noise.",
+      "metrics": {
+        "Phone angle": "~30°",
+        "Template success": "0%"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "template-matching",
+      "label": "Template Matching",
+      "type": "algorithm",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "Classical slide-the-crop-until-pixels-agree. Under dining-table capture it fails 100% of the time. The antagonist algorithm — the tutorial solution that cannot survive this room.",
+      "metrics": {
+        "Success under table capture": "0%"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "google-cloud-vision",
+      "label": "Google Cloud Vision",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Cloud CV API in the AI layer, chosen because it handles lighting variance better than a brittle local template. Paired with Gemini for feature extraction that can survive a warm lamp.",
+      "metrics": {
+        "Role": "Feature extraction",
+        "Why": "Lighting variance"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "type": "model",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Google's multimodal model paired with Cloud Vision in the CV stack. Not asked to 'solve' the puzzle; used as robust feature machinery inside the probabilistic pipeline.",
+      "metrics": {
+        "Role": "CV / feature layer"
+      },
+      "wikidata": "Q125923213",
+      "image": null
+    },
+    {
+      "id": "co-pilot-not-autopilot",
+      "label": "Co-pilot, Not Autopilot",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Product thesis. The AI must not finish the puzzle. It narrows the search ('bottom-left, near the church spire, 87%') while the human still places the piece and gets the click. Autopilot would make the project pointless; co-pilot restores flow.",
+      "metrics": {
+        "Example prompt": "Church spire 87%"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "attempt-3",
+      "label": "Attempt #3 (2026)",
+      "type": "event",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The current attempt, begun around February 2026, in which AI collaboration is the strategy rather than a last resort. Produces the OOM, the live low-confidence matches, the extraction pipeline, and this brief.",
+      "metrics": {
+        "Year": "2026",
+        "Prior attempts": "2 failed"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "searching-vs-hunting",
+      "label": "Searching vs Hunting",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The split that justifies the whole tool. Searching is the 20-minute scan across two thousand near-identical blues. Hunting is finding the exact slot and feeling the piece lock. kaaroPuzzle is designed to delete the first and protect the second.",
+      "metrics": {
+        "Search cost before": "~20 min/piece"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "engine-instance-split",
+      "label": "Engine / Instance Split",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Architectural move: two projects, not one. Reusable engine versus painting-specific config. Guarantees the core stays clean and that Monet (or any later box) is a new instance, not a fork.",
+      "metrics": {
+        "Projects": "2",
+        "Next instance": "Water Lilies"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "ebrain-series",
+      "label": "eBrain Series",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Kartik's series of experiments that augment human cognition through code — not to replace the human, but to make the human better. This puzzle co-pilot is one episode of that thesis.",
+      "metrics": {
+        "Stance": "Augment, don't replace"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "google-art-project",
+      "label": "Google Art Project",
+      "type": "platform",
+      "tier": "secondary",
+      "sentiment": "contested",
+      "description": "Source of a very high-resolution Starry Night export used as reference. The export is rich enough to OOM the first analysis pass — museum-grade pixels as a systems problem.",
+      "metrics": {
+        "Role": "Reference image source"
+      },
+      "wikidata": "Q1536343",
+      "image": null
+    },
+    {
+      "id": "piece-extraction",
+      "label": "Piece Extraction",
+      "type": "algorithm",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Mask the puzzle piece off the wooden table by color-distance from dominant background (high R, medium G, low B brown versus Van Gogh blues/greens/yellows), then morphological erosion/dilation. Exists because the matcher otherwise scores the table.",
+      "metrics": {
+        "Background": "Warm wood (high R, mid G, low B)"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "heatmap-output",
+      "label": "Placement Heatmap",
+      "type": "solution",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "User-facing product of the engine: colored probability overlay on Starry Night with the top 3 candidate regions and confidence percentages. The sentence the co-pilot is allowed to say.",
+      "metrics": {
+        "Candidates": "Top 3 regions"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "flow-state",
+      "label": "Restored Flow",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "The intended human state: hunting without exhausted scanning. The click is still earned; the ocean-of-blue stare is not. Success metric for the co-pilot is phenomenological, not accuracy-max.",
+      "metrics": {
+        "Removes": "Searching",
+        "Keeps": "Hunting + click"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "color-histogram",
+      "label": "Color Histogram Distance",
+      "type": "algorithm",
+      "tier": "secondary",
+      "sentiment": "contested",
+      "description": "First FDV signal: is this region the right shade of blue? Necessary but weak on Starry Night, which is why it is down-weighted 3:1 versus gradient orientation.",
+      "metrics": {
+        "Relative weight": "1× (vs 3× gradient)"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "edge-density",
+      "label": "Edge Density Match",
+      "type": "algorithm",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Second FDV signal: is the turbulence level similar? Distinguishes a calm field from a raging sky when hue cannot.",
+      "metrics": {
+        "Discriminates": "Calm field vs raging sky"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "react",
+      "label": "React",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Frontend library for the mobile-first PWA. Chosen with Vite for fast hot-reload while iterating on a one-handed capture UI.",
+      "metrics": {
+        "Layer": "Frontend"
+      },
+      "wikidata": "Q19399674",
+      "image": null
+    },
+    {
+      "id": "vite",
+      "label": "Vite",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Dev server / bundler paired with React so the capture UI can be iterated at puzzle-table speed.",
+      "metrics": {
+        "Layer": "Frontend tooling"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "nodejs",
+      "label": "Node.js",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Lightweight backend runtime on the laptop. Hosts Express, file uploads, and API orchestration without a heavy application server.",
+      "metrics": {
+        "Layer": "Backend runtime"
+      },
+      "wikidata": "Q756100",
+      "image": null
+    },
+    {
+      "id": "express",
+      "label": "Express",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "HTTP layer on Node for uploads and match-API orchestration. Keeps the laptop-side service small enough to sit on the same Wi-Fi as the phone.",
+      "metrics": {
+        "Layer": "Backend HTTP"
+      },
+      "wikidata": "Q1688013",
+      "image": null
+    },
+    {
+      "id": "json-store",
+      "label": "JSON Progress Store",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "File-based store for which pieces are placed. No database — puzzle state is a JSON file, matching the 'instance config should stay messy and local' rule.",
+      "metrics": {
+        "Database": "None — file JSON"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "local-wifi",
+      "label": "Local Wi-Fi",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Phone and laptop on the same network, zero cloud latency. The network topology is part of the one-handed UX, not an afterthought.",
+      "metrics": {
+        "Latency target": "LAN, not cloud"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "urban-company",
+      "label": "Urban Company",
+      "type": "company",
+      "tier": "secondary",
+      "sentiment": "contested",
+      "description": "India's home-services marketplace (the TaskRabbit analogue). Named as the counterfactual: if a professional puzzle solver could be hired, this software would not exist. The gap in the market is the pretext for building.",
+      "metrics": {
+        "Role": "Missing human-solver market"
+      },
+      "wikidata": "Q17068504",
+      "image": null
+    },
+    {
+      "id": "github",
+      "label": "kaaro-puzzle (GitHub)",
+      "type": "platform",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Intended public home of the engine. Open-sourcing is how a dining-table experiment is offered to anyone else engineering their way through an 'impossible' physical problem.",
+      "metrics": {
+        "Repo": "kaaro-puzzle"
+      },
+      "wikidata": "Q364",
+      "image": null
+    },
+    {
+      "id": "attempt-1",
+      "label": "Attempt #1",
+      "type": "event",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "First surrender. Established that patience was not the missing ingredient — the puzzle's structure was.",
+      "metrics": {
+        "Outcome": "Abandoned"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "attempt-2",
+      "label": "Attempt #2",
+      "type": "event",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "Second surrender, and the run that crystallized the staring strategy: brush work over color, sky as the killing field.",
+      "metrics": {
+        "Outcome": "Abandoned",
+        "Byproduct": "Staring heuristic"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "oom-art-project",
+      "label": "Art Project OOM",
+      "type": "event",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "Analysis of the Google Art Project Starry Night export ran out of memory. The first contact between museum-grade pixels and a laptop pipeline. After recovery the server reports live piece scores — still low, because the table is in the frame.",
+      "metrics": {
+        "Year": "2026",
+        "Live scores after": "29% / 22.4%"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "water-lilies",
+      "label": "Water Lilies (next instance)",
+      "type": "artwork",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Monet's Water Lilies, named as the next puzzle and therefore the generalization test of the engine/instance split. If the 3× gradient weighting is truly config, this should not require a core rewrite.",
+      "metrics": {
+        "Role": "Next instance"
+      },
+      "wikidata": "Q298383",
+      "image": null
+    },
+    {
+      "id": "wooden-table",
+      "label": "Wooden Dining Table",
+      "type": "place",
+      "tier": "anchor",
+      "sentiment": "contested",
+      "description": "Capture environment and optical adversary: warm brown (high R, medium G, low B) that bleeds into piece borders and inflates whole-photo match scores. The extraction mask is defined against this surface.",
+      "metrics": {
+        "Tone": "Warm brown / beige"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "google",
+      "label": "Google",
+      "type": "company",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "Parent of Cloud Vision, Gemini, and the Art Project export. The reference pixels and the CV APIs in this stack both come from here.",
+      "metrics": {
+        "Role": "CV APIs + reference pixels"
+      },
+      "wikidata": "Q95",
+      "image": null
+    }
+  ],
+  "edges": [
+    {
+      "from": "staring-strategy",
+      "to": "feature-distance-vector",
+      "rel": "enables",
+      "label": "human stare compiles into 3× gradient weight",
+      "weight": 5,
+      "directed": true,
+      "notes": "Defining relationship of the report"
+    },
+    {
+      "from": "co-pilot-not-autopilot",
+      "to": "searching-vs-hunting",
+      "rel": "enables",
+      "label": "deletes search, keeps hunt",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "swirling-sky",
+      "to": "staring-strategy",
+      "rel": "causes",
+      "label": "undifferentiated blue forces texture matching",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "real-world-chaos",
+      "to": "template-matching",
+      "rel": "disrupts",
+      "label": "fails 100% under table capture",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "probabilistic-matching",
+      "to": "template-matching",
+      "rel": "supersedes",
+      "label": "likelihood replaces exact crop match",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "starry-night-puzzle",
+      "to": "swirling-sky",
+      "rel": "causes",
+      "label": "~80% of pieces are turbulent sky",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "vincent-van-gogh",
+      "to": "the-starry-night",
+      "rel": "creation",
+      "label": "painted June 1889 at Saint-Rémy",
+      "weight": 3,
+      "directed": true,
+      "temporal": "1889"
+    },
+    {
+      "from": "the-starry-night",
+      "to": "starry-night-puzzle",
+      "rel": "enables",
+      "label": "painting is the 2,000-piece source",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "kaaro-vangogh",
+      "to": "kaaro-puzzle",
+      "rel": "derives_from",
+      "label": "instance of the generalized engine",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "engine-instance-split",
+      "to": "kaaro-puzzle",
+      "rel": "governs",
+      "label": "engine must not know Van Gogh",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "engine-instance-split",
+      "to": "kaaro-vangogh",
+      "rel": "governs",
+      "label": "painting knobs stay in the instance",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "feature-distance-vector",
+      "to": "gradient-orientation",
+      "rel": "governs",
+      "label": "3× weight versus color histogram",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "kaaro-puzzle",
+      "to": "probabilistic-matching",
+      "rel": "implements",
+      "label": "engine asks most-likely, not exact",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "heatmap-output",
+      "to": "co-pilot-not-autopilot",
+      "rel": "enables",
+      "label": "top-3 regions with confidence",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "piece-extraction",
+      "to": "real-world-chaos",
+      "rel": "mitigates",
+      "label": "masks wood from Van Gogh color",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "attempt-2",
+      "to": "attempt-3",
+      "rel": "precedes",
+      "label": "second surrender precedes AI attempt",
+      "weight": 4,
+      "directed": true,
+      "temporal": "2026"
+    },
+    {
+      "from": "google-art-project",
+      "to": "oom-art-project",
+      "rel": "causes",
+      "label": "museum-grade export OOMs analysis",
+      "weight": 4,
+      "directed": true,
+      "temporal": "2026"
+    },
+    {
+      "from": "ebrain-series",
+      "to": "kaaro-puzzle",
+      "rel": "enables",
+      "label": "augment-don't-replace thesis",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "searching-vs-hunting",
+      "to": "flow-state",
+      "rel": "enables",
+      "label": "hunt without exhausted scanning",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "attempt-1",
+      "to": "attempt-2",
+      "rel": "precedes",
+      "label": "first surrender then second",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "attempt-3",
+      "to": "oom-art-project",
+      "rel": "precedes",
+      "label": "Attempt #3 hits OOM on reference pass",
+      "weight": 3,
+      "directed": true,
+      "temporal": "2026"
+    },
+    {
+      "from": "oom-art-project",
+      "to": "piece-extraction",
+      "rel": "precedes",
+      "label": "after OOM, extract piece from table",
+      "weight": 3,
+      "directed": true,
+      "temporal": "2026"
+    },
+    {
+      "from": "probabilistic-matching",
+      "to": "feature-distance-vector",
+      "rel": "implements",
+      "label": "scores FDV at each window",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "feature-distance-vector",
+      "to": "color-histogram",
+      "rel": "features",
+      "label": "hue signal, down-weighted",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "feature-distance-vector",
+      "to": "edge-density",
+      "rel": "features",
+      "label": "turbulence / calm-vs-rage signal",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "kaaro-puzzle",
+      "to": "heatmap-output",
+      "rel": "creation",
+      "label": "engine emits probability overlay",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "kaaro-vangogh",
+      "to": "the-starry-night",
+      "rel": "features",
+      "label": "high-res painting as reference",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "kaaro-vangogh",
+      "to": "json-store",
+      "rel": "implements",
+      "label": "progress is a JSON file",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "staring-strategy",
+      "to": "probabilistic-matching",
+      "rel": "enables",
+      "label": "stare becomes likelihood search",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "gradient-orientation",
+      "to": "vincent-van-gogh",
+      "rel": "derives_from",
+      "label": "reads direction of his brush",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "the-starry-night",
+      "to": "swirling-sky",
+      "rel": "features",
+      "label": "sky is continuous gradient, no regions",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "engine-instance-split",
+      "to": "water-lilies",
+      "rel": "enables",
+      "label": "next instance without core rewrite",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "kaaro-puzzle",
+      "to": "co-pilot-not-autopilot",
+      "rel": "implements",
+      "label": "product is a co-pilot",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "staring-strategy",
+      "to": "co-pilot-not-autopilot",
+      "rel": "enables",
+      "label": "faster stare, same human hunt",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "wooden-table",
+      "to": "real-world-chaos",
+      "rel": "causes",
+      "label": "warm wood bleeds into piece borders",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "wooden-table",
+      "to": "piece-extraction",
+      "rel": "causes",
+      "label": "mask defined against table color",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "real-world-chaos",
+      "to": "piece-extraction",
+      "rel": "causes",
+      "label": "table-in-frame forces a mask",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "google-art-project",
+      "to": "the-starry-night",
+      "rel": "broadcasts",
+      "label": "high-res export of the painting",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "google",
+      "to": "google-art-project",
+      "rel": "ownership",
+      "label": "parent of Art Project / Arts & Culture",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "google",
+      "to": "google-cloud-vision",
+      "rel": "ownership",
+      "label": "parent of Cloud Vision API",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "google",
+      "to": "gemini",
+      "rel": "ownership",
+      "label": "parent of Gemini",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "oom-art-project",
+      "to": "kaaro-vangogh",
+      "rel": "disrupts",
+      "label": "first reference pass dies on memory",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "google-cloud-vision",
+      "to": "probabilistic-matching",
+      "rel": "enables",
+      "label": "lighting-robust features",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "gemini",
+      "to": "google-cloud-vision",
+      "rel": "association",
+      "label": "paired in the AI/CV layer",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "gemini",
+      "to": "probabilistic-matching",
+      "rel": "enables",
+      "label": "multimodal features in the pipeline",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "react",
+      "to": "kaaro-puzzle",
+      "rel": "enables",
+      "label": "mobile-first capture UI",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "vite",
+      "to": "react",
+      "rel": "enables",
+      "label": "fast hot-reload at the table",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "nodejs",
+      "to": "express",
+      "rel": "enables",
+      "label": "runtime for the HTTP layer",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "express",
+      "to": "kaaro-puzzle",
+      "rel": "enables",
+      "label": "uploads and API orchestration",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "local-wifi",
+      "to": "co-pilot-not-autopilot",
+      "rel": "enables",
+      "label": "phone-laptop, zero cloud RTT",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "local-wifi",
+      "to": "kaaro-puzzle",
+      "rel": "enables",
+      "label": "LAN path for one-handed use",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "json-store",
+      "to": "kaaro-puzzle",
+      "rel": "enables",
+      "label": "no database overhead",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "starry-night-puzzle",
+      "to": "attempt-1",
+      "rel": "causes",
+      "label": "first attempt at the 2,000-piece box",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "starry-night-puzzle",
+      "to": "attempt-2",
+      "rel": "causes",
+      "label": "second attempt, still no regions",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "starry-night-puzzle",
+      "to": "attempt-3",
+      "rel": "causes",
+      "label": "Attempt #3 with an AI co-pilot",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "attempt-1",
+      "to": "staring-strategy",
+      "rel": "precedes",
+      "label": "failures accumulate into a heuristic",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "attempt-2",
+      "to": "staring-strategy",
+      "rel": "causes",
+      "label": "second failure crystallizes brush>color",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "urban-company",
+      "to": "kaaro-puzzle",
+      "rel": "causes",
+      "label": "no professional solver to hire, so build",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "kaaro-puzzle",
+      "to": "github",
+      "rel": "creation",
+      "label": "engine intended as open-source kaaro-puzzle",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "ebrain-series",
+      "to": "co-pilot-not-autopilot",
+      "rel": "enables",
+      "label": "tools extend the human",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "ebrain-series",
+      "to": "staring-strategy",
+      "rel": "association",
+      "label": "human skill is the thing to amplify",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "water-lilies",
+      "to": "the-starry-night",
+      "rel": "association",
+      "label": "next impressionist box after Van Gogh",
+      "weight": 2,
+      "directed": false
+    },
+    {
+      "from": "kaaro-vangogh",
+      "to": "starry-night-puzzle",
+      "rel": "governs",
+      "label": "2,000-piece grid and progress state",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "kaaro-puzzle",
+      "to": "starry-night-puzzle",
+      "rel": "mitigates",
+      "label": "co-pilot for the stalled jigsaw",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "swirling-sky",
+      "to": "searching-vs-hunting",
+      "rel": "causes",
+      "label": "ocean of blue creates 20-min searches",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "heatmap-output",
+      "to": "swirling-sky",
+      "rel": "mitigates",
+      "label": "narrows the killing field to top-3 regions",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "attempt-3",
+      "to": "kaaro-puzzle",
+      "rel": "enables",
+      "label": "Attempt #3 is built around the engine",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "attempt-3",
+      "to": "kaaro-vangogh",
+      "rel": "features",
+      "label": "instance config born in Attempt #3",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "wooden-table",
+      "to": "starry-night-puzzle",
+      "rel": "location",
+      "label": "capture and assembly happen on the table",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "react",
+      "to": "co-pilot-not-autopilot",
+      "rel": "enables",
+      "label": "one-handed camera UI",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "google-cloud-vision",
+      "to": "real-world-chaos",
+      "rel": "mitigates",
+      "label": "chosen for lighting variance",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "piece-extraction",
+      "to": "probabilistic-matching",
+      "rel": "enables",
+      "label": "score the piece, not the table",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "color-histogram",
+      "to": "swirling-sky",
+      "rel": "contradicts",
+      "label": "hue is a weak discriminator in 80% blue",
+      "weight": 3,
+      "directed": false
+    },
+    {
+      "from": "gradient-orientation",
+      "to": "staring-strategy",
+      "rel": "implements",
+      "label": "machine form of reading brush flow",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "flow-state",
+      "to": "starry-night-puzzle",
+      "rel": "mitigates",
+      "label": "makes finishing phenomenologically possible",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "github",
+      "to": "water-lilies",
+      "rel": "enables",
+      "label": "public engine for the next instance",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "urban-company",
+      "to": "attempt-3",
+      "rel": "opposes",
+      "label": "missing marketplace vs build-it-yourself",
+      "weight": 2,
+      "directed": false
+    },
+    {
+      "from": "json-store",
+      "to": "kaaro-vangogh",
+      "rel": "membership",
+      "label": "progress state lives with the instance",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "vite",
+      "to": "kaaro-puzzle",
+      "rel": "enables",
+      "label": "frontend tooling for the engine UI",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "nodejs",
+      "to": "kaaro-puzzle",
+      "rel": "enables",
+      "label": "backend runtime for the engine",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "edge-density",
+      "to": "swirling-sky",
+      "rel": "qualifies",
+      "label": "turbulence level vs calm field",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "the-starry-night",
+      "to": "google-cloud-vision",
+      "rel": "association",
+      "label": "painting is what Vision is asked to read",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "local-wifi",
+      "to": "wooden-table",
+      "rel": "location",
+      "label": "LAN is the table's network",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "gemini",
+      "to": "kaaro-puzzle",
+      "rel": "enables",
+      "label": "model in the engine's CV path",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "google",
+      "to": "kaaro-puzzle",
+      "rel": "association",
+      "label": "APIs and reference pixels in the stack",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "attempt-1",
+      "to": "swirling-sky",
+      "rel": "opposes",
+      "label": "first attempt loses to the sky",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "attempt-2",
+      "to": "swirling-sky",
+      "rel": "opposes",
+      "label": "second attempt loses to the sky",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "heatmap-output",
+      "to": "searching-vs-hunting",
+      "rel": "mitigates",
+      "label": "top-3 overlay shortens search",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "piece-extraction",
+      "to": "color-histogram",
+      "rel": "enables",
+      "label": "mask must precede hue comparison",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "kaaro-vangogh",
+      "to": "gradient-orientation",
+      "rel": "governs",
+      "label": "impressionist instance sets 3× brush weight",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "staring-strategy",
+      "to": "attempt-3",
+      "rel": "enables",
+      "label": "heuristic becomes Attempt #3's strategy",
+      "weight": 3,
+      "directed": true
+    }
+  ]
+}

@@ -64,6 +64,14 @@ VALID_INS_TYPES  = {'finding', 'warning', 'pattern', 'conclusion', 'paradox', 'o
 VALID_SEVERITIES = {'low', 'medium', 'high'}
 VALID_TONES      = {'investigative', 'analytical', 'narrative', 'critical', 'celebratory'}
 
+# meta.class: "A" (default) is the full library-grade quality bar (three-pass
+# SOP, mandatory retrospective). "B" is the minimalistic flow — same schema,
+# same structural/cross-reference rules, but the encoding-quality gates below
+# (edge density, story-arc shape, insight-type mix, full clustering) are
+# advisory rather than required. Added for the Discord /visualize front door,
+# where a fast single-pass draft is the point — see discord-bot/README.md.
+VALID_CLASSES    = {'A', 'B'}
+
 
 def _col(code, text):
     """ANSI colour helper (degrades gracefully on Windows)."""
@@ -127,6 +135,12 @@ def validate(file_path: str) -> tuple[list, list]:
     if meta.get('tone') and meta['tone'] not in VALID_TONES:
         warnings.append(f'meta.tone "{meta["tone"]}" is not a recognised tone; valid: {sorted(VALID_TONES)}')
 
+    doc_class = meta.get('class', 'A')
+    if doc_class not in VALID_CLASSES:
+        warnings.append(f'meta.class "{doc_class}" is not recognised; valid: {sorted(VALID_CLASSES)} — treating as "A"')
+        doc_class = 'A'
+    is_class_a = doc_class == 'A'
+
     # ── Node validation ───────────────────────────────────────────────────────
     for n in nodes:
         nid = n.get('id', '(no id)')
@@ -184,13 +198,13 @@ def validate(file_path: str) -> tuple[list, list]:
         if not beat.get('narration') or len(beat.get('narration', '')) < 20:
             warnings.append(f'story beat "{bid}": narration is missing or too short')
 
-    if climax_count == 0 and len(story) >= 4:
-        warnings.append('No story beat has tension "climax" — the arc has no peak')
-    elif climax_count > 2:
+    if climax_count > 2:
         warnings.append(f'{climax_count} beats have tension "climax" — should be exactly 1')
+    elif is_class_a and climax_count == 0 and len(story) >= 4:
+        warnings.append('No story beat has tension "climax" — the arc has no peak')
 
     beat_count = len(story)
-    if beat_count < 5:
+    if is_class_a and beat_count < 5:
         warnings.append(f'Only {beat_count} story beat(s) — aim for 7–12')
 
     # ── Insight validation ────────────────────────────────────────────────────
@@ -216,10 +230,10 @@ def validate(file_path: str) -> tuple[list, list]:
         if not ins.get('body'):
             warnings.append(f'insight "{iid}": body is empty')
 
-    if 'warning' not in insight_types_used and len(insights) >= 3:
+    if is_class_a and 'warning' not in insight_types_used and len(insights) >= 3:
         warnings.append('No insight of type "warning" — consider what risks or dangers the report surfaces')
 
-    if 'finding' not in insight_types_used and len(insights) >= 3:
+    if is_class_a and 'finding' not in insight_types_used and len(insights) >= 3:
         warnings.append('No insight of type "finding" — consider what empirical facts the report establishes')
 
     # ── Cluster validation ────────────────────────────────────────────────────
@@ -236,7 +250,7 @@ def validate(file_path: str) -> tuple[list, list]:
             warnings.append(f'cluster "{clid}": description is empty')
 
     unclustered = node_ids - all_clustered
-    if unclustered:
+    if is_class_a and unclustered:
         warnings.append(f'{len(unclustered)} node(s) not assigned to any cluster: {sorted(unclustered)[:8]}')
 
     # ── report_card validation ────────────────────────────────────────────────
@@ -256,14 +270,16 @@ def validate(file_path: str) -> tuple[list, list]:
         warnings.append('report_card.summary is empty')
 
     stat_count = len(report_card.get('key_stats', []))
-    if stat_count < 4:
+    if is_class_a and stat_count < 4:
         warnings.append(f'Only {stat_count} key_stat(s) — aim for 5–8')
+    elif not is_class_a and stat_count == 0:
+        warnings.append('No key_stats at all — aim for at least 2–3')
 
     # ── Quality checks ────────────────────────────────────────────────────────
     #    These warn on encoding quality rather than schema errors.
 
     # Edge density
-    if len(nodes) > 5 and edges:
+    if is_class_a and len(nodes) > 5 and edges:
         density = len(edges) / len(nodes)
         if density < 1.5:
             warnings.append(
@@ -385,12 +401,15 @@ def main():
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 doc = json.load(f)
-            title  = doc.get('meta', {}).get('title', fname)
+            doc_meta = doc.get('meta', {})
+            title    = doc_meta.get('title', fname)
+            klass    = doc_meta.get('class', 'A')
             nn     = len(doc.get('nodes', []))
             ne     = len(doc.get('edges', []))
             nb     = len(doc.get('story', []))
             ni     = len(doc.get('insights', []))
-            print(GREEN(f'✅  {title}'))
+            class_tag = f'  [class {klass}]' if klass != 'A' else ''
+            print(GREEN(f'✅  {title}{class_tag}'))
             print(f'    {fname}  —  {nn} nodes · {ne} edges · {nb} beats · {ni} insights')
         except Exception:
             print(GREEN(f'✅  {fname} — valid'))

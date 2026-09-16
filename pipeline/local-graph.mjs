@@ -354,4 +354,12 @@ export const LIBRARY = [
     domain: 'Developer Tools / AI Analytics',
     year:   '2026',
   },
+  {
+    id:     'hacking-starry-night',
+    title:  'Hacking Starry Night',
+    path:   './library/hacking-starry-night.json',
+    domain: 'Computer Vision / Human-Computer Interaction',
+    year:   '2026',
+    class:  'A',
+  },
 ];

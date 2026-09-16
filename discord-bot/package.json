@@ -1,0 +1,19 @@
+{
+  "name": "kaaro-discord-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Discord front door for the kaaroViewer /visualize skill.",
+  "scripts": {
+    "start": "node src/discord/bot.mjs",
+    "register-commands": "node src/discord/register-commands.mjs",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
+  }
+}

@@ -2,3 +2,11 @@ node_modules/
 scripts/sessions-data.json
 scripts/graph.html
 scripts/graph-data.json
+.kaaro-vid/
+
+# Discord bot
+discord-bot/.env
+discord-bot/node_modules/
+discord-bot/.worktrees/
+discord-bot/logs/
+discord-bot/.bin/

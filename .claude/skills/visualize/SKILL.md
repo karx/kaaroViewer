@@ -10,14 +10,25 @@ You are encoding a source document into a **kaaroViewer intelligence brief**. Th
 
 ## Step 0 — Load the source
 
-If `$ARGUMENTS` looks like a file path (contains `/` or `\` or ends in `.md`):
+If `$ARGUMENTS` starts with the literal marker `B-class:` (case-sensitive,
+optional whitespace after the colon), strip it and set `CLASS = B` — the
+**minimalistic flow** (see that section below) applies for the rest of this
+run. Otherwise `CLASS = A`, the default full quality bar described by every
+step below.
+
+With the marker stripped, if the remainder looks like a file path (contains
+`/` or `\` or ends in `.md`):
 - Read the file at that path.
 
-Otherwise treat `$ARGUMENTS` as the raw text to encode.
+Otherwise treat the remainder as the raw text to encode.
 
 Also read the SOP reference:
 - `${CLAUDE_SKILL_DIR}/sop-reference.md`
 - `${CLAUDE_SKILL_DIR}/examples/sample-encoding.md`
+
+**If `CLASS = B`, skip straight to the "B-class: minimalistic flow" section
+below instead of continuing through Steps 1–8.** Everything from here to
+that section describes the full class-A encoding.
 
 ---
 
@@ -170,7 +181,7 @@ Produce a single JSON object with this exact top-level shape:
 
 ```
 {
-  "meta":        { id, title, subtitle, source, domain, year, tags[], tone },
+  "meta":        { id, title, subtitle, source, domain, year, tags[], tone, class },
   "report_card": { summary, key_stats[], spine[], protagonists[], antagonists[], themes[] },
   "story":       [ { id, title, node, nodes[], narration, tension, focus } … ],
   "insights":    [ { id, title, body, type, evidence[], severity } … ],
@@ -201,6 +212,7 @@ Edit `pipeline/local-graph.mjs`. Find the `export const LIBRARY = [` array and a
     path:   './library/{id}.json',
     domain: '{meta.domain}',
     year:   '{meta.year}',
+    class:  '{meta.class}',   // omit or 'A' for the full flow; 'B' for minimalistic
   },
 ```
 
@@ -285,6 +297,56 @@ After the validator passes, generate `library/{id}-retrospective.md` using this 
 ```
 
 Be honest: if tools were compressed into category nodes, say so. If the edge density gate caught a gap, note it. Each retrospective improves the SOP for the next document of the same type.
+
+---
+
+## B-class: minimalistic flow
+
+Triggered when Step 0 sets `CLASS = B` (`$ARGUMENTS` began with `B-class:`).
+This exists for fast, low-friction callers — the Discord `/visualize` front
+door is the first one — where the full three-pass encoding would take too
+long or burn a disproportionate amount of budget on a quick ask. It produces
+the same JSON schema and goes through the same validator, just against a
+relaxed quality bar: no mandatory retrospective, no edge-density/story-arc/
+insight-type-mix requirements, no domain-specific profile checklist.
+
+Do this instead of Steps 1–8:
+
+1. **Skim, don't sweep.** Read the source once. List every named entity you
+   notice in a single pass — no separate Step 1b checklist, no per-category
+   exhaustiveness sweep. Aim for **6–15 nodes** regardless of source length.
+2. **Nodes, then edges, in one pass each** — still two passes minimum (nodes
+   before edges); collapsing those two produces genuinely broken graphs even
+   at small scale. Skip the cross-cluster sweep and the edge-density gate;
+   write whatever edges are obvious from a single read.
+3. **Narrative, minimal.** 3–6 story beats, tension arc optional (flat
+   `medium` throughout is fine — do not force a climax). 2–4 insights, no
+   required type mix. `report_card.summary` still required (1–2 sentences);
+   `key_stats` can be as few as 2–3.
+4. **Clusters are optional.** 1–3 broad groupings is enough; a few
+   unclustered nodes are fine.
+5. **Set `meta.class = "B"`.** Everything else in the JSON shape (Step 4's
+   schema) is unchanged.
+6. **Register and validate exactly as Steps 5–6 describe**, including the
+   `class: 'B'` field in the `LIBRARY` entry. The validator's ❌ errors
+   (broken cross-references) still apply in full; the ⚠ warnings gated
+   behind class A (density, arc shape, insight-type mix, full clustering)
+   won't fire.
+7. **No retrospective.** Step 8 is skipped entirely for class B — it exists
+   to improve the SOP for future library-grade encodings, which isn't the
+   point of a quick draft.
+8. **Report back** using Step 7's format, noting the class:
+   ```
+   ✅  {meta.title}  [class B — minimalistic]
+       library/{id}.json  —  {N} nodes · {N} edges · {N} beats · {N} insights · {N} clusters
+   ```
+
+A class-B entry is a first-class library entry, not a second-class citizen —
+it renders, loads, and links like any other. It's just honest about being a
+fast draft rather than a deliberated encoding. Nothing stops a human from
+re-running the same source through the full class-A flow later; when that
+happens, overwrite the existing `library/{id}.json` in place rather than
+creating a second id for the same source.
 
 ---
 
