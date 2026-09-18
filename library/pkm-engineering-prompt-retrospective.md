@@ -36,3 +36,24 @@
 - For highly conceptual/framework sources, add an optional "conceptual encoding profile" that relaxes the named-entity sweep and emphasizes definition nodes + causal chains.
 - Consider adding a lightweight "dual-track diagram" generator when the source explicitly describes parallel workflows.
 - The current retrospective template is excellent; keep requiring the "Entity visual-model opportunity" row — it surfaces rendering gaps early.
+
+## Re-encode 2026-09-17 — ontology conformance + density
+
+**Trigger:** health-check flagged `validator-exit2` (density 1.47, 20+ warnings: unknown types/rels, label-string protagonists, invalid tone, short insight title).
+
+| Change | Before | After |
+|---|---|---|
+| Nodes / edges / density | 17 / 25 / 1.47 | 20 / 47 / 2.35 |
+| `report_card` protagonists/antagonists | free-text labels | node ids |
+| `meta.tone` | `instructional` (invalid) | `analytical` |
+| Node types outside ontology | `framework`, `prompt`, `process`, `system`, `tool` | `concept`, `standard`, `solution`, `platform`, `software` |
+| Rels outside ontology (17 edges) | `enforces`, `transforms`, `creates`, `updates`, `builds`, `expands`, `improves`, `contains`, `maps_to`, `visualizes`, `renders`, `underpins`, `informs`, `describes` | `governs` (labelled), `supersedes`, `creation`, `enables`, `causes`, `implements`, `association`, `features` |
+| Insight-3 title | 5-word topic label | declarative claim |
+
+**Encoding decisions**
+- The antagonists (isolated notes, uncrystallized pipelines, context evaporation) became `issue` nodes in a new "Failure Modes" cluster. The prompt's rules then read as explicit mitigations, which is the clearest way to show why each rule exists.
+- `enforces` → `governs` with labels: the validator requires a label on every `governs` edge describing the scope, and the labels turned out to be the most informative text in the graph.
+- `transforms` (Resources → Skill Surfaces, Archive → Crystallized) → `supersedes`: the framework replaces the old pillar's meaning rather than converting an instance.
+- `crystallization` and `dual-track` are `solution` nodes, not `process`: the ontology encodes them by what they resolve.
+
+**Skill-level note:** this entry was built outside `/visualize` and never validated; the ontology drift here is the same failure mode the widget registry lockstep is designed to prevent on the UI axis.

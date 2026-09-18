@@ -1,1 +1,238 @@
-{"meta":{"id":"esp-ecosystem","title":"ESP: Microcontroller Ecosystem","subtitle":"Hardware, Frameworks, and OTA for ESP8266 & ESP32","source":"2 Resources/Hardware/ESP/README.md","domain":"Hardware / IoT","year":"2026","tags":["esp32","esp8266","micropython","arduino","espruino","ota","iot"],"tone":"reference"},"report_card":{"summary":"The ESP8266 and ESP32 ecosystem offers powerful, affordable hardware paired with a genuinely diverse set of programming options. Success depends less on picking the single 'best' framework and more on aligning language choice, tooling, and OTA strategy with team skills and real-world deployment constraints.","key_stats":[{"label":"Major programming options","value":"5+ (Arduino, MicroPython, Espruino, ESP-IDF, Mongoose OS)"},{"label":"Core wireless capabilities","value":"Wi-Fi + Dual-mode Bluetooth"},{"label":"Critical production feature","value":"OTA Updates"},{"label":"Primary decision factors","value":"Language preference, team experience, deployment model"}],"spine":["esp32-esp8266","arduino-framework","ota-updates"],"protagonists":["ESP32/ESP8266","Developer choosing a framework"],"antagonists":["Physical access requirements","Long-term maintenance burden","Framework lock-in"],"themes":["Ecosystem diversity","Hardware capability vs tooling choice","From prototype to production"]},"story":[{"id":"beat-1","title":"The Capable Hardware Foundation","node":"esp32-esp8266","nodes":["esp32-esp8266","espressif-systems","esp32-security-features"],"narration":"Espressif releases powerful, affordable microcontrollers with Wi-Fi, Bluetooth, strong security features, and sufficient processing power. The hardware becomes a compelling foundation for a wide range of IoT and embedded projects.","tension":"low","focus":"hardware"},{"id":"beat-2","title":"A Fragmented but Rich Ecosystem Emerges","node":"arduino-framework","nodes":["arduino-framework","micropython","espruino","platformio","mongoose-os"],"narration":"Multiple programming paradigms compete for developer attention. Arduino offers rapid prototyping, while MicroPython and Espruino bring high-level languages to the chip. PlatformIO and Mongoose OS provide more professional tooling and security-focused options.","tension":"medium","focus":"ecosystem"},{"id":"beat-3","title":"The Firmware Distinction Matters","node":"firmware","nodes":["firmware","bootloader","arduino-framework"],"narration":"Developers learn that not all code is equal. Firmware sits close to the hardware and provides the critical API for GPIO and peripherals. Understanding this boundary becomes important when choosing between Arduino's simplicity and lower-level frameworks.","tension":"medium","focus":"concepts"},{"id":"beat-4","title":"Choosing Your Weapon","node":"arduino-ide","nodes":["arduino-ide","micropython","espruino","platformio","esp-easy"],"narration":"The developer must decide: Arduino IDE for speed and community, MicroPython or Espruino for higher-level languages, PlatformIO for professional workflows, or ESP Easy for minimal coding. Each choice shapes the development experience and long-term maintainability.","tension":"high","focus":"decision"},{"id":"beat-5","title":"OTA Becomes Non-Negotiable","node":"ota-updates","nodes":["ota-updates","esp32-esp8266","esp32-security-features"],"narration":"Once devices leave the lab and enter the real world, physical access becomes expensive or impossible. OTA updates, powered by the chip's security features, transform how firmware is deployed and maintained at scale.","tension":"high","focus":"deployment"},{"id":"beat-6","title":"The Trade-off Becomes Clear","node":"arduino-framework","nodes":["arduino-framework","micropython","platformio"],"narration":"Arduino wins on speed and accessibility. MicroPython and Espruino win on developer experience for those who prefer Python or JavaScript. PlatformIO wins on power and reproducibility. There is no single best choice — only the right choice for the team's skills and project constraints.","tension":"high","focus":"tradeoffs"},{"id":"beat-7","title":"The Ecosystem Matures","node":"platformio","nodes":["platformio","mongoose-os","esp32-security-features","ota-updates"],"narration":"Professional tools and security-hardened frameworks gain traction. The combination of capable hardware, multiple language options, and robust OTA infrastructure makes the ESP family viable for production IoT deployments beyond hobbyist projects.","tension":"medium","focus":"maturity"},{"id":"beat-8","title":"A Living, Multi-Paradigm Platform","node":"esp32-esp8266","nodes":["esp32-esp8266","arduino-framework","micropython","espruino","ota-updates"],"narration":"The ESP ecosystem succeeds not because it offers one perfect way to build, but because it offers many good ways. Hardware capability, language choice, tooling quality, and deployment strategy can be mixed and matched. The platform rewards developers who understand the full stack.","tension":"low","focus":"closing"}],"insights":[{"id":"insight-1","title":"Multiple language runtimes on the same hardware is a genuine strength, not fragmentation","body":"The coexistence of Arduino C++, MicroPython, and Espruino on ESP32 gives teams real flexibility. Rather than forcing one paradigm, the hardware supports different developer backgrounds and project requirements without compromise.","type":"finding","evidence":["arduino-framework","micropython","espruino","esp32-esp8266"],"severity":"medium"},{"id":"insight-2","title":"OTA is the feature that turns ESP from a prototyping platform into a production one","body":"Without robust over-the-air update capabilities, even the best hardware and frameworks remain limited to projects where physical access is feasible. OTA, combined with the chip's security features, is what makes large-scale deployment practical.","type":"finding","evidence":["ota-updates","esp32-security-features","esp32-esp8266"],"severity":"high"},{"id":"insight-3","title":"Arduino's simplicity has a hidden long-term cost","body":"While Arduino enables fast starts, teams that outgrow it often face migration pain. Understanding when to move to PlatformIO, native ESP-IDF, or MicroPython early can prevent painful refactors later.","type":"warning","evidence":["arduino-framework","platformio"],"severity":"medium"},{"id":"insight-4","title":"PlatformIO represents the professional maturation of the ESP ecosystem","body":"PlatformIO brings modern development practices (library management, testing, CI, multi-environment support) to ESP development. Its rise signals that the ecosystem is moving beyond hobbyist tools toward production-grade workflows.","type":"pattern","evidence":["platformio","arduino-framework"],"severity":"medium"},{"id":"insight-5","title":"The best ESP project starts with an honest assessment of team skills and deployment constraints","body":"Choosing Arduino because it's familiar, or MicroPython because it's trendy, without considering long-term maintenance and OTA requirements often leads to regret. The ecosystem rewards deliberate technology choices over default options.","type":"opportunity","evidence":["arduino-framework","micropython","ota-updates"],"severity":"medium"}],"clusters":[{"id":"cluster-hardware","label":"Hardware Foundation","color":"#3b82f6","nodes":["esp32-esp8266","espressif-systems","esp32-security-features","pyboard-pixljs"],"description":"The physical microcontrollers and their core capabilities, including security features and alternative ARM-based options."},{"id":"cluster-frameworks","label":"Programming Frameworks","color":"#10b981","nodes":["arduino-framework","micropython","espruino","firmware","bootloader"],"description":"The different ways developers write and structure code that runs on the ESP chips, from low-level firmware concepts to high-level language runtimes."},{"id":"cluster-tooling","label":"Development Tooling","color":"#8b5cf6","nodes":["arduino-ide","platformio","esp-easy","mongoose-os"],"description":"The IDEs, build systems, and ready-made frameworks that shape the developer experience and project structure."},{"id":"cluster-deployment","label":"Deployment & OTA","color":"#f59e0b","nodes":["ota-updates"],"description":"The critical infrastructure and processes required to maintain devices after they leave the development environment."}],"nodes":[{"id":"esp32-esp8266","label":"ESP32 / ESP8266 Microcontrollers","type":"hardware","tier":"spine","sentiment":"positive","description":"Low-cost, low-power system-on-chip microcontrollers with integrated Wi-Fi and dual-mode Bluetooth, developed by Espressif Systems.","wikidata":"Q27966206","metrics":{"Processor":"240 MHz","RAM":"520 KB","Wireless":"Wi-Fi + Bluetooth"}},{"id":"espressif-systems","label":"Espressif Systems","type":"organization","tier":"primary","sentiment":"positive","description":"Shanghai-based Chinese company that created and develops the ESP8266 and ESP32 series.","wikidata":null,"metrics":{}},{"id":"arduino-framework","label":"Arduino Framework","type":"framework","tier":"primary","sentiment":"positive","description":"Popular embedded development framework offering rapid prototyping on ESP boards.","wikidata":null,"metrics":{}},{"id":"arduino-ide","label":"Arduino IDE","type":"tool","tier":"primary","sentiment":"positive","description":"Primary development environment for writing and uploading code to ESP microcontrollers.","wikidata":null,"metrics":{}},{"id":"micropython","label":"MicroPython","type":"framework","tier":"primary","sentiment":"positive","description":"Python 3 implementation optimized for microcontrollers like ESP32.","wikidata":"Q17085738","metrics":{}},{"id":"espruino","label":"Espruino","type":"framework","tier":"primary","sentiment":"positive","description":"JavaScript interpreter designed to run on microcontrollers like ESP32.","wikidata":null,"metrics":{}},{"id":"platformio","label":"PlatformIO","type":"tool","tier":"primary","sentiment":"positive","description":"Professional cross-platform IDE and build system for ESP development.","wikidata":null,"metrics":{}},{"id":"mongoose-os","label":"Mongoose OS","type":"framework","tier":"secondary","sentiment":"neutral","description":"Operating system focused on security and cloud connectivity for ESP32.","wikidata":null,"metrics":{}},{"id":"firmware","label":"Firmware","type":"concept","tier":"primary","sentiment":"neutral","description":"Low-level software providing API access to hardware peripherals (especially GPIO).","wikidata":null,"metrics":{}},{"id":"ota-updates","label":"OTA (Over-The-Air) Updates","type":"process","tier":"primary","sentiment":"positive","description":"Wireless mechanism to update firmware on deployed devices using channels and remote hosting.","wikidata":null,"metrics":{}},{"id":"bootloader","label":"Bootloader","type":"concept","tier":"secondary","sentiment":"neutral","description":"Initial code that loads the main firmware on the ESP chip.","wikidata":null,"metrics":{}},{"id":"esp-easy","label":"ESP Easy","type":"tool","tier":"secondary","sentiment":"positive","description":"Ready-made firmware for quick home automation and IoT projects on ESP.","wikidata":null,"metrics":{}},{"id":"pyboard-pixljs","label":"PyBoard / Pixl.js","type":"hardware","tier":"secondary","sentiment":"neutral","description":"ARM-based MicroPython hardware as alternative to ESP chips.","wikidata":null,"metrics":{}},{"id":"esp32-security-features","label":"ESP32 Security Features","type":"concept","tier":"secondary","sentiment":"positive","description":"Built-in Secure Boot, cryptographic accelerators, and security features for production use.","wikidata":null,"metrics":{}}],"edges":[{"from":"espressif-systems","to":"esp32-esp8266","rel":"creation","weight":5,"directed":true,"label":"created and develops the ESP chip family"},{"from":"esp32-esp8266","to":"arduino-framework","rel":"features","weight":4,"directed":true},{"from":"esp32-esp8266","to":"micropython","rel":"features","weight":4,"directed":true},{"from":"esp32-esp8266","to":"espruino","rel":"features","weight":4,"directed":true},{"from":"esp32-esp8266","to":"platformio","rel":"features","weight":3,"directed":true},{"from":"esp32-esp8266","to":"mongoose-os","rel":"features","weight":3,"directed":true},{"from":"esp32-esp8266","to":"esp-easy","rel":"features","weight":3,"directed":true},{"from":"esp32-esp8266","to":"esp32-security-features","rel":"features","weight":4,"directed":true},{"from":"arduino-framework","to":"arduino-ide","rel":"implements","weight":5,"directed":true},{"from":"arduino-framework","to":"firmware","rel":"implements","weight":4,"directed":true},{"from":"micropython","to":"firmware","rel":"implements","weight":4,"directed":true},{"from":"espruino","to":"firmware","rel":"implements","weight":4,"directed":true},{"from":"platformio","to":"arduino-framework","rel":"supports","weight":4,"directed":true},{"from":"firmware","to":"bootloader","rel":"precedes","weight":3,"directed":true},{"from":"ota-updates","to":"firmware","rel":"updates","weight":5,"directed":true},{"from":"ota-updates","to":"esp32-esp8266","rel":"enables","weight":4,"directed":true},{"from":"esp32-security-features","to":"ota-updates","rel":"enables","weight":3,"directed":true},{"from":"arduino-ide","to":"esp32-esp8266","rel":"enables","weight":4,"directed":true},{"from":"pyboard-pixljs","to":"micropython","rel":"implements","weight":4,"directed":true},{"from":"esp-easy","to":"esp32-esp8266","rel":"simplifies","weight":4,"directed":true},{"from":"arduino-framework","to":"esp-easy","rel":"association","weight":2,"directed":false},{"from":"micropython","to":"espruino","rel":"association","weight":2,"directed":false}]}
+{
+  "meta": {
+    "id": "esp-ecosystem",
+    "title": "ESP: Microcontroller Ecosystem",
+    "subtitle": "Hardware, Frameworks, and OTA for ESP8266 & ESP32",
+    "source": "2 Resources/Hardware/ESP/README.md",
+    "domain": "Hardware / IoT",
+    "year": "2026",
+    "tags": ["esp32", "esp8266", "micropython", "arduino", "espruino", "ota", "iot", "platformio", "esp-idf"],
+    "tone": "analytical"
+  },
+  "report_card": {
+    "summary": "The ESP8266 and ESP32 ecosystem offers powerful, affordable hardware paired with a genuinely diverse set of programming options. Success depends less on picking the single 'best' framework and more on aligning language choice, tooling, and OTA strategy with team skills and real-world deployment constraints. The three recurring antagonists are physical access, maintenance burden and framework lock-in; every serious tooling choice is a bet on how to mitigate them.",
+    "key_stats": [
+      { "label": "Programming options", "value": "5+ (Arduino, MicroPython, Espruino, ESP-IDF, Mongoose OS)" },
+      { "label": "Core wireless", "value": "Wi-Fi + dual-mode Bluetooth" },
+      { "label": "Production gate", "value": "OTA updates + secure boot" },
+      { "label": "Decision factors", "value": "Language, team experience, deployment model" },
+      { "label": "Native SDK", "value": "ESP-IDF underlies Arduino core, PlatformIO and Mongoose OS" }
+    ],
+    "spine": ["esp32-esp8266", "arduino-framework", "ota-updates"],
+    "protagonists": ["esp32-esp8266", "platformio", "ota-updates"],
+    "antagonists": ["physical-access", "maintenance-burden", "framework-lockin"],
+    "themes": ["Ecosystem diversity", "Hardware capability vs tooling choice", "From prototype to production", "Lock-in and its mitigations"]
+  },
+  "story": [
+    {
+      "id": "beat-1",
+      "title": "The Capable Hardware Foundation",
+      "node": "esp32-esp8266",
+      "nodes": ["esp32-esp8266", "espressif-systems", "esp32-security-features", "esp-idf"],
+      "narration": "Espressif releases powerful, affordable microcontrollers with Wi-Fi, Bluetooth, strong security features, and sufficient processing power, alongside ESP-IDF, the native SDK every other framework ultimately builds on. The hardware becomes a compelling foundation for a wide range of IoT and embedded projects.",
+      "tension": "low",
+      "focus": "hardware"
+    },
+    {
+      "id": "beat-2",
+      "title": "A Fragmented but Rich Ecosystem Emerges",
+      "node": "arduino-framework",
+      "nodes": ["arduino-framework", "micropython", "espruino", "platformio", "mongoose-os"],
+      "narration": "Multiple programming paradigms compete for developer attention. Arduino offers rapid prototyping, while MicroPython and Espruino bring high-level languages to the chip. PlatformIO and Mongoose OS provide more professional tooling and security-focused options.",
+      "tension": "medium",
+      "focus": "ecosystem"
+    },
+    {
+      "id": "beat-3",
+      "title": "The Firmware Distinction Matters",
+      "node": "firmware",
+      "nodes": ["firmware", "bootloader", "arduino-framework", "esp-idf"],
+      "narration": "Developers learn that not all code is equal. Firmware sits close to the hardware and provides the critical API for GPIO and peripherals; the bootloader decides which image runs. Understanding this boundary becomes important when choosing between Arduino's simplicity and lower-level frameworks.",
+      "tension": "medium",
+      "focus": "concepts"
+    },
+    {
+      "id": "beat-4",
+      "title": "Choosing Your Weapon",
+      "node": "arduino-ide",
+      "nodes": ["arduino-ide", "micropython", "espruino", "platformio", "esp-easy", "framework-lockin"],
+      "narration": "The developer must decide: Arduino IDE for speed and community, MicroPython or Espruino for higher-level languages, PlatformIO for professional workflows, or ESP Easy for minimal coding. Each choice shapes the development experience and quietly sets the cost of leaving later.",
+      "tension": "high",
+      "focus": "decision"
+    },
+    {
+      "id": "beat-5",
+      "title": "OTA Becomes Non-Negotiable",
+      "node": "ota-updates",
+      "nodes": ["ota-updates", "physical-access", "esp32-security-features", "bootloader"],
+      "narration": "Once devices leave the lab and enter the real world, physical access becomes expensive or impossible. OTA updates, powered by the bootloader's partition switching and the chip's secure boot, transform how firmware is deployed and maintained at scale. This is the moment a prototype platform becomes a production one.",
+      "tension": "climax",
+      "focus": "deployment"
+    },
+    {
+      "id": "beat-6",
+      "title": "The Trade-off Becomes Clear",
+      "node": "arduino-framework",
+      "nodes": ["arduino-framework", "micropython", "platformio", "maintenance-burden", "framework-lockin"],
+      "narration": "Arduino wins on speed and accessibility but accumulates maintenance burden as projects grow. MicroPython and Espruino win on developer experience for those who prefer Python or JavaScript. PlatformIO wins on power and reproducibility and loosens lock-in by building any framework. There is no single best choice, only the right choice for the team's skills and project constraints.",
+      "tension": "high",
+      "focus": "tradeoffs"
+    },
+    {
+      "id": "beat-7",
+      "title": "The Ecosystem Matures",
+      "node": "platformio",
+      "nodes": ["platformio", "mongoose-os", "esp32-security-features", "ota-updates", "esp-idf"],
+      "narration": "Professional tools and security-hardened frameworks gain traction. The combination of capable hardware, multiple language options, and robust OTA infrastructure makes the ESP family viable for production IoT deployments beyond hobbyist projects.",
+      "tension": "medium",
+      "focus": "maturity"
+    },
+    {
+      "id": "beat-8",
+      "title": "A Living, Multi-Paradigm Platform",
+      "node": "esp32-esp8266",
+      "nodes": ["esp32-esp8266", "arduino-framework", "micropython", "espruino", "ota-updates"],
+      "narration": "The ESP ecosystem succeeds not because it offers one perfect way to build, but because it offers many good ways. Hardware capability, language choice, tooling quality, and deployment strategy can be mixed and matched. The platform rewards developers who understand the full stack.",
+      "tension": "low",
+      "focus": "closing"
+    }
+  ],
+  "insights": [
+    {
+      "id": "insight-1",
+      "title": "Multiple language runtimes on the same hardware is a genuine strength, not fragmentation",
+      "body": "The coexistence of Arduino C++, MicroPython, and Espruino on ESP32 gives teams real flexibility. Rather than forcing one paradigm, the hardware supports different developer backgrounds and project requirements without compromise.",
+      "type": "finding",
+      "evidence": ["arduino-framework", "micropython", "espruino", "esp32-esp8266"],
+      "severity": "medium"
+    },
+    {
+      "id": "insight-2",
+      "title": "OTA is the feature that turns ESP from a prototyping platform into a production one",
+      "body": "Without robust over-the-air update capabilities, even the best hardware and frameworks remain limited to projects where physical access is feasible. OTA, combined with the chip's security features and bootloader, is what makes large-scale deployment practical.",
+      "type": "finding",
+      "evidence": ["ota-updates", "esp32-security-features", "physical-access", "bootloader"],
+      "severity": "high"
+    },
+    {
+      "id": "insight-3",
+      "title": "Arduino's simplicity carries a hidden long-term maintenance and lock-in cost",
+      "body": "While Arduino enables fast starts, teams that outgrow it often face migration pain. Understanding when to move to PlatformIO, native ESP-IDF, or MicroPython early can prevent painful refactors later.",
+      "type": "warning",
+      "evidence": ["arduino-framework", "maintenance-burden", "framework-lockin", "platformio", "esp-idf"],
+      "severity": "high"
+    },
+    {
+      "id": "insight-4",
+      "title": "PlatformIO represents the professional maturation of the ESP ecosystem",
+      "body": "PlatformIO brings modern development practices (library management, testing, CI, multi-environment support) to ESP development and can build Arduino, ESP-IDF and other frameworks from one project. Its rise signals that the ecosystem is moving beyond hobbyist tools toward production-grade workflows.",
+      "type": "pattern",
+      "evidence": ["platformio", "arduino-framework", "esp-idf", "arduino-ide"],
+      "severity": "medium"
+    },
+    {
+      "id": "insight-5",
+      "title": "The best ESP project starts with an honest assessment of team skills and deployment constraints",
+      "body": "Choosing Arduino because it's familiar, or MicroPython because it's trendy, without considering long-term maintenance and OTA requirements often leads to regret. The ecosystem rewards deliberate technology choices over default options.",
+      "type": "opportunity",
+      "evidence": ["arduino-framework", "micropython", "ota-updates", "maintenance-burden"],
+      "severity": "medium"
+    }
+  ],
+  "clusters": [
+    {
+      "id": "cluster-hardware",
+      "label": "Hardware Foundation",
+      "color": "#3b82f6",
+      "nodes": ["esp32-esp8266", "espressif-systems", "esp32-security-features", "pyboard-pixljs", "esp-idf"],
+      "description": "The physical microcontrollers, their vendor and native SDK, core security capabilities, and the ARM-based alternative."
+    },
+    {
+      "id": "cluster-frameworks",
+      "label": "Programming Frameworks",
+      "color": "#10b981",
+      "nodes": ["arduino-framework", "micropython", "espruino", "firmware", "bootloader"],
+      "description": "The different ways developers write and structure code that runs on the ESP chips, from low-level firmware concepts to high-level language runtimes."
+    },
+    {
+      "id": "cluster-tooling",
+      "label": "Development Tooling",
+      "color": "#8b5cf6",
+      "nodes": ["arduino-ide", "platformio", "esp-easy", "mongoose-os"],
+      "description": "The IDEs, build systems, and ready-made frameworks that shape the developer experience and project structure."
+    },
+    {
+      "id": "cluster-deployment",
+      "label": "Deployment Realities",
+      "color": "#f59e0b",
+      "nodes": ["ota-updates", "physical-access", "maintenance-burden", "framework-lockin"],
+      "description": "What happens after devices leave the bench: the OTA infrastructure that keeps them alive, and the three constraints every tooling choice must answer to."
+    }
+  ],
+  "nodes": [
+    { "id": "esp32-esp8266", "label": "ESP32 / ESP8266 Microcontrollers", "type": "platform", "tier": "spine", "sentiment": "positive", "description": "Low-cost, low-power system-on-chip microcontrollers with integrated Wi-Fi and dual-mode Bluetooth, developed by Espressif Systems.", "wikidata": "Q27966206", "metrics": { "Processor": "240 MHz", "RAM": "520 KB", "Wireless": "Wi-Fi + Bluetooth" } },
+    { "id": "espressif-systems", "label": "Espressif Systems", "type": "company", "tier": "primary", "sentiment": "positive", "description": "Shanghai-based Chinese company that created and develops the ESP8266 and ESP32 series and maintains the ESP-IDF SDK.", "wikidata": null, "metrics": {} },
+    { "id": "esp-idf", "label": "ESP-IDF (native SDK)", "type": "software", "tier": "primary", "sentiment": "neutral", "description": "Espressif's official IoT Development Framework: FreeRTOS-based C SDK that the Arduino core, PlatformIO and Mongoose OS all build on. Maximum control, steepest learning curve.", "wikidata": null, "metrics": {} },
+    { "id": "arduino-framework", "label": "Arduino Framework", "type": "software", "tier": "spine", "sentiment": "positive", "description": "Popular embedded development framework offering rapid prototyping on ESP boards; the ESP32 Arduino core is a layer over ESP-IDF.", "wikidata": null, "metrics": {} },
+    { "id": "arduino-ide", "label": "Arduino IDE", "type": "software", "tier": "primary", "sentiment": "positive", "description": "Primary beginner development environment for writing and uploading code to ESP microcontrollers.", "wikidata": null, "metrics": {} },
+    { "id": "micropython", "label": "MicroPython", "type": "software", "tier": "primary", "sentiment": "positive", "description": "Python 3 implementation optimized for microcontrollers like ESP32.", "wikidata": "Q17085738", "metrics": {} },
+    { "id": "espruino", "label": "Espruino", "type": "software", "tier": "primary", "sentiment": "positive", "description": "JavaScript interpreter designed to run on microcontrollers like ESP32.", "wikidata": null, "metrics": {} },
+    { "id": "platformio", "label": "PlatformIO", "type": "software", "tier": "primary", "sentiment": "positive", "description": "Professional cross-platform IDE and build system for ESP development; builds Arduino, ESP-IDF and other frameworks from one project definition.", "wikidata": null, "metrics": {} },
+    { "id": "mongoose-os", "label": "Mongoose OS", "type": "software", "tier": "secondary", "sentiment": "neutral", "description": "Operating system focused on security and cloud connectivity for ESP32, with OTA and secure boot built in.", "wikidata": null, "metrics": {} },
+    { "id": "firmware", "label": "Firmware", "type": "concept", "tier": "primary", "sentiment": "neutral", "description": "Low-level software providing API access to hardware peripherals (especially GPIO).", "wikidata": null, "metrics": {} },
+    { "id": "bootloader", "label": "Bootloader", "type": "concept", "tier": "secondary", "sentiment": "neutral", "description": "Initial code that loads the main firmware on the ESP chip and, with OTA partitions, decides which image boots.", "wikidata": null, "metrics": {} },
+    { "id": "ota-updates", "label": "OTA (Over-The-Air) Updates", "type": "solution", "tier": "spine", "sentiment": "positive", "description": "Wireless mechanism to update firmware on deployed devices using channels and remote hosting.", "wikidata": null, "metrics": {} },
+    { "id": "esp-easy", "label": "ESP Easy", "type": "software", "tier": "secondary", "sentiment": "positive", "description": "Ready-made, Arduino-core-based firmware for quick home automation and IoT projects on ESP without writing code.", "wikidata": null, "metrics": {} },
+    { "id": "pyboard-pixljs", "label": "PyBoard / Pixl.js", "type": "platform", "tier": "secondary", "sentiment": "neutral", "description": "ARM-based MicroPython and Espruino hardware as alternatives to ESP chips.", "wikidata": null, "metrics": {} },
+    { "id": "esp32-security-features", "label": "ESP32 Security Features", "type": "concept", "tier": "secondary", "sentiment": "positive", "description": "Built-in Secure Boot, flash encryption, cryptographic accelerators, and security features for production use.", "wikidata": null, "metrics": {} },
+    { "id": "physical-access", "label": "Physical Access Requirement", "type": "issue", "tier": "primary", "sentiment": "negative", "description": "The constraint that a deployed device must be physically reached to be reflashed; expensive or impossible at scale.", "wikidata": null, "metrics": {} },
+    { "id": "maintenance-burden", "label": "Long-term Maintenance Burden", "type": "issue", "tier": "primary", "sentiment": "negative", "description": "The accumulating cost of keeping a fleet's firmware, dependencies and build setup working over years.", "wikidata": null, "metrics": {} },
+    { "id": "framework-lockin", "label": "Framework Lock-in", "type": "issue", "tier": "primary", "sentiment": "negative", "description": "The migration pain incurred when a project outgrows the framework it started on.", "wikidata": null, "metrics": {} }
+  ],
+  "edges": [
+    { "from": "espressif-systems", "to": "esp32-esp8266", "rel": "creation", "weight": 5, "directed": true, "label": "created and develops the ESP chip family" },
+    { "from": "espressif-systems", "to": "esp-idf", "rel": "creation", "weight": 4, "directed": true, "label": "maintains the official SDK" },
+    { "from": "espressif-systems", "to": "esp32-security-features", "rel": "creation", "weight": 3, "directed": true },
+    { "from": "esp-idf", "to": "esp32-esp8266", "rel": "implements", "weight": 5, "directed": true, "label": "native FreeRTOS-based SDK for the chips" },
+    { "from": "arduino-framework", "to": "esp-idf", "rel": "derives_from", "weight": 4, "directed": true, "label": "ESP32 Arduino core is a layer over ESP-IDF" },
+    { "from": "mongoose-os", "to": "esp-idf", "rel": "derives_from", "weight": 3, "directed": true },
+    { "from": "platformio", "to": "esp-idf", "rel": "enables", "weight": 3, "directed": true, "label": "builds ESP-IDF projects alongside Arduino" },
+    { "from": "esp32-esp8266", "to": "arduino-framework", "rel": "features", "weight": 4, "directed": true },
+    { "from": "esp32-esp8266", "to": "micropython", "rel": "features", "weight": 4, "directed": true },
+    { "from": "esp32-esp8266", "to": "espruino", "rel": "features", "weight": 4, "directed": true },
+    { "from": "esp32-esp8266", "to": "platformio", "rel": "features", "weight": 3, "directed": true },
+    { "from": "esp32-esp8266", "to": "mongoose-os", "rel": "features", "weight": 3, "directed": true },
+    { "from": "esp32-esp8266", "to": "esp-easy", "rel": "features", "weight": 3, "directed": true },
+    { "from": "esp32-esp8266", "to": "esp32-security-features", "rel": "features", "weight": 4, "directed": true },
+    { "from": "arduino-framework", "to": "arduino-ide", "rel": "implements", "weight": 5, "directed": true },
+    { "from": "arduino-framework", "to": "firmware", "rel": "implements", "weight": 4, "directed": true },
+    { "from": "micropython", "to": "firmware", "rel": "implements", "weight": 4, "directed": true },
+    { "from": "espruino", "to": "firmware", "rel": "implements", "weight": 4, "directed": true },
+    { "from": "platformio", "to": "arduino-framework", "rel": "enables", "weight": 4, "directed": true, "label": "builds Arduino projects with reproducible toolchains" },
+    { "from": "firmware", "to": "bootloader", "rel": "precedes", "weight": 3, "directed": true },
+    { "from": "bootloader", "to": "ota-updates", "rel": "enables", "weight": 4, "directed": true, "label": "OTA partition switching lives in the bootloader" },
+    { "from": "bootloader", "to": "esp32-security-features", "rel": "implements", "weight": 3, "directed": true, "label": "secure boot verifies the image before handoff" },
+    { "from": "ota-updates", "to": "firmware", "rel": "enables", "weight": 5, "directed": true, "label": "delivers new firmware images remotely" },
+    { "from": "ota-updates", "to": "esp32-esp8266", "rel": "enables", "weight": 4, "directed": true },
+    { "from": "esp32-security-features", "to": "ota-updates", "rel": "enables", "weight": 3, "directed": true },
+    { "from": "mongoose-os", "to": "esp32-security-features", "rel": "implements", "weight": 3, "directed": true, "label": "ships secure boot and OTA as defaults" },
+    { "from": "arduino-ide", "to": "esp32-esp8266", "rel": "enables", "weight": 4, "directed": true },
+    { "from": "arduino-ide", "to": "platformio", "rel": "competes", "weight": 3, "directed": false },
+    { "from": "pyboard-pixljs", "to": "micropython", "rel": "implements", "weight": 4, "directed": true },
+    { "from": "pyboard-pixljs", "to": "esp32-esp8266", "rel": "competes", "weight": 2, "directed": false },
+    { "from": "esp-easy", "to": "esp32-esp8266", "rel": "enables", "weight": 4, "directed": true, "label": "no-code configuration of common IoT tasks" },
+    { "from": "esp-easy", "to": "arduino-framework", "rel": "derives_from", "weight": 3, "directed": true, "label": "built on the Arduino core" },
+    { "from": "micropython", "to": "arduino-framework", "rel": "competes", "weight": 3, "directed": false },
+    { "from": "micropython", "to": "espruino", "rel": "competes", "weight": 2, "directed": false },
+    { "from": "physical-access", "to": "maintenance-burden", "rel": "causes", "weight": 4, "directed": true, "label": "every field visit is a maintenance cost" },
+    { "from": "ota-updates", "to": "physical-access", "rel": "mitigates", "weight": 5, "directed": true, "label": "reflash without touching the device" },
+    { "from": "arduino-framework", "to": "maintenance-burden", "rel": "causes", "weight": 3, "directed": true, "label": "prototype code outgrows the IDE workflow" },
+    { "from": "arduino-framework", "to": "framework-lockin", "rel": "causes", "weight": 3, "directed": true, "label": "sketch-centric structure resists migration" },
+    { "from": "platformio", "to": "maintenance-burden", "rel": "mitigates", "weight": 4, "directed": true, "label": "library management, CI, multi-environment builds" },
+    { "from": "platformio", "to": "framework-lockin", "rel": "mitigates", "weight": 4, "directed": true, "label": "one project can target several frameworks" },
+    { "from": "esp-idf", "to": "framework-lockin", "rel": "mitigates", "weight": 3, "directed": true, "label": "no abstraction layer to outgrow" },
+    { "from": "ota-updates", "to": "maintenance-burden", "rel": "mitigates", "weight": 4, "directed": true },
+    { "from": "mongoose-os", "to": "maintenance-burden", "rel": "mitigates", "weight": 2, "directed": true },
+    { "from": "framework-lockin", "to": "maintenance-burden", "rel": "causes", "weight": 3, "directed": true }
+  ]
+}

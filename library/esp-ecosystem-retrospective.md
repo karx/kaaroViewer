@@ -29,3 +29,23 @@
 ## Skill-Level Notes
 - Reference/overview documents benefit from relaxed density expectations.
 - Consider adding a lightweight "ecosystem comparison" visual when the source discusses multiple competing frameworks/tools.
+
+## Re-encode 2026-09-17 — ontology conformance + density
+
+**Trigger:** health-check flagged `validator-exit2` (5 cross-reference errors, 15 warnings, density 1.57).
+
+| Change | Before | After |
+|---|---|---|
+| Nodes / edges / density | 14 / 22 / 1.57 | 18 / 44 / 2.44 |
+| `report_card` protagonists/antagonists | free-text labels | node ids |
+| `meta.tone` | `reference` (invalid) | `analytical` |
+| Node types outside ontology | `hardware`, `framework`, `tool`, `process` | `platform`, `software`, `solution` |
+| Rels outside ontology | `supports`, `updates`, `simplifies` | `enables` (labelled) |
+| Climax beat | none | beat-5 "OTA Becomes Non-Negotiable" |
+
+**Encoding decisions**
+- The three antagonists the original named as strings (physical access, maintenance burden, framework lock-in) became `issue` nodes. Making them entities let every tooling choice carry an explicit `mitigates` / `causes` edge, which is where most of the new density came from and is also the report's actual argument.
+- Added `esp-idf` as a `software` node. The source names it in the framework list, and it is the substrate the Arduino core, PlatformIO and Mongoose OS derive from; without it the `derives_from` edges had no target.
+- `ota-updates` is a `solution`, not a `concept`: it is the thing that resolves the physical-access issue.
+
+**Skill-level note:** the earlier "relaxed density for reference documents" suggestion is withdrawn. The density was low because the antagonists were prose, not because the source was thin.
