@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "layouts": [
+    {
+      "id": "slide-deck", "mode": "slides",
+      "label": "Full slide deck",
+      "description": "One slide per beat, insight and cluster. The current default.",
+      "when": ["kind == 'brief'"],
+      "slots": [
+        { "id": "opener",    "family": "opener",    "min": 1, "max": 1 },
+        { "id": "overview",  "family": "overview",  "min": 0, "max": 1 },
+        { "id": "arc",       "family": "arc",       "min": 0, "max": 1 },
+        { "id": "narrative", "family": "narrative", "min": 0, "max": 12 },
+        { "id": "analysis",  "family": "analysis",  "min": 0, "max": 7 },
+        { "id": "grouping",  "family": "grouping",  "min": 0, "max": 8 },
+        { "id": "metrics",   "family": "metrics",   "min": 0, "max": 3 },
+        { "id": "closer",    "family": "closer",    "min": 1, "max": 1 },
+        { "id": "feedback",  "family": "feedback",  "min": 1, "max": 1 }
+      ]
+    },
+    {
+      "id": "compact-deck", "mode": "slides",
+      "label": "Compact slide deck",
+      "description": "Large briefs: clusters collapse to one overview slide, insights get a matrix before the top-severity items.",
+      "when": ["kind == 'brief'", "scale == 'large' || clusters.count >= 6 || insights.count >= 6"],
+      "slots": [
+        { "id": "opener",    "family": "opener",    "min": 1, "max": 1 },
+        { "id": "overview",  "family": "overview",  "min": 0, "max": 1 },
+        { "id": "arc",       "family": "arc",       "min": 0, "max": 1 },
+        { "id": "narrative", "family": "narrative", "min": 0, "max": 12 },
+        { "id": "analysis",  "family": "analysis",  "min": 0, "max": 4, "prefer": "one" },
+        { "id": "grouping",  "family": "grouping",  "min": 0, "max": 1, "prefer": "one" },
+        { "id": "metrics",   "family": "metrics",   "min": 0, "max": 3 },
+        { "id": "closer",    "family": "closer",    "min": 1, "max": 1 },
+        { "id": "feedback",  "family": "feedback",  "min": 1, "max": 1 }
+      ]
+    },
+    {
+      "id": "reader-report", "mode": "reader",
+      "label": "Reader report",
+      "description": "Single scrolling document. Mirrors report.mjs section order.",
+      "when": ["kind == 'brief'"],
+      "slots": [
+        { "id": "header",    "family": "header",    "min": 1, "max": 1 },
+        { "id": "overview",  "family": "overview",  "min": 0, "max": 2 },
+        { "id": "narrative", "family": "narrative", "min": 0, "max": 1 },
+        { "id": "metrics",   "family": "metrics",   "min": 0, "max": 1, "prefer": "lg" },
+        { "id": "analysis",  "family": "analysis",  "min": 0, "max": 1 },
+        { "id": "spotlight", "family": "spotlight", "min": 0, "max": 1 },
+        { "id": "grouping",  "family": "grouping",  "min": 0, "max": 1 },
+        { "id": "footer",    "family": "footer",    "min": 1, "max": 1 }
+      ]
+    },
+    {
+      "id": "hud-overlay", "mode": "canvas",
+      "label": "Canvas HUD",
+      "description": "Sparse overlay for exploration seeds, raw text and agent traces before a full brief exists.",
+      "when": ["kind != 'brief'"],
+      "slots": [
+        { "id": "hud",      "family": "hud",      "min": 0, "max": 3 },
+        { "id": "feedback", "family": "feedback", "min": 0, "max": 1 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,749 @@
+{
+  "version": 2,
+  "updated": "2026-09-17",
+  "input_shapes": [
+    "meta",
+    "report_card",
+    "story",
+    "story.beat",
+    "insights",
+    "insights.item",
+    "clusters",
+    "clusters.item",
+    "analytics.centrality",
+    "analytics.relTypeDist",
+    "analytics.sentimentDist",
+    "analytics.tensionCurve",
+    "analytics.causalChains",
+    "analytics.crossClusterEdges",
+    "analytics.temporalSequence",
+    "analytics.tierDist",
+    "text",
+    "agent.steps",
+    "none"
+  ],
+  "slot_families": [
+    "opener",
+    "overview",
+    "arc",
+    "narrative",
+    "analysis",
+    "grouping",
+    "metrics",
+    "spotlight",
+    "closer",
+    "feedback",
+    "header",
+    "footer",
+    "hud"
+  ],
+  "frame_modes": [
+    "none",
+    "spine",
+    "actors",
+    "all-story",
+    "beat",
+    "evidence",
+    "all-evidence",
+    "cluster",
+    "all-clusters",
+    "chains",
+    "bridges"
+  ],
+  "sizes": [
+    "sm",
+    "md",
+    "lg",
+    "full"
+  ],
+  "statuses": [
+    "active",
+    "proposed",
+    "deprecated",
+    "orphan"
+  ],
+  "widgets": [
+    {
+      "id": "title-slide",
+      "component": "TitleSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderTitle"
+      },
+      "input": "meta",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [],
+      "slot": "opener",
+      "size": "full",
+      "frames": "spine",
+      "status": "active",
+      "description": "Brief title, domain, year, tone, tags and spine pills.",
+      "source": "extracted from slides.mjs 2026-09-17",
+      "enrich_schema": {
+        "tagline": "One sentence (<= 140 chars) stating what this brief is really about, in the brief's tone."
+      }
+    },
+    {
+      "id": "briefing-slide",
+      "component": "BriefingSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderBriefing"
+      },
+      "input": "report_card",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "report_card.hasSummary || report_card.statCount > 0"
+      ],
+      "slot": "overview",
+      "size": "full",
+      "frames": "actors",
+      "status": "active",
+      "description": "Executive summary, up to six key stats, protagonists, antagonists, themes.",
+      "source": "extracted from slides.mjs 2026-09-17"
+    },
+    {
+      "id": "arc-slide",
+      "component": "ArcSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderArc"
+      },
+      "input": "analytics.tensionCurve",
+      "consumes": [
+        "story"
+      ],
+      "cardinality": "one",
+      "requires": [
+        "story.count >= 2"
+      ],
+      "slot": "arc",
+      "size": "full",
+      "frames": "all-story",
+      "status": "active",
+      "description": "Tension curve SVG plus a clickable beat strip.",
+      "source": "extracted from slides.mjs 2026-09-17"
+    },
+    {
+      "id": "beat-slide",
+      "component": "BeatSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderBeat"
+      },
+      "input": "story.beat",
+      "consumes": [],
+      "cardinality": "per-item",
+      "requires": [
+        "story.count >= 1"
+      ],
+      "slot": "narrative",
+      "size": "full",
+      "frames": "beat",
+      "status": "active",
+      "description": "One story beat: tension badge, primary entity, narration, optional diagram, related pills.",
+      "source": "extracted from slides.mjs 2026-09-17"
+    },
+    {
+      "id": "insight-slide",
+      "component": "InsightSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderInsight"
+      },
+      "input": "insights.item",
+      "consumes": [],
+      "cardinality": "per-item",
+      "requires": [
+        "insights.count >= 1"
+      ],
+      "slot": "analysis",
+      "size": "full",
+      "frames": "evidence",
+      "status": "active",
+      "description": "One insight: type icon, severity bar, quoted title, body, evidence pills.",
+      "source": "extracted from slides.mjs 2026-09-17"
+    },
+    {
+      "id": "cluster-slide",
+      "component": "ClusterSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderCluster"
+      },
+      "input": "clusters.item",
+      "consumes": [],
+      "cardinality": "per-item",
+      "requires": [
+        "clusters.count >= 1"
+      ],
+      "slot": "grouping",
+      "size": "full",
+      "frames": "cluster",
+      "status": "active",
+      "description": "One cluster: colour dot, label, share of graph, description, member pills.",
+      "source": "extracted from slides.mjs 2026-09-17"
+    },
+    {
+      "id": "analytics-slide",
+      "component": "AnalyticsSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderAnalytics"
+      },
+      "input": "analytics.centrality",
+      "consumes": [
+        "analytics.relTypeDist",
+        "analytics.sentimentDist",
+        "analytics.tierDist"
+      ],
+      "cardinality": "one",
+      "requires": [
+        "analytics.has.centrality || analytics.has.relTypeDist || analytics.has.sentimentDist"
+      ],
+      "slot": "metrics",
+      "size": "full",
+      "frames": "none",
+      "status": "active",
+      "description": "Consolidated centrality, relationship distribution and sentiment bars.",
+      "source": "extracted from slides.mjs 2026-09-17"
+    },
+    {
+      "id": "closer-slide",
+      "component": "CloserSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderCloser"
+      },
+      "input": "meta",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [],
+      "slot": "closer",
+      "size": "full",
+      "frames": "none",
+      "status": "active",
+      "description": "End card with first-slide, reader-view and share-link actions.",
+      "source": "extracted from slides.mjs 2026-09-17"
+    },
+    {
+      "id": "eval-slide",
+      "component": "EvalSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderEval"
+      },
+      "input": "none",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [],
+      "slot": "feedback",
+      "size": "full",
+      "frames": "none",
+      "status": "active",
+      "description": "Star rating plus four observation fields; submits a pre-filled GitHub issue.",
+      "source": "extracted from slides.mjs 2026-09-17"
+    },
+    {
+      "id": "report-header",
+      "component": "ReportHeader",
+      "family": "section",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_header"
+      },
+      "input": "meta",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [],
+      "slot": "header",
+      "size": "md",
+      "frames": "none",
+      "status": "active",
+      "description": "Reader-view masthead: title, subtitle, domain, year, tone.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "kpi-strip",
+      "component": "KpiStrip",
+      "family": "section",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_kpiStrip"
+      },
+      "input": "analytics.centrality",
+      "consumes": [
+        "analytics.causalChains"
+      ],
+      "cardinality": "one",
+      "requires": [
+        "nodes.count > 0"
+      ],
+      "slot": "overview",
+      "size": "sm",
+      "frames": "none",
+      "status": "active",
+      "description": "Node, edge, cluster, insight, beat and causal-chain counts plus the most central entity.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "briefing-section",
+      "component": "BriefingSection",
+      "family": "section",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_briefing"
+      },
+      "input": "report_card",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "report_card.hasSummary || report_card.statCount > 0"
+      ],
+      "slot": "overview",
+      "size": "md",
+      "frames": "actors",
+      "status": "active",
+      "description": "Reader-view executive briefing.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "story-arc-section",
+      "component": "StoryArcSection",
+      "family": "section",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_storyArc"
+      },
+      "input": "story",
+      "consumes": [
+        "analytics.tensionCurve"
+      ],
+      "cardinality": "one",
+      "requires": [
+        "story.count >= 1"
+      ],
+      "slot": "narrative",
+      "size": "lg",
+      "frames": "all-story",
+      "status": "active",
+      "description": "All beats in sequence with the tension arc SVG above them.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "tension-arc-svg",
+      "component": "TensionArcSvg",
+      "family": "chart",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_svgTensionArc"
+      },
+      "input": "analytics.tensionCurve",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "story.count >= 2"
+      ],
+      "slot": "arc",
+      "size": "sm",
+      "frames": "none",
+      "status": "active",
+      "description": "Inline SVG tension curve (chart atom used inside story-arc-section).",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "analytics-panel",
+      "component": "AnalyticsPanel",
+      "family": "section",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_analyticsPanel"
+      },
+      "input": "analytics.centrality",
+      "consumes": [
+        "analytics.relTypeDist"
+      ],
+      "cardinality": "one",
+      "requires": [
+        "analytics.has.centrality || analytics.has.relTypeDist"
+      ],
+      "slot": "metrics",
+      "size": "lg",
+      "frames": "none",
+      "status": "active",
+      "description": "Two-column analytics grid: centrality bars and relationship distribution.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "centrality-bars",
+      "component": "CentralityBars",
+      "family": "chart",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_centralityBars"
+      },
+      "input": "analytics.centrality",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "analytics.has.centrality"
+      ],
+      "slot": "metrics",
+      "size": "sm",
+      "frames": "none",
+      "status": "active",
+      "description": "Top-six degree-centrality horizontal bars coloured by entity type.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "rel-type-bars",
+      "component": "RelTypeBars",
+      "family": "chart",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_relTypeBars"
+      },
+      "input": "analytics.relTypeDist",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "analytics.has.relTypeDist"
+      ],
+      "slot": "metrics",
+      "size": "sm",
+      "frames": "none",
+      "status": "active",
+      "description": "Relationship-type frequency bars.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "sentiment-bars",
+      "component": "SentimentBars",
+      "family": "chart",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_sentimentBars"
+      },
+      "input": "analytics.sentimentDist",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "analytics.has.sentimentDist"
+      ],
+      "slot": "metrics",
+      "size": "sm",
+      "frames": "none",
+      "status": "active",
+      "description": "Positive / negative / neutral / contested stacked bar.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "insights-section",
+      "component": "InsightsSection",
+      "family": "section",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_insights"
+      },
+      "input": "insights",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "insights.count >= 1"
+      ],
+      "slot": "analysis",
+      "size": "lg",
+      "frames": "evidence",
+      "status": "active",
+      "description": "All insights as cards with severity and evidence pills.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "entity-spotlight",
+      "component": "EntitySpotlight",
+      "family": "section",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_entitySpotlight"
+      },
+      "input": "report_card",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "report_card.protagonistCount > 0 || report_card.antagonistCount > 0"
+      ],
+      "slot": "spotlight",
+      "size": "md",
+      "frames": "actors",
+      "status": "active",
+      "description": "Protagonist and antagonist entity cards with metrics.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "clusters-section",
+      "component": "ClustersSection",
+      "family": "section",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_clusters"
+      },
+      "input": "clusters",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "clusters.count >= 1"
+      ],
+      "slot": "grouping",
+      "size": "lg",
+      "frames": "cluster",
+      "status": "active",
+      "description": "All clusters with member pills.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "report-footer",
+      "component": "ReportFooter",
+      "family": "section",
+      "modes": [
+        "reader"
+      ],
+      "mount": {
+        "file": "canvas/report.mjs",
+        "fn": "_footer"
+      },
+      "input": "meta",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [],
+      "slot": "footer",
+      "size": "sm",
+      "frames": "none",
+      "status": "active",
+      "description": "Source, id and generation footer.",
+      "source": "extracted from report.mjs 2026-09-17"
+    },
+    {
+      "id": "cluster-overview",
+      "component": "ClusterOverviewSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderClusterOverview"
+      },
+      "input": "clusters",
+      "consumes": [
+        "clusters.item"
+      ],
+      "cardinality": "one",
+      "requires": [
+        "clusters.count >= 5"
+      ],
+      "slot": "grouping",
+      "size": "full",
+      "frames": "all-clusters",
+      "status": "active",
+      "description": "One slide summarising every cluster (dot, label, share) when there are too many for one slide each.",
+      "source": "gap found by ui-plan-all 2026-09-17; implemented + promoted 2026-09-17: large briefs emit 6-8 cluster slides",
+      "enrich_schema": {
+        "caption": "One line (<= 160 chars) on how the clusters relate to each other as a whole."
+      }
+    },
+    {
+      "id": "insight-matrix",
+      "component": "InsightMatrixSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderInsightMatrix"
+      },
+      "input": "insights",
+      "consumes": [
+        "insights.item"
+      ],
+      "cardinality": "one",
+      "requires": [
+        "insights.count >= 5"
+      ],
+      "slot": "analysis",
+      "size": "full",
+      "frames": "all-evidence",
+      "status": "active",
+      "description": "Severity x type grid of all insight titles; each cell jumps to its insight slide.",
+      "source": "gap found by ui-plan-all 2026-09-17; implemented + promoted 2026-09-17",
+      "enrich_schema": {
+        "caption": "One line (<= 160 chars) summarising the severity/type balance."
+      }
+    },
+    {
+      "id": "causal-chain",
+      "component": "CausalChainSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderCausalChains"
+      },
+      "input": "analytics.causalChains",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "analytics.causalChainCount >= 1",
+        "analytics.maxChainLength >= 3"
+      ],
+      "slot": "metrics",
+      "size": "full",
+      "frames": "chains",
+      "status": "active",
+      "description": "Root-to-leaf causal chains rendered as arrow rows. Derived data currently unrendered.",
+      "source": "gap found by ui-plan-all 2026-09-17; implemented + promoted 2026-09-17: deriveAnalytics computes causalChains, no widget consumes them",
+      "enrich_schema": {
+        "why": "One line (<= 160 chars) on why the longest causal chain matters for the reader."
+      }
+    },
+    {
+      "id": "cluster-bridges",
+      "component": "ClusterBridgesSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderBridges"
+      },
+      "input": "analytics.crossClusterEdges",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "analytics.crossClusterEdgeCount >= 3",
+        "clusters.count >= 2"
+      ],
+      "slot": "metrics",
+      "size": "full",
+      "frames": "bridges",
+      "status": "active",
+      "description": "Strongest cross-cluster edges: the bridges between groupings.",
+      "source": "gap found by ui-plan-all 2026-09-17; implemented + promoted 2026-09-17: crossClusterEdges derived but unrendered",
+      "enrich_schema": {
+        "caption": "One line (<= 160 chars) on what the strongest cross-cluster edges reveal."
+      }
+    },
+    {
+      "id": "timeline",
+      "component": "TimelineSlide",
+      "family": "slide",
+      "modes": [
+        "slides"
+      ],
+      "mount": {
+        "file": "canvas/slides.mjs",
+        "fn": "_renderTimeline"
+      },
+      "input": "analytics.temporalSequence",
+      "consumes": [],
+      "cardinality": "one",
+      "requires": [
+        "analytics.temporalCount >= 3"
+      ],
+      "slot": "metrics",
+      "size": "full",
+      "frames": "none",
+      "status": "proposed",
+      "description": "Dated edges laid out as a horizontal timeline. Only 2 of 11 library entries carry temporal edges today.",
+      "source": "gap found by ui-plan-all 2026-09-17: temporalSequence derived but unrendered; low coverage so not yet built"
+    }
+  ],
+  "modes": [
+    "slides",
+    "reader",
+    "canvas"
+  ],
+  "mount_ignore": {
+    "canvas/slides.mjs": [
+      "_renderSlide",
+      "_renderDots"
+    ]
+  }
+}
