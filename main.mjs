@@ -196,12 +196,22 @@ requestAnimationFrame(() => {
     updateNodeDegree(edge.to,   graph.getEdgesFor(edge.to).length);
   });
 
-  // ── Deeplink: ?lib=<doc-id> ─────────────────────────────────────────────────
-  const _deeplinkId = new URLSearchParams(location.search).get('lib');
+  // ── Deeplink: ?lib=<doc-id> | ?hero=<doc-id> ───────────────────────────────
+  //    ?hero= loads the same library entry, then renders the deck from the
+  //    HeroVisual plan in library/hero/<id>.hero.json instead of routing live.
+  const _params     = new URLSearchParams(location.search);
+  const _heroId     = _params.get('hero');
+  const _deeplinkId = _params.get('lib') ?? _heroId;
   if (_deeplinkId) {
     const _deeplinkEntry = LIBRARY.find(d => d.id === _deeplinkId);
     if (_deeplinkEntry) {
-      loadLocalDoc(_deeplinkEntry.path).then(meta => {
+      const _heroReady = _heroId
+        ? fetch(`./library/hero/${encodeURIComponent(_heroId)}.hero.json`)
+            .then(r => r.ok ? r.json() : null)
+            .then(hero => { if (hero) { setHeroPlan(heroToPlan(hero), _heroId); log('SYSTEM', `hero plan loaded: ${hero.pages?.[0]?.layout} · ${hero.decisions?.counts?.model ?? 0} model decisions`); } else log('SYSTEM', `hero: no file for "${_heroId}", routing live`); })
+            .catch(err => log('ERROR', `hero: ${err.message}`))
+        : Promise.resolve();
+      _heroReady.then(() => loadLocalDoc(_deeplinkEntry.path)).then(meta => {
         if (!meta) return;
         setLastLoadedDocId(meta.id);
         setCurrentDocMeta(meta);
