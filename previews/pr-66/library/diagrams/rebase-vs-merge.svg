@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 0 1210 700" width="1210" height="700" style="background: #ffffff">
+  <text x="100" y="50" font-size="30" font-family="sans-serif" fill="#1e1e1e" opacity="1">Rebase vs Merge</text>
+  <polyline points="500,80 500,680" fill="none" stroke="#868e96" stroke-width="2" opacity="1"/>
+  <text x="80" y="116" font-size="26" font-family="sans-serif" fill="#2f9e44" opacity="1">MERGE</text>
+  <ellipse cx="160" cy="200" rx="22" ry="22" stroke="#1971c2" fill="#a5d8ff" stroke-width="2" opacity="1"/>
+  <text x="142" y="202" font-size="16" font-family="sans-serif" fill="#1971c2" opacity="1">A</text>
+  <ellipse cx="300" cy="200" rx="22" ry="22" stroke="#1971c2" fill="#a5d8ff" stroke-width="2" opacity="1"/>
+  <text x="282" y="202" font-size="16" font-family="sans-serif" fill="#1971c2" opacity="1">B</text>
+  <ellipse cx="440" cy="200" rx="22" ry="22" stroke="#1971c2" fill="#a5d8ff" stroke-width="2" opacity="1"/>
+  <text x="422" y="202" font-size="16" font-family="sans-serif" fill="#1971c2" opacity="1">C</text>
+  <defs><marker id="arrow-o2RZXMiO91TcH1rG2s7Y3" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#1971c2"/></marker></defs><polyline points="182,200 278,200" fill="none" stroke="#1971c2" stroke-width="2" opacity="1" marker-end="url(#arrow-o2RZXMiO91TcH1rG2s7Y3)"/>
+  <defs><marker id="arrow-YhnMT2cPcY2Dw7cU2WISR" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#1971c2"/></marker></defs><polyline points="322,200 418,200" fill="none" stroke="#1971c2" stroke-width="2" opacity="1" marker-end="url(#arrow-YhnMT2cPcY2Dw7cU2WISR)"/>
+  <ellipse cx="280" cy="350" rx="22" ry="22" stroke="#7048e8" fill="#d0bfff" stroke-width="2" opacity="1"/>
+  <text x="262" y="352" font-size="16" font-family="sans-serif" fill="#7048e8" opacity="1">X</text>
+  <ellipse cx="400" cy="350" rx="22" ry="22" stroke="#7048e8" fill="#d0bfff" stroke-width="2" opacity="1"/>
+  <text x="382" y="352" font-size="16" font-family="sans-serif" fill="#7048e8" opacity="1">Y</text>
+  <defs><marker id="arrow-OSRuvDmDkufNU4pyM-lsl" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#7048e8"/></marker></defs><polyline points="175,215 265,335" fill="none" stroke="#7048e8" stroke-width="2" opacity="1" marker-end="url(#arrow-OSRuvDmDkufNU4pyM-lsl)"/>
+  <defs><marker id="arrow-romFW-wj_uIoZ-RlDmjH0" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#7048e8"/></marker></defs><polyline points="302,350 378,350" fill="none" stroke="#7048e8" stroke-width="2" opacity="1" marker-end="url(#arrow-romFW-wj_uIoZ-RlDmjH0)"/>
+  <polygon points="440,282 468,310 440,338 412,310" stroke="#2f9e44" fill="#b2f2bb" stroke-width="3" opacity="1"/>
+  <text x="428" y="316" font-size="16" font-family="sans-serif" fill="#2f9e44" opacity="1">M</text>
+  <defs><marker id="arrow-gg0GHq0gvAfnRXfQe14HE" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2f9e44"/></marker></defs><polyline points="440,222 440,282" fill="none" stroke="#2f9e44" stroke-width="2" opacity="1" marker-end="url(#arrow-gg0GHq0gvAfnRXfQe14HE)"/>
+  <defs><marker id="arrow-RaJBAwrB7rUbfVqSiuCFP" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2f9e44"/></marker></defs><polyline points="422,350 462,332" fill="none" stroke="#2f9e44" stroke-width="2" opacity="1" marker-end="url(#arrow-RaJBAwrB7rUbfVqSiuCFP)"/>
+  <text x="60" y="198" font-size="13" font-family="sans-serif" fill="#1971c2" opacity="1">main</text>
+  <text x="60" y="351" font-size="13" font-family="sans-serif" fill="#7048e8" opacity="1">feature</text>
+  <text x="340" y="382" font-size="12" font-family="sans-serif" fill="#2f9e44" opacity="1">merge commit (2 parents)</text>
+  <text x="600" y="116" font-size="26" font-family="sans-serif" fill="#7048e8" opacity="1">REBASE</text>
+  <ellipse cx="600" cy="200" rx="22" ry="22" stroke="#1971c2" fill="#a5d8ff" stroke-width="2" opacity="1"/>
+  <text x="582" y="202" font-size="16" font-family="sans-serif" fill="#1971c2" opacity="1">A</text>
+  <ellipse cx="740" cy="200" rx="22" ry="22" stroke="#1971c2" fill="#a5d8ff" stroke-width="2" opacity="1"/>
+  <text x="722" y="202" font-size="16" font-family="sans-serif" fill="#1971c2" opacity="1">B</text>
+  <ellipse cx="880" cy="200" rx="22" ry="22" stroke="#1971c2" fill="#a5d8ff" stroke-width="2" opacity="1"/>
+  <text x="862" y="202" font-size="16" font-family="sans-serif" fill="#1971c2" opacity="1">C</text>
+  <defs><marker id="arrow-pqX6wdGNhth1cm7AU0PEj" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#1971c2"/></marker></defs><polyline points="622,200 718,200" fill="none" stroke="#1971c2" stroke-width="2" opacity="1" marker-end="url(#arrow-pqX6wdGNhth1cm7AU0PEj)"/>
+  <defs><marker id="arrow-iM-tmT8nNUEPmHJBCb8V7" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#1971c2"/></marker></defs><polyline points="762,200 858,200" fill="none" stroke="#1971c2" stroke-width="2" opacity="1" marker-end="url(#arrow-iM-tmT8nNUEPmHJBCb8V7)"/>
+  <ellipse cx="690" cy="350" rx="22" ry="22" stroke="#b197fc" fill="#f3f0ff" stroke-width="1" opacity="1"/>
+  <text x="680" y="352" font-size="14" font-family="sans-serif" fill="#b197fc" opacity="1">X</text>
+  <ellipse cx="820" cy="350" rx="22" ry="22" stroke="#b197fc" fill="#f3f0ff" stroke-width="1" opacity="1"/>
+  <text x="810" y="352" font-size="14" font-family="sans-serif" fill="#b197fc" opacity="1">Y</text>
+  <polyline points="615,215 690,350" fill="none" stroke="#b197fc" stroke-width="1" opacity="1"/>
+  <polyline points="712,350 820,350" fill="none" stroke="#b197fc" stroke-width="1" opacity="1"/>
+  <ellipse cx="1020" cy="200" rx="22" ry="22" stroke="#7048e8" fill="#d0bfff" stroke-width="2" opacity="1"/>
+  <text x="1002" y="202" font-size="16" font-family="sans-serif" fill="#7048e8" opacity="1">X'</text>
+  <ellipse cx="1160" cy="200" rx="22" ry="22" stroke="#7048e8" fill="#d0bfff" stroke-width="2" opacity="1"/>
+  <text x="1142" y="202" font-size="16" font-family="sans-serif" fill="#7048e8" opacity="1">Y'</text>
+  <defs><marker id="arrow-OLM3JRwMIf64oI0YCGZnh" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#7048e8"/></marker></defs><polyline points="902,200 998,200" fill="none" stroke="#7048e8" stroke-width="2" opacity="1" marker-end="url(#arrow-OLM3JRwMIf64oI0YCGZnh)"/>
+  <defs><marker id="arrow--yMdxFb9H5tS6N8oUdxfa" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#7048e8"/></marker></defs><polyline points="1042,200 1138,200" fill="none" stroke="#7048e8" stroke-width="2" opacity="1" marker-end="url(#arrow--yMdxFb9H5tS6N8oUdxfa)"/>
+  <text x="580" y="195" font-size="13" font-family="sans-serif" fill="#1971c2" opacity="1">main</text>
+  <text x="580" y="351" font-size="13" font-family="sans-serif" fill="#b197fc" opacity="1">original (ghost)</text>
+  <text x="980" y="171" font-size="13" font-family="sans-serif" fill="#7048e8" opacity="1">replayed on top</text>
+  <rect x="950" y="260" width="280" height="60" rx="6" stroke="#e67700" fill="#fff3bf" stroke-width="2" opacity="1"/>
+  <text x="966" y="285" font-size="13" font-family="sans-serif" fill="#e67700" opacity="1">⚠ SHA hash changes!
+new commits X', Y'</text>
+  <rect x="60" y="570" width="880" height="50" rx="5" stroke="#868e96" fill="#f1f3f5" stroke-width="1" opacity="1"/>
+  <text x="80" y="600" font-size="17" font-family="sans-serif" fill="#1e1e1e" opacity="1">Merge: authentic history  |  Rebase: curated (linear) history</text>
+</svg>
