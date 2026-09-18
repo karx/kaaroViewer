@@ -1,0 +1,974 @@
+{
+  "apiVersion": "kaaro.hero/v1",
+  "kind": "hero",
+  "meta": {
+    "id": "kaaro-viewer",
+    "title": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+    "generated": "2026-09-17",
+    "mode": "slides"
+  },
+  "source": {
+    "library": "kaaro-viewer",
+    "path": "./library/kaaro-viewer.json",
+    "sha256": "f9f0cca364bddcb47513d73b4b0ae99d3fcf6eb1ab45ac8e1eebeb6ecd892b80"
+  },
+  "registry": {
+    "version": 2,
+    "layouts": 1
+  },
+  "queries": [
+    {
+      "name": "brief",
+      "kind": "library",
+      "id": "kaaro-viewer"
+    },
+    {
+      "name": "analytics",
+      "kind": "derive",
+      "from": "brief"
+    }
+  ],
+  "decisions": {
+    "provider": "typesafe",
+    "gate": 0.7,
+    "error": null,
+    "usage": {
+      "input_tokens": 3460,
+      "output_tokens": 695
+    },
+    "hops": [
+      {
+        "id": "layout",
+        "kind": "layout",
+        "layout": null,
+        "slot": null,
+        "options": [
+          "compact-deck",
+          "slide-deck"
+        ],
+        "answer": "compact-deck",
+        "confidence": 0.85,
+        "source": "model"
+      },
+      {
+        "id": "slot:compact-deck:overview",
+        "kind": "slot",
+        "layout": "compact-deck",
+        "slot": "overview",
+        "options": [
+          "briefing-slide",
+          "omit"
+        ],
+        "answer": "briefing-slide",
+        "confidence": 0.99,
+        "source": "model"
+      },
+      {
+        "id": "slot:compact-deck:arc",
+        "kind": "slot",
+        "layout": "compact-deck",
+        "slot": "arc",
+        "options": [
+          "arc-slide",
+          "omit"
+        ],
+        "answer": "arc-slide",
+        "confidence": 0.94,
+        "source": "model"
+      },
+      {
+        "id": "slot:compact-deck:narrative",
+        "kind": "slot",
+        "layout": "compact-deck",
+        "slot": "narrative",
+        "options": [
+          "beat-slide",
+          "omit"
+        ],
+        "answer": "beat-slide",
+        "confidence": 0.88,
+        "source": "model"
+      },
+      {
+        "id": "capacity:compact-deck:narrative",
+        "kind": "capacity",
+        "layout": "compact-deck",
+        "slot": "narrative",
+        "options": [
+          "1",
+          "3",
+          "5",
+          "all"
+        ],
+        "answer": "all",
+        "confidence": 0.82,
+        "source": "model"
+      },
+      {
+        "id": "slot:compact-deck:analysis",
+        "kind": "slot",
+        "layout": "compact-deck",
+        "slot": "analysis",
+        "options": [
+          "insight-matrix",
+          "insight-slide",
+          "omit"
+        ],
+        "answer": "insight-matrix",
+        "confidence": 0.4,
+        "source": "heuristic"
+      },
+      {
+        "id": "capacity:compact-deck:analysis",
+        "kind": "capacity",
+        "layout": "compact-deck",
+        "slot": "analysis",
+        "options": [
+          "1",
+          "3",
+          "5",
+          "all"
+        ],
+        "answer": "all",
+        "confidence": 0.36,
+        "source": "heuristic"
+      },
+      {
+        "id": "slot:compact-deck:grouping",
+        "kind": "slot",
+        "layout": "compact-deck",
+        "slot": "grouping",
+        "options": [
+          "cluster-overview",
+          "cluster-slide",
+          "omit"
+        ],
+        "answer": "cluster-overview",
+        "confidence": 0.79,
+        "source": "model"
+      },
+      {
+        "id": "capacity:compact-deck:grouping",
+        "kind": "capacity",
+        "layout": "compact-deck",
+        "slot": "grouping",
+        "options": [
+          "1",
+          "3",
+          "5",
+          "all"
+        ],
+        "answer": "all",
+        "confidence": 0.67,
+        "source": "heuristic"
+      },
+      {
+        "id": "slot:compact-deck:metrics",
+        "kind": "slot",
+        "layout": "compact-deck",
+        "slot": "metrics",
+        "options": [
+          "analytics-slide",
+          "causal-chain",
+          "cluster-bridges",
+          "omit"
+        ],
+        "answer": "analytics-slide",
+        "confidence": 0.87,
+        "source": "model"
+      },
+      {
+        "id": "slot:slide-deck:overview",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "overview",
+        "options": [
+          "briefing-slide",
+          "omit"
+        ],
+        "answer": "briefing-slide",
+        "confidence": 0.99,
+        "source": "model"
+      },
+      {
+        "id": "slot:slide-deck:arc",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "arc",
+        "options": [
+          "arc-slide",
+          "omit"
+        ],
+        "answer": "arc-slide",
+        "confidence": 0.96,
+        "source": "model"
+      },
+      {
+        "id": "slot:slide-deck:narrative",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "narrative",
+        "options": [
+          "beat-slide",
+          "omit"
+        ],
+        "answer": "beat-slide",
+        "confidence": 0.89,
+        "source": "model"
+      },
+      {
+        "id": "capacity:slide-deck:narrative",
+        "kind": "capacity",
+        "layout": "slide-deck",
+        "slot": "narrative",
+        "options": [
+          "1",
+          "3",
+          "5",
+          "all"
+        ],
+        "answer": "all",
+        "confidence": 0.85,
+        "source": "model"
+      },
+      {
+        "id": "slot:slide-deck:analysis",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "analysis",
+        "options": [
+          "insight-slide",
+          "insight-matrix",
+          "omit"
+        ],
+        "answer": "insight-slide",
+        "confidence": 0.48,
+        "source": "heuristic"
+      },
+      {
+        "id": "capacity:slide-deck:analysis",
+        "kind": "capacity",
+        "layout": "slide-deck",
+        "slot": "analysis",
+        "options": [
+          "1",
+          "3",
+          "5",
+          "all"
+        ],
+        "answer": "all",
+        "confidence": 0.56,
+        "source": "heuristic"
+      },
+      {
+        "id": "slot:slide-deck:grouping",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "grouping",
+        "options": [
+          "cluster-slide",
+          "cluster-overview",
+          "omit"
+        ],
+        "answer": "cluster-slide",
+        "confidence": 0.5,
+        "source": "heuristic"
+      },
+      {
+        "id": "capacity:slide-deck:grouping",
+        "kind": "capacity",
+        "layout": "slide-deck",
+        "slot": "grouping",
+        "options": [
+          "1",
+          "3",
+          "5",
+          "all"
+        ],
+        "answer": "all",
+        "confidence": 0.89,
+        "source": "model"
+      },
+      {
+        "id": "slot:slide-deck:metrics",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "metrics",
+        "options": [
+          "analytics-slide",
+          "causal-chain",
+          "cluster-bridges",
+          "omit"
+        ],
+        "answer": "analytics-slide",
+        "confidence": 0.9,
+        "source": "model"
+      }
+    ],
+    "counts": {
+      "total": 19,
+      "model": 13,
+      "heuristic": 6
+    }
+  },
+  "pages": [
+    {
+      "name": "deck",
+      "title": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+      "display": "slides",
+      "layout": "compact-deck",
+      "content": [
+        {
+          "component": "title-slide",
+          "name": "title-slide",
+          "props": {
+            "meta": {
+              "$$bind": "brief.meta"
+            }
+          },
+          "frames": [
+            "kaaro-viewer",
+            "personalized-ontology",
+            "intelligence-brief"
+          ],
+          "layout": {
+            "slot": "opener",
+            "family": "opener",
+            "size": "full"
+          },
+          "enrichment": {
+            "tagline": "A knowledge explorer that had to learn to govern its own ontology once private knowledge outran Wikidata."
+          }
+        },
+        {
+          "component": "briefing-slide",
+          "name": "briefing-slide",
+          "props": {
+            "report_card": {
+              "$$bind": "brief.report_card"
+            }
+          },
+          "frames": [
+            "kaaro-viewer",
+            "personalized-ontology",
+            "intelligence-brief",
+            "three-part-lock",
+            "dream-loop",
+            "alone-time-loop",
+            "visualize-skill",
+            "ontology-drift",
+            "open-world-assumption"
+          ],
+          "layout": {
+            "slot": "overview",
+            "family": "overview",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.99
+          }
+        },
+        {
+          "component": "arc-slide",
+          "name": "arc-slide",
+          "props": {
+            "tensionCurve": {
+              "$$bind": "analytics.tensionCurve"
+            }
+          },
+          "frames": [
+            "open-world-assumption",
+            "open-world-assumption",
+            "opentapioca",
+            "wikidata",
+            "sparql",
+            "a-frame",
+            "a-frame",
+            "webxr",
+            "kaaro-viewer",
+            "private-knowledge-vault",
+            "private-knowledge-vault",
+            "open-world-assumption",
+            "opentapioca",
+            "intelligence-brief",
+            "intelligence-brief",
+            "gemini",
+            "private-knowledge-vault",
+            "ontology-drift",
+            "ontology-drift",
+            "intelligence-brief",
+            "validator",
+            "three-js",
+            "three-js",
+            "a-frame",
+            "force-directed-layout",
+            "kaaro-viewer",
+            "three-part-lock",
+            "three-part-lock",
+            "dream-loop",
+            "alone-time-loop",
+            "validator",
+            "sop-reference",
+            "explore-pipeline",
+            "explore-pipeline",
+            "visualize-skill",
+            "intelligence-brief",
+            "gemini",
+            "paint-system",
+            "paint-system",
+            "paint-context",
+            "paint-strategies",
+            "gemini",
+            "stable-diffusion",
+            "kaaro-viewer",
+            "kaaro-viewer",
+            "alone-time-loop",
+            "dream-loop",
+            "health-check",
+            "eval-modal"
+          ],
+          "layout": {
+            "slot": "arc",
+            "family": "arc",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.94
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-1",
+          "key": "beat-1",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-1]"
+            }
+          },
+          "frames": [
+            "open-world-assumption",
+            "open-world-assumption",
+            "opentapioca",
+            "wikidata",
+            "sparql"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-2",
+          "key": "beat-2",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-2]"
+            }
+          },
+          "frames": [
+            "a-frame",
+            "a-frame",
+            "webxr",
+            "kaaro-viewer"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-3",
+          "key": "beat-3",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-3]"
+            }
+          },
+          "frames": [
+            "private-knowledge-vault",
+            "private-knowledge-vault",
+            "open-world-assumption",
+            "opentapioca"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-4",
+          "key": "beat-4",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-4]"
+            }
+          },
+          "frames": [
+            "intelligence-brief",
+            "intelligence-brief",
+            "gemini",
+            "private-knowledge-vault"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-5",
+          "key": "beat-5",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-5]"
+            }
+          },
+          "frames": [
+            "ontology-drift",
+            "ontology-drift",
+            "intelligence-brief",
+            "validator"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-6",
+          "key": "beat-6",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-6]"
+            }
+          },
+          "frames": [
+            "three-js",
+            "three-js",
+            "a-frame",
+            "force-directed-layout",
+            "kaaro-viewer"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-7",
+          "key": "beat-7",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-7]"
+            }
+          },
+          "frames": [
+            "three-part-lock",
+            "three-part-lock",
+            "dream-loop",
+            "alone-time-loop",
+            "validator",
+            "sop-reference"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-8",
+          "key": "beat-8",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-8]"
+            }
+          },
+          "frames": [
+            "explore-pipeline",
+            "explore-pipeline",
+            "visualize-skill",
+            "intelligence-brief",
+            "gemini"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-9",
+          "key": "beat-9",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-9]"
+            }
+          },
+          "frames": [
+            "paint-system",
+            "paint-system",
+            "paint-context",
+            "paint-strategies",
+            "gemini",
+            "stable-diffusion"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-10",
+          "key": "beat-10",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-10]"
+            }
+          },
+          "frames": [
+            "kaaro-viewer",
+            "kaaro-viewer",
+            "alone-time-loop",
+            "dream-loop",
+            "health-check",
+            "eval-modal"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.88
+          }
+        },
+        {
+          "component": "insight-matrix",
+          "name": "insight-matrix",
+          "props": {
+            "insights": {
+              "$$bind": "brief.insights"
+            }
+          },
+          "frames": [
+            "ontology-drift",
+            "three-part-lock",
+            "validator",
+            "sop-reference",
+            "explore-pipeline",
+            "visualize-skill",
+            "intelligence-brief",
+            "paint-system",
+            "paint-context",
+            "paint-strategies",
+            "stable-diffusion",
+            "dream-loop",
+            "alone-time-loop",
+            "kaaro-viewer"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "enrichment": {
+            "caption": "One high warning anchors the set: the three-part lock is what stops LLM encoding from drifting; the other four map how each subsystem earns its place."
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.4
+          }
+        },
+        {
+          "component": "insight-slide",
+          "name": "insight-slide.i1",
+          "key": "i1",
+          "props": {
+            "insight": {
+              "$$bind": "brief.insights[id=i1]"
+            }
+          },
+          "frames": [
+            "ontology-drift",
+            "three-part-lock",
+            "validator",
+            "sop-reference"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.4
+          }
+        },
+        {
+          "component": "insight-slide",
+          "name": "insight-slide.i2",
+          "key": "i2",
+          "props": {
+            "insight": {
+              "$$bind": "brief.insights[id=i2]"
+            }
+          },
+          "frames": [
+            "explore-pipeline",
+            "visualize-skill",
+            "intelligence-brief"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.4
+          }
+        },
+        {
+          "component": "insight-slide",
+          "name": "insight-slide.i3",
+          "key": "i3",
+          "props": {
+            "insight": {
+              "$$bind": "brief.insights[id=i3]"
+            }
+          },
+          "frames": [
+            "paint-system",
+            "paint-context",
+            "paint-strategies",
+            "stable-diffusion"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.4
+          }
+        },
+        {
+          "component": "cluster-overview",
+          "name": "cluster-overview",
+          "props": {
+            "clusters": {
+              "$$bind": "brief.clusters"
+            }
+          },
+          "frames": [
+            "open-world-assumption",
+            "opentapioca",
+            "wikidata",
+            "sparql",
+            "private-knowledge-vault",
+            "ontology-drift",
+            "personalized-ontology",
+            "intelligence-brief",
+            "three-part-lock",
+            "validator",
+            "sop-reference",
+            "explore-pipeline",
+            "visualize-skill",
+            "gemini",
+            "completion-pipeline",
+            "kaaro-viewer",
+            "three-js",
+            "a-frame",
+            "webxr",
+            "force-directed-layout",
+            "brief-controller",
+            "session-manager",
+            "paint-system",
+            "paint-context",
+            "paint-strategies",
+            "stable-diffusion",
+            "dream-loop",
+            "alone-time-loop",
+            "health-check",
+            "eval-modal",
+            "github-issues"
+          ],
+          "layout": {
+            "slot": "grouping",
+            "family": "grouping",
+            "size": "full"
+          },
+          "enrichment": {
+            "caption": "Six clusters, one arc: open-world failure forces an ontology architecture, two encoding paths feed canvas and paint, and a governance loop keeps it honest."
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.79
+          }
+        },
+        {
+          "component": "analytics-slide",
+          "name": "analytics-slide",
+          "props": {
+            "centrality": {
+              "$$bind": "analytics.centrality"
+            }
+          },
+          "frames": [],
+          "layout": {
+            "slot": "metrics",
+            "family": "metrics",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "causal-chain",
+          "name": "causal-chain",
+          "props": {
+            "causalChains": {
+              "$$bind": "analytics.causalChains"
+            }
+          },
+          "frames": [
+            "open-world-assumption",
+            "ontology-drift",
+            "three-part-lock",
+            "private-knowledge-vault",
+            "personalized-ontology",
+            "visualize-skill"
+          ],
+          "layout": {
+            "slot": "metrics",
+            "family": "metrics",
+            "size": "full"
+          },
+          "enrichment": {
+            "why": "Every chain ends at the Three-Part Lock: whatever causes drift, open-world assumption, private vaults or personalization, the answer is the same lock."
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "cluster-bridges",
+          "name": "cluster-bridges",
+          "props": {
+            "crossClusterEdges": {
+              "$$bind": "analytics.crossClusterEdges"
+            }
+          },
+          "frames": [
+            "ontology-drift",
+            "three-part-lock",
+            "intelligence-brief",
+            "kaaro-viewer",
+            "dream-loop",
+            "personalized-ontology",
+            "explore-pipeline",
+            "visualize-skill"
+          ],
+          "layout": {
+            "slot": "metrics",
+            "family": "metrics",
+            "size": "full"
+          },
+          "enrichment": {
+            "caption": "The strongest bridges run between Ontology Drift and the Three-Part Lock in both directions; the Intelligence Brief carries the lock into the canvas."
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "closer-slide",
+          "name": "closer-slide",
+          "props": {
+            "meta": {
+              "$$bind": "brief.meta"
+            }
+          },
+          "frames": [],
+          "layout": {
+            "slot": "closer",
+            "family": "closer",
+            "size": "full"
+          }
+        },
+        {
+          "component": "eval-slide",
+          "name": "eval-slide",
+          "props": {},
+          "frames": [],
+          "layout": {
+            "slot": "feedback",
+            "family": "feedback",
+            "size": "full"
+          }
+        }
+      ]
+    }
+  ],
+  "events": []
+}

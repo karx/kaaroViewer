@@ -1,0 +1,296 @@
+{
+  "id": "kaaro-viewer",
+  "mode": "slides",
+  "gate": 0.7,
+  "provider": "typesafe",
+  "error": null,
+  "counts": {
+    "total": 19,
+    "model": 13,
+    "heuristic": 6
+  },
+  "hops": [
+    {
+      "id": "layout",
+      "kind": "layout",
+      "layout": null,
+      "slot": null,
+      "options": [
+        "compact-deck",
+        "slide-deck"
+      ],
+      "answer": "compact-deck",
+      "confidence": 0.85,
+      "source": "model"
+    },
+    {
+      "id": "slot:compact-deck:overview",
+      "kind": "slot",
+      "layout": "compact-deck",
+      "slot": "overview",
+      "options": [
+        "briefing-slide",
+        "omit"
+      ],
+      "answer": "briefing-slide",
+      "confidence": 0.99,
+      "source": "model"
+    },
+    {
+      "id": "slot:compact-deck:arc",
+      "kind": "slot",
+      "layout": "compact-deck",
+      "slot": "arc",
+      "options": [
+        "arc-slide",
+        "omit"
+      ],
+      "answer": "arc-slide",
+      "confidence": 0.94,
+      "source": "model"
+    },
+    {
+      "id": "slot:compact-deck:narrative",
+      "kind": "slot",
+      "layout": "compact-deck",
+      "slot": "narrative",
+      "options": [
+        "beat-slide",
+        "omit"
+      ],
+      "answer": "beat-slide",
+      "confidence": 0.88,
+      "source": "model"
+    },
+    {
+      "id": "capacity:compact-deck:narrative",
+      "kind": "capacity",
+      "layout": "compact-deck",
+      "slot": "narrative",
+      "options": [
+        "1",
+        "3",
+        "5",
+        "all"
+      ],
+      "answer": "all",
+      "confidence": 0.82,
+      "source": "model"
+    },
+    {
+      "id": "slot:compact-deck:analysis",
+      "kind": "slot",
+      "layout": "compact-deck",
+      "slot": "analysis",
+      "options": [
+        "insight-matrix",
+        "insight-slide",
+        "omit"
+      ],
+      "answer": "insight-matrix",
+      "confidence": 0.4,
+      "source": "heuristic"
+    },
+    {
+      "id": "capacity:compact-deck:analysis",
+      "kind": "capacity",
+      "layout": "compact-deck",
+      "slot": "analysis",
+      "options": [
+        "1",
+        "3",
+        "5",
+        "all"
+      ],
+      "answer": "all",
+      "confidence": 0.36,
+      "source": "heuristic"
+    },
+    {
+      "id": "slot:compact-deck:grouping",
+      "kind": "slot",
+      "layout": "compact-deck",
+      "slot": "grouping",
+      "options": [
+        "cluster-overview",
+        "cluster-slide",
+        "omit"
+      ],
+      "answer": "cluster-overview",
+      "confidence": 0.79,
+      "source": "model"
+    },
+    {
+      "id": "capacity:compact-deck:grouping",
+      "kind": "capacity",
+      "layout": "compact-deck",
+      "slot": "grouping",
+      "options": [
+        "1",
+        "3",
+        "5",
+        "all"
+      ],
+      "answer": "all",
+      "confidence": 0.67,
+      "source": "heuristic"
+    },
+    {
+      "id": "slot:compact-deck:metrics",
+      "kind": "slot",
+      "layout": "compact-deck",
+      "slot": "metrics",
+      "options": [
+        "analytics-slide",
+        "causal-chain",
+        "cluster-bridges",
+        "omit"
+      ],
+      "answer": "analytics-slide",
+      "confidence": 0.87,
+      "source": "model"
+    },
+    {
+      "id": "slot:slide-deck:overview",
+      "kind": "slot",
+      "layout": "slide-deck",
+      "slot": "overview",
+      "options": [
+        "briefing-slide",
+        "omit"
+      ],
+      "answer": "briefing-slide",
+      "confidence": 0.99,
+      "source": "model"
+    },
+    {
+      "id": "slot:slide-deck:arc",
+      "kind": "slot",
+      "layout": "slide-deck",
+      "slot": "arc",
+      "options": [
+        "arc-slide",
+        "omit"
+      ],
+      "answer": "arc-slide",
+      "confidence": 0.96,
+      "source": "model"
+    },
+    {
+      "id": "slot:slide-deck:narrative",
+      "kind": "slot",
+      "layout": "slide-deck",
+      "slot": "narrative",
+      "options": [
+        "beat-slide",
+        "omit"
+      ],
+      "answer": "beat-slide",
+      "confidence": 0.89,
+      "source": "model"
+    },
+    {
+      "id": "capacity:slide-deck:narrative",
+      "kind": "capacity",
+      "layout": "slide-deck",
+      "slot": "narrative",
+      "options": [
+        "1",
+        "3",
+        "5",
+        "all"
+      ],
+      "answer": "all",
+      "confidence": 0.85,
+      "source": "model"
+    },
+    {
+      "id": "slot:slide-deck:analysis",
+      "kind": "slot",
+      "layout": "slide-deck",
+      "slot": "analysis",
+      "options": [
+        "insight-slide",
+        "insight-matrix",
+        "omit"
+      ],
+      "answer": "insight-slide",
+      "confidence": 0.48,
+      "source": "heuristic"
+    },
+    {
+      "id": "capacity:slide-deck:analysis",
+      "kind": "capacity",
+      "layout": "slide-deck",
+      "slot": "analysis",
+      "options": [
+        "1",
+        "3",
+        "5",
+        "all"
+      ],
+      "answer": "all",
+      "confidence": 0.56,
+      "source": "heuristic"
+    },
+    {
+      "id": "slot:slide-deck:grouping",
+      "kind": "slot",
+      "layout": "slide-deck",
+      "slot": "grouping",
+      "options": [
+        "cluster-slide",
+        "cluster-overview",
+        "omit"
+      ],
+      "answer": "cluster-slide",
+      "confidence": 0.5,
+      "source": "heuristic"
+    },
+    {
+      "id": "capacity:slide-deck:grouping",
+      "kind": "capacity",
+      "layout": "slide-deck",
+      "slot": "grouping",
+      "options": [
+        "1",
+        "3",
+        "5",
+        "all"
+      ],
+      "answer": "all",
+      "confidence": 0.89,
+      "source": "model"
+    },
+    {
+      "id": "slot:slide-deck:metrics",
+      "kind": "slot",
+      "layout": "slide-deck",
+      "slot": "metrics",
+      "options": [
+        "analytics-slide",
+        "causal-chain",
+        "cluster-bridges",
+        "omit"
+      ],
+      "answer": "analytics-slide",
+      "confidence": 0.9,
+      "source": "model"
+    }
+  ],
+  "delta": {
+    "layout": {
+      "heuristic": "compact-deck",
+      "hero": "compact-deck"
+    },
+    "slots": {
+      "heuristic": 23,
+      "hero": 23
+    },
+    "widgets": {}
+  },
+  "usage": {
+    "input_tokens": 3460,
+    "output_tokens": 695
+  }
+}

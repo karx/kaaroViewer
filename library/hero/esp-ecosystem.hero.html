@@ -1,0 +1,1383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ESP: Microcontroller Ecosystem — HeroVisual</title>
+<meta name="generator" content="kaaroViewer /herovisual · registry v2 · 6 model / 3 heuristic decisions">
+<style>
+html,body{margin:0;background:#000;color:#ccccaa;font:13px/1.5 "Courier New",monospace;height:100%}
+.middle{position:relative;height:100vh;overflow:hidden}
+.sl-wrap{position:absolute;inset:0;display:flex;flex-direction:column}
+.sl-track{flex:1 1 auto;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding:16px}
+.sl-slide{flex:0 0 min(720px,90vw);scroll-snap-align:start;overflow:auto}
+/* ── Slides: canvas overlay, horizontal snap-scroll ─────────────────────── */
+
+.sl-wrap {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 46vh;
+  min-height: 360px;
+  max-height: 560px;
+  z-index: 60;
+  pointer-events: none;
+  display: none;
+  flex-direction: column;
+  color: #e8e0c8;
+  font-family: "Courier New", monospace;
+}
+.sl-wrap.sl-visible { display: flex; }
+.sl-wrap > * { pointer-events: auto; }
+.sl-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 18px 10px;
+  gap: 12px;
+  background: #040400;
+  border-top: 1px solid #1e1e00;
+}
+.sl-topbar-left {
+  display: flex; align-items: baseline; gap: 14px;
+  min-width: 0; flex: 1 1 auto;
+}
+.sl-index {
+  font-size: 11px; font-weight: 700;
+  color: #ff8800; letter-spacing: 0.12em;
+  flex: 0 0 auto;
+}
+.sl-topbar-title {
+  font-size: 11px; color: #ccccaa;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  flex: 1 1 auto; min-width: 0;
+}
+.sl-topbar-right {
+  display: flex; gap: 6px; flex: 0 0 auto;
+}
+.sl-nav-btn, .sl-mode-btn, .sl-close {
+  background: #080800;
+  color: #ccccaa;
+  border: 1px solid #2a2a00;
+  font: 700 10px "Courier New", monospace;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.sl-nav-btn:hover, .sl-mode-btn:hover, .sl-close:hover {
+  color: #ff8800; border-color: #663300; background: #1a0800;
+}
+.sl-close { color: #886644; }
+.sl-progress {
+  flex: 0 0 auto;
+  height: 2px;
+  margin: 0 18px 6px;
+  background: #281800;
+  overflow: hidden;
+}
+.sl-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #ff6600;
+  transition: width 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.sl-track {
+  flex: 1 1 auto;
+  display: flex;
+  gap: 18px;
+  padding: 0 24px 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #442200 transparent;
+}
+.sl-track::-webkit-scrollbar { height: 6px; }
+.sl-track::-webkit-scrollbar-thumb { background: #442200; }
+.sl-track::-webkit-scrollbar-track { background: transparent; }
+.sl-slide {
+  flex: 0 0 min(720px, 88vw);
+  scroll-snap-align: center;
+  background: #060600;
+  border: 1px solid #1e1e00;
+  border-left: 5px solid #3a2200;
+  padding: 16px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  color: #e8e0c8;
+  overflow-y: auto;
+  opacity: 0.55;
+  transform: scale(0.97);
+  transform-origin: center bottom;
+  transition: opacity 0.22s ease,
+              transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1),
+              border-left-color 0.22s ease;
+  scrollbar-width: thin;
+  scrollbar-color: #2a1a00 transparent;
+}
+.sl-slide.sl-active {
+  border-left-color: #ff6600;
+  border-left-width: 5px;
+  opacity: 1;
+  transform: scale(1);
+}
+.sl-slide-marker {
+  display: flex; align-items: center; gap: 10px;
+  font: 700 9px "Courier New", monospace;
+  letter-spacing: 0.14em;
+  margin-bottom: 10px;
+  opacity: 0.75;
+}
+.sl-slide-num { color: #ff8800; font-size: 11px; }
+.sl-slide-type { color: #666644; }
+.sl-slide-body {
+  display: flex; flex-direction: column;
+  gap: 10px;
+  font-size: 13px; line-height: 1.55;
+}
+.sl-h2 {
+  font-size: 22px; font-weight: 700;
+  color: #e8e0c8; letter-spacing: -0.01em;
+  line-height: 1.18;
+  margin: 4px 0 6px;
+}
+.sl-lead {
+  font-size: 14px; line-height: 1.6;
+  color: #ccccaa; margin: 0;
+}
+.sl-caption {
+  font-size: 11px; color: #886644;
+  letter-spacing: 0.04em;
+  margin: 0 0 6px;
+}
+.sl-sep { color: #333322; margin: 0 6px; }
+/* Pills / badges */
+
+.sl-pill {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 700;
+  color: #ccccaa; letter-spacing: 0.06em;
+  border: 1px solid #445544;
+  padding: 3px 8px;
+  margin: 2px 4px 2px 0;
+  cursor: pointer;
+  background: #080800;
+  white-space: nowrap;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.sl-pill:hover { color: #ff8800; background: #1a0800; }
+.sl-pill-neg { border-color: #551111; color: #cc4444; }
+.sl-pill-neg:hover { color: #ff4444; border-color: #ff2222; }
+.sl-ebadge {
+  display: inline-flex; flex-direction: column;
+  gap: 2px;
+  border-left: 2px solid #ff8800;
+  padding: 4px 12px;
+  margin: 4px 0 6px;
+  cursor: pointer;
+  background: #1a0e00;
+}
+.sl-ebadge:hover { background: #2a1600; }
+.sl-ebadge-type { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; }
+.sl-ebadge-lbl { font-size: 16px; color: #e8e0c8; font-weight: 600; }
+/* Title slide */
+
+.sl-title-meta {
+  display: flex; gap: 8px; align-items: baseline;
+  font-size: 11px; color: #886644;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.sl-title-tone {
+  margin-left: auto;
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+  font-weight: 700;
+}
+.sl-tone-investigative { color: #ff6600; }
+.sl-tone-analytical { color: #00aaff; }
+.sl-tone-narrative { color: #cc88ff; }
+.sl-tone-critical { color: #ff4444; }
+.sl-tone-celebratory { color: #ffcc00; }
+.sl-title-h1 {
+  font-size: 30px; font-weight: 700;
+  color: #e8e0c8; letter-spacing: -0.015em;
+  line-height: 1.1;
+  margin: 10px 0 6px;
+}
+.sl-title-sub {
+  font-size: 14px; color: #ccccaa;
+  line-height: 1.5; margin: 0 0 4px;
+}
+.sl-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin: 8px 0;
+}
+.sl-tag {
+  font-size: 9px; font-weight: 700;
+  color: #886644; letter-spacing: 0.08em;
+  border: 1px solid #2a1a00;
+  padding: 2px 7px; text-transform: uppercase;
+  background: #140c00;
+}
+.sl-title-spine {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-top: 8px;
+}
+.sl-title-hint {
+  font-size: 10px; color: #665533;
+  margin-top: auto; padding-top: 14px;
+  letter-spacing: 0.08em;
+}
+/* Briefing */
+
+.sl-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px 14px;
+  margin: 6px 0 10px;
+  padding: 10px 0;
+  border-top: 1px solid #1e1e00;
+  border-bottom: 1px solid #1e1e00;
+}
+.sl-stat { display: flex; flex-direction: column; gap: 2px; }
+.sl-stat-val {
+  font-size: 16px; font-weight: 700; color: #ffcc00;
+  letter-spacing: -0.01em; line-height: 1.2;
+}
+.sl-stat-lbl {
+  font-size: 9px; font-weight: 700;
+  color: #666644; letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sl-actor-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+  margin-top: 4px;
+}
+.sl-actor-lbl {
+  font-size: 9px; font-weight: 700;
+  color: #ff8800; letter-spacing: 0.12em;
+  margin-right: 8px;
+}
+.sl-actor-lbl-neg { color: #cc4444; }
+.sl-theme {
+  font-size: 10px; color: #cc88ff;
+  border: 1px solid #331144;
+  padding: 2px 7px;
+  background: #140820;
+}
+/* Beat */
+
+.sl-beat-hdr {
+  display: flex; align-items: center; gap: 10px;
+  font: 700 10px "Courier New", monospace;
+}
+.sl-beat-num { color: #886644; letter-spacing: 0.12em; }
+.sl-beat-tension {
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+  letter-spacing: 0.1em;
+}
+.sl-t-low { color: #556644; }
+.sl-t-medium { color: #cc8800; }
+.sl-t-high { color: #ff4400; }
+.sl-t-climax { color: #ff0044; }
+.sl-narration {
+  font-size: 14px; line-height: 1.62;
+  color: #ccccaa; margin: 4px 0;
+}
+.sl-related {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+  margin-top: 6px;
+}
+.sl-related-lbl {
+  font-size: 9px; font-weight: 700;
+  color: #886644; letter-spacing: 0.12em;
+  margin-right: 6px;
+}
+.sl-diagram {
+  margin: 8px 0;
+  border: 1px solid #1e1e00;
+  padding: 4px;
+  background: #140c00;
+}
+.sl-diagram-img { width: 100%; height: auto; display: block; }
+/* Insight */
+
+.sl-ins-hdr {
+  display: flex; align-items: center; gap: 10px;
+  font: 700 10px "Courier New", monospace;
+}
+.sl-ins-icon { font-size: 16px; color: #ff8800; }
+.sl-ins-type { color: #ff8800; letter-spacing: 0.12em; }
+.sl-ins-sev-bar {
+  flex: 1 1 auto; height: 4px;
+  background: #1a1000; max-width: 120px;
+}
+.sl-ins-sev-fill { height: 100%; }
+.sl-ins-sev { font-size: 9px; letter-spacing: 0.12em; }
+.sl-ins-quote {
+  font-size: 18px; line-height: 1.4;
+  color: #e8e0c8; font-style: italic;
+  border-left: 3px solid #ff8800;
+  padding: 6px 0 6px 14px;
+  margin: 6px 0;
+}
+.sl-ins-body {
+  font-size: 13px; line-height: 1.55;
+  color: #ccccaa; margin: 0;
+}
+/* Cluster */
+
+.sl-cl-hdr {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 4px;
+}
+.sl-cl-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  flex: 0 0 auto;
+}
+.sl-cl-label {
+  border-left: 3px solid; padding-left: 10px;
+  flex: 1 1 auto;
+  margin: 0;
+}
+.sl-cl-cnt {
+  font: 700 11px "Courier New", monospace;
+  color: #886644; letter-spacing: 0.08em;
+  flex: 0 0 auto;
+}
+.sl-cl-nodes {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-top: 6px;
+}
+/* Analytics */
+
+.sl-analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+  margin-top: 4px;
+}
+.sl-chart-block {
+  border-top: 1px solid #1e1e00;
+  padding-top: 8px;
+}
+.sl-chart-title {
+  font: 700 9px "Courier New", monospace;
+  color: #886644; letter-spacing: 0.12em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.sl-cbar-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 6px;
+  align-items: center;
+  font-size: 10px;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+.sl-cbar-row:hover .sl-cbar-lbl { color: #ff8800; }
+.sl-cbar-lbl { color: #ccccaa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sl-cbar-track {
+  height: 6px; background: #1a1000;
+}
+.sl-cbar-fill { height: 100%; }
+.sl-cbar-val { color: #886644; font-weight: 700; text-align: right; }
+.sl-sent-row {
+  display: flex; height: 20px; gap: 2px;
+  border: 1px solid #1e1e00;
+}
+.sl-sent-seg {
+  display: flex; align-items: center; justify-content: center;
+  min-width: 30px;
+}
+.sl-sent-lbl { font: 700 9px "Courier New", monospace; color: #000; }
+/* Arc slide */
+
+.sl-svg-arc { width: 100%; height: auto; max-height: 120px; }
+.sl-svg-lbl { font: 700 8px "Courier New", monospace; }
+.sl-arc-strip {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-top: 6px;
+}
+.sl-arc-block {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid currentColor;
+  background: #0a0600;
+  cursor: pointer;
+  font: 700 10px "Courier New", monospace;
+  transition: background 0.12s, transform 0.12s;
+}
+.sl-arc-block:hover { background: #281400; transform: scale(1.08); }
+.sl-arc-low { color: #556644; }
+.sl-arc-medium { color: #cc8800; }
+.sl-arc-high { color: #ff4400; }
+.sl-arc-climax { color: #ff0044; }
+.sl-arc-num { pointer-events: none; }
+/* Closer */
+
+.sl-closer-meta {
+  display: flex; gap: 6px; align-items: baseline;
+  font-size: 10px; color: #886644;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin: 6px 0 14px;
+}
+.sl-closer-actions {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 8px;
+}
+.sl-action-btn {
+  background: #0a0600;
+  color: #ccccaa;
+  border: 1px solid #2a1a00;
+  font: 700 10px "Courier New", monospace;
+  letter-spacing: 0.08em;
+  padding: 7px 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.12s, border-color 0.12s;
+}
+.sl-action-btn:hover { color: #ff8800; border-color: #663300; }
+/* Eval slide */
+
+.sl-eval-hdr {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 10px;
+}
+.sl-eval-label {
+  font-size: 10px; letter-spacing: 0.12em; color: #886644; font-weight: 600;
+}
+.sl-eval-doc-title {
+  font-size: 11px; color: #ccccaa; opacity: 0.7;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px;
+}
+.sl-eval-stars {
+  display: flex; gap: 6px; margin-bottom: 12px;
+}
+.sl-eval-star {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: #1e1e00; padding: 0;
+  transition: color 0.1s; line-height: 1;
+}
+.sl-eval-star:hover,
+.sl-eval-star.sl-eval-star-hover { color: #e8e000; }
+.sl-eval-star.sl-eval-star-on { color: #e8e000; }
+.sl-eval-fields {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-bottom: 14px;
+}
+.sl-eval-textarea {
+  background: #0d0d00; border: 1px solid #2a2a00;
+  color: #ccccaa; font-family: inherit; font-size: 11px;
+  padding: 6px 8px; resize: vertical; border-radius: 2px;
+  outline: none; width: 100%; box-sizing: border-box;
+}
+.sl-eval-textarea:focus { border-color: #664400; }
+.sl-eval-textarea::placeholder { color: #445533; }
+.sl-eval-footer {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+}
+.sl-eval-hint {
+  font-size: 9px; color: #554433; letter-spacing: 0.06em;
+}
+/* Dot navigation strip */
+
+.sl-dots {
+  display: flex; justify-content: center; align-items: center;
+  gap: 3px;
+  padding: 4px 12px 8px;
+  background: #040400;
+  border-top: 1px solid #1e1e00;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.sl-dots::-webkit-scrollbar { display: none; }
+.sl-dot {
+  flex: 0 0 auto;
+  width: 8px; height: 8px;
+  background: #332200;
+  border: 1px solid #443300;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.12s, transform 0.12s;
+}
+.sl-dot:hover { background: #664400; transform: scale(1.3); }
+.sl-dot-active {
+  background: #ff8800; border-color: #ffaa00;
+  transform: scale(1.25);
+}
+.sl-dot-title, .sl-dot-briefing, .sl-dot-arc { background: #443300; }
+.sl-dot-insight { background: #3a2a00; }
+.sl-dot-cluster { background: #2a3a2a; }
+.sl-dot-analytics, .sl-dot-closer { background: #332244; }
+.sl-dot-active.sl-dot-title,
+.sl-dot-active.sl-dot-briefing,
+.sl-dot-active.sl-dot-arc,
+.sl-dot-active.sl-dot-insight,
+.sl-dot-active.sl-dot-cluster,
+.sl-dot-active.sl-dot-analytics,
+.sl-dot-active.sl-dot-closer { background: #ff8800; border-color: #ffaa00; }
+/* Slides — mobile */
+  .sl-wrap { height: 60vh; min-height: 300px; max-height: none; }
+.sl-slide { flex: 0 0 92vw; padding: 14px 16px 18px; }
+.sl-title-h1 { font-size: 24px; }
+.sl-ins-quote { font-size: 16px; }
+.sl-analytics-grid { grid-template-columns: 1fr; }
+.sl-topbar { padding: 6px 10px 8px; }
+.sl-topbar-title { display: none; }
+.sl-nav-btn, .sl-mode-btn, .sl-close { padding: 7px 10px; min-height: 44px; }
+.sl-track { padding: 0 12px 10px; gap: 12px; }
+/* ── Slide paint button ──────────────────────────────────────────────────── */
+
+.sl-slide-marker { position: relative; }
+.sl-paint-btn {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em;
+  background: transparent;
+  border: 1px solid #2a1800;
+  color: #443322;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sl-paint-btn:hover:not(:disabled) {
+  color: #ff6600;
+  border-color: #ff6600;
+  background: #110500;
+}
+.sl-paint-btn:disabled {
+  color: #332211;
+  cursor: wait;
+}
+.sl-paint-btn.sl-paint-done {
+  color: #00cc66;
+  border-color: #006633;
+}
+.sl-paint-btn.sl-paint-error {
+  color: #cc2200;
+  border-color: #661100;
+}
+/* ── Registry widgets (ui/registry.json, 2026-09-17) ─────────────────────────
+   cluster-overview · insight-matrix · causal-chain · cluster-bridges
+   Bloomberg palette: bg #000, orange #ff6600, amber #ffaa00, yellow #e8e000,
+   cyan #00cccc, dim #555533. */
+
+/* cluster-overview */
+.sl-clo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+.sl-clo-card {
+  display: flex; flex-direction: column; gap: 4px;
+  text-align: left; cursor: pointer;
+  background: #0a0800; color: inherit;
+  border: 1px solid #1e1e00; border-left: 3px solid #666;
+  padding: 8px 10px; font: inherit;
+}
+.sl-clo-card:hover { background: #140c00; border-color: #2a1a00; }
+.sl-clo-card:hover .sl-clo-label { color: #ff8800; }
+.sl-clo-hdr { display: flex; align-items: center; gap: 8px; }
+.sl-clo-label {
+  flex: 1 1 auto; font-weight: 700; font-size: 12px; color: #ffcc00;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sl-clo-desc { font-size: 10.5px; line-height: 1.45; color: #aaaa88; }
+/* insight-matrix */
+.sl-im-grid {
+  display: grid;
+  gap: 2px;
+  margin-top: 8px;
+  border: 1px solid #1e1e00;
+  background: #1e1e00;
+}
+.sl-im-corner, .sl-im-th, .sl-im-rh, .sl-im-cell { background: #000; }
+.sl-im-th {
+  font: 700 9px "Courier New", monospace; letter-spacing: 0.1em;
+  color: #886644; padding: 6px 8px; text-align: center;
+}
+.sl-im-rh {
+  font: 700 9px "Courier New", monospace; letter-spacing: 0.1em;
+  padding: 8px 6px; display: flex; align-items: center;
+}
+.sl-im-cell { padding: 4px; display: flex; flex-direction: column; gap: 3px; min-height: 28px; }
+.sl-im-item {
+  text-align: left; cursor: pointer; font: inherit; font-size: 10.5px; line-height: 1.35;
+  color: #ccccaa; background: #0a0800; border: 1px solid #1a1200;
+  padding: 4px 6px;
+}
+.sl-im-item:hover { color: #ff8800; border-color: #ff6600; }
+/* causal-chain */
+.sl-cc-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.sl-cc-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+  padding: 6px 0; border-top: 1px solid #1e1e00;
+}
+.sl-cc-num {
+  font: 700 10px "Courier New", monospace; color: #886644;
+  letter-spacing: 0.08em; margin-right: 6px;
+}
+.sl-cc-arrow { color: #ff6600; font-weight: 700; padding: 0 2px; }
+/* cluster-bridges */
+.sl-br-list { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.sl-br-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  padding: 5px 0; border-top: 1px solid #1e1e00;
+}
+.sl-br-dot { width: 10px; height: 10px; }
+.sl-br-rel {
+  font: 700 9px "Courier New", monospace; letter-spacing: 0.1em;
+  color: #cc6600; text-transform: uppercase; padding: 0 4px;
+}
+.sl-br-w { margin-left: auto; font: 700 9px "Courier New", monospace; color: #555533; }
+/* HeroVisual enrichment lines (authored by /herovisual) */
+.sl-enrich {
+  font-size: 12.5px; line-height: 1.5; color: #e8d8a8;
+  border-left: 2px solid #ff6600; padding: 4px 0 4px 10px; margin: 6px 0 8px;
+}
+.sl-enrich-tagline { font-size: 14px; color: #ffcc00; font-style: italic; }
+.hv-foot{position:fixed;right:10px;bottom:6px;font-size:9px;color:#555533;letter-spacing:.08em}
+</style>
+</head>
+<body>
+<div class="middle"><div id="slides-wrap" class="sl-wrap sl-visible" role="region" aria-label="Brief slides — horizontally scrollable">
+    <div class="sl-topbar">
+      <div class="sl-topbar-left">
+        <span class="sl-index">01 / 26</span>
+        <span class="sl-topbar-title"></span>
+      </div>
+      <div class="sl-topbar-right">
+        <button class="sl-nav-btn sl-prev" aria-label="Previous slide (←)" title="Previous (←)">◀</button>
+        <button class="sl-nav-btn sl-next" aria-label="Next slide (→)" title="Next (→)">▶</button>
+        <button class="sl-mode-btn" data-mode="reader" aria-label="Switch to reader view" title="Reader view">READER ▸</button>
+        <button class="sl-close" aria-label="Close slides (F9)" title="Close (F9)">✕</button>
+      </div>
+    </div>
+    <div class="sl-progress" aria-hidden="true"><div class="sl-progress-fill" style="width: 0%;"></div></div>
+    <div class="sl-track" aria-label="Slide track">
+    <article class="sl-slide sl-slide-title" data-slide-idx="0" data-slide-id="title" data-frame-nodes="esp32-esp8266,arduino-framework,ota-updates" role="group" aria-roledescription="slide" aria-label="Slide 1 of 26: ESP: Microcontroller Ecosystem">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">01</span>
+        <span class="sl-slide-type">TITLE</span>
+        <button class="sl-paint-btn" data-paint-idx="0" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-title-meta">
+      <span class="sl-title-domain">Hardware / IoT</span>
+      <span class="sl-sep">·</span>
+      <span class="sl-title-year">2026</span>
+      <span class="sl-title-tone sl-tone-analytical">ANALYTICAL</span>
+    </div>
+    <h1 class="sl-title-h1">ESP: Microcontroller Ecosystem</h1>
+    <p class="sl-title-sub">Hardware, Frameworks, and OTA for ESP8266 &amp; ESP32</p>
+    <p class="sl-enrich sl-enrich-tagline">Five ways to program one chip; the real decision is how you will maintain it once it leaves the bench.</p>
+    <div class="sl-tags"><span class="sl-tag">esp32</span><span class="sl-tag">esp8266</span><span class="sl-tag">micropython</span><span class="sl-tag">arduino</span><span class="sl-tag">espruino</span><span class="sl-tag">ota</span><span class="sl-tag">iot</span><span class="sl-tag">platformio</span><span class="sl-tag">esp-idf</span></div>
+    <div class="sl-title-spine">
+      <span class="sl-pill" data-qid="esp32-esp8266" style="border-color:#00aaff">ESP32 / ESP8266 Microcontrollers</span><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span>
+    </div>
+    <p class="sl-title-hint">26 slides · use ← → or scroll →</p>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-briefing" data-slide-idx="1" data-slide-id="briefing" data-frame-nodes="esp32-esp8266,arduino-framework,ota-updates,esp32-esp8266,platformio,ota-updates,physical-access,maintenance-burden,framework-lockin" role="group" aria-roledescription="slide" aria-label="Slide 2 of 26: Executive briefing">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">02</span>
+        <span class="sl-slide-type">BRIEFING</span>
+        <button class="sl-paint-btn" data-paint-idx="1" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <h2 class="sl-h2">Executive briefing</h2>
+    <p class="sl-lead">The ESP8266 and ESP32 ecosystem offers powerful, affordable hardware paired with a genuinely diverse set of programming options. Success depends less on picking the single 'best' framework and more on aligning language choice, tooling, and OTA strategy with team skills and real-world deployment constraints. The three recurring antagonists are physical access, maintenance burden and framework lock-in; every serious tooling choice is a bet on how to mitigate them.</p>
+    <div class="sl-stats-grid"><div class="sl-stat">
+      <span class="sl-stat-val">5+ (Arduino, MicroPython, Espruino, ESP-IDF, Mongoose OS)</span>
+      <span class="sl-stat-lbl">Programming options</span>
+    </div><div class="sl-stat">
+      <span class="sl-stat-val">Wi-Fi + dual-mode Bluetooth</span>
+      <span class="sl-stat-lbl">Core wireless</span>
+    </div><div class="sl-stat">
+      <span class="sl-stat-val">OTA updates + secure boot</span>
+      <span class="sl-stat-lbl">Production gate</span>
+    </div><div class="sl-stat">
+      <span class="sl-stat-val">Language, team experience, deployment model</span>
+      <span class="sl-stat-lbl">Decision factors</span>
+    </div><div class="sl-stat">
+      <span class="sl-stat-val">ESP-IDF underlies Arduino core, PlatformIO and Mongoose OS</span>
+      <span class="sl-stat-lbl">Native SDK</span>
+    </div></div>
+    <div class="sl-actor-row"><span class="sl-actor-lbl">Protagonists</span><span class="sl-pill" data-qid="esp32-esp8266" style="border-color:#00aaff">ESP32 / ESP8266 Microcontrollers</span><span class="sl-pill" data-qid="platformio" style="border-color:#00ccee">PlatformIO</span><span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span></div>
+    <div class="sl-actor-row"><span class="sl-actor-lbl sl-actor-lbl-neg">Antagonists</span><span class="sl-pill sl-pill-neg" data-qid="physical-access" style="border-color:#ff3322">Physical Access Requirement</span><span class="sl-pill sl-pill-neg" data-qid="maintenance-burden" style="border-color:#ff3322">Long-term Maintenance Burden</span><span class="sl-pill sl-pill-neg" data-qid="framework-lockin" style="border-color:#ff3322">Framework Lock-in</span></div>
+    <div class="sl-actor-row"><span class="sl-actor-lbl">Themes</span><span class="sl-theme">Ecosystem diversity</span><span class="sl-theme">Hardware capability vs tooling choice</span><span class="sl-theme">From prototype to production</span><span class="sl-theme">Lock-in and its mitigations</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-arc" data-slide-idx="2" data-slide-id="arc" data-frame-nodes="esp32-esp8266,esp32-esp8266,espressif-systems,esp32-security-features,esp-idf,arduino-framework,arduino-framework,micropython,espruino,platformio,mongoose-os,firmware,firmware,bootloader,arduino-framework,esp-idf,arduino-ide,arduino-ide,micropython,espruino,platformio,esp-easy,framework-lockin,ota-updates,ota-updates,physical-access,esp32-security-features,bootloader,arduino-framework,arduino-framework,micropython,platformio,maintenance-burden,framework-lockin,platformio,platformio,mongoose-os,esp32-security-features,ota-updates,esp-idf,esp32-esp8266,esp32-esp8266,arduino-framework,micropython,espruino,ota-updates" role="group" aria-roledescription="slide" aria-label="Slide 3 of 26: Narrative arc">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">03</span>
+        <span class="sl-slide-type">ARC</span>
+        <button class="sl-paint-btn" data-paint-idx="2" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <h2 class="sl-h2">Narrative arc</h2>
+    <p class="sl-caption">8 beats · tension from setup to climax to close. Click a block to jump to that beat.</p>
+    
+    <svg viewBox="0 0 640 96" class="sl-svg-arc" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="slTensionGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ff4400" stop-opacity="0.3"></stop>
+          <stop offset="100%" stop-color="#330000" stop-opacity="0.04"></stop>
+        </linearGradient>
+      </defs>
+      <line x1="40" y1="72.0" x2="632" y2="72.0" stroke="#334433" stroke-opacity="0.18" stroke-dasharray="3 5"></line>
+            <text x="36" y="75.5" text-anchor="end" class="sl-svg-lbl" fill="#334433">LOW</text><line x1="40" y1="51.3" x2="632" y2="51.3" stroke="#996600" stroke-opacity="0.18" stroke-dasharray="3 5"></line>
+            <text x="36" y="54.8" text-anchor="end" class="sl-svg-lbl" fill="#996600">MED</text><line x1="40" y1="30.7" x2="632" y2="30.7" stroke="#ff4400" stroke-opacity="0.18" stroke-dasharray="3 5"></line>
+            <text x="36" y="34.2" text-anchor="end" class="sl-svg-lbl" fill="#ff4400">HIGH</text><line x1="40" y1="10.0" x2="632" y2="10.0" stroke="#ff0044" stroke-opacity="0.18" stroke-dasharray="3 5"></line>
+            <text x="36" y="13.5" text-anchor="end" class="sl-svg-lbl" fill="#ff0044">CLIMAX</text>
+      <path d="M 40.0,72.0 L 40.0,72.0 L 123.4,51.3 L 206.9,51.3 L 290.3,30.7 L 373.7,10.0 L 457.1,30.7 L 540.6,51.3 L 624.0,72.0 L 624.0,72.0 Z" fill="url(#slTensionGrad)"></path>
+      <polyline points="40.0,72.0 123.4,51.3 206.9,51.3 290.3,30.7 373.7,10.0 457.1,30.7 540.6,51.3 624.0,72.0" fill="none" stroke="#cc5500" stroke-width="2" stroke-linejoin="round"></polyline>
+      <circle cx="40.0" cy="72.0" r="4.5" fill="#334433" stroke="#000" stroke-width="1.5"></circle><circle cx="123.4" cy="51.3" r="4.5" fill="#996600" stroke="#000" stroke-width="1.5"></circle><circle cx="206.9" cy="51.3" r="4.5" fill="#996600" stroke="#000" stroke-width="1.5"></circle><circle cx="290.3" cy="30.7" r="4.5" fill="#ff4400" stroke="#000" stroke-width="1.5"></circle><circle cx="373.7" cy="10.0" r="4.5" fill="#ff0044" stroke="#000" stroke-width="1.5"></circle><circle cx="457.1" cy="30.7" r="4.5" fill="#ff4400" stroke="#000" stroke-width="1.5"></circle><circle cx="540.6" cy="51.3" r="4.5" fill="#996600" stroke="#000" stroke-width="1.5"></circle><circle cx="624.0" cy="72.0" r="4.5" fill="#334433" stroke="#000" stroke-width="1.5"></circle>
+    </svg>
+    <div class="sl-arc-strip"><button class="sl-arc-block sl-arc-low" data-goto-slide="beat-0" title="The Capable Hardware Foundation" aria-label="Jump to beat 1: The Capable Hardware Foundation">
+      <span class="sl-arc-num">1</span>
+    </button><button class="sl-arc-block sl-arc-medium" data-goto-slide="beat-1" title="A Fragmented but Rich Ecosystem Emerges" aria-label="Jump to beat 2: A Fragmented but Rich Ecosystem Emerges">
+      <span class="sl-arc-num">2</span>
+    </button><button class="sl-arc-block sl-arc-medium" data-goto-slide="beat-2" title="The Firmware Distinction Matters" aria-label="Jump to beat 3: The Firmware Distinction Matters">
+      <span class="sl-arc-num">3</span>
+    </button><button class="sl-arc-block sl-arc-high" data-goto-slide="beat-3" title="Choosing Your Weapon" aria-label="Jump to beat 4: Choosing Your Weapon">
+      <span class="sl-arc-num">4</span>
+    </button><button class="sl-arc-block sl-arc-climax" data-goto-slide="beat-4" title="OTA Becomes Non-Negotiable" aria-label="Jump to beat 5: OTA Becomes Non-Negotiable">
+      <span class="sl-arc-num">5</span>
+    </button><button class="sl-arc-block sl-arc-high" data-goto-slide="beat-5" title="The Trade-off Becomes Clear" aria-label="Jump to beat 6: The Trade-off Becomes Clear">
+      <span class="sl-arc-num">6</span>
+    </button><button class="sl-arc-block sl-arc-medium" data-goto-slide="beat-6" title="The Ecosystem Matures" aria-label="Jump to beat 7: The Ecosystem Matures">
+      <span class="sl-arc-num">7</span>
+    </button><button class="sl-arc-block sl-arc-low" data-goto-slide="beat-7" title="A Living, Multi-Paradigm Platform" aria-label="Jump to beat 8: A Living, Multi-Paradigm Platform">
+      <span class="sl-arc-num">8</span>
+    </button></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-beat" data-slide-idx="3" data-slide-id="beat-0" data-frame-nodes="esp32-esp8266,esp32-esp8266,espressif-systems,esp32-security-features,esp-idf" role="group" aria-roledescription="slide" aria-label="Slide 4 of 26: The Capable Hardware Foundation">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">04</span>
+        <span class="sl-slide-type">BEAT</span>
+        <button class="sl-paint-btn" data-paint-idx="3" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-beat-hdr">
+      <span class="sl-beat-num">Beat 01 / 8</span>
+      <span class="sl-beat-tension sl-t-low">LOW</span>
+    </div>
+    <h2 class="sl-h2">The Capable Hardware Foundation</h2>
+    <div class="sl-ebadge" data-qid="esp32-esp8266">
+    <span class="sl-ebadge-type" style="color:#00aaff">PLATFORM</span>
+    <span class="sl-ebadge-lbl">ESP32 / ESP8266 Microcontrollers</span>
+  </div>
+    <p class="sl-narration">Espressif releases powerful, affordable microcontrollers with Wi-Fi, Bluetooth, strong security features, and sufficient processing power, alongside ESP-IDF, the native SDK every other framework ultimately builds on. The hardware becomes a compelling foundation for a wide range of IoT and embedded projects.</p>
+    
+    <div class="sl-related"><span class="sl-related-lbl">Also ▸</span><span class="sl-pill" data-qid="esp32-esp8266" style="border-color:#00aaff">ESP32 / ESP8266 Microcontrollers</span><span class="sl-pill" data-qid="espressif-systems" style="border-color:#ff8800">Espressif Systems</span><span class="sl-pill" data-qid="esp32-security-features" style="border-color:#aa88ff">ESP32 Security Features</span><span class="sl-pill" data-qid="esp-idf" style="border-color:#00ccee">ESP-IDF (native SDK)</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-beat" data-slide-idx="4" data-slide-id="beat-1" data-frame-nodes="arduino-framework,arduino-framework,micropython,espruino,platformio,mongoose-os" role="group" aria-roledescription="slide" aria-label="Slide 5 of 26: A Fragmented but Rich Ecosystem Emerges">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">05</span>
+        <span class="sl-slide-type">BEAT</span>
+        <button class="sl-paint-btn" data-paint-idx="4" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-beat-hdr">
+      <span class="sl-beat-num">Beat 02 / 8</span>
+      <span class="sl-beat-tension sl-t-medium">MEDIUM</span>
+    </div>
+    <h2 class="sl-h2">A Fragmented but Rich Ecosystem Emerges</h2>
+    <div class="sl-ebadge" data-qid="arduino-framework">
+    <span class="sl-ebadge-type" style="color:#00ccee">SOFTWARE</span>
+    <span class="sl-ebadge-lbl">Arduino Framework</span>
+  </div>
+    <p class="sl-narration">Multiple programming paradigms compete for developer attention. Arduino offers rapid prototyping, while MicroPython and Espruino bring high-level languages to the chip. PlatformIO and Mongoose OS provide more professional tooling and security-focused options.</p>
+    
+    <div class="sl-related"><span class="sl-related-lbl">Also ▸</span><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="micropython" style="border-color:#00ccee">MicroPython</span><span class="sl-pill" data-qid="espruino" style="border-color:#00ccee">Espruino</span><span class="sl-pill" data-qid="platformio" style="border-color:#00ccee">PlatformIO</span><span class="sl-pill" data-qid="mongoose-os" style="border-color:#00ccee">Mongoose OS</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-beat" data-slide-idx="5" data-slide-id="beat-2" data-frame-nodes="firmware,firmware,bootloader,arduino-framework,esp-idf" role="group" aria-roledescription="slide" aria-label="Slide 6 of 26: The Firmware Distinction Matters">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">06</span>
+        <span class="sl-slide-type">BEAT</span>
+        <button class="sl-paint-btn" data-paint-idx="5" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-beat-hdr">
+      <span class="sl-beat-num">Beat 03 / 8</span>
+      <span class="sl-beat-tension sl-t-medium">MEDIUM</span>
+    </div>
+    <h2 class="sl-h2">The Firmware Distinction Matters</h2>
+    <div class="sl-ebadge" data-qid="firmware">
+    <span class="sl-ebadge-type" style="color:#aa88ff">CONCEPT</span>
+    <span class="sl-ebadge-lbl">Firmware</span>
+  </div>
+    <p class="sl-narration">Developers learn that not all code is equal. Firmware sits close to the hardware and provides the critical API for GPIO and peripherals; the bootloader decides which image runs. Understanding this boundary becomes important when choosing between Arduino's simplicity and lower-level frameworks.</p>
+    
+    <div class="sl-related"><span class="sl-related-lbl">Also ▸</span><span class="sl-pill" data-qid="firmware" style="border-color:#aa88ff">Firmware</span><span class="sl-pill" data-qid="bootloader" style="border-color:#aa88ff">Bootloader</span><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="esp-idf" style="border-color:#00ccee">ESP-IDF (native SDK)</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-beat" data-slide-idx="6" data-slide-id="beat-3" data-frame-nodes="arduino-ide,arduino-ide,micropython,espruino,platformio,esp-easy,framework-lockin" role="group" aria-roledescription="slide" aria-label="Slide 7 of 26: Choosing Your Weapon">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">07</span>
+        <span class="sl-slide-type">BEAT</span>
+        <button class="sl-paint-btn" data-paint-idx="6" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-beat-hdr">
+      <span class="sl-beat-num">Beat 04 / 8</span>
+      <span class="sl-beat-tension sl-t-high">HIGH</span>
+    </div>
+    <h2 class="sl-h2">Choosing Your Weapon</h2>
+    <div class="sl-ebadge" data-qid="arduino-ide">
+    <span class="sl-ebadge-type" style="color:#00ccee">SOFTWARE</span>
+    <span class="sl-ebadge-lbl">Arduino IDE</span>
+  </div>
+    <p class="sl-narration">The developer must decide: Arduino IDE for speed and community, MicroPython or Espruino for higher-level languages, PlatformIO for professional workflows, or ESP Easy for minimal coding. Each choice shapes the development experience and quietly sets the cost of leaving later.</p>
+    
+    <div class="sl-related"><span class="sl-related-lbl">Also ▸</span><span class="sl-pill" data-qid="arduino-ide" style="border-color:#00ccee">Arduino IDE</span><span class="sl-pill" data-qid="micropython" style="border-color:#00ccee">MicroPython</span><span class="sl-pill" data-qid="espruino" style="border-color:#00ccee">Espruino</span><span class="sl-pill" data-qid="platformio" style="border-color:#00ccee">PlatformIO</span><span class="sl-pill" data-qid="esp-easy" style="border-color:#00ccee">ESP Easy</span><span class="sl-pill" data-qid="framework-lockin" style="border-color:#ff3322">Framework Lock-in</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-beat" data-slide-idx="7" data-slide-id="beat-4" data-frame-nodes="ota-updates,ota-updates,physical-access,esp32-security-features,bootloader" role="group" aria-roledescription="slide" aria-label="Slide 8 of 26: OTA Becomes Non-Negotiable">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">08</span>
+        <span class="sl-slide-type">BEAT</span>
+        <button class="sl-paint-btn" data-paint-idx="7" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-beat-hdr">
+      <span class="sl-beat-num">Beat 05 / 8</span>
+      <span class="sl-beat-tension sl-t-climax">CLIMAX</span>
+    </div>
+    <h2 class="sl-h2">OTA Becomes Non-Negotiable</h2>
+    <div class="sl-ebadge" data-qid="ota-updates">
+    <span class="sl-ebadge-type" style="color:#00ff66">SOLUTION</span>
+    <span class="sl-ebadge-lbl">OTA (Over-The-Air) Updates</span>
+  </div>
+    <p class="sl-narration">Once devices leave the lab and enter the real world, physical access becomes expensive or impossible. OTA updates, powered by the bootloader's partition switching and the chip's secure boot, transform how firmware is deployed and maintained at scale. This is the moment a prototype platform becomes a production one.</p>
+    
+    <div class="sl-related"><span class="sl-related-lbl">Also ▸</span><span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span><span class="sl-pill" data-qid="physical-access" style="border-color:#ff3322">Physical Access Requirement</span><span class="sl-pill" data-qid="esp32-security-features" style="border-color:#aa88ff">ESP32 Security Features</span><span class="sl-pill" data-qid="bootloader" style="border-color:#aa88ff">Bootloader</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-beat" data-slide-idx="8" data-slide-id="beat-5" data-frame-nodes="arduino-framework,arduino-framework,micropython,platformio,maintenance-burden,framework-lockin" role="group" aria-roledescription="slide" aria-label="Slide 9 of 26: The Trade-off Becomes Clear">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">09</span>
+        <span class="sl-slide-type">BEAT</span>
+        <button class="sl-paint-btn" data-paint-idx="8" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-beat-hdr">
+      <span class="sl-beat-num">Beat 06 / 8</span>
+      <span class="sl-beat-tension sl-t-high">HIGH</span>
+    </div>
+    <h2 class="sl-h2">The Trade-off Becomes Clear</h2>
+    <div class="sl-ebadge" data-qid="arduino-framework">
+    <span class="sl-ebadge-type" style="color:#00ccee">SOFTWARE</span>
+    <span class="sl-ebadge-lbl">Arduino Framework</span>
+  </div>
+    <p class="sl-narration">Arduino wins on speed and accessibility but accumulates maintenance burden as projects grow. MicroPython and Espruino win on developer experience for those who prefer Python or JavaScript. PlatformIO wins on power and reproducibility and loosens lock-in by building any framework. There is no single best choice, only the right choice for the team's skills and project constraints.</p>
+    
+    <div class="sl-related"><span class="sl-related-lbl">Also ▸</span><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="micropython" style="border-color:#00ccee">MicroPython</span><span class="sl-pill" data-qid="platformio" style="border-color:#00ccee">PlatformIO</span><span class="sl-pill" data-qid="maintenance-burden" style="border-color:#ff3322">Long-term Maintenance Burden</span><span class="sl-pill" data-qid="framework-lockin" style="border-color:#ff3322">Framework Lock-in</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-beat" data-slide-idx="9" data-slide-id="beat-6" data-frame-nodes="platformio,platformio,mongoose-os,esp32-security-features,ota-updates,esp-idf" role="group" aria-roledescription="slide" aria-label="Slide 10 of 26: The Ecosystem Matures">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">10</span>
+        <span class="sl-slide-type">BEAT</span>
+        <button class="sl-paint-btn" data-paint-idx="9" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-beat-hdr">
+      <span class="sl-beat-num">Beat 07 / 8</span>
+      <span class="sl-beat-tension sl-t-medium">MEDIUM</span>
+    </div>
+    <h2 class="sl-h2">The Ecosystem Matures</h2>
+    <div class="sl-ebadge" data-qid="platformio">
+    <span class="sl-ebadge-type" style="color:#00ccee">SOFTWARE</span>
+    <span class="sl-ebadge-lbl">PlatformIO</span>
+  </div>
+    <p class="sl-narration">Professional tools and security-hardened frameworks gain traction. The combination of capable hardware, multiple language options, and robust OTA infrastructure makes the ESP family viable for production IoT deployments beyond hobbyist projects.</p>
+    
+    <div class="sl-related"><span class="sl-related-lbl">Also ▸</span><span class="sl-pill" data-qid="platformio" style="border-color:#00ccee">PlatformIO</span><span class="sl-pill" data-qid="mongoose-os" style="border-color:#00ccee">Mongoose OS</span><span class="sl-pill" data-qid="esp32-security-features" style="border-color:#aa88ff">ESP32 Security Features</span><span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span><span class="sl-pill" data-qid="esp-idf" style="border-color:#00ccee">ESP-IDF (native SDK)</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-beat" data-slide-idx="10" data-slide-id="beat-7" data-frame-nodes="esp32-esp8266,esp32-esp8266,arduino-framework,micropython,espruino,ota-updates" role="group" aria-roledescription="slide" aria-label="Slide 11 of 26: A Living, Multi-Paradigm Platform">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">11</span>
+        <span class="sl-slide-type">BEAT</span>
+        <button class="sl-paint-btn" data-paint-idx="10" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-beat-hdr">
+      <span class="sl-beat-num">Beat 08 / 8</span>
+      <span class="sl-beat-tension sl-t-low">LOW</span>
+    </div>
+    <h2 class="sl-h2">A Living, Multi-Paradigm Platform</h2>
+    <div class="sl-ebadge" data-qid="esp32-esp8266">
+    <span class="sl-ebadge-type" style="color:#00aaff">PLATFORM</span>
+    <span class="sl-ebadge-lbl">ESP32 / ESP8266 Microcontrollers</span>
+  </div>
+    <p class="sl-narration">The ESP ecosystem succeeds not because it offers one perfect way to build, but because it offers many good ways. Hardware capability, language choice, tooling quality, and deployment strategy can be mixed and matched. The platform rewards developers who understand the full stack.</p>
+    
+    <div class="sl-related"><span class="sl-related-lbl">Also ▸</span><span class="sl-pill" data-qid="esp32-esp8266" style="border-color:#00aaff">ESP32 / ESP8266 Microcontrollers</span><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="micropython" style="border-color:#00ccee">MicroPython</span><span class="sl-pill" data-qid="espruino" style="border-color:#00ccee">Espruino</span><span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-insight" data-slide-idx="11" data-slide-id="insight-insight-2" data-frame-nodes="ota-updates,esp32-security-features,physical-access,bootloader" role="group" aria-roledescription="slide" aria-label="Slide 12 of 26: OTA is the feature that turns ESP from a prototyping platform into a production one">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">12</span>
+        <span class="sl-slide-type">INSIGHT</span>
+        <button class="sl-paint-btn" data-paint-idx="11" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-ins-hdr">
+      <span class="sl-ins-icon">◈</span>
+      <span class="sl-ins-type">FINDING</span>
+      <div class="sl-ins-sev-bar"><div class="sl-ins-sev-fill" style="width:100%;background:#ff4400"></div></div>
+      <span class="sl-ins-sev" style="color:#ff4400">HIGH</span>
+    </div>
+    <blockquote class="sl-ins-quote">"OTA is the feature that turns ESP from a prototyping platform into a production one"</blockquote>
+    <p class="sl-ins-body">Without robust over-the-air update capabilities, even the best hardware and frameworks remain limited to projects where physical access is feasible. OTA, combined with the chip's security features and bootloader, is what makes large-scale deployment practical.</p>
+    <div class="sl-related"><span class="sl-related-lbl">Evidence ▸</span><span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span><span class="sl-pill" data-qid="esp32-security-features" style="border-color:#aa88ff">ESP32 Security Features</span><span class="sl-pill" data-qid="physical-access" style="border-color:#ff3322">Physical Access Requirement</span><span class="sl-pill" data-qid="bootloader" style="border-color:#aa88ff">Bootloader</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-insight" data-slide-idx="12" data-slide-id="insight-insight-3" data-frame-nodes="arduino-framework,maintenance-burden,framework-lockin,platformio,esp-idf" role="group" aria-roledescription="slide" aria-label="Slide 13 of 26: Arduino's simplicity carries a hidden long-term maintenance and lock-in cost">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">13</span>
+        <span class="sl-slide-type">INSIGHT</span>
+        <button class="sl-paint-btn" data-paint-idx="12" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-ins-hdr">
+      <span class="sl-ins-icon">⚑</span>
+      <span class="sl-ins-type">WARNING</span>
+      <div class="sl-ins-sev-bar"><div class="sl-ins-sev-fill" style="width:100%;background:#ff4400"></div></div>
+      <span class="sl-ins-sev" style="color:#ff4400">HIGH</span>
+    </div>
+    <blockquote class="sl-ins-quote">"Arduino's simplicity carries a hidden long-term maintenance and lock-in cost"</blockquote>
+    <p class="sl-ins-body">While Arduino enables fast starts, teams that outgrow it often face migration pain. Understanding when to move to PlatformIO, native ESP-IDF, or MicroPython early can prevent painful refactors later.</p>
+    <div class="sl-related"><span class="sl-related-lbl">Evidence ▸</span><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="maintenance-burden" style="border-color:#ff3322">Long-term Maintenance Burden</span><span class="sl-pill" data-qid="framework-lockin" style="border-color:#ff3322">Framework Lock-in</span><span class="sl-pill" data-qid="platformio" style="border-color:#00ccee">PlatformIO</span><span class="sl-pill" data-qid="esp-idf" style="border-color:#00ccee">ESP-IDF (native SDK)</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-insight" data-slide-idx="13" data-slide-id="insight-insight-1" data-frame-nodes="arduino-framework,micropython,espruino,esp32-esp8266" role="group" aria-roledescription="slide" aria-label="Slide 14 of 26: Multiple language runtimes on the same hardware is a genuine strength, not fragmentation">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">14</span>
+        <span class="sl-slide-type">INSIGHT</span>
+        <button class="sl-paint-btn" data-paint-idx="13" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-ins-hdr">
+      <span class="sl-ins-icon">◈</span>
+      <span class="sl-ins-type">FINDING</span>
+      <div class="sl-ins-sev-bar"><div class="sl-ins-sev-fill" style="width:66%;background:#cc8800"></div></div>
+      <span class="sl-ins-sev" style="color:#cc8800">MEDIUM</span>
+    </div>
+    <blockquote class="sl-ins-quote">"Multiple language runtimes on the same hardware is a genuine strength, not fragmentation"</blockquote>
+    <p class="sl-ins-body">The coexistence of Arduino C++, MicroPython, and Espruino on ESP32 gives teams real flexibility. Rather than forcing one paradigm, the hardware supports different developer backgrounds and project requirements without compromise.</p>
+    <div class="sl-related"><span class="sl-related-lbl">Evidence ▸</span><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="micropython" style="border-color:#00ccee">MicroPython</span><span class="sl-pill" data-qid="espruino" style="border-color:#00ccee">Espruino</span><span class="sl-pill" data-qid="esp32-esp8266" style="border-color:#00aaff">ESP32 / ESP8266 Microcontrollers</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-insight" data-slide-idx="14" data-slide-id="insight-insight-4" data-frame-nodes="platformio,arduino-framework,esp-idf,arduino-ide" role="group" aria-roledescription="slide" aria-label="Slide 15 of 26: PlatformIO represents the professional maturation of the ESP ecosystem">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">15</span>
+        <span class="sl-slide-type">INSIGHT</span>
+        <button class="sl-paint-btn" data-paint-idx="14" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-ins-hdr">
+      <span class="sl-ins-icon">◎</span>
+      <span class="sl-ins-type">PATTERN</span>
+      <div class="sl-ins-sev-bar"><div class="sl-ins-sev-fill" style="width:66%;background:#cc8800"></div></div>
+      <span class="sl-ins-sev" style="color:#cc8800">MEDIUM</span>
+    </div>
+    <blockquote class="sl-ins-quote">"PlatformIO represents the professional maturation of the ESP ecosystem"</blockquote>
+    <p class="sl-ins-body">PlatformIO brings modern development practices (library management, testing, CI, multi-environment support) to ESP development and can build Arduino, ESP-IDF and other frameworks from one project. Its rise signals that the ecosystem is moving beyond hobbyist tools toward production-grade workflows.</p>
+    <div class="sl-related"><span class="sl-related-lbl">Evidence ▸</span><span class="sl-pill" data-qid="platformio" style="border-color:#00ccee">PlatformIO</span><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="esp-idf" style="border-color:#00ccee">ESP-IDF (native SDK)</span><span class="sl-pill" data-qid="arduino-ide" style="border-color:#00ccee">Arduino IDE</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-insight" data-slide-idx="15" data-slide-id="insight-insight-5" data-frame-nodes="arduino-framework,micropython,ota-updates,maintenance-burden" role="group" aria-roledescription="slide" aria-label="Slide 16 of 26: The best ESP project starts with an honest assessment of team skills and deployment constraints">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">16</span>
+        <span class="sl-slide-type">INSIGHT</span>
+        <button class="sl-paint-btn" data-paint-idx="15" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-ins-hdr">
+      <span class="sl-ins-icon">◇</span>
+      <span class="sl-ins-type">OPPORTUNITY</span>
+      <div class="sl-ins-sev-bar"><div class="sl-ins-sev-fill" style="width:66%;background:#cc8800"></div></div>
+      <span class="sl-ins-sev" style="color:#cc8800">MEDIUM</span>
+    </div>
+    <blockquote class="sl-ins-quote">"The best ESP project starts with an honest assessment of team skills and deployment constraints"</blockquote>
+    <p class="sl-ins-body">Choosing Arduino because it's familiar, or MicroPython because it's trendy, without considering long-term maintenance and OTA requirements often leads to regret. The ecosystem rewards deliberate technology choices over default options.</p>
+    <div class="sl-related"><span class="sl-related-lbl">Evidence ▸</span><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="micropython" style="border-color:#00ccee">MicroPython</span><span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span><span class="sl-pill" data-qid="maintenance-burden" style="border-color:#ff3322">Long-term Maintenance Burden</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-insight-matrix" data-slide-idx="16" data-slide-id="insights" data-frame-nodes="arduino-framework,micropython,espruino,esp32-esp8266,ota-updates,esp32-security-features,physical-access,bootloader,maintenance-burden,framework-lockin,platformio,esp-idf,arduino-ide" role="group" aria-roledescription="slide" aria-label="Slide 17 of 26: Insight matrix">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">17</span>
+        <span class="sl-slide-type">INSIGHT-MATRIX</span>
+        <button class="sl-paint-btn" data-paint-idx="16" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <h2 class="sl-h2">Insight matrix</h2>
+    <p class="sl-caption">5 insights by severity × type · click one to open it, or frame its evidence.</p>
+    <p class="sl-enrich">Two high-severity items, one finding and one warning: OTA makes production possible, and Arduino's easy start is what later costs the most.</p>
+    <div class="sl-im-grid" style="grid-template-columns: 64px repeat(4, 1fr)"><div class="sl-im-corner"></div><div class="sl-im-th">◈ FINDING</div><div class="sl-im-th">⚑ WARNING</div><div class="sl-im-th">◎ PATTERN</div><div class="sl-im-th">◇ OPPORTUNITY</div><div class="sl-im-rh" style="color:#ff4400">HIGH</div><div class="sl-im-cell"><button class="sl-im-item" data-goto-slide="insight-insight-2" data-frame="ota-updates,esp32-security-features,physical-access,bootloader" title="OTA is the feature that turns ESP from a prototyping platform into a production one">OTA is the feature that turns ESP from a prototyping platform …</button></div><div class="sl-im-cell"><button class="sl-im-item" data-goto-slide="insight-insight-3" data-frame="arduino-framework,maintenance-burden,framework-lockin,platformio,esp-idf" title="Arduino's simplicity carries a hidden long-term maintenance and lock-in cost">Arduino's simplicity carries a hidden long-term maintenance an…</button></div><div class="sl-im-cell"></div><div class="sl-im-cell"></div><div class="sl-im-rh" style="color:#cc8800">MEDIUM</div><div class="sl-im-cell"><button class="sl-im-item" data-goto-slide="insight-insight-1" data-frame="arduino-framework,micropython,espruino,esp32-esp8266" title="Multiple language runtimes on the same hardware is a genuine strength, not fragmentation">Multiple language runtimes on the same hardware is a genuine s…</button></div><div class="sl-im-cell"></div><div class="sl-im-cell"><button class="sl-im-item" data-goto-slide="insight-insight-4" data-frame="platformio,arduino-framework,esp-idf,arduino-ide" title="PlatformIO represents the professional maturation of the ESP ecosystem">PlatformIO represents the professional maturation of the ESP e…</button></div><div class="sl-im-cell"><button class="sl-im-item" data-goto-slide="insight-insight-5" data-frame="arduino-framework,micropython,ota-updates,maintenance-burden" title="The best ESP project starts with an honest assessment of team skills and deployment constraints">The best ESP project starts with an honest assessment of team …</button></div></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-cluster" data-slide-idx="17" data-slide-id="cluster-cluster-hardware" data-frame-nodes="esp32-esp8266,espressif-systems,esp32-security-features,pyboard-pixljs,esp-idf" role="group" aria-roledescription="slide" aria-label="Slide 18 of 26: Hardware Foundation">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">18</span>
+        <span class="sl-slide-type">CLUSTER</span>
+        <button class="sl-paint-btn" data-paint-idx="17" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-cl-hdr">
+      <span class="sl-cl-dot" style="background:#3b82f6"></span>
+      <h2 class="sl-h2 sl-cl-label" style="border-left-color:#3b82f6">Hardware Foundation</h2>
+      <span class="sl-cl-cnt">5 · 28%</span>
+    </div>
+    <p class="sl-lead">The physical microcontrollers, their vendor and native SDK, core security capabilities, and the ARM-based alternative.</p>
+    <div class="sl-cl-nodes"><span class="sl-pill" data-qid="esp32-esp8266" style="border-color:#00aaff">ESP32 / ESP8266 Microcontrollers</span><span class="sl-pill" data-qid="espressif-systems" style="border-color:#ff8800">Espressif Systems</span><span class="sl-pill" data-qid="esp32-security-features" style="border-color:#aa88ff">ESP32 Security Features</span><span class="sl-pill" data-qid="pyboard-pixljs" style="border-color:#00aaff">PyBoard / Pixl.js</span><span class="sl-pill" data-qid="esp-idf" style="border-color:#00ccee">ESP-IDF (native SDK)</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-cluster" data-slide-idx="18" data-slide-id="cluster-cluster-frameworks" data-frame-nodes="arduino-framework,micropython,espruino,firmware,bootloader" role="group" aria-roledescription="slide" aria-label="Slide 19 of 26: Programming Frameworks">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">19</span>
+        <span class="sl-slide-type">CLUSTER</span>
+        <button class="sl-paint-btn" data-paint-idx="18" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-cl-hdr">
+      <span class="sl-cl-dot" style="background:#10b981"></span>
+      <h2 class="sl-h2 sl-cl-label" style="border-left-color:#10b981">Programming Frameworks</h2>
+      <span class="sl-cl-cnt">5 · 28%</span>
+    </div>
+    <p class="sl-lead">The different ways developers write and structure code that runs on the ESP chips, from low-level firmware concepts to high-level language runtimes.</p>
+    <div class="sl-cl-nodes"><span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-pill" data-qid="micropython" style="border-color:#00ccee">MicroPython</span><span class="sl-pill" data-qid="espruino" style="border-color:#00ccee">Espruino</span><span class="sl-pill" data-qid="firmware" style="border-color:#aa88ff">Firmware</span><span class="sl-pill" data-qid="bootloader" style="border-color:#aa88ff">Bootloader</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-cluster" data-slide-idx="19" data-slide-id="cluster-cluster-tooling" data-frame-nodes="arduino-ide,platformio,esp-easy,mongoose-os" role="group" aria-roledescription="slide" aria-label="Slide 20 of 26: Development Tooling">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">20</span>
+        <span class="sl-slide-type">CLUSTER</span>
+        <button class="sl-paint-btn" data-paint-idx="19" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-cl-hdr">
+      <span class="sl-cl-dot" style="background:#8b5cf6"></span>
+      <h2 class="sl-h2 sl-cl-label" style="border-left-color:#8b5cf6">Development Tooling</h2>
+      <span class="sl-cl-cnt">4 · 22%</span>
+    </div>
+    <p class="sl-lead">The IDEs, build systems, and ready-made frameworks that shape the developer experience and project structure.</p>
+    <div class="sl-cl-nodes"><span class="sl-pill" data-qid="arduino-ide" style="border-color:#00ccee">Arduino IDE</span><span class="sl-pill" data-qid="platformio" style="border-color:#00ccee">PlatformIO</span><span class="sl-pill" data-qid="esp-easy" style="border-color:#00ccee">ESP Easy</span><span class="sl-pill" data-qid="mongoose-os" style="border-color:#00ccee">Mongoose OS</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-cluster" data-slide-idx="20" data-slide-id="cluster-cluster-deployment" data-frame-nodes="ota-updates,physical-access,maintenance-burden,framework-lockin" role="group" aria-roledescription="slide" aria-label="Slide 21 of 26: Deployment Realities">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">21</span>
+        <span class="sl-slide-type">CLUSTER</span>
+        <button class="sl-paint-btn" data-paint-idx="20" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-cl-hdr">
+      <span class="sl-cl-dot" style="background:#f59e0b"></span>
+      <h2 class="sl-h2 sl-cl-label" style="border-left-color:#f59e0b">Deployment Realities</h2>
+      <span class="sl-cl-cnt">4 · 22%</span>
+    </div>
+    <p class="sl-lead">What happens after devices leave the bench: the OTA infrastructure that keeps them alive, and the three constraints every tooling choice must answer to.</p>
+    <div class="sl-cl-nodes"><span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span><span class="sl-pill" data-qid="physical-access" style="border-color:#ff3322">Physical Access Requirement</span><span class="sl-pill" data-qid="maintenance-burden" style="border-color:#ff3322">Long-term Maintenance Burden</span><span class="sl-pill" data-qid="framework-lockin" style="border-color:#ff3322">Framework Lock-in</span></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-analytics" data-slide-idx="21" data-slide-id="analytics" data-frame-nodes="" role="group" aria-roledescription="slide" aria-label="Slide 22 of 26: Analytics">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">22</span>
+        <span class="sl-slide-type">ANALYTICS</span>
+        
+      </div>
+      <div class="sl-slide-body">
+    <h2 class="sl-h2">Analytics</h2>
+    <div class="sl-analytics-grid">
+      <div class="sl-chart-block">
+    <div class="sl-chart-title">Degree centrality</div>
+    <div class="sl-cbar-row" data-qid="esp32-esp8266">
+        <span class="sl-cbar-lbl">ESP32 / ESP8266 Micro…</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:100.0%;background:#00aaff"></div></div>
+        <span class="sl-cbar-val">100.0%</span>
+      </div><div class="sl-cbar-row" data-qid="arduino-framework">
+        <span class="sl-cbar-lbl">Arduino Framework</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:69.2%;background:#00ccee"></div></div>
+        <span class="sl-cbar-val">69.2%</span>
+      </div><div class="sl-cbar-row" data-qid="esp-idf">
+        <span class="sl-cbar-lbl">ESP-IDF (native SDK)</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:46.2%;background:#00ccee"></div></div>
+        <span class="sl-cbar-val">46.2%</span>
+      </div><div class="sl-cbar-row" data-qid="platformio">
+        <span class="sl-cbar-lbl">PlatformIO</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:46.2%;background:#00ccee"></div></div>
+        <span class="sl-cbar-val">46.2%</span>
+      </div><div class="sl-cbar-row" data-qid="ota-updates">
+        <span class="sl-cbar-lbl">OTA (Over-The-Air) Up…</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:46.2%;background:#00ff66"></div></div>
+        <span class="sl-cbar-val">46.2%</span>
+      </div><div class="sl-cbar-row" data-qid="maintenance-burden">
+        <span class="sl-cbar-lbl">Long-term Maintenance…</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:46.2%;background:#ff3322"></div></div>
+        <span class="sl-cbar-val">46.2%</span>
+      </div>
+  </div>
+      <div class="sl-chart-block">
+    <div class="sl-chart-title">Relationships</div>
+    <div class="sl-cbar-row">
+        <span class="sl-cbar-lbl">implements</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:100.0%;background:#cc6600"></div></div>
+        <span class="sl-cbar-val">8</span>
+      </div><div class="sl-cbar-row">
+        <span class="sl-cbar-lbl">enables</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:100.0%;background:#cc6600"></div></div>
+        <span class="sl-cbar-val">8</span>
+      </div><div class="sl-cbar-row">
+        <span class="sl-cbar-lbl">features</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:87.5%;background:#cc6600"></div></div>
+        <span class="sl-cbar-val">7</span>
+      </div><div class="sl-cbar-row">
+        <span class="sl-cbar-lbl">mitigates</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:75.0%;background:#cc6600"></div></div>
+        <span class="sl-cbar-val">6</span>
+      </div><div class="sl-cbar-row">
+        <span class="sl-cbar-lbl">competes</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:50.0%;background:#cc6600"></div></div>
+        <span class="sl-cbar-val">4</span>
+      </div><div class="sl-cbar-row">
+        <span class="sl-cbar-lbl">causes</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:50.0%;background:#cc6600"></div></div>
+        <span class="sl-cbar-val">4</span>
+      </div><div class="sl-cbar-row">
+        <span class="sl-cbar-lbl">creation</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:37.5%;background:#cc6600"></div></div>
+        <span class="sl-cbar-val">3</span>
+      </div><div class="sl-cbar-row">
+        <span class="sl-cbar-lbl">derives_from</span>
+        <div class="sl-cbar-track"><div class="sl-cbar-fill" style="width:37.5%;background:#cc6600"></div></div>
+        <span class="sl-cbar-val">3</span>
+      </div>
+  </div>
+      <div class="sl-chart-block">
+    <div class="sl-chart-title">Sentiment</div>
+    <div class="sl-sent-row"><div class="sl-sent-seg" style="flex:10;background:#00ff88" title="positive: 10 (56%)">
+      <span class="sl-sent-lbl">POS</span>
+    </div><div class="sl-sent-seg" style="flex:3;background:#ff4444" title="negative: 3 (17%)">
+      <span class="sl-sent-lbl">NEG</span>
+    </div><div class="sl-sent-seg" style="flex:5;background:#555544" title="neutral: 5 (28%)">
+      <span class="sl-sent-lbl">NEU</span>
+    </div></div>
+  </div>
+      <div class="sl-chart-block">
+    <div class="sl-chart-title">Tiers</div>
+    <div class="sl-sent-row"><div class="sl-sent-seg" style="flex:3;background:#ffcc00" title="spine: 3 (17%)">
+      <span class="sl-sent-lbl">SPI</span>
+    </div><div class="sl-sent-seg" style="flex:10;background:#ff8800" title="primary: 10 (56%)">
+      <span class="sl-sent-lbl">PRI</span>
+    </div><div class="sl-sent-seg" style="flex:5;background:#886644" title="secondary: 5 (28%)">
+      <span class="sl-sent-lbl">SEC</span>
+    </div></div>
+  </div>
+    </div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-causal-chains" data-slide-idx="22" data-slide-id="causal" data-frame-nodes="arduino-framework,framework-lockin,maintenance-burden,physical-access" role="group" aria-roledescription="slide" aria-label="Slide 23 of 26: Causal chains">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">23</span>
+        <span class="sl-slide-type">CAUSAL-CHAINS</span>
+        <button class="sl-paint-btn" data-paint-idx="22" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <h2 class="sl-h2">Causal chains</h2>
+    <p class="sl-caption">Longest root-to-leaf paths along directed <em>causes</em> edges · 3 of 3 shown.</p>
+    <p class="sl-enrich">The longest chain runs Arduino Framework to Framework Lock-in to Maintenance Burden: the cheapest start is the most expensive to leave.</p>
+    <div class="sl-cc-list"><div class="sl-cc-row">
+      <span class="sl-cc-num">01</span>
+      <span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-cc-arrow">→</span><span class="sl-pill" data-qid="framework-lockin" style="border-color:#ff3322">Framework Lock-in</span><span class="sl-cc-arrow">→</span><span class="sl-pill" data-qid="maintenance-burden" style="border-color:#ff3322">Long-term Maintenance Burden</span>
+    </div><div class="sl-cc-row">
+      <span class="sl-cc-num">02</span>
+      <span class="sl-pill" data-qid="physical-access" style="border-color:#ff3322">Physical Access Requirement</span><span class="sl-cc-arrow">→</span><span class="sl-pill" data-qid="maintenance-burden" style="border-color:#ff3322">Long-term Maintenance Burden</span>
+    </div><div class="sl-cc-row">
+      <span class="sl-cc-num">03</span>
+      <span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span><span class="sl-cc-arrow">→</span><span class="sl-pill" data-qid="maintenance-burden" style="border-color:#ff3322">Long-term Maintenance Burden</span>
+    </div></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-bridges" data-slide-idx="23" data-slide-id="bridges" data-frame-nodes="arduino-framework,arduino-ide,ota-updates,firmware,esp-idf,esp32-esp8266,micropython,espruino,platformio,bootloader" role="group" aria-roledescription="slide" aria-label="Slide 24 of 26: Cluster bridges">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">24</span>
+        <span class="sl-slide-type">BRIDGES</span>
+        <button class="sl-paint-btn" data-paint-idx="23" aria-label="Generate AI background scene for this slide (requires Gemini image key)" title="Generate AI scene — uses Gemini 2.5 Flash Image">◆ PAINT</button>
+      </div>
+      <div class="sl-slide-body">
+    <h2 class="sl-h2">Cluster bridges</h2>
+    <p class="sl-caption">Strongest edges that cross cluster boundaries · 8 of 27.</p>
+    <p class="sl-enrich">Frameworks bridge to tooling and hardware alike: Arduino sits on ESP-IDF and drives the IDE, while OTA reaches back from deployment into firmware.</p>
+    <div class="sl-br-list"><div class="sl-br-row">
+      <span class="sl-cl-dot sl-br-dot" style="background:#10b981" title="Programming Frameworks"></span>
+      <span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span>
+      <span class="sl-br-rel">implements</span>
+      <span class="sl-pill" data-qid="arduino-ide" style="border-color:#00ccee">Arduino IDE</span>
+      <span class="sl-cl-dot sl-br-dot" style="background:#8b5cf6" title="Development Tooling"></span>
+      <span class="sl-br-w">w5</span>
+    </div><div class="sl-br-row">
+      <span class="sl-cl-dot sl-br-dot" style="background:#f59e0b" title="Deployment Realities"></span>
+      <span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span>
+      <span class="sl-br-rel">enables</span>
+      <span class="sl-pill" data-qid="firmware" style="border-color:#aa88ff">Firmware</span>
+      <span class="sl-cl-dot sl-br-dot" style="background:#10b981" title="Programming Frameworks"></span>
+      <span class="sl-br-w">w5</span>
+    </div><div class="sl-br-row">
+      <span class="sl-cl-dot sl-br-dot" style="background:#10b981" title="Programming Frameworks"></span>
+      <span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span>
+      <span class="sl-br-rel">derives_from</span>
+      <span class="sl-pill" data-qid="esp-idf" style="border-color:#00ccee">ESP-IDF (native SDK)</span>
+      <span class="sl-cl-dot sl-br-dot" style="background:#3b82f6" title="Hardware Foundation"></span>
+      <span class="sl-br-w">w4</span>
+    </div><div class="sl-br-row">
+      <span class="sl-cl-dot sl-br-dot" style="background:#3b82f6" title="Hardware Foundation"></span>
+      <span class="sl-pill" data-qid="esp32-esp8266" style="border-color:#00aaff">ESP32 / ESP8266 Microcontrollers</span>
+      <span class="sl-br-rel">features</span>
+      <span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span>
+      <span class="sl-cl-dot sl-br-dot" style="background:#10b981" title="Programming Frameworks"></span>
+      <span class="sl-br-w">w4</span>
+    </div><div class="sl-br-row">
+      <span class="sl-cl-dot sl-br-dot" style="background:#3b82f6" title="Hardware Foundation"></span>
+      <span class="sl-pill" data-qid="esp32-esp8266" style="border-color:#00aaff">ESP32 / ESP8266 Microcontrollers</span>
+      <span class="sl-br-rel">features</span>
+      <span class="sl-pill" data-qid="micropython" style="border-color:#00ccee">MicroPython</span>
+      <span class="sl-cl-dot sl-br-dot" style="background:#10b981" title="Programming Frameworks"></span>
+      <span class="sl-br-w">w4</span>
+    </div><div class="sl-br-row">
+      <span class="sl-cl-dot sl-br-dot" style="background:#3b82f6" title="Hardware Foundation"></span>
+      <span class="sl-pill" data-qid="esp32-esp8266" style="border-color:#00aaff">ESP32 / ESP8266 Microcontrollers</span>
+      <span class="sl-br-rel">features</span>
+      <span class="sl-pill" data-qid="espruino" style="border-color:#00ccee">Espruino</span>
+      <span class="sl-cl-dot sl-br-dot" style="background:#10b981" title="Programming Frameworks"></span>
+      <span class="sl-br-w">w4</span>
+    </div><div class="sl-br-row">
+      <span class="sl-cl-dot sl-br-dot" style="background:#8b5cf6" title="Development Tooling"></span>
+      <span class="sl-pill" data-qid="platformio" style="border-color:#00ccee">PlatformIO</span>
+      <span class="sl-br-rel">enables</span>
+      <span class="sl-pill" data-qid="arduino-framework" style="border-color:#00ccee">Arduino Framework</span>
+      <span class="sl-cl-dot sl-br-dot" style="background:#10b981" title="Programming Frameworks"></span>
+      <span class="sl-br-w">w4</span>
+    </div><div class="sl-br-row">
+      <span class="sl-cl-dot sl-br-dot" style="background:#10b981" title="Programming Frameworks"></span>
+      <span class="sl-pill" data-qid="bootloader" style="border-color:#aa88ff">Bootloader</span>
+      <span class="sl-br-rel">enables</span>
+      <span class="sl-pill" data-qid="ota-updates" style="border-color:#00ff66">OTA (Over-The-Air) Updates</span>
+      <span class="sl-cl-dot sl-br-dot" style="background:#f59e0b" title="Deployment Realities"></span>
+      <span class="sl-br-w">w4</span>
+    </div></div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-closer" data-slide-idx="24" data-slide-id="closer" data-frame-nodes="" role="group" aria-roledescription="slide" aria-label="Slide 25 of 26: End of brief">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">25</span>
+        <span class="sl-slide-type">CLOSER</span>
+        
+      </div>
+      <div class="sl-slide-body">
+    <h2 class="sl-h2">End of brief</h2>
+    <p class="sl-lead">ESP: Microcontroller Ecosystem</p>
+    <div class="sl-closer-meta">
+      <span>Hardware / IoT</span><span class="sl-sep">·</span>
+      <span>2026</span><span class="sl-sep">·</span>
+      <span>esp-ecosystem</span>
+    </div>
+    <div class="sl-closer-actions">
+      <button class="sl-action-btn" data-goto-slide="title">◀ First slide</button>
+      <button class="sl-action-btn sl-mode-btn" data-mode="reader">Reader view ▸</button>
+      <a class="sl-action-btn" href="?lib=esp-ecosystem&amp;slide=0" target="_self">Share link</a>
+    </div>
+  </div>
+    </article>
+  
+    <article class="sl-slide sl-slide-eval" data-slide-idx="25" data-slide-id="eval" data-frame-nodes="" role="group" aria-roledescription="slide" aria-label="Slide 26 of 26: Evaluate this brief">
+      <div class="sl-slide-marker">
+        <span class="sl-slide-num">26</span>
+        <span class="sl-slide-type">EVAL</span>
+        
+      </div>
+      <div class="sl-slide-body">
+    <div class="sl-eval-hdr">
+      <span class="sl-eval-label">◆ EVAL</span>
+      <span class="sl-eval-doc-title">ESP: Microcontroller Ecosystem</span>
+    </div>
+    <div class="sl-eval-stars" role="group" aria-label="Star rating 1 to 5"><button class="sl-eval-star" data-val="1" aria-label="1 star" title="1 star">★</button><button class="sl-eval-star" data-val="2" aria-label="2 stars" title="2 stars">★</button><button class="sl-eval-star" data-val="3" aria-label="3 stars" title="3 stars">★</button><button class="sl-eval-star" data-val="4" aria-label="4 stars" title="4 stars">★</button><button class="sl-eval-star" data-val="5" aria-label="5 stars" title="5 stars">★</button></div>
+    <div class="sl-eval-fields">
+      <textarea class="sl-eval-textarea sl-eval-worked" rows="2" placeholder="What worked — useful, illuminating, or well-structured aspects…"></textarea>
+      <textarea class="sl-eval-textarea sl-eval-confused" rows="2" placeholder="What was confusing — missing context, surprising gaps, wrong connections…"></textarea>
+      <textarea class="sl-eval-textarea sl-eval-nodes" rows="2" placeholder="Interesting nodes / insights that stood out…"></textarea>
+      <textarea class="sl-eval-textarea sl-eval-notes" rows="2" placeholder="Observations — encoding gaps, ontology mismatches, accuracy issues…"></textarea>
+    </div>
+    <div class="sl-eval-footer">
+      <button class="sl-eval-submit-btn sl-action-btn">Submit via GitHub ↗</button>
+      <span class="sl-eval-hint">Opens a pre-filled GitHub Issue in a new tab</span>
+    </div>
+  </div>
+    </article>
+  </div>
+    <div class="sl-dots" aria-hidden="true"><button class="sl-dot sl-dot-title" data-dot-idx="0" aria-label="Slide 1: ESP: Microcontroller Ecosystem" title="ESP: Microcontroller Ecosystem"></button><button class="sl-dot sl-dot-briefing" data-dot-idx="1" aria-label="Slide 2: Executive briefing" title="Executive briefing"></button><button class="sl-dot sl-dot-arc" data-dot-idx="2" aria-label="Slide 3: Narrative arc" title="Narrative arc"></button><button class="sl-dot sl-dot-beat" data-dot-idx="3" aria-label="Slide 4: The Capable Hardware Foundation" title="The Capable Hardware Foundation"></button><button class="sl-dot sl-dot-beat" data-dot-idx="4" aria-label="Slide 5: A Fragmented but Rich Ecosystem Emerges" title="A Fragmented but Rich Ecosystem Emerges"></button><button class="sl-dot sl-dot-beat" data-dot-idx="5" aria-label="Slide 6: The Firmware Distinction Matters" title="The Firmware Distinction Matters"></button><button class="sl-dot sl-dot-beat" data-dot-idx="6" aria-label="Slide 7: Choosing Your Weapon" title="Choosing Your Weapon"></button><button class="sl-dot sl-dot-beat" data-dot-idx="7" aria-label="Slide 8: OTA Becomes Non-Negotiable" title="OTA Becomes Non-Negotiable"></button><button class="sl-dot sl-dot-beat" data-dot-idx="8" aria-label="Slide 9: The Trade-off Becomes Clear" title="The Trade-off Becomes Clear"></button><button class="sl-dot sl-dot-beat" data-dot-idx="9" aria-label="Slide 10: The Ecosystem Matures" title="The Ecosystem Matures"></button><button class="sl-dot sl-dot-beat" data-dot-idx="10" aria-label="Slide 11: A Living, Multi-Paradigm Platform" title="A Living, Multi-Paradigm Platform"></button><button class="sl-dot sl-dot-insight" data-dot-idx="11" aria-label="Slide 12: OTA is the feature that turns ESP from a prototyping platform into a production one" title="OTA is the feature that turns ESP from a prototyping platform into a production one"></button><button class="sl-dot sl-dot-insight" data-dot-idx="12" aria-label="Slide 13: Arduino's simplicity carries a hidden long-term maintenance and lock-in cost" title="Arduino's simplicity carries a hidden long-term maintenance and lock-in cost"></button><button class="sl-dot sl-dot-insight" data-dot-idx="13" aria-label="Slide 14: Multiple language runtimes on the same hardware is a genuine strength, not fragmentation" title="Multiple language runtimes on the same hardware is a genuine strength, not fragmentation"></button><button class="sl-dot sl-dot-insight" data-dot-idx="14" aria-label="Slide 15: PlatformIO represents the professional maturation of the ESP ecosystem" title="PlatformIO represents the professional maturation of the ESP ecosystem"></button><button class="sl-dot sl-dot-insight" data-dot-idx="15" aria-label="Slide 16: The best ESP project starts with an honest assessment of team skills and deployment constraints" title="The best ESP project starts with an honest assessment of team skills and deployment constraints"></button><button class="sl-dot sl-dot-insight-matrix" data-dot-idx="16" aria-label="Slide 17: Insight matrix" title="Insight matrix"></button><button class="sl-dot sl-dot-cluster" data-dot-idx="17" aria-label="Slide 18: Hardware Foundation" title="Hardware Foundation"></button><button class="sl-dot sl-dot-cluster" data-dot-idx="18" aria-label="Slide 19: Programming Frameworks" title="Programming Frameworks"></button><button class="sl-dot sl-dot-cluster" data-dot-idx="19" aria-label="Slide 20: Development Tooling" title="Development Tooling"></button><button class="sl-dot sl-dot-cluster" data-dot-idx="20" aria-label="Slide 21: Deployment Realities" title="Deployment Realities"></button><button class="sl-dot sl-dot-analytics" data-dot-idx="21" aria-label="Slide 22: Analytics" title="Analytics"></button><button class="sl-dot sl-dot-causal-chains" data-dot-idx="22" aria-label="Slide 23: Causal chains" title="Causal chains"></button><button class="sl-dot sl-dot-bridges" data-dot-idx="23" aria-label="Slide 24: Cluster bridges" title="Cluster bridges"></button><button class="sl-dot sl-dot-closer" data-dot-idx="24" aria-label="Slide 25: End of brief" title="End of brief"></button><button class="sl-dot sl-dot-eval" data-dot-idx="25" aria-label="Slide 26: Evaluate this brief" title="Evaluate this brief"></button></div>
+  </div></div>
+<div class="hv-foot">HEROVISUAL · esp-ecosystem · 2026-09-17 · layout slide-deck</div>
+<script type="application/json" id="hero-json">{"apiVersion":"kaaro.hero/v1","kind":"hero","meta":{"id":"esp-ecosystem","title":"ESP: Microcontroller Ecosystem","generated":"2026-09-17","mode":"slides"},"source":{"library":"esp-ecosystem","path":"./library/esp-ecosystem.json","sha256":"a72e7e4aea42ab87a2b9a1f7144491c59dcacbd1364b725308afb54748bb049b"},"registry":{"version":2,"layouts":1},"queries":[{"name":"brief","kind":"library","id":"esp-ecosystem"},{"name":"analytics","kind":"derive","from":"brief"}],"decisions":{"provider":"typesafe","gate":0.7,"error":null,"usage":{"input_tokens":1993,"output_tokens":320},"hops":[{"id":"slot:slide-deck:overview","kind":"slot","layout":"slide-deck","slot":"overview","options":["briefing-slide","omit"],"answer":"briefing-slide","confidence":0.99,"source":"model"},{"id":"slot:slide-deck:arc","kind":"slot","layout":"slide-deck","slot":"arc","options":["arc-slide","omit"],"answer":"arc-slide","confidence":0.94,"source":"model"},{"id":"slot:slide-deck:narrative","kind":"slot","layout":"slide-deck","slot":"narrative","options":["beat-slide","omit"],"answer":"beat-slide","confidence":0.87,"source":"model"},{"id":"capacity:slide-deck:narrative","kind":"capacity","layout":"slide-deck","slot":"narrative","options":["1","3","5","all"],"answer":"all","confidence":0.66,"source":"heuristic"},{"id":"slot:slide-deck:analysis","kind":"slot","layout":"slide-deck","slot":"analysis","options":["insight-slide","insight-matrix","omit"],"answer":"insight-slide","confidence":0.61,"source":"heuristic"},{"id":"capacity:slide-deck:analysis","kind":"capacity","layout":"slide-deck","slot":"analysis","options":["1","3","5","all"],"answer":"all","confidence":0.68,"source":"heuristic"},{"id":"slot:slide-deck:grouping","kind":"slot","layout":"slide-deck","slot":"grouping","options":["cluster-slide","omit"],"answer":"cluster-slide","confidence":0.86,"source":"model"},{"id":"capacity:slide-deck:grouping","kind":"capacity","layout":"slide-deck","slot":"grouping","options":["1","3","5","all"],"answer":"all","confidence":0.74,"source":"model"},{"id":"slot:slide-deck:metrics","kind":"slot","layout":"slide-deck","slot":"metrics","options":["analytics-slide","causal-chain","cluster-bridges","omit"],"answer":"analytics-slide","confidence":0.81,"source":"model"}],"counts":{"total":9,"model":6,"heuristic":3}},"pages":[{"name":"deck","title":"ESP: Microcontroller Ecosystem","display":"slides","layout":"slide-deck","content":[{"component":"title-slide","name":"title-slide","props":{"meta":{"$$bind":"brief.meta"}},"frames":["esp32-esp8266","arduino-framework","ota-updates"],"layout":{"slot":"opener","family":"opener","size":"full"},"enrichment":{"tagline":"Five ways to program one chip; the real decision is how you will maintain it once it leaves the bench."}},{"component":"briefing-slide","name":"briefing-slide","props":{"report_card":{"$$bind":"brief.report_card"}},"frames":["esp32-esp8266","arduino-framework","ota-updates","esp32-esp8266","platformio","ota-updates","physical-access","maintenance-burden","framework-lockin"],"layout":{"slot":"overview","family":"overview","size":"full"},"decision":{"source":"model","confidence":0.99}},{"component":"arc-slide","name":"arc-slide","props":{"tensionCurve":{"$$bind":"analytics.tensionCurve"}},"frames":["esp32-esp8266","esp32-esp8266","espressif-systems","esp32-security-features","esp-idf","arduino-framework","arduino-framework","micropython","espruino","platformio","mongoose-os","firmware","firmware","bootloader","arduino-framework","esp-idf","arduino-ide","arduino-ide","micropython","espruino","platformio","esp-easy","framework-lockin","ota-updates","ota-updates","physical-access","esp32-security-features","bootloader","arduino-framework","arduino-framework","micropython","platformio","maintenance-burden","framework-lockin","platformio","platformio","mongoose-os","esp32-security-features","ota-updates","esp-idf","esp32-esp8266","esp32-esp8266","arduino-framework","micropython","espruino","ota-updates"],"layout":{"slot":"arc","family":"arc","size":"full"},"decision":{"source":"model","confidence":0.94}},{"component":"beat-slide","name":"beat-slide.beat-1","key":"beat-1","props":{"beat":{"$$bind":"brief.story[id=beat-1]"}},"frames":["esp32-esp8266","esp32-esp8266","espressif-systems","esp32-security-features","esp-idf"],"layout":{"slot":"narrative","family":"narrative","size":"full"},"decision":{"source":"model","confidence":0.87}},{"component":"beat-slide","name":"beat-slide.beat-2","key":"beat-2","props":{"beat":{"$$bind":"brief.story[id=beat-2]"}},"frames":["arduino-framework","arduino-framework","micropython","espruino","platformio","mongoose-os"],"layout":{"slot":"narrative","family":"narrative","size":"full"},"decision":{"source":"model","confidence":0.87}},{"component":"beat-slide","name":"beat-slide.beat-3","key":"beat-3","props":{"beat":{"$$bind":"brief.story[id=beat-3]"}},"frames":["firmware","firmware","bootloader","arduino-framework","esp-idf"],"layout":{"slot":"narrative","family":"narrative","size":"full"},"decision":{"source":"model","confidence":0.87}},{"component":"beat-slide","name":"beat-slide.beat-4","key":"beat-4","props":{"beat":{"$$bind":"brief.story[id=beat-4]"}},"frames":["arduino-ide","arduino-ide","micropython","espruino","platformio","esp-easy","framework-lockin"],"layout":{"slot":"narrative","family":"narrative","size":"full"},"decision":{"source":"model","confidence":0.87}},{"component":"beat-slide","name":"beat-slide.beat-5","key":"beat-5","props":{"beat":{"$$bind":"brief.story[id=beat-5]"}},"frames":["ota-updates","ota-updates","physical-access","esp32-security-features","bootloader"],"layout":{"slot":"narrative","family":"narrative","size":"full"},"decision":{"source":"model","confidence":0.87}},{"component":"beat-slide","name":"beat-slide.beat-6","key":"beat-6","props":{"beat":{"$$bind":"brief.story[id=beat-6]"}},"frames":["arduino-framework","arduino-framework","micropython","platformio","maintenance-burden","framework-lockin"],"layout":{"slot":"narrative","family":"narrative","size":"full"},"decision":{"source":"model","confidence":0.87}},{"component":"beat-slide","name":"beat-slide.beat-7","key":"beat-7","props":{"beat":{"$$bind":"brief.story[id=beat-7]"}},"frames":["platformio","platformio","mongoose-os","esp32-security-features","ota-updates","esp-idf"],"layout":{"slot":"narrative","family":"narrative","size":"full"},"decision":{"source":"model","confidence":0.87}},{"component":"beat-slide","name":"beat-slide.beat-8","key":"beat-8","props":{"beat":{"$$bind":"brief.story[id=beat-8]"}},"frames":["esp32-esp8266","esp32-esp8266","arduino-framework","micropython","espruino","ota-updates"],"layout":{"slot":"narrative","family":"narrative","size":"full"},"decision":{"source":"model","confidence":0.87}},{"component":"insight-slide","name":"insight-slide.insight-2","key":"insight-2","props":{"insight":{"$$bind":"brief.insights[id=insight-2]"}},"frames":["ota-updates","esp32-security-features","physical-access","bootloader"],"layout":{"slot":"analysis","family":"analysis","size":"full"},"decision":{"source":"heuristic","confidence":0.61}},{"component":"insight-slide","name":"insight-slide.insight-3","key":"insight-3","props":{"insight":{"$$bind":"brief.insights[id=insight-3]"}},"frames":["arduino-framework","maintenance-burden","framework-lockin","platformio","esp-idf"],"layout":{"slot":"analysis","family":"analysis","size":"full"},"decision":{"source":"heuristic","confidence":0.61}},{"component":"insight-slide","name":"insight-slide.insight-1","key":"insight-1","props":{"insight":{"$$bind":"brief.insights[id=insight-1]"}},"frames":["arduino-framework","micropython","espruino","esp32-esp8266"],"layout":{"slot":"analysis","family":"analysis","size":"full"},"decision":{"source":"heuristic","confidence":0.61}},{"component":"insight-slide","name":"insight-slide.insight-4","key":"insight-4","props":{"insight":{"$$bind":"brief.insights[id=insight-4]"}},"frames":["platformio","arduino-framework","esp-idf","arduino-ide"],"layout":{"slot":"analysis","family":"analysis","size":"full"},"decision":{"source":"heuristic","confidence":0.61}},{"component":"insight-slide","name":"insight-slide.insight-5","key":"insight-5","props":{"insight":{"$$bind":"brief.insights[id=insight-5]"}},"frames":["arduino-framework","micropython","ota-updates","maintenance-burden"],"layout":{"slot":"analysis","family":"analysis","size":"full"},"decision":{"source":"heuristic","confidence":0.61}},{"component":"insight-matrix","name":"insight-matrix","props":{"insights":{"$$bind":"brief.insights"}},"frames":["arduino-framework","micropython","espruino","esp32-esp8266","ota-updates","esp32-security-features","physical-access","bootloader","maintenance-burden","framework-lockin","platformio","esp-idf","arduino-ide"],"layout":{"slot":"analysis","family":"analysis","size":"full"},"enrichment":{"caption":"Two high-severity items, one finding and one warning: OTA makes production possible, and Arduino's easy start is what later costs the most."},"decision":{"source":"heuristic","confidence":0.61}},{"component":"cluster-slide","name":"cluster-slide.cluster-hardware","key":"cluster-hardware","props":{"cluster":{"$$bind":"brief.clusters[id=cluster-hardware]"}},"frames":["esp32-esp8266","espressif-systems","esp32-security-features","pyboard-pixljs","esp-idf"],"layout":{"slot":"grouping","family":"grouping","size":"full"},"decision":{"source":"model","confidence":0.86}},{"component":"cluster-slide","name":"cluster-slide.cluster-frameworks","key":"cluster-frameworks","props":{"cluster":{"$$bind":"brief.clusters[id=cluster-frameworks]"}},"frames":["arduino-framework","micropython","espruino","firmware","bootloader"],"layout":{"slot":"grouping","family":"grouping","size":"full"},"decision":{"source":"model","confidence":0.86}},{"component":"cluster-slide","name":"cluster-slide.cluster-tooling","key":"cluster-tooling","props":{"cluster":{"$$bind":"brief.clusters[id=cluster-tooling]"}},"frames":["arduino-ide","platformio","esp-easy","mongoose-os"],"layout":{"slot":"grouping","family":"grouping","size":"full"},"decision":{"source":"model","confidence":0.86}},{"component":"cluster-slide","name":"cluster-slide.cluster-deployment","key":"cluster-deployment","props":{"cluster":{"$$bind":"brief.clusters[id=cluster-deployment]"}},"frames":["ota-updates","physical-access","maintenance-burden","framework-lockin"],"layout":{"slot":"grouping","family":"grouping","size":"full"},"decision":{"source":"model","confidence":0.86}},{"component":"analytics-slide","name":"analytics-slide","props":{"centrality":{"$$bind":"analytics.centrality"}},"frames":[],"layout":{"slot":"metrics","family":"metrics","size":"full"},"decision":{"source":"model","confidence":0.81}},{"component":"causal-chain","name":"causal-chain","props":{"causalChains":{"$$bind":"analytics.causalChains"}},"frames":["arduino-framework","framework-lockin","maintenance-burden","physical-access"],"layout":{"slot":"metrics","family":"metrics","size":"full"},"enrichment":{"why":"The longest chain runs Arduino Framework to Framework Lock-in to Maintenance Burden: the cheapest start is the most expensive to leave."},"decision":{"source":"model","confidence":0.81}},{"component":"cluster-bridges","name":"cluster-bridges","props":{"crossClusterEdges":{"$$bind":"analytics.crossClusterEdges"}},"frames":["arduino-framework","arduino-ide","ota-updates","firmware","esp-idf","esp32-esp8266","micropython","espruino","platformio","bootloader"],"layout":{"slot":"metrics","family":"metrics","size":"full"},"enrichment":{"caption":"Frameworks bridge to tooling and hardware alike: Arduino sits on ESP-IDF and drives the IDE, while OTA reaches back from deployment into firmware."},"decision":{"source":"model","confidence":0.81}},{"component":"closer-slide","name":"closer-slide","props":{"meta":{"$$bind":"brief.meta"}},"frames":[],"layout":{"slot":"closer","family":"closer","size":"full"}},{"component":"eval-slide","name":"eval-slide","props":{},"frames":[],"layout":{"slot":"feedback","family":"feedback","size":"full"}}]}],"events":[]}</script>
+<script>
+(function(){
+  var track=document.querySelector('.sl-track'); if(!track) return;
+  var slides=[].slice.call(track.querySelectorAll('.sl-slide'));
+  var idx=0, index=document.querySelector('.sl-index'), title=document.querySelector('.sl-topbar-title'), fill=document.querySelector('.sl-progress-fill');
+  function go(n){ idx=Math.max(0,Math.min(slides.length-1,n)); slides[idx].scrollIntoView({behavior:'smooth',inline:'start',block:'nearest'}); sync(); }
+  function sync(){ slides.forEach(function(s,i){ s.classList.toggle('sl-active',i===idx); });
+    if(index) index.textContent=String(idx+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+    if(title) title.textContent=slides[idx].getAttribute('aria-label').replace(/^Slide \d+ of \d+: /,'');
+    if(fill) fill.style.width=(slides.length>1?idx/(slides.length-1)*100:100).toFixed(1)+'%';
+    document.querySelectorAll('.sl-dot').forEach(function(d,i){ d.classList.toggle('sl-dot-active',i===idx); }); }
+  document.addEventListener('keydown',function(e){ if(e.key==='ArrowRight') go(idx+1); if(e.key==='ArrowLeft') go(idx-1); });
+  var prev=document.querySelector('.sl-prev'), next=document.querySelector('.sl-next'); if(prev) prev.onclick=function(){go(idx-1)}; if(next) next.onclick=function(){go(idx+1)};
+  document.querySelectorAll('.sl-dot').forEach(function(d,i){ d.onclick=function(){go(i)}; });
+  document.querySelectorAll('[data-goto-slide]').forEach(function(el){ el.onclick=function(ev){ ev.preventDefault(); var id=el.getAttribute('data-goto-slide'); var i=slides.findIndex(function(s){return s.getAttribute('data-slide-id')===id}); if(i>=0) go(i); }; });
+  document.querySelectorAll('.sl-paint-btn,.sl-mode-btn,.sl-close,.sl-eval-submit-btn').forEach(function(b){ b.style.display='none'; });
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting&&e.intersectionRatio>0.6){ idx=slides.indexOf(e.target); sync(); } }); },{root:track,threshold:[0.6]});
+  slides.forEach(function(s){ io.observe(s); });
+  sync();
+})();</script>
+</body>
+</html>

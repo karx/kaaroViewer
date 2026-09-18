@@ -1,0 +1,884 @@
+{
+  "apiVersion": "kaaro.hero/v1",
+  "kind": "hero",
+  "meta": {
+    "id": "esp-ecosystem",
+    "title": "ESP: Microcontroller Ecosystem",
+    "generated": "2026-09-17",
+    "mode": "slides"
+  },
+  "source": {
+    "library": "esp-ecosystem",
+    "path": "./library/esp-ecosystem.json",
+    "sha256": "a72e7e4aea42ab87a2b9a1f7144491c59dcacbd1364b725308afb54748bb049b"
+  },
+  "registry": {
+    "version": 2,
+    "layouts": 1
+  },
+  "queries": [
+    {
+      "name": "brief",
+      "kind": "library",
+      "id": "esp-ecosystem"
+    },
+    {
+      "name": "analytics",
+      "kind": "derive",
+      "from": "brief"
+    }
+  ],
+  "decisions": {
+    "provider": "typesafe",
+    "gate": 0.7,
+    "error": null,
+    "usage": {
+      "input_tokens": 1993,
+      "output_tokens": 320
+    },
+    "hops": [
+      {
+        "id": "slot:slide-deck:overview",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "overview",
+        "options": [
+          "briefing-slide",
+          "omit"
+        ],
+        "answer": "briefing-slide",
+        "confidence": 0.99,
+        "source": "model"
+      },
+      {
+        "id": "slot:slide-deck:arc",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "arc",
+        "options": [
+          "arc-slide",
+          "omit"
+        ],
+        "answer": "arc-slide",
+        "confidence": 0.94,
+        "source": "model"
+      },
+      {
+        "id": "slot:slide-deck:narrative",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "narrative",
+        "options": [
+          "beat-slide",
+          "omit"
+        ],
+        "answer": "beat-slide",
+        "confidence": 0.87,
+        "source": "model"
+      },
+      {
+        "id": "capacity:slide-deck:narrative",
+        "kind": "capacity",
+        "layout": "slide-deck",
+        "slot": "narrative",
+        "options": [
+          "1",
+          "3",
+          "5",
+          "all"
+        ],
+        "answer": "all",
+        "confidence": 0.66,
+        "source": "heuristic"
+      },
+      {
+        "id": "slot:slide-deck:analysis",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "analysis",
+        "options": [
+          "insight-slide",
+          "insight-matrix",
+          "omit"
+        ],
+        "answer": "insight-slide",
+        "confidence": 0.61,
+        "source": "heuristic"
+      },
+      {
+        "id": "capacity:slide-deck:analysis",
+        "kind": "capacity",
+        "layout": "slide-deck",
+        "slot": "analysis",
+        "options": [
+          "1",
+          "3",
+          "5",
+          "all"
+        ],
+        "answer": "all",
+        "confidence": 0.68,
+        "source": "heuristic"
+      },
+      {
+        "id": "slot:slide-deck:grouping",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "grouping",
+        "options": [
+          "cluster-slide",
+          "omit"
+        ],
+        "answer": "cluster-slide",
+        "confidence": 0.86,
+        "source": "model"
+      },
+      {
+        "id": "capacity:slide-deck:grouping",
+        "kind": "capacity",
+        "layout": "slide-deck",
+        "slot": "grouping",
+        "options": [
+          "1",
+          "3",
+          "5",
+          "all"
+        ],
+        "answer": "all",
+        "confidence": 0.74,
+        "source": "model"
+      },
+      {
+        "id": "slot:slide-deck:metrics",
+        "kind": "slot",
+        "layout": "slide-deck",
+        "slot": "metrics",
+        "options": [
+          "analytics-slide",
+          "causal-chain",
+          "cluster-bridges",
+          "omit"
+        ],
+        "answer": "analytics-slide",
+        "confidence": 0.81,
+        "source": "model"
+      }
+    ],
+    "counts": {
+      "total": 9,
+      "model": 6,
+      "heuristic": 3
+    }
+  },
+  "pages": [
+    {
+      "name": "deck",
+      "title": "ESP: Microcontroller Ecosystem",
+      "display": "slides",
+      "layout": "slide-deck",
+      "content": [
+        {
+          "component": "title-slide",
+          "name": "title-slide",
+          "props": {
+            "meta": {
+              "$$bind": "brief.meta"
+            }
+          },
+          "frames": [
+            "esp32-esp8266",
+            "arduino-framework",
+            "ota-updates"
+          ],
+          "layout": {
+            "slot": "opener",
+            "family": "opener",
+            "size": "full"
+          },
+          "enrichment": {
+            "tagline": "Five ways to program one chip; the real decision is how you will maintain it once it leaves the bench."
+          }
+        },
+        {
+          "component": "briefing-slide",
+          "name": "briefing-slide",
+          "props": {
+            "report_card": {
+              "$$bind": "brief.report_card"
+            }
+          },
+          "frames": [
+            "esp32-esp8266",
+            "arduino-framework",
+            "ota-updates",
+            "esp32-esp8266",
+            "platformio",
+            "ota-updates",
+            "physical-access",
+            "maintenance-burden",
+            "framework-lockin"
+          ],
+          "layout": {
+            "slot": "overview",
+            "family": "overview",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.99
+          }
+        },
+        {
+          "component": "arc-slide",
+          "name": "arc-slide",
+          "props": {
+            "tensionCurve": {
+              "$$bind": "analytics.tensionCurve"
+            }
+          },
+          "frames": [
+            "esp32-esp8266",
+            "esp32-esp8266",
+            "espressif-systems",
+            "esp32-security-features",
+            "esp-idf",
+            "arduino-framework",
+            "arduino-framework",
+            "micropython",
+            "espruino",
+            "platformio",
+            "mongoose-os",
+            "firmware",
+            "firmware",
+            "bootloader",
+            "arduino-framework",
+            "esp-idf",
+            "arduino-ide",
+            "arduino-ide",
+            "micropython",
+            "espruino",
+            "platformio",
+            "esp-easy",
+            "framework-lockin",
+            "ota-updates",
+            "ota-updates",
+            "physical-access",
+            "esp32-security-features",
+            "bootloader",
+            "arduino-framework",
+            "arduino-framework",
+            "micropython",
+            "platformio",
+            "maintenance-burden",
+            "framework-lockin",
+            "platformio",
+            "platformio",
+            "mongoose-os",
+            "esp32-security-features",
+            "ota-updates",
+            "esp-idf",
+            "esp32-esp8266",
+            "esp32-esp8266",
+            "arduino-framework",
+            "micropython",
+            "espruino",
+            "ota-updates"
+          ],
+          "layout": {
+            "slot": "arc",
+            "family": "arc",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.94
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-1",
+          "key": "beat-1",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-1]"
+            }
+          },
+          "frames": [
+            "esp32-esp8266",
+            "esp32-esp8266",
+            "espressif-systems",
+            "esp32-security-features",
+            "esp-idf"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-2",
+          "key": "beat-2",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-2]"
+            }
+          },
+          "frames": [
+            "arduino-framework",
+            "arduino-framework",
+            "micropython",
+            "espruino",
+            "platformio",
+            "mongoose-os"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-3",
+          "key": "beat-3",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-3]"
+            }
+          },
+          "frames": [
+            "firmware",
+            "firmware",
+            "bootloader",
+            "arduino-framework",
+            "esp-idf"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-4",
+          "key": "beat-4",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-4]"
+            }
+          },
+          "frames": [
+            "arduino-ide",
+            "arduino-ide",
+            "micropython",
+            "espruino",
+            "platformio",
+            "esp-easy",
+            "framework-lockin"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-5",
+          "key": "beat-5",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-5]"
+            }
+          },
+          "frames": [
+            "ota-updates",
+            "ota-updates",
+            "physical-access",
+            "esp32-security-features",
+            "bootloader"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-6",
+          "key": "beat-6",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-6]"
+            }
+          },
+          "frames": [
+            "arduino-framework",
+            "arduino-framework",
+            "micropython",
+            "platformio",
+            "maintenance-burden",
+            "framework-lockin"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-7",
+          "key": "beat-7",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-7]"
+            }
+          },
+          "frames": [
+            "platformio",
+            "platformio",
+            "mongoose-os",
+            "esp32-security-features",
+            "ota-updates",
+            "esp-idf"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "beat-slide",
+          "name": "beat-slide.beat-8",
+          "key": "beat-8",
+          "props": {
+            "beat": {
+              "$$bind": "brief.story[id=beat-8]"
+            }
+          },
+          "frames": [
+            "esp32-esp8266",
+            "esp32-esp8266",
+            "arduino-framework",
+            "micropython",
+            "espruino",
+            "ota-updates"
+          ],
+          "layout": {
+            "slot": "narrative",
+            "family": "narrative",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.87
+          }
+        },
+        {
+          "component": "insight-slide",
+          "name": "insight-slide.insight-2",
+          "key": "insight-2",
+          "props": {
+            "insight": {
+              "$$bind": "brief.insights[id=insight-2]"
+            }
+          },
+          "frames": [
+            "ota-updates",
+            "esp32-security-features",
+            "physical-access",
+            "bootloader"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.61
+          }
+        },
+        {
+          "component": "insight-slide",
+          "name": "insight-slide.insight-3",
+          "key": "insight-3",
+          "props": {
+            "insight": {
+              "$$bind": "brief.insights[id=insight-3]"
+            }
+          },
+          "frames": [
+            "arduino-framework",
+            "maintenance-burden",
+            "framework-lockin",
+            "platformio",
+            "esp-idf"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.61
+          }
+        },
+        {
+          "component": "insight-slide",
+          "name": "insight-slide.insight-1",
+          "key": "insight-1",
+          "props": {
+            "insight": {
+              "$$bind": "brief.insights[id=insight-1]"
+            }
+          },
+          "frames": [
+            "arduino-framework",
+            "micropython",
+            "espruino",
+            "esp32-esp8266"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.61
+          }
+        },
+        {
+          "component": "insight-slide",
+          "name": "insight-slide.insight-4",
+          "key": "insight-4",
+          "props": {
+            "insight": {
+              "$$bind": "brief.insights[id=insight-4]"
+            }
+          },
+          "frames": [
+            "platformio",
+            "arduino-framework",
+            "esp-idf",
+            "arduino-ide"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.61
+          }
+        },
+        {
+          "component": "insight-slide",
+          "name": "insight-slide.insight-5",
+          "key": "insight-5",
+          "props": {
+            "insight": {
+              "$$bind": "brief.insights[id=insight-5]"
+            }
+          },
+          "frames": [
+            "arduino-framework",
+            "micropython",
+            "ota-updates",
+            "maintenance-burden"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.61
+          }
+        },
+        {
+          "component": "insight-matrix",
+          "name": "insight-matrix",
+          "props": {
+            "insights": {
+              "$$bind": "brief.insights"
+            }
+          },
+          "frames": [
+            "arduino-framework",
+            "micropython",
+            "espruino",
+            "esp32-esp8266",
+            "ota-updates",
+            "esp32-security-features",
+            "physical-access",
+            "bootloader",
+            "maintenance-burden",
+            "framework-lockin",
+            "platformio",
+            "esp-idf",
+            "arduino-ide"
+          ],
+          "layout": {
+            "slot": "analysis",
+            "family": "analysis",
+            "size": "full"
+          },
+          "enrichment": {
+            "caption": "Two high-severity items, one finding and one warning: OTA makes production possible, and Arduino's easy start is what later costs the most."
+          },
+          "decision": {
+            "source": "heuristic",
+            "confidence": 0.61
+          }
+        },
+        {
+          "component": "cluster-slide",
+          "name": "cluster-slide.cluster-hardware",
+          "key": "cluster-hardware",
+          "props": {
+            "cluster": {
+              "$$bind": "brief.clusters[id=cluster-hardware]"
+            }
+          },
+          "frames": [
+            "esp32-esp8266",
+            "espressif-systems",
+            "esp32-security-features",
+            "pyboard-pixljs",
+            "esp-idf"
+          ],
+          "layout": {
+            "slot": "grouping",
+            "family": "grouping",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.86
+          }
+        },
+        {
+          "component": "cluster-slide",
+          "name": "cluster-slide.cluster-frameworks",
+          "key": "cluster-frameworks",
+          "props": {
+            "cluster": {
+              "$$bind": "brief.clusters[id=cluster-frameworks]"
+            }
+          },
+          "frames": [
+            "arduino-framework",
+            "micropython",
+            "espruino",
+            "firmware",
+            "bootloader"
+          ],
+          "layout": {
+            "slot": "grouping",
+            "family": "grouping",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.86
+          }
+        },
+        {
+          "component": "cluster-slide",
+          "name": "cluster-slide.cluster-tooling",
+          "key": "cluster-tooling",
+          "props": {
+            "cluster": {
+              "$$bind": "brief.clusters[id=cluster-tooling]"
+            }
+          },
+          "frames": [
+            "arduino-ide",
+            "platformio",
+            "esp-easy",
+            "mongoose-os"
+          ],
+          "layout": {
+            "slot": "grouping",
+            "family": "grouping",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.86
+          }
+        },
+        {
+          "component": "cluster-slide",
+          "name": "cluster-slide.cluster-deployment",
+          "key": "cluster-deployment",
+          "props": {
+            "cluster": {
+              "$$bind": "brief.clusters[id=cluster-deployment]"
+            }
+          },
+          "frames": [
+            "ota-updates",
+            "physical-access",
+            "maintenance-burden",
+            "framework-lockin"
+          ],
+          "layout": {
+            "slot": "grouping",
+            "family": "grouping",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.86
+          }
+        },
+        {
+          "component": "analytics-slide",
+          "name": "analytics-slide",
+          "props": {
+            "centrality": {
+              "$$bind": "analytics.centrality"
+            }
+          },
+          "frames": [],
+          "layout": {
+            "slot": "metrics",
+            "family": "metrics",
+            "size": "full"
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.81
+          }
+        },
+        {
+          "component": "causal-chain",
+          "name": "causal-chain",
+          "props": {
+            "causalChains": {
+              "$$bind": "analytics.causalChains"
+            }
+          },
+          "frames": [
+            "arduino-framework",
+            "framework-lockin",
+            "maintenance-burden",
+            "physical-access"
+          ],
+          "layout": {
+            "slot": "metrics",
+            "family": "metrics",
+            "size": "full"
+          },
+          "enrichment": {
+            "why": "The longest chain runs Arduino Framework to Framework Lock-in to Maintenance Burden: the cheapest start is the most expensive to leave."
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.81
+          }
+        },
+        {
+          "component": "cluster-bridges",
+          "name": "cluster-bridges",
+          "props": {
+            "crossClusterEdges": {
+              "$$bind": "analytics.crossClusterEdges"
+            }
+          },
+          "frames": [
+            "arduino-framework",
+            "arduino-ide",
+            "ota-updates",
+            "firmware",
+            "esp-idf",
+            "esp32-esp8266",
+            "micropython",
+            "espruino",
+            "platformio",
+            "bootloader"
+          ],
+          "layout": {
+            "slot": "metrics",
+            "family": "metrics",
+            "size": "full"
+          },
+          "enrichment": {
+            "caption": "Frameworks bridge to tooling and hardware alike: Arduino sits on ESP-IDF and drives the IDE, while OTA reaches back from deployment into firmware."
+          },
+          "decision": {
+            "source": "model",
+            "confidence": 0.81
+          }
+        },
+        {
+          "component": "closer-slide",
+          "name": "closer-slide",
+          "props": {
+            "meta": {
+              "$$bind": "brief.meta"
+            }
+          },
+          "frames": [],
+          "layout": {
+            "slot": "closer",
+            "family": "closer",
+            "size": "full"
+          }
+        },
+        {
+          "component": "eval-slide",
+          "name": "eval-slide",
+          "props": {},
+          "frames": [],
+          "layout": {
+            "slot": "feedback",
+            "family": "feedback",
+            "size": "full"
+          }
+        }
+      ]
+    }
+  ],
+  "events": []
+}
