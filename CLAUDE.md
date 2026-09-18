@@ -7,7 +7,9 @@ A browser-based knowledge graph explorer. Users type a topic; an LLM pipeline ge
 **No build step.** Open `index.html` in any browser or static server.
 
 ```
-pnpm test        # vitest run — 168 tests, all pass
+pnpm test        # vitest run — 248 tests, all pass
+pnpm ui:validate # widget registry schema + lockstep check
+pnpm ui:plan     # route every library entry, report widget gaps
 pnpm test:watch  # watch mode
 ```
 
@@ -140,3 +142,48 @@ Users can submit evaluations of library entries directly from the browser.
 **Flow:** Library drawer (`L` key) → **EVAL** button on any entry → fill rating + observations → opens a pre-filled GitHub Issue at `https://github.com/karx/kaaroViewer/issues` in a new tab (label: `eval`).
 
 When triaging eval issues: the issue body contains doc ID, date, rating, and structured observations. Use them to identify encoding gaps for re-encoding via `/visualize`.
+
+---
+
+## Widget Registry & UI routing (`ui/`)
+
+The slide deck is no longer a hard-coded sequence. `canvas/slides.mjs` builds it from a
+**WidgetPlan** produced by the registry-driven router in `ui/`. Full docs: `ui/README.md`.
+
+| File | Role |
+|---|---|
+| `ui/registry.json` | Canonical list of widgets: input, mount fn, predicates, slot, status |
+| `ui/layouts.json` | Layout templates (`slide-deck`, `compact-deck`, `reader-report`, `hud-overlay`) |
+| `ui/state-descriptor.mjs` | brief / text / agent trace → StateDescriptor (numbers + id refs only) |
+| `ui/router.mjs` | Deterministic router: descriptor → plan; every widget id exists in the registry |
+| `ui/questionnaire.mjs` | Typed LLM hop derived from the registry; out-of-set answers rejected |
+| `scripts/ui-plan-all.mjs` | Routes every LIBRARY entry → `library/ui-plans/`, reports gaps + confidence |
+
+```
+pnpm ui:validate    # schema + lockstep — exit 0 valid, 1 warnings, 2 errors
+pnpm ui:plan        # widget-axis health mirror (gaps, proposed-ready, confidence)
+```
+
+### Adding a widget (lockstep rule, same as the ontology rule)
+
+Both in the same commit, or `pnpm ui:validate` exits 2:
+1. Entry in `ui/registry.json` (`status: "active"`, `mount.file` + `mount.fn`)
+2. The mount function in that file (`_render*` in `canvas/slides.mjs`, section fn in `canvas/report.mjs`)
+3. For slides, a `WIDGET_TO_SLIDE` mapping + `_renderSlide` case in `canvas/slides.mjs`
+
+To record a gap without building it yet, add the entry with `status: "proposed"`; the router
+reports it as *ready* whenever its `requires` hold, and `ui:plan` counts how many entries would use it.
+
+### `/herovisual` — UI for a brief (Jev first, heuristics as backup)
+
+`/herovisual <library-id>` produces a **HeroVisual**: a Toolpad-style page document
+(`library/hero/{id}.hero.json`) plus a standalone deck (`library/hero/{id}.hero.html`). It routes the
+brief through the registry with TypeSafe Jev deciding every hop in one batched call
+(`TYPESAFE_API_KEY` in `.env`, gitignored); any hop below the confidence gate keeps the heuristic
+answer. The library entry and `LIBRARY` are never modified. Skill: `.claude/skills/herovisual/SKILL.md`.
+
+```
+pnpm hero <id> [--mode reader] [--gate 0.7] [--no-jev]   # build + validate + HTML export
+pnpm hero:validate library/hero/<id>.hero.json           # exit 0 / 1 / 2 like the other validators
+index.html?hero=<id>                                     # live canvas renders from the hero plan
+```
