@@ -49,6 +49,28 @@ describe('briefToTimeline', () => {
     expect(clips.at(-1).source.params.stats).toEqual(['Tests: 198 passing', 'Nodes: 31']);
   });
 
+  it('coerces object key_stats into end-card "label: value" strings', async () => {
+    const brief = {
+      ...BRIEF,
+      report_card: {
+        key_stats: [
+          { label: 'Nodes', value: 31 },
+          { label: 'Edges', value: '64' },
+          'Density: 2.06',
+          { label: 'Empty' },
+          null,
+        ],
+      },
+    };
+    const clips = (await briefToTimeline(brief)).tracks[0].clips;
+    expect(clips.at(-1).source.params.stats).toEqual([
+      'Nodes: 31',
+      'Edges: 64',
+      'Density: 2.06',
+      'Empty',
+    ]);
+  });
+
   it('assigns validated palette accents by cluster order, default for unknown', async () => {
     const clips = (await briefToTimeline(BRIEF)).tracks[0].clips;
     expect(clips[1].source.params.accent).toBe(VIDEO_PALETTE[0]); // n1 → cluster 0

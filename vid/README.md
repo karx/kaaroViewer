@@ -12,6 +12,9 @@ defined there; this README covers usage only.
   its own browser download, this environment's pre-install at
   `/opt/pw-browsers/chromium`, or a `KAARO_CHROMIUM` path override.
   Media-only timelines (no generators) never touch the browser.
+- **Windows:** put Git `usr\bin` on PATH (`sh` is required by `tts.mjs`). For
+  narration without piper/espeak, set `KAARO_TTS_CMD` to the in-repo SAPI
+  helper — see Narration below.
 
 ## CLI
 
@@ -49,10 +52,28 @@ chunk clips on an audio track at their exact offsets. Providers
 | Provider | Needs | Quality |
 |---|---|---|
 | `piper` | `pip install piper-tts` + `KAARO_PIPER_VOICE=/path/voice.onnx` | neural, best offline |
-| `command` | `KAARO_TTS_CMD='curl … {text} … -o {out}'` | your cloud TTS |
+| `command` | `KAARO_TTS_CMD='… {text} … {out}'` (cloud curl **or** Windows SAPI) | your TTS |
 | `espeak` | `apt-get install espeak-ng` | robotic fallback, zero-config |
 
-Force one with `--narrate piper` etc. Voice WAVs land in `.kaaro-vid/tts/<id>/`.
+Windows SAPI (no piper/espeak required):
+
+```powershell
+$env:KAARO_TTS_CMD = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File '$PWD\vid\tts-sapi.ps1' -Text {text} -Out {out}"
+```
+
+Force one with `--narrate piper` / `command` / `espeak`. Voice WAVs land in
+`.kaaro-vid/tts/<id>/`.
+
+## Brief → Timeline adapters
+
+`pnpm vid beats` maps library brief fields into scene params. Coercions that
+matter:
+
+| Brief field | Timeline / scene field | Coercion |
+|---|---|---|
+| `report_card.key_stats[]` string \| `{label,value}` | end-card `params.stats[]` string | objects → `"label: value"` |
+| `story[].tension` | beat-card tension styling | pass-through |
+| missing `report_card` / empty stats | no closing-stats clip | skip end-card |
 
 ## Accent palette
 

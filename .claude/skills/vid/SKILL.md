@@ -13,19 +13,40 @@ collapse passes.
 
 ## Step 0 — Preflight
 
-- `ffmpeg -version` must work. If missing: `apt-get install -y ffmpeg`.
+- `ffmpeg -version` / `ffprobe -version` must work. If missing:
+  Linux `apt-get install -y ffmpeg`, or set `KAARO_FFMPEG` / `KAARO_FFPROBE`.
 - Generator clips (Canvas Scene Scripts) also need headless Chromium
-  (pre-installed at `/opt/pw-browsers/chromium` in remote sessions).
+  (pre-installed at `/opt/pw-browsers/chromium` in remote sessions, or
+  `KAARO_CHROMIUM`).
 - All commands run from the repo root: `pnpm vid <command>` (alias for
   `node vid/cli.mjs`).
+
+### Windows preflight
+
+`tts.mjs` spawns `sh` and uses `command -v`. On Windows you need Git's
+`usr\bin` on PATH plus an explicit TTS command (SAPI helper ships in-repo):
+
+```powershell
+$env:Path = "C:\Program Files\Git\usr\bin;" + $env:Path
+# if ffmpeg is not already on PATH:
+# $env:KAARO_FFMPEG = "…\ffmpeg.exe"; $env:KAARO_FFPROBE = "…\ffprobe.exe"
+$env:KAARO_TTS_CMD = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File '$PWD\vid\tts-sapi.ps1' -Text {text} -Out {out}"
+```
+
+Confirm with `pnpm vid beats <id> --narrate command` (or let provider auto-pick
+once `KAARO_TTS_CMD` is set). Prefer piper when `KAARO_PIPER_VOICE` is installed.
 
 ## Step 1 — Interpret `$ARGUMENTS` into a Timeline
 
 | Input looks like | Do |
 |---|---|
-| a library id (matches `library/{id}.json`) | `pnpm vid beats <id> --narrate` → narrated story timeline (drop `--narrate` only if explicitly asked for a silent cut; needs a TTS provider — `apt-get install espeak-ng` at minimum, see `vid/README.md` for better voices) |
+| a library id (matches `library/{id}.json`) | `pnpm vid beats <id> --narrate` → narrated story timeline (drop `--narrate` only if explicitly asked for a silent cut; needs a TTS provider — see `vid/README.md`; Linux minimum `apt-get install espeak-ng`, Windows use SAPI via `KAARO_TTS_CMD` above) |
 | a `*.timeline.json` path | use it directly |
 | a natural-language brief | build a timeline yourself (below) |
+
+`briefToTimeline` adapts library fields for scenes: `report_card.key_stats`
+objects `{label,value}` become end-card `"Label: value"` strings. Do not pass
+raw objects into end-card `params.stats`.
 
 Building from a brief:
 1. **Probe every asset first**: `pnpm vid probe <file>` — never assume codecs,
