@@ -1,0 +1,149 @@
+{
+  "id": "esp-ecosystem",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "small",
+    "nodes": 18,
+    "edges": 44,
+    "beats": 8,
+    "insights": 5,
+    "clusters": 4
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "esp32-esp8266",
+          "arduino-framework",
+          "ota-updates",
+          "esp32-esp8266",
+          "platformio",
+          "ota-updates",
+          "physical-access",
+          "maintenance-burden",
+          "framework-lockin"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "esp32-esp8266",
+          "esp32-esp8266",
+          "espressif-systems",
+          "esp32-security-features",
+          "esp-idf",
+          "arduino-framework",
+          "arduino-framework",
+          "micropython",
+          "espruino",
+          "platformio",
+          "mongoose-os",
+          "firmware",
+          "firmware",
+          "bootloader",
+          "arduino-framework",
+          "esp-idf",
+          "arduino-ide",
+          "arduino-ide",
+          "micropython",
+          "espruino",
+          "platformio",
+          "esp-easy",
+          "framework-lockin",
+          "ota-updates",
+          "ota-updates",
+          "physical-access",
+          "esp32-security-features",
+          "bootloader",
+          "arduino-framework",
+          "arduino-framework",
+          "micropython",
+          "platformio",
+          "maintenance-burden",
+          "framework-lockin",
+          "platformio",
+          "platformio",
+          "mongoose-os",
+          "esp32-security-features",
+          "ota-updates",
+          "esp-idf",
+          "esp32-esp8266",
+          "esp32-esp8266",
+          "arduino-framework",
+          "micropython",
+          "espruino",
+          "ota-updates"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "esp32-esp8266",
+          "arduino-framework",
+          "ota-updates",
+          "esp32-esp8266",
+          "platformio",
+          "ota-updates",
+          "physical-access",
+          "maintenance-burden",
+          "framework-lockin"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

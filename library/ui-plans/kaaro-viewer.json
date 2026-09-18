@@ -1,0 +1,152 @@
+{
+  "id": "kaaro-viewer",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "large",
+    "nodes": 31,
+    "edges": 64,
+    "beats": 10,
+    "insights": 5,
+    "clusters": 6
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "kaaro-viewer",
+          "personalized-ontology",
+          "intelligence-brief",
+          "three-part-lock",
+          "dream-loop",
+          "alone-time-loop",
+          "visualize-skill",
+          "ontology-drift",
+          "open-world-assumption"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "open-world-assumption",
+          "open-world-assumption",
+          "opentapioca",
+          "wikidata",
+          "sparql",
+          "a-frame",
+          "a-frame",
+          "webxr",
+          "kaaro-viewer",
+          "private-knowledge-vault",
+          "private-knowledge-vault",
+          "open-world-assumption",
+          "opentapioca",
+          "intelligence-brief",
+          "intelligence-brief",
+          "gemini",
+          "private-knowledge-vault",
+          "ontology-drift",
+          "ontology-drift",
+          "intelligence-brief",
+          "validator",
+          "three-js",
+          "three-js",
+          "a-frame",
+          "force-directed-layout",
+          "kaaro-viewer",
+          "three-part-lock",
+          "three-part-lock",
+          "dream-loop",
+          "alone-time-loop",
+          "validator",
+          "sop-reference",
+          "explore-pipeline",
+          "explore-pipeline",
+          "visualize-skill",
+          "intelligence-brief",
+          "gemini",
+          "paint-system",
+          "paint-system",
+          "paint-context",
+          "paint-strategies",
+          "gemini",
+          "stable-diffusion",
+          "kaaro-viewer",
+          "kaaro-viewer",
+          "alone-time-loop",
+          "dream-loop",
+          "health-check",
+          "eval-modal"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "kaaro-viewer",
+          "personalized-ontology",
+          "intelligence-brief",
+          "three-part-lock",
+          "dream-loop",
+          "alone-time-loop",
+          "visualize-skill",
+          "ontology-drift",
+          "open-world-assumption"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "id": "art-of-intent",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "medium",
+    "nodes": 27,
+    "edges": 56,
+    "beats": 9,
+    "insights": 5,
+    "clusters": 6
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "art-of-intent",
+          "arty",
+          "prompt-engineering-mechanic",
+          "art-of-intent",
+          "arty",
+          "prompt-engineering-mechanic",
+          "creep-system",
+          "xss-prevention-system"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "art-of-intent",
+          "arty",
+          "prompt-engineering-mechanic",
+          "creep-system",
+          "arty",
+          "gemini-api",
+          "arty-generate-haiku",
+          "haiku-format",
+          "daily-words-system",
+          "generate-daily-words",
+          "daily-words-dataset",
+          "creep-system",
+          "prompt-engineering-mechanic",
+          "daily-words-system",
+          "token-efficiency-scoring",
+          "game-js",
+          "prompt-engineering-mechanic",
+          "leaderboard",
+          "arty-generate-haiku",
+          "firebase-cloud-functions",
+          "firestore",
+          "gemini-api",
+          "token-efficiency-scoring",
+          "leaderboard",
+          "game-js",
+          "firebase-ga4",
+          "share-card-generator",
+          "canvas-api",
+          "leaderboard",
+          "firebase-ga4",
+          "art-of-intent",
+          "jest",
+          "para-method",
+          "xss-prevention-system",
+          "firebase-cloud-functions"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "art-of-intent",
+          "arty",
+          "prompt-engineering-mechanic",
+          "art-of-intent",
+          "arty",
+          "prompt-engineering-mechanic",
+          "creep-system",
+          "xss-prevention-system"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

@@ -7,7 +7,12 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "health": "node scripts/health-check.mjs --summary",
-    "health:json": "node scripts/health-check.mjs"
+    "health:json": "node scripts/health-check.mjs",
+    "ui:validate": "node ui/validate-registry.mjs",
+    "ui:plan": "node scripts/ui-plan-all.mjs",
+    "ui:plan:reader": "node scripts/ui-plan-all.mjs --mode reader",
+    "hero": "node scripts/herovisual.mjs",
+    "hero:validate": "node ui/validate-hero.mjs"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^2.0.0",

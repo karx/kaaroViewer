@@ -317,6 +317,21 @@ function buildReport() {
 
 // ── Output ────────────────────────────────────────────────────────────────────
 
+// ── UI plans (widget axis) — reads library/ui-plans/index.json written by scripts/ui-plan-all.mjs ──
+
+function readUiPlans() {
+  try {
+    const idx = JSON.parse(readFileSync(join(LIBRARY_DIR, 'ui-plans', 'index.json'), 'utf8'));
+    return {
+      generated: idx.generated, mode: idx.mode, meanConfidence: idx.meanConfidence,
+      activeWidgets: idx.widgets?.active ?? null,
+      gaps: idx.gaps ?? {}, proposedReady: idx.proposedReady ?? {},
+      unused: idx.widgets?.unusedAcrossLibrary ?? [],
+      lowConfidence: (idx.entries ?? []).filter(e => e.confidence != null && e.confidence < 0.85).map(e => e.id),
+    };
+  } catch { return null; }
+}
+
 function printSummary(report) {
   const STATUS_ICON = { ok: '✅', watch: '👁', degraded: '⚠️ ', critical: '🔴', unknown: '❓' };
   const c = report.counts;
@@ -346,6 +361,18 @@ function printSummary(report) {
   }
 
   if (report.recommendations.length) {
+  const ui = readUiPlans();
+  console.log('\n── UI plans (widget axis) ─────────────────────────────────────────────────');
+  if (!ui) {
+    console.log('   (no library/ui-plans/index.json — run `pnpm ui:plan`)');
+  } else {
+    console.log(`   ${ui.activeWidgets} active widgets · mean confidence ${ui.meanConfidence} (${ui.mode}, ${ui.generated})`);
+    if (ui.lowConfidence.length) console.log(`   🟡 below 0.85: ${ui.lowConfidence.join(', ')}`);
+    if (Object.keys(ui.gaps).length) console.log(`   ⚠  gaps: ${Object.entries(ui.gaps).map(([k, v]) => `${k} (${v})`).join(', ')}`);
+    if (Object.keys(ui.proposedReady).length) console.log(`   💡 proposed ready: ${Object.entries(ui.proposedReady).map(([k, v]) => `${k} (${v})`).join(', ')}`);
+    if (ui.unused.length) console.log(`   ⚠  active but never placed: ${ui.unused.join(', ')}`);
+  }
+
     console.log('\n── Recommendations ────────────────────────────────────────────────────────');
     for (const r of report.recommendations) {
       console.log(`   ${r}`);

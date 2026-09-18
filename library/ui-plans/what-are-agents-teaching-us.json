@@ -1,0 +1,139 @@
+{
+  "id": "what-are-agents-teaching-us",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "medium",
+    "nodes": 25,
+    "edges": 50,
+    "beats": 9,
+    "insights": 7,
+    "clusters": 6
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "ai-agents",
+          "agency",
+          "legibility",
+          "ai-agents",
+          "pkm-practitioners",
+          "engineer-as-architect"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "agent-runtime",
+          "skill-concept",
+          "agent-runtime",
+          "context-surface",
+          "ai-agents",
+          "agency",
+          "agency",
+          "ai-agents",
+          "second-brain",
+          "second-brain",
+          "obsidian",
+          "roam",
+          "evernote",
+          "confluence",
+          "pkm-practitioners",
+          "knowledge-infrastructure",
+          "code-generation-free",
+          "code-generation-free",
+          "batch-size-one",
+          "engineer-as-architect",
+          "ecosystem-scaffolding",
+          "engineer-as-architect",
+          "code-generation-free",
+          "decomposition",
+          "decomposition",
+          "atomic-thinking",
+          "agency",
+          "agent-runtime",
+          "langtons-ant",
+          "langtons-ant",
+          "emergence",
+          "legibility",
+          "ai-agents",
+          "prompt-as-seed",
+          "prompt-as-seed",
+          "context-surface",
+          "emergence",
+          "agent-runtime",
+          "art-of-intent",
+          "haikus",
+          "art-of-intent",
+          "arty-haiku-bot"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "ai-agents",
+          "agency",
+          "legibility",
+          "ai-agents",
+          "pkm-practitioners",
+          "engineer-as-architect"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

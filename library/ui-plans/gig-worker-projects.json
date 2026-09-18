@@ -1,0 +1,123 @@
+{
+  "id": "gig-worker-projects",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "medium",
+    "nodes": 27,
+    "edges": 65,
+    "beats": 10,
+    "insights": 5,
+    "clusters": 4
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "qcommerce",
+          "gig-worker",
+          "gig-worker",
+          "tgpwu",
+          "algo-management",
+          "10min-promise"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "qcommerce",
+          "blinkit",
+          "zepto",
+          "swiggy-instamart",
+          "zomato",
+          "dark-store",
+          "algo-management",
+          "gig-worker",
+          "msd",
+          "chemical-hazard",
+          "road-safety",
+          "psych-stress",
+          "earnings-erosion",
+          "tgpwu",
+          "dec31-strike",
+          "social-security-code",
+          "rajasthan-act",
+          "3d-printing",
+          "throttle-assist",
+          "tpu-grips",
+          "bag-stabilizer"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "qcommerce",
+          "gig-worker",
+          "gig-worker",
+          "tgpwu",
+          "algo-management",
+          "10min-promise"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [
+      {
+        "input": "analytics.temporalSequence",
+        "reason": "present in descriptor, no active widget consumes it"
+      }
+    ],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

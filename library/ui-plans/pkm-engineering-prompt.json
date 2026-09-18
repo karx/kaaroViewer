@@ -1,0 +1,145 @@
+{
+  "id": "pkm-engineering-prompt",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "medium",
+    "nodes": 20,
+    "edges": 47,
+    "beats": 8,
+    "insights": 5,
+    "clusters": 5
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "para-framework",
+          "pkm-prompt",
+          "knowledge-surface",
+          "pkm-prompt",
+          "dual-track",
+          "crystallization",
+          "isolated-notes",
+          "uncrystallized-pipelines",
+          "context-evaporation"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "pkm-prompt",
+          "pkm-prompt",
+          "para-framework",
+          "dual-track",
+          "para-framework",
+          "para-framework",
+          "pipelines",
+          "areas",
+          "skill-surfaces",
+          "crystallized-archive",
+          "frontmatter",
+          "frontmatter",
+          "wikilinks",
+          "pkm-prompt",
+          "isolated-notes",
+          "GARDEN_GUIDELINES",
+          "dual-track",
+          "dual-track",
+          "pkm-prompt",
+          "pipelines",
+          "areas",
+          "crystallization",
+          "crystallization",
+          "pipelines",
+          "crystallized-archive",
+          "uncrystallized-pipelines",
+          "context-evaporation",
+          "knowledge-surface",
+          "knowledge-surface",
+          "skill-surfaces",
+          "pkm-prompt",
+          "agent-field",
+          "ebrain-vault",
+          "ebrain-vault",
+          "para-framework",
+          "kaaroViewer",
+          "crystallized-archive",
+          "knowledge-surface",
+          "knowledge-surface",
+          "pkm-prompt",
+          "crystallization",
+          "agent-field"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "para-framework",
+          "pkm-prompt",
+          "knowledge-surface",
+          "pkm-prompt",
+          "dual-track",
+          "crystallization",
+          "isolated-notes",
+          "uncrystallized-pipelines",
+          "context-evaporation"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

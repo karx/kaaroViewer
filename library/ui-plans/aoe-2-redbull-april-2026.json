@@ -1,0 +1,159 @@
+{
+  "id": "aoe-2-redbull-april-2026",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "large",
+    "nodes": 34,
+    "edges": 85,
+    "beats": 10,
+    "insights": 6,
+    "clusters": 6
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "rbw-londinium",
+          "hera",
+          "theviper",
+          "theviper",
+          "hera",
+          "marinelord",
+          "visa-crisis",
+          "score-victory"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "rbw-londinium",
+          "red-bull",
+          "worlds-edge",
+          "aoe2-de",
+          "aoe4",
+          "the-last-chieftains",
+          "aoe2-de",
+          "mapuche",
+          "naval-overhaul",
+          "yue-fei-legacy",
+          "jin-dynasty",
+          "visa-crisis",
+          "vinchester",
+          "anotand",
+          "lcq",
+          "road-to-wololo",
+          "replacement-qualifier",
+          "theviper",
+          "visa-crisis",
+          "lcq",
+          "hera",
+          "mr-yo",
+          "hearttt",
+          "mbl",
+          "empire-wars",
+          "captains-mode",
+          "rb-gaming-sphere",
+          "score-victory",
+          "hera",
+          "mr-yo",
+          "empire-wars",
+          "odeon-luxe",
+          "theviper",
+          "hearttt",
+          "sebastian",
+          "liereyy",
+          "marinelord",
+          "1puppypaw",
+          "empire-wars",
+          "royal-albert-hall",
+          "hera",
+          "theviper",
+          "marinelord",
+          "wam01",
+          "aoe2-de",
+          "aoe4",
+          "marinelord",
+          "wam01",
+          "vortix",
+          "1puppypaw",
+          "aoe4",
+          "road-to-wololo",
+          "yue-fei-legacy",
+          "the-last-chieftains",
+          "jin-dynasty",
+          "aoe4",
+          "aoe2-de",
+          "worlds-edge"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "rbw-londinium",
+          "hera",
+          "theviper",
+          "theviper",
+          "hera",
+          "marinelord",
+          "visa-crisis",
+          "score-victory"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

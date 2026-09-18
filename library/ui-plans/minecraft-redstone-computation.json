@@ -1,0 +1,151 @@
+{
+  "id": "minecraft-redstone-computation",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "large",
+    "nodes": 42,
+    "edges": 91,
+    "beats": 9,
+    "insights": 6,
+    "clusters": 5
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "redstone-computation",
+          "bpe",
+          "minecraft-java",
+          "theinternetftw",
+          "n00b-asaurus",
+          "sethbling",
+          "mojang",
+          "tick-rate-limit",
+          "ripple-carry-adder"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "redstone-torch",
+          "redstone-dust",
+          "redstone-computation",
+          "alpha-1-0-1",
+          "internetftw-cpu",
+          "theinternetftw",
+          "alu",
+          "alpha-1-0-1",
+          "bpe",
+          "redstone-repeater",
+          "piston",
+          "quasi-connectivity",
+          "beta-1-3",
+          "beta-1-7",
+          "t-flip-flop",
+          "sr-latch",
+          "t-flip-flop",
+          "d-flip-flop",
+          "redstone-comparator",
+          "signal-strength-memory",
+          "java-1-5",
+          "quasi-connectivity",
+          "minecraft-java",
+          "minecraft-bedrock",
+          "piston",
+          "copper-bulb",
+          "t-flip-flop",
+          "bpe",
+          "java-1-21",
+          "observer",
+          "java-1-11",
+          "atari-emulator",
+          "sethbling",
+          "turing-completeness",
+          "tick-rate-limit",
+          "deep-thought",
+          "n00b-asaurus",
+          "observer",
+          "d-flip-flop",
+          "alu",
+          "java-1-11",
+          "finite-state-machine",
+          "redstone-computation",
+          "copper-bulb",
+          "crafter",
+          "sculk-sensor",
+          "mojang",
+          "von-neumann-arch"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "redstone-computation",
+          "bpe",
+          "minecraft-java",
+          "theinternetftw",
+          "n00b-asaurus",
+          "sethbling",
+          "mojang",
+          "tick-rate-limit",
+          "ripple-carry-adder"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

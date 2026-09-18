@@ -1,0 +1,152 @@
+{
+  "id": "poker-tooling-2026",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "large",
+    "nodes": 41,
+    "edges": 86,
+    "beats": 11,
+    "insights": 7,
+    "clusters": 6
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "professional-poker-player",
+          "poker-toolkit",
+          "india-proga",
+          "professional-poker-player",
+          "head-digital-works",
+          "a23-gaming",
+          "india-proga",
+          "meity",
+          "rake",
+          "gg-network"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "piosolver",
+          "gto-strategy",
+          "gto-wizard",
+          "pokertracker-4",
+          "holdem-manager-3",
+          "hand2note",
+          "hud-overlay",
+          "gg-network",
+          "pokerstars",
+          "hand2note",
+          "pokercraft",
+          "rake",
+          "primedope",
+          "bankroll-management",
+          "variance",
+          "tilt",
+          "jared-tendler",
+          "primed-mind",
+          "tiltfree",
+          "professional-poker-player",
+          "jurojin-poker",
+          "elgato-stream-deck",
+          "upswing-poker",
+          "run-it-once",
+          "raise-your-edge",
+          "gto-wizard",
+          "india-proga",
+          "meity",
+          "india",
+          "kr-lakshmanan-ruling",
+          "pokerbaazi",
+          "adda52",
+          "a23-gaming",
+          "head-digital-works",
+          "coinpoker",
+          "acr-poker",
+          "professional-poker-player",
+          "poker-toolkit",
+          "professional-poker-player",
+          "bankroll-management"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "professional-poker-player",
+          "poker-toolkit",
+          "india-proga",
+          "professional-poker-player",
+          "head-digital-works",
+          "a23-gaming",
+          "india-proga",
+          "meity",
+          "rake",
+          "gg-network"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [
+      {
+        "input": "analytics.temporalSequence",
+        "reason": "present in descriptor, no active widget consumes it"
+      }
+    ],
+    "proposedReady": [
+      "timeline"
+    ],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

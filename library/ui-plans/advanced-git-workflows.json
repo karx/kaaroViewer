@@ -1,0 +1,149 @@
+{
+  "id": "advanced-git-workflows",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "large",
+    "nodes": 35,
+    "edges": 72,
+    "beats": 9,
+    "insights": 6,
+    "clusters": 6
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "git",
+          "trunk-based-development",
+          "rebase-vs-merge",
+          "trunk-based-development",
+          "feature-flags",
+          "force-with-lease",
+          "git-bisect",
+          "git-reflog",
+          "git-rerere",
+          "gitflow",
+          "merge-hell",
+          "code-drift",
+          "background-fetch-vulnerability"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "git",
+          "dag-architecture",
+          "rebase-vs-merge",
+          "gitflow",
+          "github-flow",
+          "gitlab-flow",
+          "trunk-based-development",
+          "vincent-driessen",
+          "gitflow",
+          "gitflow-2010",
+          "no-fast-forward",
+          "gitflow",
+          "ci-cd",
+          "code-drift",
+          "github-flow",
+          "merge-hell",
+          "code-drift",
+          "gitflow",
+          "ci-cd",
+          "rebase-vs-merge",
+          "git-rebase",
+          "git-merge",
+          "linux-kernel",
+          "interactive-rebase",
+          "force-with-lease",
+          "background-fetch-vulnerability",
+          "force-if-includes",
+          "compare-and-swap",
+          "git-reflog",
+          "orphan-commit",
+          "git-rerere",
+          "git-bisect",
+          "three-trees",
+          "trunk-based-development",
+          "feature-flags",
+          "branch-by-abstraction",
+          "git-worktree",
+          "git-add-patch"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "git",
+          "trunk-based-development",
+          "rebase-vs-merge",
+          "trunk-based-development",
+          "feature-flags",
+          "force-with-lease",
+          "git-bisect",
+          "git-reflog",
+          "git-rerere",
+          "gitflow",
+          "merge-hell",
+          "code-drift",
+          "background-fetch-vulnerability"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "entries": [
+    {
+      "id": "gig-worker-projects",
+      "scale": "medium",
+      "nodes": 27,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [
+        "analytics.temporalSequence"
+      ],
+      "proposedReady": []
+    },
+    {
+      "id": "aoe-2-redbull-april-2026",
+      "scale": "large",
+      "nodes": 34,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [],
+      "proposedReady": []
+    },
+    {
+      "id": "poker-tooling-2026",
+      "scale": "large",
+      "nodes": 41,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [
+        "analytics.temporalSequence"
+      ],
+      "proposedReady": [
+        "timeline"
+      ]
+    },
+    {
+      "id": "art-of-intent",
+      "scale": "medium",
+      "nodes": 27,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [],
+      "proposedReady": []
+    },
+    {
+      "id": "minecraft-redstone-computation",
+      "scale": "large",
+      "nodes": 42,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [],
+      "proposedReady": []
+    },
+    {
+      "id": "kaaro-viewer",
+      "scale": "large",
+      "nodes": 31,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [],
+      "proposedReady": []
+    },
+    {
+      "id": "advanced-git-workflows",
+      "scale": "large",
+      "nodes": 35,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [],
+      "proposedReady": []
+    },
+    {
+      "id": "what-are-agents-teaching-us",
+      "scale": "medium",
+      "nodes": 25,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [],
+      "proposedReady": []
+    },
+    {
+      "id": "pkm-engineering-prompt",
+      "scale": "medium",
+      "nodes": 20,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [],
+      "proposedReady": []
+    },
+    {
+      "id": "esp-ecosystem",
+      "scale": "small",
+      "nodes": 18,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [],
+      "proposedReady": []
+    },
+    {
+      "id": "kaaro-sessions-platform",
+      "scale": "large",
+      "nodes": 31,
+      "layout": "reader-report",
+      "total": 9,
+      "byWidget": {
+        "report-header": 1,
+        "kpi-strip": 1,
+        "briefing-section": 1,
+        "story-arc-section": 1,
+        "analytics-panel": 1,
+        "insights-section": 1,
+        "entity-spotlight": 1,
+        "clusters-section": 1,
+        "report-footer": 1
+      },
+      "confidence": 1,
+      "ambiguities": 0,
+      "gaps": [],
+      "proposedReady": []
+    }
+  ],
+  "unregistered": [],
+  "widgets": {
+    "total": 27,
+    "active": 26,
+    "usage": {
+      "report-header": 11,
+      "kpi-strip": 11,
+      "briefing-section": 11,
+      "story-arc-section": 11,
+      "analytics-panel": 11,
+      "insights-section": 11,
+      "entity-spotlight": 11,
+      "clusters-section": 11,
+      "report-footer": 11
+    },
+    "unusedAcrossLibrary": []
+  },
+  "gaps": {
+    "analytics.temporalSequence": 2
+  },
+  "proposedReady": {
+    "timeline": 1
+  },
+  "layouts": {
+    "reader-report": 11
+  },
+  "meanConfidence": 1
+}

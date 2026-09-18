@@ -1,0 +1,147 @@
+{
+  "id": "kaaro-sessions-platform",
+  "generated": "2026-09-18",
+  "mode": "reader",
+  "descriptor": {
+    "scale": "large",
+    "nodes": 31,
+    "edges": 63,
+    "beats": 9,
+    "insights": 6,
+    "clusters": 6
+  },
+  "plan": {
+    "layout": "reader-report",
+    "mode": "reader",
+    "kind": "brief",
+    "slots": [
+      {
+        "slot": "header",
+        "family": "header",
+        "widget": "report-header",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "kpi-strip",
+        "frames": []
+      },
+      {
+        "slot": "overview",
+        "family": "overview",
+        "widget": "briefing-section",
+        "frames": [
+          "kaaro-sessions-platform",
+          "claude-code",
+          "kaaro-viewer-project",
+          "kaaro",
+          "kaaro-sessions-platform",
+          "cache-hit-rate",
+          "tool-error-rate",
+          "tokens-cached"
+        ]
+      },
+      {
+        "slot": "narrative",
+        "family": "narrative",
+        "widget": "story-arc-section",
+        "frames": [
+          "kaaro-sessions-platform",
+          "kaaro",
+          "claude-code",
+          "kaaro-sessions-platform",
+          "force-graph",
+          "swimlane",
+          "arc-view",
+          "matrix-view",
+          "three-d-view",
+          "d3-js",
+          "kaaro-viewer-project",
+          "kaaro-viewer-project",
+          "exp-art-of-mine-craft",
+          "ebrain",
+          "ebrain-gardener",
+          "kaaro-sessions-dev-project",
+          "swimlane",
+          "swimlane",
+          "git-branch",
+          "arc-view",
+          "kaaro-viewer-project",
+          "burst-day",
+          "burst-day",
+          "kaaro-viewer-project",
+          "tool-error-rate",
+          "arc-view",
+          "cache-hit-rate",
+          "cache-hit-rate",
+          "tokens-cached",
+          "tokens-work",
+          "claude-code",
+          "large-session",
+          "large-session",
+          "exp-art-of-mine-craft",
+          "tool-error-rate",
+          "tokens-work",
+          "matrix-view",
+          "matrix-view",
+          "arc-view",
+          "kaaro-viewer-project",
+          "ebrain",
+          "sse",
+          "sse",
+          "kaaro-sessions-platform",
+          "kaaro-io",
+          "snapshot"
+        ]
+      },
+      {
+        "slot": "metrics",
+        "family": "metrics",
+        "widget": "analytics-panel",
+        "frames": []
+      },
+      {
+        "slot": "analysis",
+        "family": "analysis",
+        "widget": "insights-section",
+        "frames": []
+      },
+      {
+        "slot": "spotlight",
+        "family": "spotlight",
+        "widget": "entity-spotlight",
+        "frames": [
+          "kaaro-sessions-platform",
+          "claude-code",
+          "kaaro-viewer-project",
+          "kaaro",
+          "kaaro-sessions-platform",
+          "cache-hit-rate",
+          "tool-error-rate",
+          "tokens-cached"
+        ]
+      },
+      {
+        "slot": "grouping",
+        "family": "grouping",
+        "widget": "clusters-section",
+        "frames": []
+      },
+      {
+        "slot": "footer",
+        "family": "footer",
+        "widget": "report-footer",
+        "frames": []
+      }
+    ],
+    "confidence": 1,
+    "ambiguities": [],
+    "unused": [],
+    "gaps": [],
+    "proposedReady": [],
+    "layoutCandidates": [
+      "reader-report"
+    ]
+  }
+}
