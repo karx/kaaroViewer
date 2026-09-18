@@ -124,6 +124,22 @@ The in-browser pipeline supports multiple providers:
 
 ---
 
+## Video agent (kaaro-vid)
+
+CLI video tooling under `vid/` — declarative Timeline JSON → ffmpeg + headless-Chromium
+render (Canvas Scene Scripts, offline Web Audio). Vocabulary and roadmap:
+`VIDEO_AGENT_PLAN.md`. Usage: `vid/README.md`.
+
+```
+pnpm vid render <timeline.json> [--dry-run]   # plan + execute
+pnpm vid verify <out.mp4> --timeline <t.json> # exit 1 on any failed check
+```
+
+Requires ffmpeg on PATH (`apt-get install ffmpeg` in remote sessions); generator
+clips additionally need headless Chromium (pre-installed at `/opt/pw-browsers/chromium`).
+
+---
+
 ## Library
 
 Current entries: `pipeline/local-graph.mjs` → `LIBRARY` array.  
