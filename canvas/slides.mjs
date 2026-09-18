@@ -22,6 +22,8 @@
  */
 
 import { getEntityStyle } from '../ontology.mjs';
+import { describeBrief }  from '../ui/state-descriptor.mjs';
+import { routeHeuristic } from '../ui/router.mjs';
 
 const GITHUB_ISSUES_URL = 'https://github.com/karx/kaaroViewer/issues/new';
 
@@ -37,6 +39,35 @@ let _currentDoc = null;
 let _suppressObserverUntil = 0;   // ms timestamp; observer ignores entries before this
 const _paintState = new Map();     // slideIdx → 'idle'|'loading'|'done'|'error'
 let _evalRating = 0;
+let _currentPlan = null;           // WidgetPlan from ui/router.mjs for the current doc
+
+/** The registry-routed widget plan behind the current deck (null before renderSlides). */
+export function getActivePlan() { return _currentPlan; }
+
+let _heroPlan = null;              // { docId, plan } — a HeroVisual plan to use instead of live routing
+
+/**
+ * Pre-register a HeroVisual plan for a doc id. The next renderSlides(doc) for that
+ * doc hydrates this plan instead of routing live. Pass null to clear.
+ */
+export function setHeroPlan(plan, docId) { _heroPlan = plan ? { docId, plan } : null; }
+
+/** Registry widget id -> slide type. A registry widget with no mapping here is skipped, never crashes. */
+const WIDGET_TO_SLIDE = {
+  'title-slide':      'title',
+  'briefing-slide':   'briefing',
+  'arc-slide':        'arc',
+  'beat-slide':       'beat',
+  'insight-slide':    'insight',
+  'cluster-slide':    'cluster',
+  'analytics-slide':  'analytics',
+  'closer-slide':     'closer',
+  'eval-slide':       'eval',
+  'cluster-overview': 'cluster-overview',
+  'insight-matrix':   'insight-matrix',
+  'causal-chain':     'causal-chains',
+  'cluster-bridges':  'bridges',
+};
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
@@ -98,11 +129,13 @@ export function initSlides() {
   });
 }
 
-export function renderSlides(doc) {
+export function renderSlides(doc, { plan = null } = {}) {
   if (!_track || !doc) return;
   _currentDoc = doc;
   _evalRating = 0;
-  _slides = _buildSlides(doc);
+  const docId = doc.id ?? doc.meta?.id;
+  const usePlan = plan ?? (_heroPlan && _heroPlan.docId === docId ? _heroPlan.plan : null);
+  _slides = _buildSlides(doc, usePlan);
   _paintState.clear();
   _track.innerHTML = _slides.map((s, i) => _renderSlide(s, i, _slides.length)).join('');
   _renderDots();
@@ -176,102 +209,51 @@ export function goToSlide(idx, behavior = 'smooth') {
 
 // ── Slide model builder ──────────────────────────────────────────────────────
 
-function _buildSlides(doc) {
+function _buildSlides(doc, givenPlan = null) {
+  // The deck is a registry-routed WidgetPlan: the router decides layout + slots
+  // from the brief's shape (ui/registry.json + ui/layouts.json), or a HeroVisual
+  // supplies the plan; this function only hydrates each slot with the doc objects
+  // the renderer needs.
+  const plan = givenPlan ?? routeHeuristic(describeBrief(doc), { mode: 'slides' });
+  _currentPlan = plan;
+
   const slides = [];
+  for (const slot of plan.slots) {
+    const type = WIDGET_TO_SLIDE[slot.widget];
+    if (!type) continue;
+    const base = { type, widget: slot.widget, frameNodes: slot.frames ?? [], enrichment: slot.enrichment ?? null };
 
-  // 00 — Title
-  slides.push({
-    id: 'title',
-    type: 'title',
-    title: doc.title ?? 'Untitled',
-    frameNodes: doc.report_card?.spine ?? [],
-  });
-
-  // 01 — Briefing
-  if (doc.report_card?.summary || doc.report_card?.key_stats?.length) {
-    slides.push({
-      id: 'briefing',
-      type: 'briefing',
-      title: 'Executive briefing',
-      frameNodes: [
-        ...(doc.report_card?.spine ?? []),
-        ...(doc.report_card?.protagonists ?? []),
-        ...(doc.report_card?.antagonists ?? []),
-      ],
-    });
+    switch (type) {
+      case 'title':     slides.push({ ...base, id: 'title',     title: doc.title ?? 'Untitled' }); break;
+      case 'briefing':  slides.push({ ...base, id: 'briefing',  title: 'Executive briefing' }); break;
+      case 'arc':       slides.push({ ...base, id: 'arc',       title: 'Narrative arc' }); break;
+      case 'beat': {
+        const i = (doc.story ?? []).findIndex(b => b.id === slot.item?.id);
+        if (i < 0) break;
+        slides.push({ ...base, id: `beat-${i}`, title: doc.story[i].title, beatIdx: i, beat: doc.story[i] });
+        break;
+      }
+      case 'insight': {
+        const ins = (doc.insights ?? []).find(x => x.id === slot.item?.id);
+        if (!ins) break;
+        slides.push({ ...base, id: `insight-${ins.id}`, title: ins.title, insight: ins });
+        break;
+      }
+      case 'cluster': {
+        const cl = (doc.clusters ?? []).find(c => c.id === slot.item?.id);
+        if (!cl) break;
+        slides.push({ ...base, id: `cluster-${cl.id}`, title: cl.label, cluster: cl });
+        break;
+      }
+      case 'analytics':        slides.push({ ...base, id: 'analytics', title: 'Analytics' }); break;
+      case 'cluster-overview': slides.push({ ...base, id: 'clusters',  title: 'Clusters' }); break;
+      case 'insight-matrix':   slides.push({ ...base, id: 'insights',  title: 'Insight matrix' }); break;
+      case 'causal-chains':    slides.push({ ...base, id: 'causal',    title: 'Causal chains' }); break;
+      case 'bridges':          slides.push({ ...base, id: 'bridges',   title: 'Cluster bridges' }); break;
+      case 'closer':           slides.push({ ...base, id: 'closer',    title: 'End of brief' }); break;
+      case 'eval':             slides.push({ ...base, id: 'eval',      title: 'Evaluate this brief' }); break;
+    }
   }
-
-  // 02 — Tension arc (only if there are beats)
-  if (doc.story?.length >= 2) {
-    slides.push({
-      id: 'arc',
-      type: 'arc',
-      title: 'Narrative arc',
-      frameNodes: (doc.story ?? []).flatMap(b => [b.node, ...(b.nodes ?? [])]).filter(Boolean),
-    });
-  }
-
-  // 03…N — Story beats
-  (doc.story ?? []).forEach((beat, i) => {
-    slides.push({
-      id:    `beat-${i}`,
-      type:  'beat',
-      title: beat.title,
-      beatIdx: i,
-      beat,
-      frameNodes: [beat.node, ...(beat.nodes ?? [])].filter(Boolean),
-    });
-  });
-
-  // Insights
-  (doc.insights ?? []).forEach((ins, i) => {
-    slides.push({
-      id:    `insight-${i}`,
-      type:  'insight',
-      title: ins.title,
-      insight: ins,
-      frameNodes: ins.evidence ?? [],
-    });
-  });
-
-  // Clusters
-  (doc.clusters ?? []).forEach(cl => {
-    slides.push({
-      id:    `cluster-${cl.id}`,
-      type:  'cluster',
-      title: cl.label,
-      cluster: cl,
-      frameNodes: cl.nodes ?? [],
-    });
-  });
-
-  // Analytics (consolidated)
-  const a = doc.analytics;
-  if (a && (a.centrality || a.relTypeDist || a.sentimentDist)) {
-    slides.push({
-      id: 'analytics',
-      type: 'analytics',
-      title: 'Analytics',
-      frameNodes: [],
-    });
-  }
-
-  // Closer
-  slides.push({
-    id: 'closer',
-    type: 'closer',
-    title: 'End of brief',
-    frameNodes: [],
-  });
-
-  // Eval — always last
-  slides.push({
-    id: 'eval',
-    type: 'eval',
-    title: 'Evaluate this brief',
-    frameNodes: [],
-  });
-
   return slides;
 }
 
@@ -280,13 +262,17 @@ function _buildSlides(doc) {
 function _renderSlide(slide, idx, total) {
   const body = (() => {
     switch (slide.type) {
-      case 'title':     return _renderTitle(_currentDoc);
+      case 'title':     return _renderTitle(_currentDoc, slide);
       case 'briefing':  return _renderBriefing(_currentDoc);
       case 'arc':       return _renderArc(_currentDoc);
       case 'beat':      return _renderBeat(slide.beat, slide.beatIdx, _currentDoc);
       case 'insight':   return _renderInsight(slide.insight, _currentDoc);
       case 'cluster':   return _renderCluster(slide.cluster, _currentDoc);
       case 'analytics': return _renderAnalytics(_currentDoc);
+      case 'cluster-overview': return _renderClusterOverview(_currentDoc, slide);
+      case 'insight-matrix':   return _renderInsightMatrix(_currentDoc, slide);
+      case 'causal-chains':    return _renderCausalChains(_currentDoc, slide);
+      case 'bridges':          return _renderBridges(_currentDoc, slide);
       case 'closer':    return _renderCloser(_currentDoc);
       case 'eval':      return _renderEval(_currentDoc);
       default:          return '';
@@ -318,7 +304,12 @@ function _renderSlide(slide, idx, total) {
   `;
 }
 
-function _renderTitle(doc) {
+function _enrichLine(slide, key, cls = 'sl-enrich') {
+  const v = slide?.enrichment?.[key];
+  return typeof v === 'string' && v.trim() ? `<p class="${cls}">${_e(v.trim())}</p>` : '';
+}
+
+function _renderTitle(doc, slide = null) {
   const tags = (doc.tags ?? []).map(t => `<span class="sl-tag">${_e(t)}</span>`).join('');
   const tone = doc.tone ?? 'analytical';
   return `
@@ -330,6 +321,7 @@ function _renderTitle(doc) {
     </div>
     <h1 class="sl-title-h1">${_e(doc.title ?? '')}</h1>
     ${doc.subtitle ? `<p class="sl-title-sub">${_e(doc.subtitle)}</p>` : ''}
+    ${_enrichLine(slide, 'tagline', 'sl-enrich sl-enrich-tagline')}
     ${tags ? `<div class="sl-tags">${tags}</div>` : ''}
     <div class="sl-title-spine">
       ${(doc.report_card?.spine ?? []).map(id => _pill(id, doc)).join('')}
@@ -448,7 +440,94 @@ function _renderAnalytics(doc) {
       ${_centralityBars(doc)}
       ${_relDistBars(a.relTypeDist)}
       ${_sentimentBar(a.sentimentDist)}
+      ${_tierBar(a.tierDist)}
     </div>
+  `;
+}
+
+// ── Registry widgets added 2026-09-17 (ui/registry.json: cluster-overview,
+//    insight-matrix, causal-chain, cluster-bridges). Each is registered with
+//    its mount fn name below — keep names in lockstep with the registry.
+
+function _renderClusterOverview(doc, slide = null) {
+  const total = (doc.nodes ?? []).length || 1;
+  const cards = (doc.clusters ?? []).map(cl => {
+    const col   = cl.color ?? '#666666';
+    const count = cl.nodes?.length ?? 0;
+    const pct   = (count / total * 100).toFixed(0);
+    const desc  = (cl.description ?? '').length > 110 ? cl.description.slice(0, 108) + '…' : (cl.description ?? '');
+    return `<button class="sl-clo-card" data-frame="${_e((cl.nodes ?? []).join(','))}" style="border-left-color:${_e(col)}"
+      aria-label="Frame cluster ${_e(cl.label ?? '')} in the canvas">
+      <span class="sl-clo-hdr"><span class="sl-cl-dot" style="background:${_e(col)}"></span>
+        <span class="sl-clo-label">${_e(cl.label ?? '')}</span>
+        <span class="sl-cl-cnt">${count} · ${pct}%</span></span>
+      ${desc ? `<span class="sl-clo-desc">${_e(desc)}</span>` : ''}
+    </button>`;
+  }).join('');
+  return `
+    <h2 class="sl-h2">Clusters</h2>
+    <p class="sl-caption">${(doc.clusters ?? []).length} groupings · click a card to frame it in the canvas.</p>
+    ${_enrichLine(slide, 'caption')}
+    <div class="sl-clo-grid">${cards}</div>
+  `;
+}
+
+function _renderInsightMatrix(doc, slide = null) {
+  const ICON = { finding:'◈', warning:'⚑', pattern:'◎', conclusion:'◆', paradox:'◉', opportunity:'◇' };
+  const SEV  = ['high', 'medium', 'low'];
+  const SCOL = { high: '#ff4400', medium: '#cc8800', low: '#556655' };
+  const ins  = doc.insights ?? [];
+  const types = [...new Set(ins.map(i => i.type ?? 'finding'))];
+  const cell = (sev, type) => ins.filter(i => (i.severity ?? 'medium') === sev && (i.type ?? 'finding') === type)
+    .map(i => `<button class="sl-im-item" data-goto-slide="insight-${_e(i.id)}" data-frame="${_e((i.evidence ?? []).join(','))}"
+        title="${_e(i.title)}">${_e(i.title.length > 64 ? i.title.slice(0, 62) + '…' : i.title)}</button>`).join('');
+  const head = `<div class="sl-im-corner"></div>` + types.map(t =>
+    `<div class="sl-im-th">${ICON[t] ?? '◈'} ${_e(t.toUpperCase())}</div>`).join('');
+  const rows = SEV.filter(sev => ins.some(i => (i.severity ?? 'medium') === sev)).map(sev =>
+    `<div class="sl-im-rh" style="color:${SCOL[sev]}">${_e(sev.toUpperCase())}</div>` +
+    types.map(t => `<div class="sl-im-cell">${cell(sev, t)}</div>`).join('')).join('');
+  return `
+    <h2 class="sl-h2">Insight matrix</h2>
+    <p class="sl-caption">${ins.length} insights by severity × type · click one to open it, or frame its evidence.</p>
+    ${_enrichLine(slide, 'caption')}
+    <div class="sl-im-grid" style="grid-template-columns: 64px repeat(${types.length}, 1fr)">${head}${rows}</div>
+  `;
+}
+
+function _renderCausalChains(doc, slide = null) {
+  const chains = [...(doc.analytics?.causalChains ?? [])].sort((a, b) => b.length - a.length).slice(0, 5);
+  const rows = chains.map((chain, i) => `<div class="sl-cc-row">
+      <span class="sl-cc-num">${String(i + 1).padStart(2, '0')}</span>
+      ${chain.map((id, j) => `${j ? '<span class="sl-cc-arrow">→</span>' : ''}${_pill(id, doc)}`).join('')}
+    </div>`).join('');
+  return `
+    <h2 class="sl-h2">Causal chains</h2>
+    <p class="sl-caption">Longest root-to-leaf paths along directed <em>causes</em> edges · ${chains.length} of ${(doc.analytics?.causalChains ?? []).length} shown.</p>
+    ${_enrichLine(slide, 'why')}
+    <div class="sl-cc-list">${rows}</div>
+  `;
+}
+
+function _renderBridges(doc, slide = null) {
+  const clusterOf = {};
+  for (const cl of doc.clusters ?? []) clusterOf[cl.id] = cl;
+  const edges = [...(doc.analytics?.crossClusterEdges ?? [])].sort((a, b) => (b.weight ?? 1) - (a.weight ?? 1)).slice(0, 8);
+  const rows = edges.map(e => {
+    const fc = clusterOf[e.fromCluster], tc = clusterOf[e.toCluster];
+    return `<div class="sl-br-row">
+      <span class="sl-cl-dot sl-br-dot" style="background:${_e(fc?.color ?? '#666')}" title="${_e(fc?.label ?? '')}"></span>
+      ${_pill(e.from, doc)}
+      <span class="sl-br-rel">${_e(e.rel ?? 'default')}</span>
+      ${_pill(e.to, doc)}
+      <span class="sl-cl-dot sl-br-dot" style="background:${_e(tc?.color ?? '#666')}" title="${_e(tc?.label ?? '')}"></span>
+      <span class="sl-br-w">w${e.weight ?? 1}</span>
+    </div>`;
+  }).join('');
+  return `
+    <h2 class="sl-h2">Cluster bridges</h2>
+    <p class="sl-caption">Strongest edges that cross cluster boundaries · ${edges.length} of ${(doc.analytics?.crossClusterEdges ?? []).length}.</p>
+    ${_enrichLine(slide, 'caption')}
+    <div class="sl-br-list">${rows}</div>
   `;
 }
 
@@ -656,6 +735,23 @@ function _sentimentBar(dist) {
   </div>`;
 }
 
+function _tierBar(dist) {
+  if (!dist) return '';
+  const total = Object.values(dist).reduce((s, v) => s + v, 0);
+  if (!total) return '';
+  const TCOL = { spine: '#ffcc00', primary: '#ff8800', secondary: '#886644', context: '#443322' };
+  const segs = Object.entries(dist).filter(([, v]) => v > 0).map(([k, v]) => {
+    const pct = (v / total * 100).toFixed(0);
+    return `<div class="sl-sent-seg" style="flex:${v};background:${TCOL[k] ?? '#666'}" title="${_e(k)}: ${v} (${pct}%)">
+      <span class="sl-sent-lbl">${_e(k.slice(0, 3).toUpperCase())}</span>
+    </div>`;
+  }).join('');
+  return `<div class="sl-chart-block">
+    <div class="sl-chart-title">Tiers</div>
+    <div class="sl-sent-row">${segs}</div>
+  </div>`;
+}
+
 // ── Active-slide tracking via IntersectionObserver ──────────────────────────
 
 function _bindIntersection() {
@@ -731,6 +827,11 @@ function _renderDots() {
 
 // ── Click delegation ────────────────────────────────────────────────────────
 
+function _frameFromAttr(el) {
+  const ids = (el.dataset.frame ?? '').split(',').map(x => x.trim()).filter(Boolean);
+  if (ids.length) document.dispatchEvent(new CustomEvent('slides:frame', { detail: { nodeIds: ids, slideIdx: _active } }));
+}
+
 function _bindClicks() {
   // Entity pills / centrality rows → navigate to node (leave slides)
   _track.querySelectorAll('[data-qid]').forEach(el => {
@@ -741,14 +842,21 @@ function _bindClicks() {
     });
   });
 
-  // Jump to specific slide by slide-id
+  // Jump to specific slide by slide-id; if that slide is not in this deck
+  // (compact layouts drop per-item slides), fall back to framing data-frame nodes.
   _track.querySelectorAll('[data-goto-slide]').forEach(el => {
     el.addEventListener('click', e => {
       e.stopPropagation();
       const id  = el.dataset.gotoSlide;
       const idx = _slides.findIndex(s => s.id === id);
-      if (idx >= 0) goToSlide(idx);
+      if (idx >= 0) { goToSlide(idx); return; }
+      _frameFromAttr(el);
     });
+  });
+
+  // Frame-only controls (cluster overview cards)
+  _track.querySelectorAll('[data-frame]:not([data-goto-slide])').forEach(el => {
+    el.addEventListener('click', e => { e.stopPropagation(); _frameFromAttr(el); });
   });
 
   // Mode switch buttons inside slides (closer slide has one)
