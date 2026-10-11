@@ -1,0 +1,1539 @@
+{
+  "meta": {
+    "id": "poker-tooling-2026",
+    "title": "The Modern Poker Player's Toolkit",
+    "subtitle": "Software, Hardware, Psychology, and Jurisdictional Survival in 2026",
+    "source": "Comprehensive Analysis of the Modern Poker Player's Toolkit (2026)",
+    "domain": "Gaming / Technology",
+    "year": "2026",
+    "tags": [
+      "poker",
+      "GTO solvers",
+      "HUD tracking",
+      "India PROGA",
+      "mental game",
+      "bankroll management",
+      "online gaming regulation",
+      "variance",
+      "tilt"
+    ],
+    "tone": "analytical"
+  },
+  "report_card": {
+    "summary": "Modern competitive poker has become a technology-mediated systems management discipline. Sustainable profitability in 2026 requires integrating HUD tracking databases, cloud GTO solvers, Monte Carlo variance models, clinical-grade ergonomics, and psychological conditioning software into a single seamless operation. The Indian market's overnight regulatory collapse under PROGA — wiping a $3.7 billion industry and forcing 200,000 jobs into extinction — illustrates that jurisdictional risk is now a first-order operational variable alongside rake, variance, and tilt. Players who cannot navigate all six layers of this toolkit will not survive the modern game.",
+    "key_stats": [
+      "Pre-PROGA India RMG market value: $3.7 billion",
+      "Jobs destroyed by PROGA: 200,000+",
+      "Indian startups affected: 400+",
+      "GTO Wizard pre-solved scenarios: 10 million+",
+      "PLO 6-max standard deviation: 120–160 BB/100",
+      "Buyins required at 2.1 BB/100 for <5% ruin risk: 58",
+      "PioSOLVER GTO revolution year: 2015",
+      "PROGA Presidential assent: August 2025"
+    ],
+    "spine": [
+      "professional-poker-player",
+      "poker-toolkit",
+      "india-proga"
+    ],
+    "protagonists": [
+      "professional-poker-player",
+      "head-digital-works",
+      "a23-gaming"
+    ],
+    "antagonists": [
+      "india-proga",
+      "meity",
+      "rake",
+      "gg-network"
+    ],
+    "themes": [
+      "GTO technology arms race",
+      "Jurisdictional risk and regulatory collapse",
+      "Mental game as competitive moat",
+      "Platform power vs. player data rights",
+      "Variance and mathematical ruin",
+      "Physical ergonomics and session endurance"
+    ]
+  },
+  "story": [
+    {
+      "id": "beat-01",
+      "title": "The GTO Revolution",
+      "node": "piosolver",
+      "nodes": [
+        "gto-strategy",
+        "gto-wizard"
+      ],
+      "narration": "PioSOLVER's 2015 release detonated a revolution. Its Counterfactual Regret Minimization algorithm computed Nash equilibria for any poker scenario, producing the mathematically unexploitable solution. Within a decade, GTO literacy separated the professional from the field. A player who cannot read a solver output tree is giving away free money to those who can — and GTO Wizard now makes 10 million pre-solved scenarios available in seconds.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-02",
+      "title": "The Data Empire",
+      "node": "pokertracker-4",
+      "nodes": [
+        "holdem-manager-3",
+        "hand2note",
+        "hud-overlay"
+      ],
+      "narration": "PokerTracker 4 and Hold'em Manager 3 transformed live observation into relational databases. Every opponent's fold-to-3-bet frequency, every river bet-sizing pattern — parsed from raw hand histories and projected onto the virtual table in real time. Hand2Note 4 escalated this further with dynamic HUDs that shift displayed statistics based on live stack depth and position, delivering population-level range research across millions of archived hands.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-03",
+      "title": "The Platform Wars",
+      "node": "gg-network",
+      "nodes": [
+        "pokerstars",
+        "hand2note",
+        "pokercraft"
+      ],
+      "narration": "Networks declared war on data asymmetry. GG Network issued a blanket ban on all third-party HUDs, replacing them with its proprietary PokerCraft tool offering only rudimentary statistics. PokerStars permits static HUD data but explicitly bans dynamic situational trackers like Hand2Note. Recreational players — the industry's revenue engine — are being shielded from professional targeting. The battlefield is access to information.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-04",
+      "title": "The Rake Trap",
+      "node": "rake",
+      "nodes": [
+        "primedope",
+        "bankroll-management",
+        "variance"
+      ],
+      "narration": "Primedope's variance calculators exposed what players long suspected: rake is not a fee — it is a structural transformation of profitability. A player generating a theoretical 5 BB/100 skill edge facing 8 BB/100 in effective rake nets -3 BB/100. Standard deviation in 6-max PLO reaches 120–160 BB/100, requiring 58 buy-ins of safety capital at a marginal 2.1 BB/100 win rate. The Kelly Criterion and bankroll modeling are not optional study topics — they are survival arithmetic.",
+      "tension": "medium",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-05",
+      "title": "The Invisible Opponent: Tilt",
+      "node": "tilt",
+      "nodes": [
+        "jared-tendler",
+        "primed-mind",
+        "tiltfree"
+      ],
+      "narration": "Jared Tendler's *Mental Game of Poker* identified five tilt archetypes — injustice, entitlement, revenge, desperation, and winner's tilt — each a logical flaw, not a character flaw. When emotionally compromised, players collapse to their C-game baseline. Years of solver study evaporate after a single bad beat. Elliot Roe's Primed Mind delivers 5-minute NLP primers before sessions; TiltFree pins stop-loss commitments to the device lock screen and fires an Emergency Button when the stack begins bleeding irrationally.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-06",
+      "title": "The Body as Hardware",
+      "node": "professional-poker-player",
+      "nodes": [
+        "jurojin-poker",
+        "elgato-stream-deck"
+      ],
+      "narration": "An 8-to-12-hour online grind across 24 tables is a physical endurance event. A 4K monitor shrinks HUD text to illegible fractions at native resolution; 1080p runs out of real estate. Dual 27-inch 1440p displays tile 12+ tables cleanly. Jurojin Poker overlays live pot odds and stack-to-pot ratios across all windows simultaneously, eliminating in-hand arithmetic. The Elgato Stream Deck maps Fold, Call, and Bet-33% to dedicated macro buttons — racing chairs are replaced by BIFMA-certified Herman Miller Aerons reclined at 100–110 degrees to reduce spinal disc compression.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-07",
+      "title": "The Training Industrial Complex",
+      "node": "upswing-poker",
+      "nodes": [
+        "run-it-once",
+        "raise-your-edge",
+        "gto-wizard"
+      ],
+      "narration": "Solver outputs are mathematically perfect but humanly illegible. Upswing Poker, Run It Once, and Raise Your Edge built subscription ecosystems where world-class professionals distill solver data into memorizable human heuristics. GTO Wizard's AI hand history analyzer cross-references every decision against the GTO baseline, flagging the exact expected-value cost of every deviation in cents. These platforms represent the bridge between the machine's perfection and the player's 30-second time bank.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-08",
+      "title": "The Legislative Shock",
+      "node": "india-proga",
+      "nodes": [
+        "meity",
+        "india",
+        "kr-lakshmanan-ruling"
+      ],
+      "narration": "In August 2025, India's Promotion and Regulation of Online Gaming Act received Presidential assent after rapid passage during the Monsoon Session. The Act annihilated the 'preponderance of skill' doctrine established by *K.R. Lakshmanan v State of Tamil Nadu* in 1996 — three decades of constitutional protection for skill games gone in a single legislative stroke. MeitY cited youth addiction, consumer debt, and money laundering as rationale. The $3.7 billion domestic industry and 200,000 jobs it supported were designated collateral damage.",
+      "tension": "high",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-09",
+      "title": "India's Black Friday",
+      "node": "pokerbaazi",
+      "nodes": [
+        "adda52",
+        "a23-gaming",
+        "head-digital-works"
+      ],
+      "narration": "PokerBaazi, Adda52, Dream11, MPL, and PokerStars India suspended all real-money operations overnight. Domestic banks were blocked from processing gaming payments. Celebrity endorsements were criminalized. Thousands of domains were blacked out under the IT Act. The community called it India's Black Friday. Head Digital Works — parent company of A23 Gaming — filed a constitutional writ petition in Karnataka High Court, arguing PROGA was 'state paternalism' that arbitrarily reversed government policy and violated fundamental rights. The court declined to issue an interim stay.",
+      "tension": "climax",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-10",
+      "title": "The Offshore Paradox",
+      "node": "coinpoker",
+      "nodes": [
+        "acr-poker",
+        "professional-poker-player"
+      ],
+      "narration": "PROGA's third-order effect materialized immediately. Indian grinders migrated en masse to CoinPoker and ACR Poker — decentralized, cryptocurrency-based platforms operating entirely outside India's fiat banking system and beyond domestic enforcement reach. As of April 2026, the Supreme Court is consolidating High Court petitions for a single constitutional hearing. The regulated, tax-paying, consumer-protected domestic market is frozen. Offshore platforms captured the liquidity, exactly as they always do when broad bans eliminate visible legal alternatives.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-11",
+      "title": "The Frontier Grinder",
+      "node": "poker-toolkit",
+      "nodes": [
+        "professional-poker-player",
+        "bankroll-management"
+      ],
+      "narration": "The frontier professional of 2026 is a systems integrator operating across six disciplines simultaneously: HUD data capture, GTO solver study, Monte Carlo variance modeling, psychological conditioning, macro hardware execution, and jurisdictional risk assessment. No single tool produces profitability. The edge emerges from the seamless integration of all layers — and must be continuously maintained as platforms tighten TOS, regulators shift frameworks, and the global player pool keeps evolving.",
+      "tension": "low",
+      "focus": "wide"
+    }
+  ],
+  "insights": [
+    {
+      "id": "ins-gto-literacy",
+      "title": "GTO solver adoption has permanently bifurcated the poker player pool into tool-literate and tool-illiterate tiers",
+      "body": "Since PioSOLVER's 2015 release ignited the GTO revolution, access to solver study has become the primary determinant of long-run win rate. GTO Wizard alone hosts over 10 million pre-solved scenarios, and players who do not cross-reference their decisions against Nash equilibrium baselines are systematically exploited by those who do. The game's complexity is now a software literacy test administered over millions of hands.",
+      "type": "finding",
+      "evidence": [
+        "piosolver",
+        "gto-wizard",
+        "gto-strategy",
+        "professional-poker-player"
+      ],
+      "severity": "high"
+    },
+    {
+      "id": "ins-rake-destroyer",
+      "title": "Rake structurally destroys win rates independently of player skill, transforming marginally profitable players into mathematical losers",
+      "body": "A player generating a theoretical 5 BB/100 edge facing 8 BB/100 in effective rake nets -3 BB/100 — a guaranteed losing player regardless of strategy quality. The effect is compounding: halving a win rate from 3 BB/100 to 1.5 BB/100 through rake roughly doubles the required safety bankroll to survive standard downswings. Players who ignore rake differentials and rakeback deals risk going broke while playing correctly.",
+      "type": "warning",
+      "evidence": [
+        "rake",
+        "primedope",
+        "bankroll-management",
+        "variance"
+      ],
+      "severity": "high"
+    },
+    {
+      "id": "ins-india-paradox",
+      "title": "India's blanket RMG ban eliminated its regulated, tax-paying poker industry while accelerating the growth of unregulated offshore platforms",
+      "body": "PROGA shut down domestic platforms processing taxes and providing player protections, but could not reach decentralized crypto platforms like CoinPoker and ACR Poker operating outside India's fiat banking system. The ban's intended consumer protection mandate was entirely negated: players migrated to offshore platforms without legal recourse, while government collected zero tax revenue from the activity it sought to stop.",
+      "type": "paradox",
+      "evidence": [
+        "india-proga",
+        "pokerbaazi",
+        "coinpoker",
+        "acr-poker"
+      ],
+      "severity": "high"
+    },
+    {
+      "id": "ins-tilt-point-failure",
+      "title": "Mental game degradation is the single failure point through which all other investments in software and study are neutralized",
+      "body": "Jared Tendler identified that tilt strips away conscious competence, reverting players to their C-game baseline. A player who has invested in every layer of the toolkit — solvers, HUDs, bankroll models — loses their entire edge the moment emotional compromise sets in. Mental game conditioning is not supplementary; it is the protective layer that makes all other investments function.",
+      "type": "pattern",
+      "evidence": [
+        "tilt",
+        "jared-tendler",
+        "primed-mind",
+        "tiltfree",
+        "professional-poker-player"
+      ],
+      "severity": "high"
+    },
+    {
+      "id": "ins-six-disciplines",
+      "title": "Sustainable poker profitability in 2026 requires simultaneous mastery of six distinct disciplines: data science, game theory, financial modeling, psychology, ergonomics, and jurisdictional compliance",
+      "body": "No single tool or skill produces a durable edge. The modern professional must integrate HUD tracking databases, GTO solver study, variance and bankroll modeling, psychological conditioning software, ergonomic hardware, and real-time regulatory awareness. The toolkit is itself the competitive moat — and it must be maintained continuously as platforms, regulators, and the player pool all evolve.",
+      "type": "conclusion",
+      "evidence": [
+        "poker-toolkit",
+        "professional-poker-player",
+        "gto-wizard",
+        "bankroll-management",
+        "india-proga"
+      ],
+      "severity": "high"
+    },
+    {
+      "id": "ins-hud-restriction",
+      "title": "Dynamic HUD restrictions signal a coordinated operator consensus that professional data asymmetry threatens recreational player retention",
+      "body": "GG Network's full HUD ban and PokerStars' prohibition on dynamic situational trackers represent an industry-wide shift to flatten the information gap between professionals and amateurs. As Hand2Note's range research delivers population-level exploitative blueprints to professionals, platforms determine this asymmetry threatens the recreational player pool that generates their revenue. The trend points toward a future where the most powerful analytical tools are platform-banned rather than player-adopted.",
+      "type": "warning",
+      "evidence": [
+        "gg-network",
+        "hand2note",
+        "hud-overlay",
+        "pokerstars"
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "ins-offshore-competency",
+      "title": "Jurisdictional arbitrage and crypto platform fluency have become mandatory survival skills for professionals in high-risk regulatory zones",
+      "body": "As India's Black Friday demonstrated, a player's entire operation can be legally terminated overnight with no advance warning. The capacity to pivot to decentralized offshore platforms — understanding crypto payment rails, anonymous account structures, and platform-specific TOS in unregulated environments — is now a distinct professional competency with zero overlap with poker strategy.",
+      "type": "opportunity",
+      "evidence": [
+        "india-proga",
+        "coinpoker",
+        "acr-poker",
+        "professional-poker-player"
+      ],
+      "severity": "medium"
+    }
+  ],
+  "clusters": [
+    {
+      "id": "cluster-data-analytics",
+      "label": "Data & Analytics Layer",
+      "color": "#00aaff",
+      "nodes": [
+        "pokertracker-4",
+        "holdem-manager-3",
+        "hand2note",
+        "hud-overlay",
+        "pokercraft",
+        "jurojin-poker",
+        "elgato-stream-deck"
+      ],
+      "description": "The software and hardware tools that transform raw hand history data into real-time statistical overlays, dynamic HUDs, and multi-table execution systems."
+    },
+    {
+      "id": "cluster-gto-optimization",
+      "label": "Theoretical Optimization Engine",
+      "color": "#cc44ff",
+      "nodes": [
+        "gto-wizard",
+        "piosolver",
+        "monkersolver",
+        "gto-strategy",
+        "icm",
+        "real-time-assistance",
+        "upswing-poker",
+        "run-it-once",
+        "raise-your-edge"
+      ],
+      "description": "GTO solvers, Nash equilibrium frameworks, tournament ICM models, and the training platforms that translate solver outputs into human-executable strategy."
+    },
+    {
+      "id": "cluster-risk-math",
+      "label": "Risk Mathematics",
+      "color": "#00cccc",
+      "nodes": [
+        "bankroll-management",
+        "rake",
+        "variance",
+        "primedope"
+      ],
+      "description": "The financial modeling layer: variance simulation, rake impact quantification, and bankroll sizing methodology that determines mathematical survival."
+    },
+    {
+      "id": "cluster-psychology",
+      "label": "Psychological Endurance",
+      "color": "#ffcc00",
+      "nodes": [
+        "tilt",
+        "jared-tendler",
+        "primed-mind",
+        "tiltfree",
+        "elliot-roe"
+      ],
+      "description": "Mental game frameworks, NLP conditioning apps, and tilt management tools that protect the player's executive cognitive function under variance pressure."
+    },
+    {
+      "id": "cluster-regulatory",
+      "label": "Regulatory Battleground",
+      "color": "#ff2244",
+      "nodes": [
+        "india-proga",
+        "meity",
+        "india",
+        "kr-lakshmanan-ruling",
+        "head-digital-works",
+        "a23-gaming",
+        "pokerbaazi",
+        "adda52",
+        "coinpoker",
+        "acr-poker",
+        "india-black-friday"
+      ],
+      "description": "The legal and jurisdictional forces shaping where and how poker can be played: India's sweeping RMG ban, the judicial resistance to it, and the offshore platforms that benefited."
+    },
+    {
+      "id": "cluster-platform-ecosystem",
+      "label": "Platform Ecosystem",
+      "color": "#ff6600",
+      "nodes": [
+        "gg-network",
+        "pokerstars",
+        "wsop",
+        "poker-toolkit",
+        "professional-poker-player"
+      ],
+      "description": "The network operators, live tournament infrastructure, and the professional player at the center of it all — the human subject navigating the entire ecosystem."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "professional-poker-player",
+      "label": "Professional Poker Player",
+      "type": "person",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "The central subject of the report — a serious grinder operating in 2026 who must simultaneously manage data infrastructure, GTO study, variance modeling, psychological conditioning, physical ergonomics, and jurisdictional compliance to maintain a positive win rate.",
+      "metrics": {
+        "Tables played simultaneously": "8–24",
+        "Session length": "8–12 hours",
+        "Standard deviation (6-max NLHE)": "60–80 BB/100"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "poker-toolkit",
+      "label": "The Modern Poker Toolkit",
+      "type": "concept",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "The complete ecosystem of software, hardware, psychological, and regulatory tools required for sustainable competitive poker in 2026. The toolkit is itself the competitive moat — no single layer is sufficient alone.",
+      "metrics": {
+        "Primary verticals": "6",
+        "Key software categories": "HUDs, solvers, variance tools, mental game apps, multi-table managers"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "india-proga",
+      "label": "India PROGA 2025",
+      "type": "law",
+      "tier": "spine",
+      "sentiment": "negative",
+      "description": "The Promotion and Regulation of Online Gaming Act 2025 — India's federal legislation that enacted a sweeping nationwide ban on all Real-Money Gaming. Received Presidential assent in August 2025, obliterating the domestic poker industry overnight and reversing three decades of judicial skill-game precedent.",
+      "metrics": {
+        "Presidential assent": "August 2025",
+        "Industry value destroyed": "$3.7 billion",
+        "Jobs affected": "200,000+",
+        "Startups affected": "400+",
+        "Operator fines (maximum)": "₹1 crore",
+        "Imprisonment penalty": "Up to 3 years"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "gto-wizard",
+      "label": "GTO Wizard",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The dominant cloud-based GTO training ecosystem. Hosts over 10 million pre-solved scenarios covering Cash, MTT, and Spin & Go formats, with an AI hand history analyzer that cross-references every player decision against the GTO baseline and flags EV leaks in cents.",
+      "metrics": {
+        "Pre-solved scenarios": "10 million+",
+        "Hand history analyzer": "Bulk upload, EV deviation flagging",
+        "Formats covered": "Cash, MTT, Spin & Go"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "hand2note",
+      "label": "Hand2Note 4",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Next-generation HUD tracker specializing in dynamic and positional statistics. Dynamically alters displayed stats based on stack depth, table position, and action sequence. Its Range Research feature aggregates entire databases to model population-level tendencies. Banned by GG Network for creating excessive data asymmetry.",
+      "metrics": {
+        "HUD type": "Dynamic positional",
+        "Signature feature": "Range Research population modeling",
+        "MacOS support": "Added in v4"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "pokertracker-4",
+      "label": "PokerTracker 4",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "One of two industry-standard HUD tracking platforms. Renowned for unparalleled customizability — its proprietary custom stat builder allows mathematically inclined players to define highly specific formulas for obscure opponent tendencies. Requires a separate PostgreSQL installation.",
+      "metrics": {
+        "Database": "PostgreSQL",
+        "Signature feature": "Custom stat builder",
+        "Formats": "NLHE and PLO"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "holdem-manager-3",
+      "label": "Hold'em Manager 3",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Modern, streamlined alternative to PokerTracker 4. Engineered for intuitive user experience — eliminates the need for a separate PostgreSQL installation. Its 'Situational Views' feature allows visual analysis of high-frequency spots like 3-bet pots and river play without constructing complex custom filters.",
+      "metrics": {
+        "Database": "Built-in (no separate SQL)",
+        "Signature feature": "Situational Views",
+        "Target demographic": "Intermediate to advanced online players"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "piosolver",
+      "label": "PioSOLVER",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The desktop solver that triggered the GTO revolution upon its 2015 release. Uses local CPU and RAM to calculate Nash equilibrium strategies via CFR algorithms. Its 'node-locking' feature forces the AI opponent to make a specific suboptimal play, generating the perfect exploitative adjustment.",
+      "metrics": {
+        "Release year": "2015",
+        "Algorithm": "Counterfactual Regret Minimization (CFR)",
+        "Signature feature": "Node-locking for exploitative deviations"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "monkersolver",
+      "label": "MonkerSolver",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Industry-standard solver for Pot-Limit Omaha and multiway scenarios. PLO's four or five hole cards create exponentially larger game trees than NLHE, requiring highly optimized algorithms and massive hardware. Professionals frequently rent cloud computing servers to run complex MonkerSolver simulations.",
+      "metrics": {
+        "Primary use": "PLO and multiway NLHE",
+        "Hardware requirement": "High-performance CPU/RAM or cloud rental"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "primedope",
+      "label": "Primedope Calculator Suite",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Web-based suite of poker mathematics tools, most notably the Poker Variance Calculator and Rake Comparison Calculator. Runs Monte Carlo simulations projecting thousands of outcome scenarios from a player's win rate and standard deviation inputs, revealing Risk of Ruin figures and required bankroll sizes.",
+      "metrics": {
+        "Simulation type": "Monte Carlo",
+        "Standard deviation NLHE full ring": "60–80 BB/100",
+        "Standard deviation PLO 6-max": "120–160 BB/100"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "primed-mind",
+      "label": "Primed Mind",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Mental performance app developed by elite mindset coach Elliot Roe. Uses NLP, hypnotherapy, and guided visualization to deliver 5-to-15-minute audio primers designed to induce flow states, eliminate subconscious self-sabotage, and neurologically reset the brain following severe bad beats.",
+      "metrics": {
+        "Session duration": "5–15 minutes",
+        "Methodology": "NLP and hypnotherapy",
+        "Creator": "Elliot Roe"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "tiltfree",
+      "label": "TiltFree",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "In-session tilt management app. Forces players to log pre-session stop-loss limits and session time caps, pinned to the device lock screen for accountability. Features an 'Emergency Button' triggering guided breathing exercises and logic statements to restore executive function before a player compounds losses.",
+      "metrics": {
+        "Signature feature": "Emergency Button with guided logic injection",
+        "Accountability mechanism": "Lock-screen commitment pinning"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "jared-tendler",
+      "label": "Jared Tendler",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Author of *The Mental Game of Poker* — the foundational text of modern poker psychology. Revolutionized the field by treating tilt as a symptom of logical flaws and skill gaps rather than emotional weakness. Introduced the Adult Learning Model and five tilt archetypes that defined how professionals study the psychological side of the game.",
+      "metrics": {
+        "Key publication": "The Mental Game of Poker",
+        "Model introduced": "Adult Learning Model (Unconscious Incompetence → Unconscious Competence)"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "jurojin-poker",
+      "label": "Jurojin Poker",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Universal multi-table overlay engine sitting atop poker clients. Automatically tiles windows across diverse networks (PokerStars, WPN, GGPoker, Ignition), brings the table requiring action to the forefront, and displays live Pot Odds, Stack-to-Pot Ratios, and effective stack sizes in Big Blinds — eliminating manual arithmetic during multi-table play.",
+      "metrics": {
+        "Networks supported": "PokerStars, WPN, GGPoker, Ignition",
+        "Live calculations": "Pot odds, SPR, effective stack in BBs"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "gg-network",
+      "label": "GG Network",
+      "type": "company",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "Major online poker network that took a hardline stance by banning all third-party HUDs and trackers, replacing them with its proprietary PokerCraft tool. The ban is designed to protect recreational players from data-mining professionals, but also effectively strips professionals of their analytical infrastructure.",
+      "metrics": {
+        "HUD policy": "Full third-party ban",
+        "Replacement tool": "PokerCraft (proprietary)"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "pokerstars",
+      "label": "PokerStars",
+      "type": "company",
+      "tier": "primary",
+      "sentiment": "contested",
+      "description": "World's largest online poker network. Permits standard static HUDs (PokerTracker 4, HM3) that rely on player's own accumulated data, but explicitly bans dynamic situational HUDs like Hand2Note that alter displayed statistics based on live hand action.",
+      "metrics": {
+        "HUD policy": "Static HUDs permitted; dynamic HUDs banned"
+      },
+      "wikidata": "Q533396",
+      "image": null
+    },
+    {
+      "id": "pokerbaazi",
+      "label": "PokerBaazi",
+      "type": "company",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "Major Indian online poker platform forced to suspend all real-money operations overnight upon PROGA's enactment in August 2025. One of the central victims of India's Black Friday, representing the destruction of a legitimate domestic industry.",
+      "metrics": {
+        "Status post-PROGA": "Real-money operations suspended"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "adda52",
+      "label": "Adda52",
+      "type": "company",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "One of India's leading online poker and rummy platforms, forced to shut down real-money operations immediately upon PROGA's passage. Part of the cohort of domestic operators whose legal compliance made them fully exposed and immediately targetable by the new law.",
+      "metrics": {
+        "Status post-PROGA": "Real-money operations suspended"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "head-digital-works",
+      "label": "Head Digital Works",
+      "type": "company",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Parent company of A23 Gaming, the prominent Indian platform. Spearheaded the legal resistance to PROGA by filing a comprehensive writ petition in Karnataka High Court, arguing the Act is an unconstitutional product of state paternalism that reverses decades of government policy and violates fundamental rights.",
+      "metrics": {
+        "Legal action": "Constitutional writ petition, Karnataka High Court",
+        "Argument": "PROGA violates Article 19(1)(g) and established skill-game jurisprudence"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "a23-gaming",
+      "label": "A23 Gaming",
+      "type": "platform",
+      "tier": "primary",
+      "sentiment": "contested",
+      "description": "Prominent Indian online gaming platform (formerly Ace2Three), subsidiary of Head Digital Works. Its legal filings against PROGA argue the Act arbitrarily reverses decades of government policy, imposes excessive criminal penalties, and violates constitutional rights to free speech and business.",
+      "metrics": {
+        "Legal status": "Suspended; constitutional challenge filed"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "meity",
+      "label": "MeitY",
+      "type": "government",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "India's Ministry of Electronics and Information Technology. Backed the rapid parliamentary passage of PROGA, citing youth digital addiction, consumer debt, money laundering, and offshore fraud syndicates as justification. Enforces the Act using IT Act 2000 domain-blocking powers.",
+      "metrics": {
+        "Enforcement mechanism": "IT Act 2000 domain blocks",
+        "Stated rationale": "Addiction, debt, money laundering, fraud"
+      },
+      "wikidata": "Q3070397",
+      "image": null
+    },
+    {
+      "id": "coinpoker",
+      "label": "CoinPoker",
+      "type": "platform",
+      "tier": "primary",
+      "sentiment": "contested",
+      "description": "Decentralized, cryptocurrency-based offshore poker platform operating entirely outside India's fiat banking system. Became a primary destination for Indian poker professionals displaced by PROGA, offering anonymous, rake-competitive environments beyond domestic regulatory reach.",
+      "metrics": {
+        "Payment rails": "Cryptocurrency",
+        "Regulatory status": "Offshore, outside India's enforcement jurisdiction"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "acr-poker",
+      "label": "ACR Poker",
+      "type": "platform",
+      "tier": "primary",
+      "sentiment": "contested",
+      "description": "Americas Cardroom — offshore poker platform on the Winning Poker Network. Alongside CoinPoker, became a major recipient of displaced Indian player liquidity post-PROGA. Known for being accessible to players in restricted jurisdictions and for permitting standard HUDs.",
+      "metrics": {
+        "Network": "Winning Poker Network (WPN)",
+        "HUD policy": "Standard static HUDs permitted"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "upswing-poker",
+      "label": "Upswing Poker",
+      "type": "company",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Training platform founded by high-stakes professionals Doug Polk and Ryan Fee. Features the 'Upswing Lab' — a comprehensive module-based course for intermediate players building fundamentals — alongside advanced courses from specialists like Nick Petrangelo (High Roller MTTs) and Alex Millar (Cash Game Strategy).",
+      "metrics": {
+        "Founders": "Doug Polk, Ryan Fee",
+        "Target demographic": "Intermediate players building fundamentals"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "run-it-once",
+      "label": "Run It Once",
+      "type": "company",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Widely considered the most prestigious theoretical training library in online poker. Founded by Phil Galfond, it caters to advanced players with thousands of hours of screen-capture videos where elite professionals narrate their thought processes during high-stakes sessions, blending deep GTO concepts with exploitative adjustments.",
+      "metrics": {
+        "Founder": "Phil Galfond",
+        "Content focus": "High-stakes screen-capture with expert narration"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "raise-your-edge",
+      "label": "Raise Your Edge",
+      "type": "company",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The gold standard training platform for Multi-Table Tournament (MTT) players. Founded by the professional 'bencb789', its Tournament Masterclass provides rigorous solver-approved strategies for ICM spots, stack-depth navigation, and the late stages of massive online fields.",
+      "metrics": {
+        "Founder": "bencb789",
+        "Specialization": "MTT tournament strategy and ICM"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "rake",
+      "label": "House Rake",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "The fee charged by poker operators on every pot or tournament entry. Acts as the 'silent destroyer' of win rates — it does not merely reduce hourly profit but structurally transforms the mathematical foundation of bankroll requirements, capable of converting a +5 BB/100 player into a -3 BB/100 loser.",
+      "metrics": {
+        "Effective rake (high-rake site)": "8 BB/100",
+        "Effective rake (low-rake site)": "4 BB/100"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "variance",
+      "label": "Statistical Variance",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The mathematical noise inherent in poker outcomes — the difference between a player's actual results and their expected value over a sample. A player executing perfect strategy can endure prolonged financial drawdowns extending over tens of thousands of hands purely due to standard deviation. MTT downswings of 100+ average buy-ins are mathematically standard.",
+      "metrics": {
+        "NLHE full ring std dev": "60–80 BB/100",
+        "PLO 6-max std dev": "120–160 BB/100",
+        "MTT: typical downswing": "100+ average buy-ins"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "tilt",
+      "label": "Tilt",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "A state of emotional frustration leading to suboptimal, irrational decision-making. The primary cause of catastrophic bankroll destruction. Tendler categorized it into five archetypes: injustice, entitlement, revenge, desperation, and winner's tilt. When tilted, players collapse to their unconscious C-game baseline, losing all the strategic edge built through study.",
+      "metrics": {
+        "Archetypes": "5 (injustice, entitlement, revenge, desperation, winner's)",
+        "Mechanism": "Strips conscious competence, exposes C-game"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "real-time-assistance",
+      "label": "Real-Time Assistance (RTA)",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "Using a GTO solver, push-fold calculator, or dynamic range viewer to dictate decisions during a live hand — universally classified as cheating across all major poker networks. Detection results in immediate account termination, permanent ban, and confiscation of the player's entire bankroll.",
+      "metrics": {
+        "Penalty": "Account termination + bankroll confiscation",
+        "Status": "Banned on all major networks"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "gto-strategy",
+      "label": "GTO Strategy",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Game Theory Optimal strategy — the mathematically unexploitable Nash equilibrium solution for any given poker scenario. Computed via Counterfactual Regret Minimization algorithms. Forms the theoretical baseline from which professionals build and measure all exploitative deviations.",
+      "metrics": {
+        "Algorithm": "CFR (Counterfactual Regret Minimization)",
+        "Equilibrium type": "Nash Equilibrium"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "icm",
+      "label": "ICM (Independent Chip Model)",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The Independent Chip Model — a mathematical framework converting tournament chip counts into real monetary equity based on payout structures. Essential for push-fold decision-making in late-stage MTTs and SNGs where standard chip EV calculations are insufficient.",
+      "metrics": {
+        "Primary tools": "ICMIZER 3, HRC (Holdem Resources Calculator)",
+        "Application": "Late-stage MTT and SNG push-fold"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "elgato-stream-deck",
+      "label": "Elgato Stream Deck",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Hardware macro-pad used by professional multi-tablers to map poker actions (Fold, Call, Bet 33% Pot, Bet 75% Pot) to dedicated physical buttons via F13–F24 function keys. Eliminates mechanical mouse delay and wrist strain during 12+ table sessions, freeing cognitive resources for strategic thinking.",
+      "metrics": {
+        "Key mapping": "F13–F24 (no OS conflicts)",
+        "Primary use case": "12+ table multi-tabling execution"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "bankroll-management",
+      "label": "Bankroll Management",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "The mathematical discipline of sizing and protecting a player's playing capital to survive statistical variance without going broke. Incorporates the Kelly Criterion for optimal stake-level selection, Risk of Ruin calculations, and rakeback deal assessment. The financial survival layer of the complete toolkit.",
+      "metrics": {
+        "Safety net at 2.1 BB/100 for <5% ruin risk": "58 buy-ins",
+        "Key framework": "Kelly Criterion"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "hud-overlay",
+      "label": "HUD Stat Overlay",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Heads-Up Display technology that projects statistical summaries of opponent behavior directly onto virtual poker tables in real time. Transforms thousands of tracked hands into actionable read abbreviations (VPIP, PFR, fold-to-3bet) visible during live play.",
+      "metrics": {
+        "Core stats": "VPIP, PFR, 3-bet %, fold-to-3bet %",
+        "Display type": "Real-time overlay on table client"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "india",
+      "label": "India",
+      "type": "country",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The world's most populous democracy and the jurisdiction in which the most dramatic 2025-2026 regulatory shock in online poker history unfolded. Prior to PROGA, India hosted a $3.7 billion real-money gaming industry operating under a judicial skill-game protection doctrine.",
+      "metrics": {
+        "Pre-PROGA RMG industry value": "$3.7 billion",
+        "Dominant legal doctrine (pre-2025)": "Preponderance of skill"
+      },
+      "wikidata": "Q668",
+      "image": null
+    },
+    {
+      "id": "wsop",
+      "label": "World Series of Poker",
+      "type": "tournament",
+      "tier": "anchor",
+      "sentiment": "positive",
+      "description": "The most prestigious live poker tournament series in the world. Referenced as the aspirational apex of live competitive poker — the context in which live equipment quality, physical ergonomics, and live load-out management are most consequential.",
+      "metrics": {
+        "Location": "Las Vegas, Nevada",
+        "Status": "Premier live poker tournament"
+      },
+      "wikidata": "Q1070370",
+      "image": null
+    },
+    {
+      "id": "kr-lakshmanan-ruling",
+      "label": "K.R. Lakshmanan v State of Tamil Nadu (1996)",
+      "type": "law",
+      "tier": "anchor",
+      "sentiment": "positive",
+      "description": "The landmark 1996 Supreme Court of India case that established the 'preponderance of skill' doctrine — games where skill predominantly determines outcome, including rummy and poker, cannot be classified as gambling and are constitutionally protected business activities under Article 19(1)(g). Annulled by PROGA in 2025.",
+      "metrics": {
+        "Year": "1996",
+        "Doctrine established": "Preponderance of skill",
+        "Status post-PROGA": "Effectively reversed"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "pokercraft",
+      "label": "PokerCraft",
+      "type": "software",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "GG Network's proprietary built-in analytics tool, designed as a replacement for banned third-party HUDs. Offers only rudimentary statistics compared to PokerTracker or Hand2Note — by design, to prevent the data asymmetry between professionals and recreational players that GG Network determined threatened player pool health.",
+      "metrics": {
+        "Platform": "GG Network",
+        "Purpose": "Proprietary HUD replacement post-ban"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "elliot-roe",
+      "label": "Elliot Roe",
+      "type": "person",
+      "tier": "anchor",
+      "sentiment": "positive",
+      "description": "Elite mindset coach and creator of the Primed Mind app. His clients include WSOP champions and top professionals like Fedor Holz. Pioneer in applying NLP and hypnotherapy specifically to poker performance optimization.",
+      "metrics": {
+        "Methodology": "NLP and hypnotherapy",
+        "Notable clients": "WSOP champions, Fedor Holz"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id": "india-black-friday",
+      "label": "India's Black Friday (Aug 2025)",
+      "type": "event",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "The moment PROGA received Presidential assent in August 2025 and India's entire real-money gaming industry shut down overnight — PokerBaazi, Adda52, Dream11, MPL, and PokerStars India all suspended operations simultaneously. Dubbed India's Black Friday by the global poker community.",
+      "metrics": {
+        "Date": "August 2025",
+        "Platforms shut down": "PokerBaazi, Adda52, Dream11, MPL, PokerStars India",
+        "Industry value wiped": "$3.7 billion",
+        "Jobs affected": "200,000+"
+      },
+      "wikidata": null,
+      "image": null
+    }
+  ],
+  "edges": [
+    {
+      "from": "poker-toolkit",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "complete mastery required for sustainable profitability",
+      "weight": 5,
+      "directed": true,
+      "temporal": false,
+      "notes": "The report's central thesis: the toolkit IS the competitive moat"
+    },
+    {
+      "from": "rake",
+      "to": "professional-poker-player",
+      "rel": "causes",
+      "label": "silently destroys win rate",
+      "weight": 5,
+      "directed": true,
+      "temporal": false,
+      "notes": "The hidden structural threat — a 5 BB/100 player becomes -3 BB/100 under high rake"
+    },
+    {
+      "from": "tilt",
+      "to": "professional-poker-player",
+      "rel": "causes",
+      "label": "destroys EV execution through emotional compromise",
+      "weight": 5,
+      "directed": true,
+      "temporal": false,
+      "notes": "Primary cause of catastrophic bankroll destruction"
+    },
+    {
+      "from": "india-proga",
+      "to": "pokerbaazi",
+      "rel": "causes",
+      "label": "forced overnight suspension of all real-money operations",
+      "weight": 5,
+      "directed": true,
+      "temporal": true,
+      "notes": "India's Black Friday — immediate shutdown upon enactment August 2025"
+    },
+    {
+      "from": "piosolver",
+      "to": "gto-strategy",
+      "rel": "creation",
+      "label": "pioneered GTO revolution in 2015",
+      "weight": 4,
+      "directed": true,
+      "temporal": true,
+      "notes": "The catalyst event that permanently altered poker strategy"
+    },
+    {
+      "from": "jared-tendler",
+      "to": "tilt",
+      "rel": "mitigates",
+      "label": "Adult Learning Model and five tilt archetypes",
+      "weight": 4,
+      "directed": true,
+      "temporal": false,
+      "notes": "Foundational framework treating tilt as logical flaw, not character failure"
+    },
+    {
+      "from": "gg-network",
+      "to": "hand2note",
+      "rel": "disrupts",
+      "label": "banned all third-party HUDs and dynamic trackers",
+      "weight": 4,
+      "directed": true,
+      "temporal": false,
+      "notes": "Hardline industry stance defining the platform vs. player data rights conflict"
+    },
+    {
+      "from": "real-time-assistance",
+      "to": "professional-poker-player",
+      "rel": "causes",
+      "label": "account termination and bankroll confiscation if used in-hand",
+      "weight": 4,
+      "directed": true,
+      "temporal": false,
+      "notes": "Universal ban across all major networks — legal use vs. cheating boundary"
+    },
+    {
+      "from": "india-proga",
+      "to": "professional-poker-player",
+      "rel": "causes",
+      "label": "criminalizes profession in India",
+      "weight": 4,
+      "directed": true,
+      "temporal": true,
+      "notes": "Direct personal threat — playing for real money becomes criminal act"
+    },
+    {
+      "from": "gto-wizard",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "10M+ cloud pre-solved scenarios for rapid study",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "hand2note",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "dynamic positional HUD and population Range Research",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "pokertracker-4",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "custom stat builder and HUD overlay",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "holdem-manager-3",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "streamlined situational views and analytics",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "monkersolver",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "PLO multiway game tree simulation",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "gto-strategy",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "Nash equilibrium baseline for all decisions",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "variance",
+      "to": "professional-poker-player",
+      "rel": "causes",
+      "label": "statistical downswings and bankroll ruin risk",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "bankroll-management",
+      "to": "variance",
+      "rel": "mitigates",
+      "label": "Kelly Criterion and buy-in safety net sizing",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "primedope",
+      "to": "variance",
+      "rel": "mitigates",
+      "label": "Monte Carlo simulation projects outcome distribution",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "primedope",
+      "to": "rake",
+      "rel": "association",
+      "label": "rake comparison calculator exposes hidden cost multiplier",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "primed-mind",
+      "to": "tilt",
+      "rel": "mitigates",
+      "label": "NLP primers and hypnotherapy for pre-session conditioning",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "tiltfree",
+      "to": "tilt",
+      "rel": "mitigates",
+      "label": "in-session stop-loss accountability and Emergency Button",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "jurojin-poker",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "universal multi-table overlay with live pot odds and SPR",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "elgato-stream-deck",
+      "to": "jurojin-poker",
+      "rel": "enables",
+      "label": "hardware macro execution for instant fold/call/bet",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "gg-network",
+      "to": "professional-poker-player",
+      "rel": "governs",
+      "label": "platform TOS restricts software and analytical tools",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "pokerstars",
+      "to": "hud-overlay",
+      "rel": "governs",
+      "label": "permits static HUDs; bans dynamic situational trackers",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "india-proga",
+      "to": "adda52",
+      "rel": "causes",
+      "label": "forced overnight suspension of operations",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": null
+    },
+    {
+      "from": "india-proga",
+      "to": "a23-gaming",
+      "rel": "causes",
+      "label": "forced suspension and triggered constitutional legal challenge",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": null
+    },
+    {
+      "from": "meity",
+      "to": "india-proga",
+      "rel": "creation",
+      "label": "backed rapid parliamentary passage during Monsoon Session",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": null
+    },
+    {
+      "from": "india",
+      "to": "india-proga",
+      "rel": "governs",
+      "label": "national sovereign legislation",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "kr-lakshmanan-ruling",
+      "to": "india-proga",
+      "rel": "precedes",
+      "label": "skill doctrine precedent PROGA reversed",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": null
+    },
+    {
+      "from": "india-proga",
+      "to": "kr-lakshmanan-ruling",
+      "rel": "disrupts",
+      "label": "annulled three decades of judicial skill-game protection",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": null
+    },
+    {
+      "from": "head-digital-works",
+      "to": "a23-gaming",
+      "rel": "ownership",
+      "label": "parent company",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "head-digital-works",
+      "to": "india-proga",
+      "rel": "opposes",
+      "label": "constitutional writ petition in Karnataka High Court",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "a23-gaming",
+      "to": "india-proga",
+      "rel": "opposes",
+      "label": "argues unconstitutional state paternalism violating Article 19(1)(g)",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "professional-poker-player",
+      "to": "coinpoker",
+      "rel": "membership",
+      "label": "offshore migration post-PROGA ban",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": null
+    },
+    {
+      "from": "professional-poker-player",
+      "to": "acr-poker",
+      "rel": "membership",
+      "label": "offshore migration post-PROGA ban",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": null
+    },
+    {
+      "from": "india-proga",
+      "to": "coinpoker",
+      "rel": "enables",
+      "label": "paradox: ban drives liquidity to unregulated offshore platforms",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": "The ban's self-defeating outcome"
+    },
+    {
+      "from": "india-proga",
+      "to": "acr-poker",
+      "rel": "enables",
+      "label": "paradox: ban drives liquidity to unregulated offshore platforms",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": "The ban's self-defeating outcome"
+    },
+    {
+      "from": "upswing-poker",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "intermediate fundamentals training",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "run-it-once",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "elite high-stakes theory library",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "raise-your-edge",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "MTT tournament masterclass",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "icm",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "tournament chip model for push-fold accuracy",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "wsop",
+      "to": "professional-poker-player",
+      "rel": "features",
+      "label": "apex live tournament context",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "elliot-roe",
+      "to": "primed-mind",
+      "rel": "creation",
+      "label": "developed poker-specific NLP performance app",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "pokercraft",
+      "to": "gg-network",
+      "rel": "creation",
+      "label": "proprietary internal replacement for banned third-party HUDs",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "gto-wizard",
+      "to": "real-time-assistance",
+      "rel": "qualifies",
+      "label": "off-table study tool only; prohibited in-hand use constitutes RTA",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "bankroll-management",
+      "to": "professional-poker-player",
+      "rel": "enables",
+      "label": "mathematical survival framework",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "gto-strategy",
+      "to": "gto-wizard",
+      "rel": "enables",
+      "label": "solver outputs GTO solutions for interactive study",
+      "weight": 3,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "piosolver",
+      "to": "gto-wizard",
+      "rel": "precedes",
+      "label": "desktop era preceding cloud solver dominance",
+      "weight": 3,
+      "directed": true,
+      "temporal": true,
+      "notes": null
+    },
+    {
+      "from": "poker-toolkit",
+      "to": "gto-wizard",
+      "rel": "features",
+      "label": "theoretical optimization layer",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "poker-toolkit",
+      "to": "primed-mind",
+      "rel": "features",
+      "label": "psychological endurance layer",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "poker-toolkit",
+      "to": "jurojin-poker",
+      "rel": "features",
+      "label": "physical execution layer",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    {
+      "from": "poker-toolkit",
+      "to": "elgato-stream-deck",
+      "rel": "features",
+      "label": "hardware macro infrastructure",
+      "weight": 2,
+      "directed": true,
+      "temporal": false,
+      "notes": null
+    },
+    { "from": "variance",           "to": "tilt",                     "rel": "causes",      "label": "downswings trigger emotional compromise",                      "weight": 4, "directed": true },
+    { "from": "rake",               "to": "tilt",                     "rel": "causes",      "label": "unavoidable losing to rake is demoralizing",                   "weight": 3, "directed": true },
+    { "from": "bankroll-management","to": "tilt",                     "rel": "mitigates",   "label": "proper sizing reduces emotional investment per hand",           "weight": 3, "directed": true },
+    { "from": "primedope",          "to": "bankroll-management",      "rel": "enables",     "label": "Monte Carlo output informs buy-in safety thresholds",          "weight": 3, "directed": true },
+    { "from": "primedope",          "to": "professional-poker-player","rel": "enables",     "label": "variance calculator and rake comparison tools",               "weight": 3, "directed": true },
+    { "from": "gto-strategy",       "to": "variance",                 "rel": "mitigates",   "label": "reducing EV mistakes reduces outcome variance",                "weight": 3, "directed": true },
+    { "from": "gto-wizard",         "to": "variance",                 "rel": "mitigates",   "label": "flagging costly deviations tightens decision quality",          "weight": 3, "directed": true },
+    { "from": "icm",                "to": "bankroll-management",      "rel": "enables",     "label": "chip-to-cash model informs tournament stake-sizing decisions",  "weight": 2, "directed": true },
+    { "from": "piosolver",          "to": "gto-strategy",             "rel": "implements",  "label": "CFR algorithm computes Nash equilibria",                       "weight": 4, "directed": true },
+    { "from": "monkersolver",       "to": "gto-strategy",             "rel": "implements",  "label": "PLO and multiway GTO tree computation",                       "weight": 3, "directed": true },
+    { "from": "hand2note",          "to": "hud-overlay",              "rel": "enables",     "label": "powers dynamic positional HUD stat display",                   "weight": 3, "directed": true },
+    { "from": "pokertracker-4",     "to": "hud-overlay",              "rel": "enables",     "label": "powers static HUD stat overlay via PostgreSQL",               "weight": 3, "directed": true },
+    { "from": "holdem-manager-3",   "to": "hud-overlay",              "rel": "enables",     "label": "powers situational view HUD stat overlay",                    "weight": 3, "directed": true },
+    { "from": "primed-mind",        "to": "professional-poker-player","rel": "enables",     "label": "NLP and hypnotherapy for pre-session conditioning",            "weight": 3, "directed": true },
+    { "from": "tiltfree",           "to": "professional-poker-player","rel": "enables",     "label": "in-session tilt control and stop-loss accountability",         "weight": 3, "directed": true },
+    { "from": "elliot-roe",         "to": "professional-poker-player","rel": "enables",     "label": "elite mindset coaching for high-stakes performance",           "weight": 2, "directed": true },
+    { "from": "pokerstars",         "to": "professional-poker-player","rel": "enables",     "label": "largest network — primary online grind venue",                "weight": 3, "directed": true },
+    { "from": "hud-overlay",        "to": "bankroll-management",      "rel": "enables",     "label": "win-rate and leak data informs game selection and BRM",        "weight": 2, "directed": true },
+    { "from": "raise-your-edge",    "to": "gto-strategy",             "rel": "derives_from","label": "MTT tournament courses built on GTO solver frameworks",        "weight": 3, "directed": true },
+    { "from": "run-it-once",        "to": "gto-strategy",             "rel": "derives_from","label": "elite video content built on GTO solution trees",             "weight": 3, "directed": true },
+    { "from": "upswing-poker",      "to": "gto-strategy",             "rel": "derives_from","label": "Upswing Lab courses built on GTO baselines",                  "weight": 3, "directed": true },
+    { "from": "raise-your-edge",    "to": "icm",                      "rel": "derives_from","label": "Tournament Masterclass built on ICM push-fold theory",        "weight": 3, "directed": true },
+    { "from": "gg-network",         "to": "hud-overlay",              "rel": "prohibits",   "label": "full third-party HUD ban across all GG Network clients",       "weight": 4, "directed": true },
+    { "from": "pokerstars",         "to": "hud-overlay",              "rel": "permits",     "label": "static HUDs permitted — dynamic situational HUDs banned",     "weight": 3, "directed": true },
+    { "from": "india-proga",        "to": "bankroll-management",      "rel": "disrupts",    "label": "overnight ban invalidates all India-market bankroll assumptions","weight": 4, "directed": true },
+    { "from": "india-proga",        "to": "tilt",                     "rel": "causes",      "label": "professional lives destroyed overnight — extreme tilt trigger", "weight": 3, "directed": true },
+    { "from": "pokerbaazi",         "to": "india",                    "rel": "location",    "label": "Indian domestic poker platform",                               "weight": 2, "directed": true },
+    { "from": "adda52",             "to": "india",                    "rel": "location",    "label": "Indian domestic poker and rummy platform",                    "weight": 2, "directed": true },
+    { "from": "coinpoker",          "to": "acr-poker",                "rel": "competes",    "label": "competing offshore platforms for displaced Indian player liquidity","weight": 2, "directed": false },
+    { "from": "india-proga",        "to": "india-black-friday",       "rel": "causes",      "label": "PROGA enactment triggered simultaneous industry shutdown",      "weight": 5, "directed": true },
+    { "from": "kr-lakshmanan-ruling","to": "india-black-friday",      "rel": "precedes",    "label": "29-year skill doctrine annulled by PROGA and Black Friday",     "weight": 3, "directed": true },
+    { "from": "india-black-friday", "to": "coinpoker",                "rel": "enables",     "label": "ban paradox: shutdown captured liquidity into offshore crypto",  "weight": 4, "directed": true },
+    { "from": "india-black-friday", "to": "acr-poker",                "rel": "enables",     "label": "ban paradox: shutdown captured liquidity into offshore WPN",    "weight": 4, "directed": true }
+  ]
+}

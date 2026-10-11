@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gig Economy (India) — Seed Visualizer</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --border: #2d2d4e;
+      --accent: #7c3aed;
+      --accent2: #4f46e5;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --link: #818cf8;
+      --seed-glow: rgba(124,58,237,0.4);
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── HEADER ── */
+    #header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      min-height: 52px;
+    }
+    #header h1 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+    #header .subtitle {
+      font-size: 0.75rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .qid-badge {
+      background: var(--accent);
+      color: #fff;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .qid-badge:hover { background: var(--accent2); }
+
+    /* ── LAYOUT ── */
+    #main { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── GRAPH AREA ── */
+    #graph-area {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    #graph-svg { width: 100%; height: 100%; display: block; }
+
+    /* ── SIDE PANEL ── */
+    #side-panel {
+      width: 300px;
+      min-width: 300px;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    #side-panel::-webkit-scrollbar { width: 5px; }
+    #side-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* ── FOOTER ── */
+    #footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 6px 20px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    /* ── LOADING ── */
+    #loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      pointer-events: none;
+    }
+    .loading-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .loading-text em { color: var(--link); font-style: normal; }
+    .pulse-dots { display: flex; gap: 10px; }
+    .pulse-dots span {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    .pulse-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .pulse-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse {
+      0%, 80%, 100% { transform: scale(0.5); opacity: 0.25; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    .progress-bar-wrap {
+      width: 200px;
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    /* ── ERROR BOX ── */
+    #error-box {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--surface);
+      border: 1px solid var(--danger);
+      border-radius: 12px;
+      padding: 24px 28px;
+      text-align: center;
+      max-width: 380px;
+      width: 90%;
+      z-index: 10;
+    }
+    #error-box h3 { color: var(--danger); margin-bottom: 8px; font-size: 1rem; }
+    #error-box p { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+    .manual-qid-row { margin-top: 14px; display: flex; gap: 8px; }
+    .manual-qid-row input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      outline: none;
+    }
+    .manual-qid-row input:focus { border-color: var(--accent); }
+    .manual-qid-row button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .manual-qid-row button:hover { background: var(--accent2); }
+
+    /* ── TOOLTIP ── */
+    #tooltip {
+      position: fixed;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.12s;
+      max-width: 230px;
+      z-index: 2000;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+    #tooltip.vis { opacity: 1; }
+    #tooltip .tt-label { font-weight: 700; color: var(--text); }
+    #tooltip .tt-desc { color: var(--muted); margin-top: 4px; font-size: 0.72rem; line-height: 1.4; }
+    #tooltip .tt-qid { color: var(--accent); font-size: 0.68rem; margin-top: 2px; }
+
+    /* ── SIDE PANEL CONTENT ── */
+    .panel-hint {
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+      margin-top: 48px;
+      line-height: 1.7;
+    }
+    .panel-hint .icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 8px;
+      opacity: 0.4;
+    }
+    .p-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .p-label { font-size: 0.98rem; font-weight: 700; line-height: 1.3; }
+    .p-qid { font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
+    .p-ext-link { color: var(--link); font-size: 0.72rem; text-decoration: none; flex-shrink: 0; }
+    .p-ext-link:hover { text-decoration: underline; }
+    .p-divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+    .p-desc { font-size: 0.8rem; color: #94a3b8; line-height: 1.55; margin-bottom: 6px; }
+    .p-section-title {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .p-props { list-style: none; }
+    .p-props li {
+      display: flex;
+      gap: 8px;
+      font-size: 0.78rem;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(45,45,78,0.5);
+    }
+    .p-props li:last-child { border-bottom: none; }
+    .pk { color: var(--muted); flex-shrink: 0; width: 100px; line-height: 1.4; }
+    .pv { color: var(--text); word-break: break-word; line-height: 1.4; }
+    .pv a { color: var(--link); text-decoration: none; }
+    .pv a:hover { text-decoration: underline; }
+    .p-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .p-btn {
+      background: rgba(45,45,78,0.8);
+      color: var(--link);
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.15s;
+    }
+    .p-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .p-expand-note {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .spinner {
+      width: 10px; height: 10px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── GRAPH NODES ── */
+    .node { cursor: pointer; }
+    .node.seed circle {
+      fill: var(--accent);
+      filter: drop-shadow(0 0 10px var(--seed-glow));
+      stroke: rgba(255,255,255,0.15);
+      stroke-width: 1.5;
+    }
+    .node.related circle {
+      fill: var(--accent2);
+      stroke: rgba(255,255,255,0.1);
+      stroke-width: 1;
+    }
+    .node.expanded circle {
+      fill: #0e7490;
+      stroke: rgba(255,255,255,0.1);
+      stroke-width: 1;
+    }
+    .node.selected circle {
+      stroke: #fff;
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+    }
+    .node text {
+      fill: var(--text);
+      font-size: 9.5px;
+      pointer-events: none;
+      text-anchor: middle;
+    }
+    .link {
+      stroke: var(--border);
+      stroke-opacity: 0.5;
+      fill: none;
+      transition: stroke-opacity 0.15s;
+    }
+    .link:hover { stroke-opacity: 1; stroke: var(--accent); }
+  </style>
+</head>
+<body>
+
+<div id="header">
+  <h1 id="seed-title">The Algorithmic Panopticon — Gig Economy &amp; Delivery Workers in India</h1>
+  <span class="subtitle" id="node-count-label"></span>
+  <a id="qid-badge" class="qid-badge" href="#" target="_blank" style="display:none">···</a>
+</div>
+
+<div id="main">
+  <div id="graph-area">
+    <div id="loading">
+      <div class="loading-text">· · · seeding <em id="loading-label">"gig economy"</em> · · ·</div>
+      <div class="pulse-dots"><span></span><span></span><span></span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar"></div></div>
+      <div style="font-size:0.7rem;color:var(--muted)" id="loading-status">connecting to Wikidata…</div>
+    </div>
+
+    <div id="error-box">
+      <h3>Seed not found</h3>
+      <p>Wikidata returned no results. Enter a QID manually to load the graph:</p>
+      <div class="manual-qid-row">
+        <input type="text" id="manual-qid-input" placeholder="e.g. Q1061000" />
+        <button onclick="loadManualQID()">Load</button>
+      </div>
+    </div>
+
+    <svg id="graph-svg"></svg>
+  </div>
+
+  <div id="side-panel">
+    <div class="panel-hint" id="panel-hint">
+      <span class="icon">◉</span>
+      Click any node<br>to explore its entity
+    </div>
+    <div id="panel-content" style="display:none"></div>
+  </div>
+</div>
+
+<div id="footer">
+  <span>Seeded from: <em>library/gig-worker-projects.md</em> — The Algorithmic Panopticon (Q-Commerce &amp; Gig Labor, India 2025)</span>
+  <span id="footer-time"></span>
+</div>
+
+<div id="tooltip">
+  <div class="tt-label" id="tt-label"></div>
+  <div class="tt-desc" id="tt-desc"></div>
+  <div class="tt-qid" id="tt-qid"></div>
+</div>
+
+<!-- Embedded seed data cache -->
+<script type="application/json" id="seed-data-cache"></script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   SEED VISUALIZER — Gig Economy India
+   Seeds: gig economy (primary) + quick commerce, algorithmic management,
+          platform economy, precarious work
+═══════════════════════════════════════════════════════════════════ */
+
+const SEED_TEXT   = "gig economy";
+const SPARQL_EP   = "https://query.wikidata.org/sparql";
+const MULTI_SEEDS = ["quick commerce", "algorithmic management", "platform economy", "precarious work"];
+
+// ── State ──────────────────────────────────────────────────────────
+let nodes = [], links = [];
+let simulation, svgEl, container, linkSel, nodeSel, labelSel;
+let w, h;
+let selectedNode = null;
+
+// ── Utility ────────────────────────────────────────────────────────
+const esc = s => String(s ?? "")
+  .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+function extractQID(uri) {
+  const m = String(uri ?? "").match(/Q(\d+)$/);
+  return m ? "Q" + m[1] : null;
+}
+
+function setProgress(pct, label) {
+  document.getElementById("progress-bar").style.width = pct + "%";
+  if (label) document.getElementById("loading-status").textContent = label;
+}
+
+// ── Wikidata SPARQL ────────────────────────────────────────────────
+async function sparql(query) {
+  const url = SPARQL_EP + "?format=json&query=" + encodeURIComponent(query);
+  const r = await fetch(url, { headers: { Accept: "application/sparql-results+json" } });
+  if (!r.ok) throw new Error("SPARQL " + r.status);
+  return r.json();
+}
+
+async function searchEntity(term) {
+  const q = `
+SELECT ?item ?itemLabel ?itemDescription WHERE {
+  SERVICE wikibase:mwapi {
+    bd:serviceParam wikibase:endpoint "www.wikidata.org";
+                    wikibase:api "EntitySearch";
+                    mwapi:search ${JSON.stringify(term)};
+                    mwapi:language "en".
+    ?item wikibase:apiOutputItem mwapi:item.
+  }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+} LIMIT 1`;
+  const d = await sparql(q);
+  const b = d.results.bindings[0];
+  if (!b) return null;
+  return {
+    qid: extractQID(b.item.value),
+    label: b.itemLabel?.value ?? term,
+    description: b.itemDescription?.value ?? "",
+    uri: b.item.value
+  };
+}
+
+async function getRelated(qid) {
+  const q = `
+SELECT ?prop ?propLabel ?value ?valueLabel WHERE {
+  wd:${qid} ?prop ?value.
+  ?propEntity wikibase:directClaim ?prop.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+  FILTER(isIRI(?value))
+  FILTER(STRSTARTS(STR(?value), "http://www.wikidata.org/entity/Q"))
+  FILTER(?prop != schema:description)
+} LIMIT 30`;
+  const d = await sparql(q);
+  return d.results.bindings
+    .map(b => ({
+      propLabel: b.propLabel?.value ?? "",
+      valueQID: extractQID(b.value.value),
+      valueLabel: b.valueLabel?.value ?? b.value.value
+    }))
+    .filter(r => r.valueQID && r.propLabel && !r.propLabel.startsWith("http"));
+}
+
+async function getEntityProps(qid) {
+  const q = `
+SELECT DISTINCT ?prop ?propLabel ?value ?valueLabel WHERE {
+  wd:${qid} ?prop ?value.
+  ?propEntity wikibase:directClaim ?prop.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+  FILTER(?prop != schema:description)
+} LIMIT 25`;
+  const d = await sparql(q);
+  return d.results.bindings.map(b => ({
+    propLabel: b.propLabel?.value ?? "",
+    value: b.value?.value ?? "",
+    valueLabel: b.valueLabel?.value ?? b.value?.value ?? "",
+    isEntity: (b.value?.value ?? "").includes("/entity/Q")
+  })).filter(p => p.propLabel && !p.propLabel.startsWith("http"));
+}
+
+// ── Graph Init ─────────────────────────────────────────────────────
+function initGraph() {
+  const area = document.getElementById("graph-area");
+  w = area.clientWidth;
+  h = area.clientHeight;
+
+  svgEl = d3.select("#graph-svg").attr("width", w).attr("height", h);
+
+  // Arrow marker
+  svgEl.append("defs").append("marker")
+    .attr("id", "arrowhead")
+    .attr("viewBox", "0 -4 8 8")
+    .attr("refX", 30).attr("refY", 0)
+    .attr("markerWidth", 5).attr("markerHeight", 5)
+    .attr("orient", "auto")
+    .append("path").attr("d", "M0,-4L8,0L0,4").attr("fill", "#2d2d4e");
+
+  const zoom = d3.zoom()
+    .scaleExtent([0.15, 5])
+    .on("zoom", e => container.attr("transform", e.transform));
+  svgEl.call(zoom);
+
+  container  = svgEl.append("g");
+  linkSel    = container.append("g").attr("class", "link-group");
+  nodeSel    = container.append("g").attr("class", "node-group");
+  labelSel   = container.append("g").attr("class", "label-group");
+
+  simulation = d3.forceSimulation(nodes)
+    .force("link",      d3.forceLink(links).id(d => d.id).distance(130))
+    .force("charge",    d3.forceManyBody().strength(-420))
+    .force("center",    d3.forceCenter(w / 2, h / 2))
+    .force("collision", d3.forceCollide(42))
+    .on("tick", tick);
+}
+
+function tick() {
+  linkSel.selectAll(".link").attr("d", d => {
+    const sx = d.source.x, sy = d.source.y;
+    const tx = d.target.x, ty = d.target.y;
+    const dr = Math.hypot(tx - sx, ty - sy);
+    return `M${sx},${sy}A${dr},${dr} 0 0,1 ${tx},${ty}`;
+  });
+  nodeSel.selectAll(".node").attr("transform", d => `translate(${d.x ?? 0},${d.y ?? 0})`);
+  labelSel.selectAll(".nlabel")
+    .attr("x", d => d.x ?? 0)
+    .attr("y", d => (d.y ?? 0) + (d.type === "seed" ? 36 : 28));
+}
+
+function updateGraph() {
+  // Links
+  const lk = linkSel.selectAll(".link")
+    .data(links, d => `${d.source?.id ?? d.source}→${d.target?.id ?? d.target}|${d.relation}`);
+  lk.exit().transition().duration(200).style("opacity",0).remove();
+  lk.enter().append("path")
+    .attr("class", "link")
+    .attr("marker-end", "url(#arrowhead)")
+    .style("opacity", 0)
+    .transition().duration(400).style("opacity", 1);
+
+  // Nodes
+  const nd = nodeSel.selectAll(".node")
+    .data(nodes, d => d.id);
+  nd.exit().transition().duration(200).style("opacity",0).remove();
+  nd.attr("class", d => `node ${d.type}${selectedNode?.id === d.id ? " selected" : ""}`);
+
+  const nEnt = nd.enter().append("g")
+    .attr("class", d => `node ${d.type}`)
+    .style("opacity", 0)
+    .call(d3.drag()
+      .on("start", (e,d) => { if(!e.active) simulation.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+      .on("drag",  (e,d) => { d.fx=e.x; d.fy=e.y; })
+      .on("end",   (e,d) => { if(!e.active) simulation.alphaTarget(0); d.fx=null; d.fy=null; }))
+    .on("mouseover", onNodeHover)
+    .on("mouseout",  hideTooltip)
+    .on("click",     onNodeClick);
+
+  nEnt.append("circle")
+    .attr("r", d => d.type === "seed" ? 24 : 16)
+    .transition().duration(400);
+
+  nEnt.transition().duration(400).style("opacity", 1);
+
+  // Labels
+  const lb = labelSel.selectAll(".nlabel")
+    .data(nodes, d => d.id);
+  lb.exit().remove();
+  lb.enter().append("text")
+    .attr("class", "nlabel")
+    .attr("text-anchor", "middle")
+    .text(d => truncate(d.label, 20));
+
+  simulation.nodes(nodes);
+  simulation.force("link").links(links);
+  simulation.alpha(0.5).restart();
+
+  document.getElementById("node-count-label").textContent =
+    nodes.length + " nodes · " + links.length + " edges";
+}
+
+function truncate(s, n) {
+  s = String(s ?? "");
+  return s.length > n ? s.slice(0, n-1) + "…" : s;
+}
+
+// ── Tooltip ────────────────────────────────────────────────────────
+const ttEl = document.getElementById("tooltip");
+function onNodeHover(e, d) {
+  document.getElementById("tt-label").textContent = d.label;
+  document.getElementById("tt-desc").textContent  = truncate(d.description ?? "", 110);
+  document.getElementById("tt-qid").textContent   = d.id ?? "";
+  ttEl.classList.add("vis");
+  posTooltip(e);
+}
+function hideTooltip() { ttEl.classList.remove("vis"); }
+document.addEventListener("mousemove", e => { if(ttEl.classList.contains("vis")) posTooltip(e); });
+function posTooltip(e) {
+  ttEl.style.left = (e.clientX + 14) + "px";
+  ttEl.style.top  = (e.clientY - 32) + "px";
+}
+
+// ── Node Click ─────────────────────────────────────────────────────
+async function onNodeClick(e, d) {
+  e.stopPropagation();
+
+  // Update selected style
+  selectedNode = d;
+  nodeSel.selectAll(".node").attr("class", n => `node ${n.type}${n.id === d.id ? " selected" : ""}`);
+
+  renderPanelLoading(d);
+
+  try {
+    const props = await getEntityProps(d.id);
+    renderPanelEntity(d, props);
+
+    // Expand: add related nodes unless already expanded
+    if (!d.expanded) {
+      d.expanded = true;
+      document.getElementById("panel-content").querySelector(".p-expand-note")
+        ?.style && (document.getElementById("panel-content").querySelector(".p-expand-note").style.display = "flex");
+
+      const related = await getRelated(d.id);
+      let added = false;
+      related.slice(0, 10).forEach(r => {
+        if (!nodes.find(n => n.id === r.valueQID)) {
+          nodes.push({ id: r.valueQID, label: r.valueLabel, type: "expanded", description: "", expanded: false });
+          added = true;
+        }
+        const sid = d.id, tid = r.valueQID;
+        if (!links.find(l => (l.source?.id??l.source)===sid && (l.target?.id??l.target)===tid)) {
+          links.push({ source: sid, target: tid, relation: r.propLabel });
+        }
+      });
+      if (added) updateGraph();
+      // Remove spinner from panel
+      document.getElementById("panel-content").querySelector(".p-expand-note")
+        ?.remove?.();
+    }
+  } catch(err) {
+    console.error("Panel error:", err);
+    const pc = document.getElementById("panel-content");
+    pc.innerHTML += `<div style="color:var(--danger);font-size:0.75rem;margin-top:8px">Failed to load properties.</div>`;
+  }
+}
+
+// ── Panel ──────────────────────────────────────────────────────────
+function renderPanelLoading(d) {
+  document.getElementById("panel-hint").style.display = "none";
+  const pc = document.getElementById("panel-content");
+  pc.style.display = "block";
+  pc.innerHTML = `
+    <div class="p-header">
+      <div>
+        <div class="p-label">${esc(d.label)}</div>
+        <div class="p-qid">QID: ${d.id}</div>
+      </div>
+      <a href="https://www.wikidata.org/wiki/${d.id}" target="_blank" class="p-ext-link">Wikidata ↗</a>
+    </div>
+    ${d.description ? `<hr class="p-divider"><div class="p-desc">${esc(d.description)}</div>` : ""}
+    <hr class="p-divider">
+    <div style="color:var(--muted);font-size:0.8rem;display:flex;align-items:center;gap:8px">
+      <span class="spinner"></span> Loading properties…
+    </div>`;
+}
+
+function renderPanelEntity(d, props) {
+  const pc = document.getElementById("panel-content");
+
+  // Filter meaningful props
+  const skip = new Set(["described by source","topic's main template","maintained by wikiproject","on focus list of wikimedia project"]);
+  const filtered = props.filter(p => {
+    const lbl = p.propLabel.toLowerCase();
+    return p.propLabel && p.valueLabel && !skip.has(lbl) && !lbl.startsWith("http");
+  });
+
+  // Priority props to show first
+  const priority = ["instance of","subclass of","part of","facet of","country","continent","inception","industry","owned by","employer","of","has quality"];
+  const sorted = [
+    ...filtered.filter(p => priority.includes(p.propLabel.toLowerCase())),
+    ...filtered.filter(p => !priority.includes(p.propLabel.toLowerCase()))
+  ].slice(0, 14);
+
+  const propsHtml = sorted.map(p => {
+    const qid = p.isEntity ? extractQID(p.value) : null;
+    const valHtml = qid
+      ? `<a href="https://www.wikidata.org/wiki/${qid}" target="_blank">${esc(p.valueLabel)}</a>`
+      : esc(p.valueLabel);
+    return `<li><span class="pk">${esc(p.propLabel)}</span><span class="pv">${valHtml}</span></li>`;
+  }).join("");
+
+  const wpSlug = encodeURIComponent(d.label.replace(/ /g,"_"));
+
+  pc.innerHTML = `
+    <div class="p-header">
+      <div>
+        <div class="p-label">${esc(d.label)}</div>
+        <div class="p-qid">QID: ${d.id}</div>
+      </div>
+      <a href="https://www.wikidata.org/wiki/${d.id}" target="_blank" class="p-ext-link">Wikidata ↗</a>
+    </div>
+    ${d.description ? `<hr class="p-divider"><div class="p-desc">${esc(d.description)}</div>` : ""}
+    <hr class="p-divider">
+    <div class="p-section-title">Properties</div>
+    ${propsHtml
+      ? `<ul class="p-props">${propsHtml}</ul>`
+      : `<div style="color:var(--muted);font-size:0.78rem">No structured properties found.</div>`}
+    <div class="p-buttons">
+      <a href="https://en.wikipedia.org/wiki/${wpSlug}" target="_blank" class="p-btn">Wikipedia ↗</a>
+      <a href="https://www.wikidata.org/wiki/Special:EntityData/${d.id}.json" target="_blank" class="p-btn">JSON ↗</a>
+    </div>
+    ${!d.expanded ? `<div class="p-expand-note"><span class="spinner"></span> Expanding node…</div>` : ""}`;
+}
+
+// ── Manual QID ─────────────────────────────────────────────────────
+function loadManualQID() {
+  const raw = document.getElementById("manual-qid-input").value.trim().toUpperCase();
+  if (!/^Q\d+$/.test(raw)) { alert("Enter a valid QID like Q1061000"); return; }
+  document.getElementById("error-box").style.display = "none";
+  document.getElementById("loading").style.display = "flex";
+  bootstrapFromQID(raw, raw);
+}
+
+async function bootstrapFromQID(qid, label) {
+  nodes = [{ id: qid, label, type: "seed", description: "", expanded: false }];
+  links = [];
+  if (!svgEl) initGraph();
+  updateGraph();
+  try {
+    const related = await getRelated(qid);
+    related.slice(0, 20).forEach(r => {
+      if (!nodes.find(n => n.id === r.valueQID))
+        nodes.push({ id: r.valueQID, label: r.valueLabel, type: "related", description: "", expanded: false });
+      links.push({ source: qid, target: r.valueQID, relation: r.propLabel });
+    });
+    document.getElementById("loading").style.display = "none";
+    updateGraph();
+  } catch(e) {
+    console.error(e);
+    document.getElementById("loading").style.display = "none";
+  }
+}
+
+// ── Bootstrap ──────────────────────────────────────────────────────
+async function bootstrap() {
+  document.getElementById("footer-time").textContent = new Date().toLocaleString();
+
+  // Try to use cached data first (offline reload)
+  const cached = document.getElementById("seed-data-cache").textContent.trim();
+  if (cached) {
+    try {
+      const cache = JSON.parse(cached);
+      if (cache.nodes && cache.links) {
+        nodes = cache.nodes;
+        links = cache.links;
+        initGraph();
+        document.getElementById("loading").style.display = "none";
+        updateGraph();
+        const seed = nodes.find(n => n.type === "seed");
+        if (seed) {
+          document.getElementById("qid-badge").textContent = seed.id;
+          document.getElementById("qid-badge").href = "https://www.wikidata.org/wiki/" + seed.id;
+          document.getElementById("qid-badge").style.display = "inline-block";
+        }
+        return;
+      }
+    } catch(e) { /* fall through to live fetch */ }
+  }
+
+  try {
+    setProgress(5, "searching Wikidata for \"gig economy\"…");
+    const primary = await searchEntity(SEED_TEXT);
+    if (!primary) throw new Error("no result for seed");
+
+    setProgress(20, `found ${primary.label} (${primary.qid})`);
+    document.getElementById("loading-label").textContent = `"${primary.label}"`;
+
+    const badge = document.getElementById("qid-badge");
+    badge.textContent = primary.qid;
+    badge.href = "https://www.wikidata.org/wiki/" + primary.qid;
+    badge.style.display = "inline-block";
+
+    nodes.push({ id: primary.qid, label: primary.label, type: "seed", description: primary.description, expanded: true });
+    initGraph();
+    updateGraph();
+
+    setProgress(35, "fetching related entities…");
+    const related = await getRelated(primary.qid);
+    related.slice(0, 20).forEach(r => {
+      if (!nodes.find(n => n.id === r.valueQID))
+        nodes.push({ id: r.valueQID, label: r.valueLabel, type: "related", description: "", expanded: false });
+      links.push({ source: primary.qid, target: r.valueQID, relation: r.propLabel });
+    });
+    updateGraph();
+
+    setProgress(50, "loading co-seeds…");
+    let prog = 50;
+    for (const seedTerm of MULTI_SEEDS) {
+      prog += 10;
+      setProgress(prog, `seeding "${seedTerm}"…`);
+      try {
+        const ent = await searchEntity(seedTerm);
+        if (ent && ent.qid && !nodes.find(n => n.id === ent.qid)) {
+          nodes.push({ id: ent.qid, label: ent.label, type: "related", description: ent.description, expanded: false });
+          links.push({ source: primary.qid, target: ent.qid, relation: "related concept" });
+          updateGraph();
+        }
+      } catch(e) { /* non-fatal */ }
+    }
+
+    setProgress(100, "done");
+
+    // Embed cache
+    document.getElementById("seed-data-cache").textContent = JSON.stringify({ nodes, links });
+
+    setTimeout(() => { document.getElementById("loading").style.display = "none"; }, 300);
+
+  } catch(err) {
+    console.error("Bootstrap failed:", err);
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("error-box").style.display = "block";
+
+    // Render raw seed text in panel
+    document.getElementById("panel-hint").style.display = "none";
+    const pc = document.getElementById("panel-content");
+    pc.style.display = "block";
+    pc.innerHTML = `
+      <div class="p-label">The Algorithmic Panopticon</div>
+      <hr class="p-divider">
+      <div class="p-desc">Gig Economy &amp; Delivery Workers in India — seed text loaded from library/gig-worker-projects.md</div>
+    `;
+  }
+}
+
+// ── Resize ─────────────────────────────────────────────────────────
+window.addEventListener("resize", () => {
+  const area = document.getElementById("graph-area");
+  w = area.clientWidth; h = area.clientHeight;
+  if (svgEl) svgEl.attr("width", w).attr("height", h);
+  if (simulation) {
+    simulation.force("center", d3.forceCenter(w/2, h/2));
+    simulation.alpha(0.2).restart();
+  }
+});
+
+// ── Click on background deselects ──────────────────────────────────
+document.getElementById("graph-svg").addEventListener("click", e => {
+  if (e.target === document.getElementById("graph-svg") || e.target.closest("g.container") === null) {
+    selectedNode = null;
+    if (nodeSel) nodeSel.selectAll(".node").attr("class", d => `node ${d.type}`);
+  }
+});
+
+// ── Start ──────────────────────────────────────────────────────────
+bootstrap();
+</script>
+</body>
+</html>

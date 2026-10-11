@@ -1,0 +1,635 @@
+{
+  "meta": {
+    "id":       "art-of-intent",
+    "title":    "Art of Intent: Codebase Intelligence Brief",
+    "subtitle": "A full-stack LLM haiku puzzle where prompt engineering is the mechanic",
+    "source":   "art-of-intent.md",
+    "domain":   "Software / Game Design",
+    "year":     "2024",
+    "tags":     ["llm", "game", "firebase", "prompt-engineering", "haiku", "gemini", "puzzle"],
+    "tone":     "analytical"
+  },
+
+  "report_card": {
+    "summary": "Art of Intent is a deployed, production-grade full-stack puzzle game that converts LLM constraint navigation into competitive skill: players engineer natural-language prompts to guide Gemini into writing haiku containing hidden target words while avoiding a daily blacklist. The architecture pairs a no-build-step frontend with Firebase Cloud Functions that keep the system prompt server-side and unhackable. At version 2.0.1-alpha the game is feature-complete, but two high-retention social mechanics — streak counters and shareable result URLs — remain unimplemented.",
+    "key_stats": [
+      { "label": "Project Size",             "value": "7.1 MB" },
+      { "label": "JavaScript Files",         "value": "35+" },
+      { "label": "CSS Lines",                "value": "3,626" },
+      { "label": "Documentation Files",      "value": "91 markdown docs" },
+      { "label": "Backend Cloud Functions",  "value": "2" },
+      { "label": "Firestore Collections",    "value": "4 (dailyWords, users, sessions, leaderboard)" },
+      { "label": "Word Pool Categories",     "value": "12" },
+      { "label": "Max Attempts Per Game",    "value": "10" },
+      { "label": "Creep Game-Over Threshold","value": "100 creep" },
+      { "label": "Excellent Efficiency",     "value": "<40 tokens/attempt (★★★)" },
+      { "label": "Current Version",          "value": "2.0.1-alpha" }
+    ],
+    "spine":        ["art-of-intent", "arty", "prompt-engineering-mechanic"],
+    "protagonists": ["art-of-intent", "arty", "prompt-engineering-mechanic"],
+    "antagonists":  ["creep-system", "xss-prevention-system"],
+    "themes":       ["Prompt Engineering", "LLM Game Design", "Firebase Architecture", "Token Efficiency", "Competitive Puzzle"]
+  },
+
+  "story": [
+    {
+      "id":        "beat-01-intro",
+      "title":     "A Game Without a Teacher",
+      "node":      "art-of-intent",
+      "nodes":     ["arty", "prompt-engineering-mechanic", "creep-system"],
+      "narration": "Art of Intent drops the player into a 1990s-era CRT terminal with no tutorial. Three target words appear on screen. Five to seven blacklisted terms lurk in the sidebar. The only instructions are implicit: write something that makes Arty say the words you need, without triggering the ones you must avoid. The game teaches by elimination.",
+      "tension":   "low",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-02-arty",
+      "title":     "The AI Behind the Terminal",
+      "node":      "arty",
+      "nodes":     ["gemini-api", "arty-generate-haiku", "haiku-format"],
+      "narration": "Arty is a persona layered over the Gemini API, constrained by a server-side system prompt to respond only in 5-7-5 haiku. The player cannot see the system prompt. They cannot override it. They can only speak to Arty through the text box and observe what the haiku reflects back. Every token in the response is both output and evidence.",
+      "tension":   "low",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-03-daily-words",
+      "title":     "The Daily Word Engine",
+      "node":      "daily-words-system",
+      "nodes":     ["generate-daily-words", "daily-words-dataset"],
+      "narration": "At midnight UTC, a seeded deterministic RNG fires. Three target words are drawn from 12 thematic pools — nature, cosmos, creatures, emotions. Five to seven blacklist words come from the remaining pool. The resulting dailyWords document is written to Firestore and held until the next midnight. Every player on Earth faces the same constraint on the same day.",
+      "tension":   "medium",
+      "focus":     "wide"
+    },
+    {
+      "id":        "beat-04-creep",
+      "title":     "The Creep Mechanic",
+      "node":      "creep-system",
+      "nodes":     ["prompt-engineering-mechanic", "daily-words-system"],
+      "narration": "Every prompt containing a blacklist word adds 25 creep to a rising counter displayed as a pulsing bar. At 100 creep, the screen goes dark — game over. Players learn to internalize the blacklist not to avoid it, but to route around it with increasing semantic fluency. Creep is the game's permanent tax on clumsy prompt engineering.",
+      "tension":   "medium",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-05-ceiling",
+      "title":     "The 10-Attempt Ceiling",
+      "node":      "token-efficiency-scoring",
+      "nodes":     ["game-js", "prompt-engineering-mechanic", "leaderboard"],
+      "narration": "The game grants exactly 10 attempts. Most players hit all 3 target words by attempt 4 or 5. Elite players hit them all on attempt 1 or 2 using fewer than 40 tokens per attempt. The leaderboard metric is not attempts — it is token efficiency: total prompt plus response tokens divided by attempts. There is no luck adjustment. The number exposes skill with no ambiguity.",
+      "tension":   "high",
+      "focus":     "wide"
+    },
+    {
+      "id":        "beat-06-backend",
+      "title":     "The Unhackable Backend",
+      "node":      "arty-generate-haiku",
+      "nodes":     ["firebase-cloud-functions", "firestore", "gemini-api"],
+      "narration": "The system prompt that forces Arty into haiku format is assembled inside artyGenerateHaiku, a Firebase Cloud Function running on Node.js 20 in us-central1. It never touches the client. The dailyWords are fetched from Firestore inside the function boundary. The Gemini API call is made server-side. A player can inspect every HTTP response in DevTools and find nothing exploitable — the game is designed to be cheated at and made structurally cheat-proof.",
+      "tension":   "high",
+      "focus":     "tight"
+    },
+    {
+      "id":        "beat-07-leaderboard",
+      "title":     "Token Efficiency as the True Leaderboard",
+      "node":      "token-efficiency-scoring",
+      "nodes":     ["leaderboard", "game-js", "firebase-ga4"],
+      "narration": "A 3-target victory in 38 tokens per attempt earns 3 stars. Above 60 tokens per attempt earns none. The scoring system embeds a performance standard: master prompt engineers use fewer words to say more. The global leaderboard — queryable daily, weekly, and all-time — makes this gap visible and competitive. 327 lines of Jest analytics tests and a dedicated leaderboard-card-generator exist solely to report and share this single number.",
+      "tension":   "climax",
+      "focus":     "wide"
+    },
+    {
+      "id":        "beat-08-social",
+      "title":     "The Social Card",
+      "node":      "share-card-generator",
+      "nodes":     ["canvas-api", "leaderboard", "firebase-ga4"],
+      "narration": "After every session, the share-card-generator fires. A canvas-based PNG (v5, the current default) renders the final haiku, the score, and the star rating. Versions 3 and 4 survive in the codebase as legacy fallbacks. The card is designed to travel — to be posted and challenged — creating an external social loop around a solitary daily puzzle.",
+      "tension":   "medium",
+      "focus":     "wide"
+    },
+    {
+      "id":        "beat-09-architecture",
+      "title":     "A Production Codebase Disguised as a Game",
+      "node":      "art-of-intent",
+      "nodes":     ["jest", "para-method", "xss-prevention-system", "firebase-cloud-functions"],
+      "narration": "91 markdown files organized by PARA method. 35+ JavaScript modules. Jest unit tests for analytics, share cards, and leaderboard generation. HTML security test pages for XSS and prompt injection. Firestore security rules requiring owner-write authentication. At 7.1 MB and version 2.0.1-alpha, Art of Intent is not a prototype — it is a deployed, tested, documented game engine that happens to play haiku.",
+      "tension":   "low",
+      "focus":     "wide"
+    }
+  ],
+
+  "insights": [
+    {
+      "id":       "ins-security-guarantee",
+      "title":    "artyGenerateHaiku's server-side prompt construction is the single architectural component whose compromise would collapse the game's competitive integrity entirely",
+      "body":     "The game's fairness depends entirely on the system prompt remaining invisible to players. If artyGenerateHaiku were exposed or bypassable, players could directly instruct Gemini to include target words, eliminating the prompt engineering challenge. No client-side validation can compensate for a compromised server-side prompt — the architecture is the security model, not a layer on top of it.",
+      "type":     "warning",
+      "evidence": ["arty-generate-haiku", "gemini-api", "firestore", "prompt-engineering-mechanic"],
+      "severity": "high"
+    },
+    {
+      "id":       "ins-token-efficiency",
+      "title":    "Token efficiency scoring creates a quantified compression metric that transforms implicit prompt engineering skill into a globally comparable leaderboard position",
+      "body":     "By measuring total tokens (prompt plus response) per successful attempt, the scoring system produces a direct measurement of prompt concision. Players ranked below 40 tokens per attempt have demonstrably internalized semantic indirection — a skill with real-world applications in LLM cost optimization and API budget management.",
+      "type":     "finding",
+      "evidence": ["token-efficiency-scoring", "leaderboard", "prompt-engineering-mechanic", "game-js"],
+      "severity": "high"
+    },
+    {
+      "id":       "ins-creep-redteam",
+      "title":    "The creep system structurally replicates adversarial red-teaming: players learn to elicit target outputs without triggering constraint violations",
+      "body":     "Blacklist violations that add 25 creep mimic the signal-cost relationship in adversarial prompting — each detection event carries a permanent session penalty. Players who consistently succeed learn to route around constraints using semantic indirection, precisely the skill that separates capable from incapable prompt engineers in production LLM applications.",
+      "type":     "pattern",
+      "evidence": ["creep-system", "prompt-engineering-mechanic", "daily-words-system", "arty"],
+      "severity": "medium"
+    },
+    {
+      "id":       "ins-constraint-inversion",
+      "title":    "Art of Intent converts LLM constraint navigation from an engineering obstacle into the competitive skill that defines mastery",
+      "body":     "Most LLM applications treat model limitations — output format constraints, forbidden topics, token budgets — as engineering problems to abstract away. Art of Intent inverts this: the 5-7-5 haiku constraint, the blacklist, and the token budget are the game. Players who learn to work within these constraints become better prompt engineers by playing.",
+      "type":     "conclusion",
+      "evidence": ["art-of-intent", "haiku-format", "creep-system", "token-efficiency-scoring"],
+      "severity": "high"
+    },
+    {
+      "id":       "ins-retention-gap",
+      "title":    "Streak counters and shareable result URLs are the two highest-retention social mechanics not yet implemented at version 2.0.1-alpha",
+      "body":     "The docs/future-work.md file identifies both as high priority: result URL hash encoding (#r=<base64>) for shareable read-only links, and a day-over-day streak counter. Both features target the retention loop that makes daily puzzle games compulsive — the competitive pressure to maintain a public streak and share verifiable results.",
+      "type":     "opportunity",
+      "evidence": ["art-of-intent", "leaderboard", "share-card-generator", "firebase-ga4"],
+      "severity": "medium"
+    }
+  ],
+
+  "clusters": [
+    {
+      "id":          "cluster-mechanics",
+      "label":       "Game Mechanics",
+      "color":       "#00aaff",
+      "nodes":       [
+        "art-of-intent",
+        "arty",
+        "prompt-engineering-mechanic",
+        "creep-system",
+        "daily-words-system",
+        "haiku-format",
+        "token-efficiency-scoring"
+      ],
+      "description": "The core rules, constraints, scoring, and AI persona that define how the game is played."
+    },
+    {
+      "id":          "cluster-ai-pipeline",
+      "label":       "AI Pipeline",
+      "color":       "#cc44ff",
+      "nodes":       [
+        "gemini-api",
+        "firebase-cloud-functions",
+        "arty-generate-haiku",
+        "generate-daily-words",
+        "game-js"
+      ],
+      "description": "The server-side compute path: Firebase Cloud Functions calling Gemini, generating daily words, and orchestrating all game state."
+    },
+    {
+      "id":          "cluster-data",
+      "label":       "Data Layer",
+      "color":       "#00cccc",
+      "nodes":       [
+        "firestore",
+        "daily-words-dataset",
+        "leaderboard"
+      ],
+      "description": "Firestore-backed persistence: the dailyWords document, session records, and competitive leaderboard."
+    },
+    {
+      "id":          "cluster-experience",
+      "label":       "Player Experience",
+      "color":       "#ff4488",
+      "nodes":       [
+        "dos-theme",
+        "share-card-generator",
+        "canvas-api",
+        "para-method"
+      ],
+      "description": "The visual and social layer: the DOS/CRT aesthetic, canvas-based share cards, and PARA-method documentation."
+    },
+    {
+      "id":          "cluster-security",
+      "label":       "Security & Testing",
+      "color":       "#00ff88",
+      "nodes":       [
+        "prompt-purify",
+        "xss-prevention-system",
+        "jest"
+      ],
+      "description": "Input sanitization, XSS and injection prevention, and the Jest unit test suite."
+    },
+    {
+      "id":          "cluster-infrastructure",
+      "label":       "Infrastructure",
+      "color":       "#888866",
+      "nodes":       [
+        "firebase-auth",
+        "firebase-hosting",
+        "firebase-ga4",
+        "google",
+        "netlify"
+      ],
+      "description": "Hosting, authentication, analytics, and the organizational context of Google-owned services."
+    }
+  ],
+
+  "nodes": [
+    {
+      "id":          "art-of-intent",
+      "label":       "Art of Intent",
+      "type":        "platform",
+      "tier":        "spine",
+      "sentiment":   "positive",
+      "description": "A full-stack LLM-powered haiku word puzzle game hosted on Firebase. Players craft natural-language prompts to guide Arty (a Gemini haiku bot) into including 3 daily target words while avoiding blacklisted terms. Scored by token efficiency. Version 2.0.1-alpha.",
+      "metrics": {
+        "Version":         "2.0.1-alpha",
+        "Project Size":    "7.1 MB",
+        "JS Files":        "35+",
+        "Docs":            "91 markdown files"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "arty",
+      "label":       "Arty",
+      "type":        "concept",
+      "tier":        "spine",
+      "sentiment":   "positive",
+      "description": "The AI persona at the heart of the game — a Gemini-powered haiku bot constrained by a server-side system prompt to respond only in 5-7-5 syllable haiku. Players interact with Arty as a character, not a raw model. Arty's contemplation remarks are drawn from a 35-item JSON file.",
+      "metrics": {
+        "Response Format":  "5-7-5 haiku",
+        "Contemplation Remarks": "35"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "prompt-engineering-mechanic",
+      "label":       "Prompt Engineering Mechanic",
+      "type":        "concept",
+      "tier":        "spine",
+      "sentiment":   "positive",
+      "description": "The core gameplay skill: crafting indirect natural-language prompts that guide Arty to include 3 specific target words in a haiku without using blacklisted terms. The game teaches prompt engineering through competitive iteration rather than instruction.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "gemini-api",
+      "label":       "Gemini API",
+      "type":        "model",
+      "tier":        "primary",
+      "sentiment":   "positive",
+      "description": "Google's generative AI model called server-side inside the artyGenerateHaiku Cloud Function. The API key is stored in the Firebase Cloud Functions environment and never exposed to the client. Returns the haiku text, token counts, and usage metadata.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "firebase-cloud-functions",
+      "label":       "Firebase Cloud Functions",
+      "type":        "software",
+      "tier":        "primary",
+      "sentiment":   "positive",
+      "description": "Firebase Cloud Functions v2 running on Node.js 20 in us-central1. Houses two functions: artyGenerateHaiku (HTTPS callable) and generateDailyWords (scheduled). The server-side boundary that keeps the system prompt and API key away from the client.",
+      "metrics": {
+        "Runtime":   "Node.js 20",
+        "Region":    "us-central1",
+        "Functions": "2"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "firestore",
+      "label":       "Firestore",
+      "type":        "software",
+      "tier":        "primary",
+      "sentiment":   "neutral",
+      "description": "Google Firestore database (ID: 'alpha', non-default) storing four collections: dailyWords, users, sessions, and leaderboard. Security rules enforce public read with owner-write for sessions and users. Offline persistence enabled.",
+      "metrics": {
+        "Database ID":    "alpha",
+        "Collections":    "4",
+        "Security":       "public read, owner write"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "game-js",
+      "label":       "game.js",
+      "type":        "software",
+      "tier":        "primary",
+      "sentiment":   "positive",
+      "description": "The 2,602-line frontend orchestrator. Manages game state, handles prompt submission via Firebase callable, processes Gemini responses, runs the creep and token tracking systems, updates the UI, and persists session results to Firestore.",
+      "metrics": {
+        "Lines of Code": "2,602"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "creep-system",
+      "label":       "Creep System",
+      "type":        "concept",
+      "tier":        "primary",
+      "sentiment":   "contested",
+      "description": "A game mechanic that adds 25 creep per blacklist violation, displayed as a rising danger bar. At 100 creep, the session ends in a game-over state. Structurally mimics the signal-cost relationship in adversarial prompting: each detected violation carries a permanent penalty.",
+      "metrics": {
+        "Creep Per Violation": "25",
+        "Game-Over Threshold": "100"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "daily-words-system",
+      "label":       "Daily Words System",
+      "type":        "concept",
+      "tier":        "primary",
+      "sentiment":   "neutral",
+      "description": "The system that generates and distributes a new word set at midnight UTC each day. 3 target words are drawn from 12 thematic pools; 5-7 blacklist words come from the remainder. A date-seeded RNG ensures all players worldwide face the same puzzle.",
+      "metrics": {
+        "Target Words":   "3",
+        "Blacklist Words": "5–7",
+        "Word Pools":     "12 categories",
+        "Reset Time":     "midnight UTC"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "token-efficiency-scoring",
+      "label":       "Token Efficiency Scoring",
+      "type":        "metric",
+      "tier":        "primary",
+      "sentiment":   "positive",
+      "description": "The primary scoring metric: total prompt and response tokens divided by attempts used. Lower is better. Bands: <40 tokens/attempt = Excellent (★★★), <50 = Good (★★☆), <60 = Average (★☆☆), >60 = Needs Work (☆☆☆). This number is the leaderboard's sole ranking criterion.",
+      "metrics": {
+        "Excellent":   "<40 tokens/attempt",
+        "Good":        "<50 tokens/attempt",
+        "Average":     "<60 tokens/attempt",
+        "Needs Work":  ">60 tokens/attempt"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "arty-generate-haiku",
+      "label":       "artyGenerateHaiku",
+      "type":        "software",
+      "tier":        "primary",
+      "sentiment":   "positive",
+      "description": "The core HTTPS callable Firebase Cloud Function. Validates user authentication, reads today's dailyWords from Firestore, builds the server-side system prompt (keeping it invisible to clients), calls the Gemini API, and returns a structured fullResponse object containing the haiku text, token counts, and usage data.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "firebase-auth",
+      "label":       "Firebase Auth",
+      "type":        "software",
+      "tier":        "secondary",
+      "sentiment":   "neutral",
+      "description": "Provides anonymous and Google OAuth authentication flows. All game sessions require a valid auth token. Anonymous users can play immediately; Google OAuth enables profile persistence and leaderboard participation.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "firebase-hosting",
+      "label":       "Firebase Hosting",
+      "type":        "software",
+      "tier":        "secondary",
+      "sentiment":   "neutral",
+      "description": "Serves the entire frontend from the repository root with no build step. Plain HTML/CSS/JS with ES6 module loading order enforced by script sequencing in index.html.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "firebase-ga4",
+      "label":       "Firebase GA4",
+      "type":        "software",
+      "tier":        "secondary",
+      "sentiment":   "neutral",
+      "description": "Firebase-integrated Google Analytics 4 tracking custom events: gameStart, gameComplete, promptSubmit, blacklistViolation, targetHit, apiError, sharing. 327 lines of Jest tests cover the analytics module.",
+      "metrics": {
+        "Tracked Events": "7 custom event types",
+        "Test Lines":     "327"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "share-card-generator",
+      "label":       "Share Card Generator",
+      "type":        "software",
+      "tier":        "secondary",
+      "sentiment":   "positive",
+      "description": "A 572-line dispatcher that calls v3, v4, or v5 share card generators. The current default is v5 (canvas-based PNG). Generates post-game social cards showing the final haiku, score, star rating, and statistics. A separate leaderboard-card-generator handles OG images for leaderboard shares.",
+      "metrics": {
+        "Dispatcher Lines":  "572",
+        "Current Default":   "v5 (canvas-based PNG)",
+        "Legacy Versions":   "v3, v4"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "dos-theme",
+      "label":       "DOS / CRT Theme",
+      "type":        "concept",
+      "tier":        "secondary",
+      "sentiment":   "positive",
+      "description": "The MS-DOS / Solarized CRT visual aesthetic defined in a 3,161-line dos-theme.css. Includes scanline animations, grid system, all semantic CSS variables, and a theme runtime switcher. The aesthetic is central to the game's identity — Arty lives in a terminal.",
+      "metrics": {
+        "Primary CSS Lines": "3,161",
+        "Themes File":       "465 lines"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "leaderboard",
+      "label":       "Leaderboard",
+      "type":        "concept",
+      "tier":        "secondary",
+      "sentiment":   "positive",
+      "description": "Global daily, weekly, and all-time rankings based on token efficiency scores. Stored in Firestore with composite index definitions. The leaderboard-data.js module (357 lines) handles query logic; the leaderboard-card-generator produces shareable OG images.",
+      "metrics": {
+        "Query Module Lines": "357"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "prompt-purify",
+      "label":       "prompt-purify.js",
+      "type":        "software",
+      "tier":        "secondary",
+      "sentiment":   "positive",
+      "description": "A 249-line input validation and sanitization module that prevents XSS attacks and prompt injection attempts in player-submitted text before it is passed to the game loop.",
+      "metrics": {
+        "Lines of Code": "249"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "generate-daily-words",
+      "label":       "generateDailyWords",
+      "type":        "software",
+      "tier":        "secondary",
+      "sentiment":   "neutral",
+      "description": "A scheduled Firebase Cloud Function that fires daily at midnight UTC. Uses a date-seeded deterministic RNG to select 3 target words and 5-7 blacklist words from 12 thematic pools and writes the result to the Firestore dailyWords collection.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "haiku-format",
+      "label":       "Haiku Format Constraint",
+      "type":        "concept",
+      "tier":        "secondary",
+      "sentiment":   "contested",
+      "description": "The 5-7-5 syllable haiku constraint enforced server-side via the system prompt inside artyGenerateHaiku. It is simultaneously the game's design challenge (players must engineer prompts that yield target words within this tight format) and its primary LLM output control.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "canvas-api",
+      "label":       "HTML5 Canvas API",
+      "type":        "software",
+      "tier":        "secondary",
+      "sentiment":   "neutral",
+      "description": "The browser Canvas API used by share-card-v5.js to render game results as PNG images for social sharing. Enables pixel-perfect card layout without server-side image generation.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "jest",
+      "label":       "Jest",
+      "type":        "software",
+      "tier":        "secondary",
+      "sentiment":   "positive",
+      "description": "The JavaScript unit testing framework used for three test suites totalling ~964 lines: analytics event tracking, share card generation, and leaderboard card generation. Run via NODE_OPTIONS=--experimental-vm-modules to support ES modules.",
+      "metrics": {
+        "Test Files":  "3",
+        "Test Lines":  "~964"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "daily-words-dataset",
+      "label":       "dailyWords Dataset",
+      "type":        "dataset",
+      "tier":        "secondary",
+      "sentiment":   "neutral",
+      "description": "The Firestore collection storing daily word sets keyed by YYYY-MM-DD. Each document contains 3 target words and 5-7 blacklist words. Read by artyGenerateHaiku server-side; never exposed to the client.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "xss-prevention-system",
+      "label":       "XSS & Injection Prevention",
+      "type":        "concept",
+      "tier":        "secondary",
+      "sentiment":   "positive",
+      "description": "A multi-layer security system including prompt-purify.js for input sanitization and five HTML test pages (test-xss.html, test-prompt-injection.html, test-security-signals.html, test-firebase.html, test-functions.html) that validate attack prevention under test conditions.",
+      "metrics": {
+        "Security Test Pages": "5"
+      },
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "para-method",
+      "label":       "PARA Method",
+      "type":        "concept",
+      "tier":        "secondary",
+      "sentiment":   "positive",
+      "description": "The PARA documentation methodology (Projects, Areas, Resources, Archives) used to organize 91 markdown files. Active work in docs/projects/, standards in docs/areas/, setup guides in docs/resources/, and completed phases in docs/archives/.",
+      "wikidata": null,
+      "image": null
+    },
+    {
+      "id":          "google",
+      "label":       "Google",
+      "type":        "company",
+      "tier":        "anchor",
+      "sentiment":   "neutral",
+      "description": "The parent organization that owns both Firebase (hosting, auth, database, functions, analytics) and the Gemini API. Every critical infrastructure component and the AI model powering the game are Google products.",
+      "wikidata": "Q95",
+      "image": null
+    },
+    {
+      "id":          "netlify",
+      "label":       "Netlify",
+      "type":        "company",
+      "tier":        "anchor",
+      "sentiment":   "neutral",
+      "description": "The deployment host referenced in the project's public URL (art-of-intent.netlify.app). Noted in the source document as the live endpoint.",
+      "wikidata": null,
+      "image": null
+    }
+  ],
+
+  "edges": [
+    { "from": "art-of-intent",              "to": "arty",                      "rel": "features",     "weight": 5, "directed": true,  "notes": "Arty is the central AI persona of the game" },
+    { "from": "art-of-intent",              "to": "prompt-engineering-mechanic","rel": "implements",  "weight": 5, "directed": true,  "notes": "The game is built around this skill as its core mechanic" },
+    { "from": "arty",                       "to": "gemini-api",                "rel": "implements",   "weight": 5, "directed": true,  "notes": "Arty is a persona wrapper over the Gemini model" },
+    { "from": "game-js",                    "to": "arty-generate-haiku",       "rel": "enables",      "weight": 4, "directed": true,  "notes": "game.js calls the artyGenerateHaiku Cloud Function via httpsCallable" },
+    { "from": "arty-generate-haiku",        "to": "gemini-api",                "rel": "enables",      "weight": 5, "directed": true,  "notes": "The cloud function builds the server-side prompt and calls Gemini" },
+    { "from": "firebase-cloud-functions",   "to": "arty-generate-haiku",       "rel": "features",     "weight": 3, "directed": true },
+    { "from": "firebase-cloud-functions",   "to": "generate-daily-words",      "rel": "features",     "weight": 3, "directed": true },
+    { "from": "generate-daily-words",       "to": "daily-words-dataset",       "rel": "creation",     "weight": 4, "directed": true,  "notes": "Scheduled function writes the daily word set to Firestore" },
+    { "from": "arty-generate-haiku",        "to": "daily-words-dataset",       "rel": "enables",      "weight": 3, "directed": true,  "notes": "Function reads today's target and blacklist words from Firestore" },
+    { "from": "daily-words-dataset",        "to": "firestore",                 "rel": "location",     "weight": 2, "directed": true },
+    { "from": "game-js",                    "to": "firestore",                 "rel": "enables",      "weight": 3, "directed": true,  "notes": "game.js saves session state and results to Firestore" },
+    { "from": "art-of-intent",              "to": "firebase-cloud-functions",  "rel": "enables",      "weight": 4, "directed": true,  "notes": "The game depends on Cloud Functions for all AI and word-generation logic" },
+    { "from": "firebase-cloud-functions",   "to": "gemini-api",                "rel": "enables",      "weight": 4, "directed": true,  "notes": "Functions boundary keeps API key and system prompt server-side" },
+    { "from": "game-js",                    "to": "creep-system",              "rel": "implements",   "weight": 4, "directed": true },
+    { "from": "game-js",                    "to": "token-efficiency-scoring",  "rel": "implements",   "weight": 3, "directed": true },
+    { "from": "game-js",                    "to": "daily-words-system",        "rel": "implements",   "weight": 3, "directed": true },
+    { "from": "daily-words-system",         "to": "generate-daily-words",      "rel": "enables",      "weight": 3, "directed": true },
+    { "from": "daily-words-system",         "to": "daily-words-dataset",       "rel": "enables",      "weight": 3, "directed": true },
+    { "from": "creep-system",               "to": "prompt-engineering-mechanic","rel": "causes",      "weight": 4, "directed": true,  "notes": "The creep penalty forces players to develop indirect prompt strategies" },
+    { "from": "haiku-format",               "to": "arty",                      "rel": "governs",      "weight": 4, "directed": true,  "label": "5-7-5 syllable constraint enforced server-side via system prompt" },
+    { "from": "arty-generate-haiku",        "to": "haiku-format",              "rel": "implements",   "weight": 3, "directed": true,  "notes": "The function's system prompt enforces the haiku format" },
+    { "from": "token-efficiency-scoring",   "to": "leaderboard",               "rel": "enables",      "weight": 3, "directed": true },
+    { "from": "prompt-engineering-mechanic","to": "haiku-format",              "rel": "enables",      "weight": 3, "directed": true,  "notes": "The mechanic gives the haiku constraint its competitive meaning" },
+    { "from": "prompt-engineering-mechanic","to": "arty",                      "rel": "causes",       "weight": 4, "directed": true,  "notes": "Player prompts cause Arty to generate target-word haiku" },
+    { "from": "firebase-hosting",           "to": "art-of-intent",             "rel": "enables",      "weight": 3, "directed": true },
+    { "from": "art-of-intent",              "to": "dos-theme",                 "rel": "features",     "weight": 3, "directed": true },
+    { "from": "dos-theme",                  "to": "game-js",                   "rel": "enables",      "weight": 2, "directed": true,  "notes": "CSS variables and scanline animations define the game's visual context" },
+    { "from": "art-of-intent",              "to": "share-card-generator",      "rel": "features",     "weight": 3, "directed": true },
+    { "from": "share-card-generator",       "to": "canvas-api",                "rel": "implements",   "weight": 2, "directed": true },
+    { "from": "share-card-generator",       "to": "leaderboard",               "rel": "features",     "weight": 2, "directed": true,  "notes": "leaderboard-card-generator.js generates OG images for leaderboard shares" },
+    { "from": "leaderboard",                "to": "firestore",                 "rel": "enables",      "weight": 3, "directed": true },
+    { "from": "prompt-purify",              "to": "game-js",                   "rel": "enables",      "weight": 3, "directed": true,  "notes": "Sanitizes player input before it enters the game loop" },
+    { "from": "xss-prevention-system",      "to": "prompt-purify",             "rel": "implements",   "weight": 3, "directed": true },
+    { "from": "prompt-purify",              "to": "prompt-engineering-mechanic","rel": "governs",     "weight": 3, "directed": true,  "label": "sanitizes player input to prevent XSS and prompt injection" },
+    { "from": "xss-prevention-system",      "to": "art-of-intent",             "rel": "enables",      "weight": 2, "directed": true },
+    { "from": "firebase-auth",              "to": "art-of-intent",             "rel": "enables",      "weight": 3, "directed": true },
+    { "from": "game-js",                    "to": "firebase-auth",             "rel": "enables",      "weight": 3, "directed": true },
+    { "from": "firebase-auth",              "to": "google",                    "rel": "membership",   "weight": 2, "directed": true },
+    { "from": "firebase-ga4",              "to": "art-of-intent",             "rel": "enables",      "weight": 2, "directed": true },
+    { "from": "game-js",                    "to": "firebase-ga4",              "rel": "enables",      "weight": 2, "directed": true },
+    { "from": "gemini-api",                 "to": "google",                    "rel": "membership",   "weight": 2, "directed": true },
+    { "from": "art-of-intent",              "to": "netlify",                   "rel": "location",     "weight": 1, "directed": true },
+    { "from": "jest",                       "to": "game-js",                   "rel": "enables",      "weight": 1, "directed": true },
+    { "from": "jest",                       "to": "share-card-generator",      "rel": "enables",      "weight": 2, "directed": true },
+    { "from": "para-method",                "to": "art-of-intent",             "rel": "enables",      "weight": 1, "directed": true },
+    { "from": "arty",                       "to": "dos-theme",                 "rel": "association",  "weight": 2,                    "notes": "Arty's CRT retro persona is expressed through the DOS aesthetic" },
+    { "from": "daily-words-system",         "to": "creep-system",              "rel": "enables",      "weight": 3, "directed": true,  "notes": "The daily blacklist words define what triggers creep penalties" },
+    { "from": "game-js",                    "to": "leaderboard",               "rel": "enables",      "weight": 3, "directed": true,  "notes": "game.js computes and submits session results that populate the leaderboard" },
+    { "from": "arty-generate-haiku",        "to": "firestore",                 "rel": "enables",      "weight": 2, "directed": true,  "notes": "Function reads daily configuration and triggers downstream session persistence" },
+    { "from": "leaderboard",                "to": "share-card-generator",      "rel": "enables",      "weight": 2, "directed": true,  "notes": "Leaderboard data powers the OG image generation for leaderboard shares" },
+    { "from": "jest",                       "to": "firebase-ga4",              "rel": "enables",      "weight": 1, "directed": true },
+    { "from": "haiku-format",               "to": "prompt-engineering-mechanic","rel": "causes",      "weight": 4, "directed": true,  "notes": "The haiku constraint forces players to craft semantically indirect prompts" },
+    { "from": "token-efficiency-scoring",   "to": "prompt-engineering-mechanic","rel": "causes",      "weight": 3, "directed": true,  "notes": "Token scoring creates a compression incentive that rewards concise indirect prompting" },
+    { "from": "share-card-generator",       "to": "firebase-ga4",              "rel": "enables",      "weight": 2, "directed": true,  "notes": "Share events are tracked in GA4 analytics" },
+    { "from": "google",                     "to": "art-of-intent",             "rel": "enables",      "weight": 2, "directed": true,  "notes": "Google owns both Firebase and Gemini — every critical service is Google-provided" },
+    { "from": "jest",                       "to": "leaderboard",               "rel": "enables",      "weight": 1, "directed": true,  "notes": "leaderboard-card-generator.test.js tests leaderboard OG card generation" }
+  ]
+}

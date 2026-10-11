@@ -1,0 +1,1581 @@
+{
+  "meta": {
+    "id": "minecraft-redstone-computation",
+    "title": "The Digital Bedrock: Minecraft Redstone Computation",
+    "subtitle": "From NAND gates to Turing-complete CPUs — constrained by block physics",
+    "source": "library/minecraft-redstone.md",
+    "domain": "Technology / Game Engineering",
+    "year": 2025,
+    "tags": [
+      "Minecraft",
+      "Redstone",
+      "computation",
+      "digital logic",
+      "CPU",
+      "BPE",
+      "game engineering"
+    ],
+    "tone": "analytical"
+  },
+  "report_card": {
+    "summary": "Minecraft's Redstone system evolved from simple in-game wiring into a Turing-complete computational platform over 14 years, driven entirely by community ingenuity and periodic Mojang component additions. Block Space Efficiency (BPE) governed every architectural decision, with each new component triggering a design extinction event that obsoleted prior approaches. With the 2024 Copper Bulb reducing T-Flip-Flops to 2 blocks, spatial compression has reached physical bedrock, shifting future innovation permanently toward latency optimization and parallelism.",
+    "key_stats": [
+      "First Redstone CPU: September 2010 by theinternetftw",
+      "Max demonstrated memory: 16 KB RAM",
+      "Copper Bulb T-FF volume: 2 blocks (down from ~18 blocks pre-1.21)",
+      "Deep Thought CPU volume: 40×40×35 blocks, 4-bit architecture",
+      "Game tick rate: 20 ticks/second (irremovable physics ceiling)",
+      "Max signal propagation: 1 block per Redstone tick",
+      "Comparator signal range: 0–15 (4 bits per analog cell)",
+      "Largest bit-width achieved: 64-bit architectures"
+    ],
+    "spine": [
+      "redstone-computation",
+      "bpe",
+      "minecraft-java"
+    ],
+    "protagonists": [
+      "theinternetftw",
+      "n00b-asaurus",
+      "sethbling",
+      "mojang"
+    ],
+    "antagonists": [
+      "tick-rate-limit",
+      "ripple-carry-adder"
+    ],
+    "themes": [
+      "emergent complexity",
+      "physical constraint",
+      "design extinction",
+      "Turing completeness",
+      "BPE optimization"
+    ]
+  },
+  "story": [
+    {
+      "id": "beat-1",
+      "title": "The Theoretical Foundation",
+      "node": "redstone-torch",
+      "nodes": [
+        "redstone-dust",
+        "redstone-computation",
+        "alpha-1-0-1"
+      ],
+      "narration": "Alpha 1.0.1 in 2010 deposits a simple mechanic into Minecraft: Redstone dust for signal transmission, a lever for power, and the Redstone Torch, which turns off when its host block receives current. That last property is a NOT gate. From NOT gates you can build NAND. From NAND you can build any digital circuit that has ever existed. Minecraft becomes a Turing-complete computer the moment Redstone enters the game — years before anyone has built one.",
+      "tension": "low",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-2",
+      "title": "The First Machine",
+      "node": "internetftw-cpu",
+      "nodes": [
+        "theinternetftw",
+        "alu",
+        "alpha-1-0-1",
+        "bpe"
+      ],
+      "narration": "In September 2010, a builder named theinternetftw posts a working Redstone processing unit capable of mathematical and logical operations. Notch calls it extraordinary. The machine spreads out into the distance across the landscape — it requires a continent of blocks because every gate needs torch ladders, manual wiring, and there is no synchronization. The theoretical computer exists. The Block Space Efficiency problem has just been named.",
+      "tension": "low",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-3",
+      "title": "Synchronizing Chaos: The Repeater and QC",
+      "node": "redstone-repeater",
+      "nodes": [
+        "piston",
+        "quasi-connectivity",
+        "beta-1-3",
+        "beta-1-7",
+        "t-flip-flop"
+      ],
+      "narration": "Beta 1.3 (2011) introduces the Repeater — configurable delays from 0.1 to 0.4 seconds, ending erratic asynchronous timing. Square-wave clock circuits become reliable for the first time. Two months later, Beta 1.7 adds the Piston. A programming bug in its power-detection logic creates Quasi-Connectivity: the piston responds to blocks two spaces away, enabling latent-power storage in a single block. Java Edition engineers immediately exploit this. Bedrock Edition will never share it. The platform divide that will define Redstone's future has just been written into the game engine.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-4",
+      "title": "Memory as the Next Frontier",
+      "node": "sr-latch",
+      "nodes": [
+        "t-flip-flop",
+        "d-flip-flop",
+        "redstone-comparator",
+        "signal-strength-memory",
+        "java-1-5"
+      ],
+      "narration": "Sequential computing demands persistent state. Cross-coupled NOR gates using torches form the first SR Latches — bistable circuits holding a single bit. Toggle Flip-Flops use pistons to physically move blocks back and forth; reliable but requiring 2×3×3 blocks per bit. The Java 1.5 Redstone Update (2013) transforms the landscape: the Comparator reads container fullness as analog signal strength from 0 to 15. A single comparator cell now stores 4 bits in 1×3×1 blocks. Memory density quadruples with one game update.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-5",
+      "title": "The Platform Divide",
+      "node": "quasi-connectivity",
+      "nodes": [
+        "minecraft-java",
+        "minecraft-bedrock",
+        "piston"
+      ],
+      "narration": "Quasi-Connectivity was a piston bug Mojang chose not to fix because the Java Edition community had already built entire architectures around it. The BUD switch — Block Update Detector — uses QC to detect instantaneous block state changes, enabling compact piston logic available nowhere else. Bedrock Edition lacks QC entirely. The consequence is permanent: sophisticated vertical logic that fits in 3 blocks on Java requires 5–10× more space on Bedrock. Two editions of the same game now run on incompatible computational physics, and the gap will only widen as Java builds higher.",
+      "tension": "high",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-6",
+      "title": "Design Extinction Events",
+      "node": "copper-bulb",
+      "nodes": [
+        "t-flip-flop",
+        "bpe",
+        "java-1-21",
+        "observer",
+        "java-1-11"
+      ],
+      "narration": "The Observer (1.11, 2016) outputs an instantaneous 1-tick pulse on any adjacent block change. Multi-repeater clock circuits optimized over five years become obsolete overnight. Then the Copper Bulb arrives in 1.21 (2024): combined with a Comparator, it completes a full T-Flip-Flop in just 2 blocks — down from the decade-standard 2×3×3 configuration. Eight years of community refinement on T-FF design collapse in a single Tricky Trials update. Each Mojang release is not an improvement. It is a design extinction event.",
+      "tension": "high",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-7",
+      "title": "Turing Completeness vs. Physical Reality",
+      "node": "atari-emulator",
+      "nodes": [
+        "sethbling",
+        "turing-completeness",
+        "tick-rate-limit",
+        "deep-thought",
+        "n00b-asaurus"
+      ],
+      "narration": "Around 2020, n00b-asaurus fits a functional 4-bit CPU — AND, XOR, OR, ADD+C operations, finite-state control — into 40×40×35 blocks, drawing an explicit parallel to the Intel 4004. Then SethBling builds a working Atari 2600 emulator entirely in Redstone. It runs. It is Turing-complete. It runs 'very, very slowly.' The game imposes a 20-tick-per-second physics ceiling and a 1-block-per-tick signal propagation limit. No engineering solves these. Theoretical universality and practical execution speed are two orthogonal dimensions — Redstone has conquered the first and will never escape the second.",
+      "tension": "climax",
+      "focus": "tight"
+    },
+    {
+      "id": "beat-8",
+      "title": "The Observer Era: High-Speed Logic",
+      "node": "observer",
+      "nodes": [
+        "d-flip-flop",
+        "alu",
+        "java-1-11",
+        "finite-state-machine"
+      ],
+      "narration": "The Observer's 1-tick pulse rewrites timing across Redstone engineering. D-Flip-Flops that previously required multi-repeater chains now operate in compact 2×2×2 block structures, enabling high-speed CPU registers. ALU designs consolidate 8 logical operations into tight modular arrays. The Finite-State Machine approach — validated by real-world microprocessor design and used explicitly in Deep Thought — becomes the standard control architecture. Observer Lines emerge as the densest method for vertical pulse transmission without crosstalk. An entire generation of slower circuits retires.",
+      "tension": "medium",
+      "focus": "wide"
+    },
+    {
+      "id": "beat-9",
+      "title": "The Horizon Beyond Miniaturization",
+      "node": "redstone-computation",
+      "nodes": [
+        "copper-bulb",
+        "crafter",
+        "sculk-sensor",
+        "mojang",
+        "von-neumann-arch"
+      ],
+      "narration": "With T-Flip-Flops at 2 blocks, spatial optimization has reached its physical floor. The Crafter (1.21) and Calibrated Sculk Sensor (1.20) hint at what comes next: automated item-output mechanisms, vibration-based peripheral control, and non-contact environmental sensing. Mojang's trajectory of targeted component additions validates the community's direction — the developer is no longer a passive game designer but an active stakeholder in computational architecture. Future progress will not come from making circuits smaller. It will come from making them faster, parallel, and architecturally novel within physics that will never change.",
+      "tension": "low",
+      "focus": "wide"
+    }
+  ],
+  "insights": [
+    {
+      "id": "ins-turing-gap",
+      "title": "Redstone achieved theoretical Turing completeness in 2010 but required 14 years of component evolution before approaching practical computation at emulator scale",
+      "body": "NAND equivalence made Redstone Turing-complete from the moment the Torch was introduced in Alpha 1.0.1. Yet the gap between theoretical capability and functional computation was so vast that reaching emulator-scale systems took 14 years of community engineering and Mojang component additions. Theoretical Turing completeness is a floor, not an achievement — the architecture between that floor and practical computation is the entire story.",
+      "type": "finding",
+      "severity": "high",
+      "evidence": [
+        "redstone-torch",
+        "internetftw-cpu",
+        "atari-emulator",
+        "turing-completeness"
+      ]
+    },
+    {
+      "id": "ins-qc-divide",
+      "title": "Mojang's decision to retain the Quasi-Connectivity bug has permanently bifurcated Redstone computation into two incompatible platform tiers with no migration path",
+      "body": "Quasi-Connectivity was a piston programming error that the Java Edition community incorporated so thoroughly into advanced circuit design that Mojang preserved it. The result is a permanent architectural gulf: compact BUD-switch logic, high-density vertical transmission, and sophisticated piston-based memory cells exist only on Java Edition. Bedrock Edition builders operating on equivalent design principles require 5–10× more blocks to achieve the same functionality, with no workaround available.",
+      "type": "warning",
+      "severity": "high",
+      "evidence": [
+        "quasi-connectivity",
+        "minecraft-java",
+        "minecraft-bedrock",
+        "piston"
+      ]
+    },
+    {
+      "id": "ins-design-extinction",
+      "title": "Each Mojang component addition triggers a design extinction event that renders years of optimized community circuits obsolete within a single game update",
+      "body": "The Redstone community invests years optimizing a core circuit — the 2013–2024 T-Flip-Flop cycle is the clearest example — only for a new component to reduce that circuit to a fraction of its former size. The Observer (1.11) obsoleted multi-repeater timing chains. The Copper Bulb (1.21) collapsed the decade-standard 2×3×3 T-FF to a 1×2×1 configuration. This cycle is not a failure: it is the primary mechanism driving BPE progress, and it shows no signs of ending.",
+      "type": "pattern",
+      "severity": "medium",
+      "evidence": [
+        "copper-bulb",
+        "observer",
+        "t-flip-flop",
+        "bpe",
+        "java-1-21"
+      ]
+    },
+    {
+      "id": "ins-bpe-saturation",
+      "title": "BPE optimization has reached physical saturation at the 1-block scale, permanently redirecting advanced Redstone engineering from spatial compression to latency reduction",
+      "body": "Block Space Efficiency was the dominant design constraint from 2010 to 2024, driving every architectural decision from RS Latches to Ripple-Carry Adders to CPU register design. The Copper Bulb T-FF at 2 blocks represents the physical floor — a single-block toggle circuit is the mathematical minimum. With this constraint resolved, future performance gains can only come from minimizing signal path length and introducing parallel processing architectures within the fixed 20-tick-per-second physics environment.",
+      "type": "conclusion",
+      "severity": "high",
+      "evidence": [
+        "bpe",
+        "copper-bulb",
+        "tick-rate-limit",
+        "redstone-computation"
+      ]
+    },
+    {
+      "id": "ins-tick-paradox",
+      "title": "Redstone is provably universal but the 20-tick-per-second game engine ceiling makes practical software execution impossible regardless of architectural sophistication",
+      "body": "SethBling's Atari 2600 emulator demonstrates that Redstone can execute any computable function. It runs 'very, very slowly.' The 20-ticks-per-second engine rate and 1-block-per-tick signal propagation limit are not engineering problems — they are physics constants of the Minecraft runtime. No circuit optimization, no QC exploit, and no component addition changes these constants. Redstone computing is a laboratory for architecture theory, not a production compute platform.",
+      "type": "paradox",
+      "severity": "high",
+      "evidence": [
+        "atari-emulator",
+        "tick-rate-limit",
+        "turing-completeness",
+        "sethbling"
+      ]
+    },
+    {
+      "id": "ins-mojang-validation",
+      "title": "Mojang's targeted component additions — Comparator, Observer, Copper Bulb — show the developer actively shaping Redstone computation rather than passively hosting community exploits",
+      "body": "The Comparator (1.5), Observer (1.11), Sculk Sensor (1.17), and Copper Bulb (1.21) each directly solved a problem the Redstone engineering community had struggled with for years. The retention of QC was deliberate. The introduction of analog storage, 1-tick-pulse mechanism, and ultra-compact toggle logic were clearly informed by community usage. Mojang has shifted from passive game designer to active stakeholder in computational architecture, validating the community while guiding complexity toward intentional rather than exploit-based mechanics.",
+      "type": "finding",
+      "severity": "medium",
+      "evidence": [
+        "mojang",
+        "redstone-comparator",
+        "observer",
+        "copper-bulb",
+        "quasi-connectivity"
+      ]
+    }
+  ],
+  "clusters": [
+    {
+      "id": "cluster-components",
+      "label": "Redstone Component Layer",
+      "color": "#00aaff",
+      "nodes": [
+        "redstone-dust",
+        "redstone-torch",
+        "redstone-repeater",
+        "piston",
+        "redstone-comparator",
+        "observer",
+        "sculk-sensor",
+        "copper-bulb",
+        "crafter",
+        "command-blocks",
+        "quasi-connectivity"
+      ],
+      "description": "Named in-game components and the key mechanical quirk they spawned. Each node represents a named Minecraft block that directly extended or constrained Redstone computational capability."
+    },
+    {
+      "id": "cluster-architecture",
+      "label": "Logic and Memory Architecture",
+      "color": "#cc44ff",
+      "nodes": [
+        "sr-latch",
+        "t-flip-flop",
+        "d-flip-flop",
+        "alu",
+        "ripple-carry-adder",
+        "von-neumann-arch",
+        "signal-strength-memory",
+        "finite-state-machine",
+        "turing-completeness"
+      ],
+      "description": "Named computational architectures and circuit types realized in Redstone. Represents the abstract engineering layer built on top of game components — from bistable memory cells to stored-program computing."
+    },
+    {
+      "id": "cluster-builders",
+      "label": "Builder Milestones",
+      "color": "#ffcc00",
+      "nodes": [
+        "theinternetftw",
+        "salaja",
+        "laurens-weyn",
+        "n00b-asaurus",
+        "sethbling",
+        "internetftw-cpu",
+        "deep-thought",
+        "atari-emulator"
+      ],
+      "description": "The named engineers and their landmark projects that defined each era of Redstone computation. Each builder represents a distinct design philosophy and architectural contribution."
+    },
+    {
+      "id": "cluster-timeline",
+      "label": "Version History",
+      "color": "#888866",
+      "nodes": [
+        "alpha-1-0-1",
+        "beta-1-3",
+        "beta-1-7",
+        "java-1-5",
+        "java-1-11",
+        "java-1-21"
+      ],
+      "description": "Minecraft version milestones that introduced transformative Redstone components. Each node anchors a technological epoch in the graph and grounds the temporal chain."
+    },
+    {
+      "id": "cluster-limits",
+      "label": "Platform and Engineering Limits",
+      "color": "#00cccc",
+      "nodes": [
+        "redstone-computation",
+        "bpe",
+        "minecraft-java",
+        "minecraft-bedrock",
+        "mojang",
+        "tick-rate-limit",
+        "atari-2600",
+        "intel-4004"
+      ],
+      "description": "The platforms, constraints, and historical reference points that define what Redstone computation can and cannot achieve. BPE and tick rate are the two governing laws; Mojang is the external force shaping both."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "redstone-computation",
+      "label": "Redstone Computation",
+      "type": "concept",
+      "tier": "spine",
+      "sentiment": "neutral",
+      "description": "The emergent discipline of building functional digital computers using only Minecraft's Redstone mechanics. Encompasses the full stack from logic gates to Turing-complete CPUs and emulators, constrained throughout by the game's fixed physics.",
+      "metrics": {
+        "Years Active": "2010–present",
+        "Max Bit-Width": "64-bit demonstrated",
+        "Max Memory": "16 KB RAM"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "bpe",
+      "label": "Block Space Efficiency (BPE)",
+      "type": "metric",
+      "tier": "spine",
+      "sentiment": "contested",
+      "description": "The dominant design metric in Redstone engineering, measuring blocks consumed per bit of logic or storage. Lower BPE (fewer blocks per function) is the universal engineering goal. Drove every major architectural decision from 2010 to 2024, when Copper Bulb T-FFs reached the physical minimum of ~2 blocks.",
+      "metrics": {
+        "Torch RS Latch": "~18 blocks/bit",
+        "Comparator Cell": "3 blocks/4 bits",
+        "Copper Bulb T-FF": "2 blocks",
+        "BPE Floor": "1 block (theoretical)"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "minecraft-java",
+      "label": "Minecraft Java Edition",
+      "type": "platform",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "The original PC edition of Minecraft and the exclusive platform for advanced Redstone computation. Retains Quasi-Connectivity and other engine quirks that the Redstone community depends on. Home to all major computational milestones including theinternetftw's CPU, Deep Thought, and SethBling's Atari emulator.",
+      "metrics": {
+        "Max Tick Rate": "20 ticks/second",
+        "Signal Range": "15 blocks per dust segment"
+      },
+      "wikidata": "Q46303"
+    },
+    {
+      "id": "theinternetftw",
+      "label": "theinternetftw",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Minecraft builder who in September 2010 created and publicly demonstrated the first functional Redstone processing unit, proving that Minecraft's game engine could execute arithmetic and logical operations. The machine's colossal scale defined the BPE problem that all subsequent Redstone architecture attempts to solve.",
+      "metrics": {
+        "Achievement Date": "September 2010",
+        "CPU Type": "First functional Redstone ALU/CPU"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "n00b-asaurus",
+      "label": "n00b-asaurus",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Minecraft engineer and author of Deep Thought (~2020), the landmark compact Redstone CPU that fit a functional 4-bit processor into 40×40×35 blocks using strict BPE discipline and finite-state machine control. Represented the philosophical ideal of 'pure' Redstone construction without Command Blocks.",
+      "metrics": {
+        "Project": "Deep Thought CPU",
+        "Date": "c. 2020",
+        "CPU Volume": "40×40×35 blocks"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "sethbling",
+      "label": "SethBling",
+      "type": "person",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Minecraft content creator and engineer who built a functional Atari 2600 emulator in Redstone, demonstrating the maximum scale of Redstone's computational universality. The emulator confirmed Turing completeness while also revealing the insurmountable execution speed constraint imposed by the game tick rate.",
+      "metrics": {
+        "Project": "Atari 2600 Emulator",
+        "Status": "Functional but extremely slow"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "salaja",
+      "label": "Salaja",
+      "type": "person",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Minecraft builder who in April 2011 created a complex machine capable of loading 16 lines of code into RAM and displaying results in hexadecimal notation. Represented the first major integration step toward von Neumann architecture within Redstone, bridging the ALU proof-of-concept toward stored-program computing.",
+      "metrics": {
+        "Achievement Date": "April 2011",
+        "RAM Capacity": "16 lines of code"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "laurens-weyn",
+      "label": "Laurens Weyn",
+      "type": "person",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Minecraft engineer who created the Redgame computer series, which integrated memory and a rudimentary GPU, demonstrating the ability to run simple interactive programs and games within a stored-program Redstone architecture.",
+      "metrics": {
+        "Project": "Redgame Computer",
+        "Features": "Integrated Memory + rudimentary GPU"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "mojang",
+      "label": "Mojang",
+      "type": "company",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Developer and publisher of Minecraft. Has actively shaped Redstone computation through targeted component additions — Comparator (1.5), Observer (1.11), Copper Bulb (1.21) — each solving longstanding community engineering challenges. The deliberate retention of Quasi-Connectivity shows awareness of the Redstone community's architectural dependency on exploits.",
+      "metrics": {
+        "Founded": "2009",
+        "Key Redstone Updates": "1.5, 1.11, 1.17, 1.21"
+      },
+      "wikidata": "Q380131"
+    },
+    {
+      "id": "minecraft-bedrock",
+      "label": "Minecraft Bedrock Edition",
+      "type": "platform",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "The cross-platform edition of Minecraft that lacks Quasi-Connectivity, permanently excluding it from the advanced Redstone computational techniques developed on Java Edition. Sophisticated vertical logic and BUD-switch circuits that fit in 3 blocks on Java require 5–10× more space on Bedrock, with no architectural workaround.",
+      "wikidata": null
+    },
+    {
+      "id": "redstone-dust",
+      "label": "Redstone Dust",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "The fundamental signal transmission medium of the Redstone system, introduced in Alpha 1.0.1. Carries power for up to 15 blocks before decaying, requiring repeaters or torch ladders for longer runs. The 15-block limit was the primary distance constraint until the Repeater solved it in Beta 1.3.",
+      "metrics": {
+        "Introduced": "Alpha 1.0.1 (2010)",
+        "Max Propagation": "15 blocks"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "redstone-torch",
+      "label": "Redstone Torch",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The foundational logic element of Redstone, introduced in Alpha 1.0.1. Functions as a NOT gate — it turns off when the block it is placed upon receives power. This single behavior establishes NAND equivalence and makes every digital circuit, including universal computers, theoretically constructable from the game's first day of Redstone's existence.",
+      "metrics": {
+        "Introduced": "Alpha 1.0.1 (2010)",
+        "Logic Function": "NOT gate (NAND-complete)"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "redstone-repeater",
+      "label": "Redstone Repeater",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Introduced in Beta 1.3 (2011), the Repeater addressed Redstone dust's 15-block distance decay and introduced configurable time delays from 0.1 to 0.4 seconds. Its standardized timing ended the chaotic era of asynchronous torch-based clocks, enabling reliable synchronous digital circuits, pulse extenders, and the square-wave clocks required by sequential logic.",
+      "metrics": {
+        "Introduced": "Beta 1.3 (2011)",
+        "Delay Range": "0.1–0.4 seconds (1–4 Redstone ticks)",
+        "Signal Regeneration": "Full strength restoration"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "piston",
+      "label": "Piston / Sticky Piston",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "contested",
+      "description": "Introduced in Beta 1.7 (2011) for mechanical block manipulation, the Piston unexpectedly birthed Quasi-Connectivity — a programming bug where pistons respond to power states two blocks away. This created the BUD switch mechanism and enabled compact vertical logic. Sticky Pistons, which retract pushed blocks, are essential for physical toggle mechanisms in T-Flip-Flops.",
+      "metrics": {
+        "Introduced": "Beta 1.7 (2011)",
+        "QC Bug": "Java Edition only"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "redstone-comparator",
+      "label": "Redstone Comparator",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Introduced in Java 1.5 (the Redstone Update, 2013), the Comparator reads container fullness as analog signal strength from 0 to 15, enabling multi-bit storage in a single cell. This opened the 'analog' Redstone era, allowing 4-bit Signal Strength Memory cells and dramatically more compact ALU designs. The Comparator also pairs with the Copper Bulb to create the minimal 2-block T-Flip-Flop.",
+      "metrics": {
+        "Introduced": "Java 1.5 (2013)",
+        "Signal Range": "0–15 (4 bits per cell)",
+        "Update Nickname": "Redstone Update"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "observer",
+      "label": "Observer",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Introduced in Java 1.11 (2016), the Observer detects any block state change in its immediate vicinity and outputs an instantaneous 1-tick pulse. This enabled significantly higher clock frequencies, compact D-Flip-Flop designs, and Observer Lines for vertical pulse transmission. It rapidly obsoleted the multi-repeater timing chains that had been the community standard since 2013.",
+      "metrics": {
+        "Introduced": "Java 1.11 (2016)",
+        "Output Pulse": "1 Redstone tick (instantaneous)",
+        "D-FF Size": "2×2×2 blocks post-1.11"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "sculk-sensor",
+      "label": "Sculk Sensor",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Introduced in Java 1.17 (2021) and refined as the Calibrated Sculk Sensor in 1.20, the Sculk Sensor detects environmental vibrations and converts them into Redstone signals filterable by frequency. Opens possibilities for wireless, non-contact input systems, remote control peripherals, and novel environmental computing that operates outside the traditional wired signal architecture.",
+      "metrics": {
+        "Introduced": "Java 1.17 (2021)",
+        "Calibrated Version": "Java 1.20",
+        "Input Type": "Vibration / sound frequency"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "copper-bulb",
+      "label": "Copper Bulb",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Introduced in the Tricky Trials Update (Java 1.21, 2024), the Copper Bulb has an internal state toggled by each Redstone pulse. Combined with a Comparator, it creates a complete T-Flip-Flop in as few as 2 blocks — representing the near-physical minimum for a toggle circuit and pushing BPE optimization to its saturation point. Its introduction made pre-1.21 T-FF designs immediately obsolete.",
+      "metrics": {
+        "Introduced": "Java 1.21 (2024)",
+        "T-FF Size": "2 blocks (down from ~18 pre-1.21)",
+        "Update Nickname": "Tricky Trials"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "crafter",
+      "label": "Crafter",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Introduced alongside the Copper Bulb in Java 1.21 (2024), the Crafter provides a deterministic, Redstone-controllable automated item manufacturing mechanism. While primarily used in automated farming, its precise Redstone controllability suggests potential roles in programmable output, display systems, and automated instruction loading — hinting at more sophisticated I/O architectures.",
+      "metrics": {
+        "Introduced": "Java 1.21 (2024)",
+        "Primary Use": "Automated item manufacturing",
+        "Computational Potential": "Programmable I/O mechanism"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "command-blocks",
+      "label": "Command Blocks",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "contested",
+      "description": "Special blocks that execute server commands when powered by Redstone, enabling hybrid CPU architectures that handle complex instruction decoding and program storage in software rather than pure Redstone physics. Divides the community between purists who reject them as undermining the engineering challenge and pragmatists who use them to achieve 32-bit and 64-bit systems.",
+      "wikidata": null
+    },
+    {
+      "id": "quasi-connectivity",
+      "label": "Quasi-Connectivity (QC)",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "contested",
+      "description": "A Java Edition-exclusive programming bug where pistons, droppers, and dispensers respond to power states two blocks away in specific spatial configurations, without physically reacting until a Block Update occurs. Enables the BUD switch, ultra-compact vertical logic, high-speed memory cells, and efficient wiring solutions unavailable on Bedrock Edition. Retained by Mojang due to extensive community dependency.",
+      "wikidata": null
+    },
+    {
+      "id": "turing-completeness",
+      "label": "Turing Completeness",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The property of a computational system capable of simulating any Turing machine, meaning it can execute any algorithm given sufficient time and memory. Redstone achieved theoretical Turing completeness from Alpha 1.0.1 via NAND equivalence; it achieved practical Turing completeness with SethBling's Atari 2600 emulator — though execution speed renders it impractical for real software.",
+      "wikidata": "Q131928"
+    },
+    {
+      "id": "sr-latch",
+      "label": "SR Latch",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "The Set-Reset Latch — the fundamental unit of Redstone memory, implemented as cross-coupled NOR gates using Redstone torches and dust. Stores a single binary bit in a bistable circuit. The first mechanism for persistent state in Redstone computation, foundational to all subsequent sequential logic despite requiring approximately 3×3×2 blocks in early implementations.",
+      "metrics": {
+        "Era": "2010–present",
+        "Size (Early)": "3×3×2 blocks",
+        "Storage": "1 bit"
+      },
+      "wikidata": "Q185778"
+    },
+    {
+      "id": "t-flip-flop",
+      "label": "T-Flip-Flop (T-FF)",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "The Toggle Flip-Flop — a sequential circuit that changes its output state on each clock pulse input. Essential for binary counters and toggle-based memory. Underwent the most dramatic size reduction in Redstone history: from bulky piston-based 2×3×3 block designs (standard 2013–2024) to ultra-compact 2-block Copper Bulb implementations in 1.21, representing the clearest example of a design extinction event.",
+      "metrics": {
+        "Pre-1.21 Size": "2×3×3 blocks",
+        "Post-1.21 Size": "2 blocks (Copper Bulb)",
+        "Size Reduction": "~9× volume decrease"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "d-flip-flop",
+      "label": "D-Flip-Flop (D-FF)",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "neutral",
+      "description": "The Data Flip-Flop — captures and stores the value on its data input only when the clock signal transitions, ensuring data is updated only at defined, reliable intervals. Essential for CPU registers, program counters, and synchronized data storage. Became dramatically more compact post-1.11 with Observer-based implementations, enabling high-speed clocked processing pipelines.",
+      "metrics": {
+        "Pre-1.11 Size": "Multi-repeater chains",
+        "Post-1.11 Size": "2×2×2 blocks",
+        "Critical Use": "CPU Registers"
+      },
+      "wikidata": "Q2030309"
+    },
+    {
+      "id": "alu",
+      "label": "Arithmetic Logic Unit (ALU)",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The core processing component of any CPU, executing mathematical (addition, subtraction via two's complement) and logical (AND, OR, XOR, NOT, NAND, NOR, XNOR) operations. The central engineering challenge in Redstone computation from 2010 onward. Modern Redstone ALUs integrate 8 logical functions with multiplexed output selection and ripple-carry adder chains, mirroring real-world microprocessor design.",
+      "metrics": {
+        "Standard Operations": "8 (AND, OR, XOR, NOT, NAND, NOR, XNOR, ADD)",
+        "First Redstone ALU": "September 2010 (theinternetftw)"
+      },
+      "wikidata": "Q173661"
+    },
+    {
+      "id": "ripple-carry-adder",
+      "label": "Ripple-Carry Adder",
+      "type": "algorithm",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "The most common adder architecture in Redstone ALUs, constructed by chaining Full-Adders where the carry output of each stage feeds the carry input of the next. Calculation time scales linearly with bit width, creating a fundamental speed bottleneck: a 16-bit ripple-carry adder takes twice as long as an 8-bit version. This inherent propagation delay is the primary architectural constraint on achievable Redstone CPU clock speeds.",
+      "metrics": {
+        "Architecture": "Sequential carry propagation",
+        "Speed Scaling": "Linear with bit-width (bad)",
+        "Alternative": "Carry lookahead (rarely implemented in Redstone)"
+      },
+      "wikidata": "Q1088097"
+    },
+    {
+      "id": "von-neumann-arch",
+      "label": "Von Neumann Architecture",
+      "type": "standard",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "The stored-program computer architecture requiring both data and instructions to be held in accessible memory. The defining criterion for 'true' computers in the Redstone community. Achieved incrementally: theinternetftw proved ALU feasibility (2010), Salaja added RAM and hex display (2011), Laurens Weyn's Redgame integrated a GPU (post-2011), and Deep Thought achieved a complete minimal implementation (~2020).",
+      "wikidata": "Q186302"
+    },
+    {
+      "id": "signal-strength-memory",
+      "label": "Signal Strength Memory",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Memory architecture enabled by the Comparator's ability to store signal values from 0 to 15, allowing 4 bits of data in a single compact cell rather than the 1-bit limit of binary storage. Enabled dense RAM modules and compact ALU data paths in the post-1.5 era. Trade-off: higher density than binary D-FF storage but slower access times, analogous to DRAM vs. SRAM in real hardware.",
+      "metrics": {
+        "Storage Per Cell": "4 bits (16 states)",
+        "Cell Size": "1×3×1 to 4×4×4 blocks",
+        "Analogy": "DRAM (dense but slow)"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "finite-state-machine",
+      "label": "Finite-State Machine (FSM)",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "A computational model consisting of a finite set of states, transitions between states on defined inputs, and output actions. Used as the Control Unit in Redstone CPUs — including Deep Thought — to decode instructions and route data flow, minimizing block count compared to more complex control logic. Mirrors the control unit design of historical microprocessors like the Intel 4004.",
+      "wikidata": "Q183164"
+    },
+    {
+      "id": "tick-rate-limit",
+      "label": "Game Tick Rate Limit",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "negative",
+      "description": "The irremovable physical ceiling on Redstone computation: the Minecraft game engine runs at exactly 20 ticks per second, and Redstone signals propagate at 1 block per tick. These constants cannot be changed through any circuit design or optimization. They cap the maximum practical clock speed of any Redstone CPU and ensure that even Turing-complete systems like SethBling's Atari emulator run 'very, very slowly.'",
+      "metrics": {
+        "Tick Rate": "20 ticks/second (fixed)",
+        "Signal Speed": "1 block/Redstone tick",
+        "Practical CPU Speed": "Fractions of 1 Hz"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "alpha-1-0-1",
+      "label": "Alpha 1.0.1 (2010)",
+      "type": "milestone",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The Minecraft version that introduced foundational Redstone components: Redstone Dust, Redstone Torch, Lever, and Button. Established the NOT gate (torch) and OR gate (dust) primitives, which together provide NAND equivalence and theoretical Turing completeness. The genesis event for all Redstone computation.",
+      "metrics": {
+        "Year": "2010",
+        "Components Added": "Redstone Dust, Torch, Lever, Button"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "beta-1-3",
+      "label": "Beta 1.3 (2011)",
+      "type": "milestone",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The Minecraft version that introduced the Redstone Repeater, addressing signal distance decay and providing configurable timing delays (0.1–0.4 seconds). This ended the chaotic asynchronous era and made reliable synchronous clock circuits possible for the first time, a prerequisite for all subsequent complex sequential logic.",
+      "metrics": {
+        "Year": "2011",
+        "Component Added": "Redstone Repeater"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "beta-1-7",
+      "label": "Beta 1.7 (2011)",
+      "type": "milestone",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The Minecraft version that introduced the Piston and Sticky Piston, enabling physical block manipulation. A programming bug in piston power detection created Quasi-Connectivity, the Java Edition-exclusive exploit that would permanently bifurcate Redstone computation across platforms and enable a generation of compact, BUD-based circuit designs.",
+      "metrics": {
+        "Year": "2011",
+        "Components Added": "Piston, Sticky Piston",
+        "Side Effect": "Quasi-Connectivity (QC) bug"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "java-1-5",
+      "label": "Java 1.5 — Redstone Update (2013)",
+      "type": "milestone",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The Minecraft version known as the 'Redstone Update,' introducing the Comparator and marking the start of the analog Redstone era. The Comparator's signal strength storage capability (0–15) enabled 4-bit analog memory cells and dramatically more compact ALU and RAM designs, triggering a comprehensive redesign of memory architectures.",
+      "metrics": {
+        "Year": "2013",
+        "Component Added": "Redstone Comparator",
+        "Update Name": "Redstone Update"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "java-1-11",
+      "label": "Java 1.11 — Exploration Update (2016)",
+      "type": "milestone",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The Minecraft version that introduced the Observer, enabling instantaneous 1-tick pulse output on block state changes. Enabled compact D-Flip-Flop designs and high-frequency clocking, obsoleting the multi-repeater timing chains that had been standard since 2013 and triggering a design extinction event for clock-critical circuits.",
+      "metrics": {
+        "Year": "2016",
+        "Component Added": "Observer",
+        "Update Name": "Exploration Update"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "java-1-21",
+      "label": "Java 1.21 — Tricky Trials (2024)",
+      "type": "milestone",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The Minecraft version that introduced the Copper Bulb and Crafter, pushing BPE optimization for T-Flip-Flops to the physical minimum of ~2 blocks. The Copper Bulb triggered the most dramatic design extinction event in Redstone history, instantly obsoleting decade-standard T-FF designs. Represents the current state-of-the-art and the end of the BPE optimization era.",
+      "metrics": {
+        "Year": "2024",
+        "Components Added": "Copper Bulb, Crafter",
+        "Update Name": "Tricky Trials"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "internetftw-cpu",
+      "label": "theinternetftw's Redstone CPU (2010)",
+      "type": "event",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The first publicly demonstrated functional Redstone processing unit, built by theinternetftw and debuted in September 2010. Proved that Minecraft's game engine could model Boolean logic and execute arithmetic operations. Notable for its colossal physical scale — spreading 'out into the distance' — which visually defined the BPE problem that all subsequent Redstone architecture would work to solve. Lacked integrated RAM, ROM, or display output.",
+      "metrics": {
+        "Date": "September 2010",
+        "Capability": "Basic arithmetic and logical operations",
+        "Limitation": "No integrated RAM/ROM; colossal physical scale"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "deep-thought",
+      "label": "Deep Thought CPU (~2020)",
+      "type": "milestone",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "An ultra-compact 4-bit Redstone CPU built by n00b-asaurus around 2020, housing a functional processor executing AND, XOR, OR, and ADD+C operations within 40×40×35 blocks. Used a finite-state machine for control, relied only on native Redstone components (no Command Blocks), and drew explicit architectural parallels to the Intel 4004. Exemplified the BPE-first design philosophy and the rewards of extreme miniaturization.",
+      "metrics": {
+        "Builder": "n00b-asaurus",
+        "Date": "c. 2020",
+        "Volume": "40×40×35 blocks",
+        "Bit Width": "4-bit",
+        "Operations": "AND, XOR, OR, ADD+C"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "atari-emulator",
+      "label": "SethBling's Atari 2600 Emulator",
+      "type": "milestone",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "A functional Atari 2600 emulator built by SethBling in Redstone, representing the maximum scale of Redstone's computational universality. Confirmed that Redstone systems are fully Turing-complete and capable of executing real-world software architectures. However, its execution speed — described as 'very, very slowly' — exposed the insurmountable ceiling imposed by the game's fixed tick rate, proving that universality and practicality are orthogonal dimensions.",
+      "metrics": {
+        "Emulated System": "Atari 2600",
+        "Status": "Functional",
+        "Speed": "Extremely slow (tick-rate bound)"
+      },
+      "wikidata": null
+    },
+    {
+      "id": "atari-2600",
+      "label": "Atari 2600",
+      "type": "software",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The 1977 home video game console emulated by SethBling's Redstone system. Its role in this report is as the benchmark target: if Redstone can emulate the Atari 2600, it is definitively Turing-complete. The hardware specifications of the original Atari 2600 (6507 CPU, 128 bytes RAM) represent the target complexity ceiling for SethBling's project.",
+      "metrics": {
+        "Released": "1977",
+        "CPU": "MOS 6507 (1.19 MHz)",
+        "RAM": "128 bytes"
+      },
+      "wikidata": "Q685"
+    },
+    {
+      "id": "intel-4004",
+      "label": "Intel 4004",
+      "type": "software",
+      "tier": "anchor",
+      "sentiment": "neutral",
+      "description": "The world's first commercially available single-chip microprocessor (1971), a 4-bit CPU used as the architectural parallel for n00b-asaurus's Deep Thought. The comparison highlights that Deep Thought's 4-bit scope and finite-state machine control are legitimate architectural choices with real-world precedent, not merely game constraints. Grounds the Redstone CPU narrative within the broader history of computing.",
+      "metrics": {
+        "Released": "1971",
+        "Bit Width": "4-bit",
+        "Manufacturer": "Intel"
+      },
+      "wikidata": "Q216091"
+    }
+  ],
+  "edges": [
+    {
+      "from": "alpha-1-0-1",
+      "to": "beta-1-3",
+      "rel": "precedes",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "beta-1-3",
+      "to": "beta-1-7",
+      "rel": "precedes",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "beta-1-7",
+      "to": "java-1-5",
+      "rel": "precedes",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "java-1-5",
+      "to": "java-1-11",
+      "rel": "precedes",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "java-1-11",
+      "to": "java-1-21",
+      "rel": "precedes",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "alpha-1-0-1",
+      "to": "internetftw-cpu",
+      "rel": "precedes",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "internetftw-cpu",
+      "to": "deep-thought",
+      "rel": "precedes",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "deep-thought",
+      "to": "atari-emulator",
+      "rel": "precedes",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "alpha-1-0-1",
+      "to": "redstone-dust",
+      "rel": "features",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "alpha-1-0-1",
+      "to": "redstone-torch",
+      "rel": "features",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "beta-1-3",
+      "to": "redstone-repeater",
+      "rel": "features",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "beta-1-7",
+      "to": "piston",
+      "rel": "features",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "java-1-5",
+      "to": "redstone-comparator",
+      "rel": "features",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "java-1-11",
+      "to": "observer",
+      "rel": "features",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "java-1-21",
+      "to": "copper-bulb",
+      "rel": "features",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "java-1-21",
+      "to": "crafter",
+      "rel": "features",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "minecraft-java",
+      "to": "sculk-sensor",
+      "rel": "features",
+      "weight": 2,
+      "directed": true,
+      "notes": "Introduced Java 1.17 (2021); no dedicated version milestone node"
+    },
+    {
+      "from": "minecraft-java",
+      "to": "quasi-connectivity",
+      "rel": "permits",
+      "label": "retained piston QC bug as permanent Java-exclusive feature",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "minecraft-bedrock",
+      "to": "quasi-connectivity",
+      "rel": "prohibits",
+      "label": "platform physics exclude QC — incompatible piston engine",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "minecraft-java",
+      "rel": "governs",
+      "label": "game developer and publisher",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "minecraft-bedrock",
+      "rel": "governs",
+      "label": "game developer and publisher",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "redstone-torch",
+      "rel": "creation",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "redstone-repeater",
+      "rel": "creation",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "piston",
+      "rel": "creation",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "redstone-comparator",
+      "rel": "creation",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "observer",
+      "rel": "creation",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "copper-bulb",
+      "rel": "creation",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "crafter",
+      "rel": "creation",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "mojang",
+      "to": "sculk-sensor",
+      "rel": "creation",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "redstone-torch",
+      "to": "sr-latch",
+      "rel": "enables",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "redstone-torch",
+      "to": "alu",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true,
+      "notes": "NOT gate is foundational to all NAND-based logic in the ALU"
+    },
+    {
+      "from": "redstone-repeater",
+      "to": "t-flip-flop",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true,
+      "notes": "Standardized timing enabled reliable piston-based toggle circuits"
+    },
+    {
+      "from": "redstone-repeater",
+      "to": "d-flip-flop",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "redstone-repeater",
+      "to": "alu",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true,
+      "notes": "Synchronous clock circuit enables ALU operation timing"
+    },
+    {
+      "from": "piston",
+      "to": "quasi-connectivity",
+      "rel": "causes",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "piston",
+      "to": "t-flip-flop",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true,
+      "notes": "Piston physically toggles block to implement T-FF state"
+    },
+    {
+      "from": "redstone-comparator",
+      "to": "signal-strength-memory",
+      "rel": "enables",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "redstone-comparator",
+      "to": "alu",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true,
+      "notes": "Analog signal reading enables compact ALU data paths"
+    },
+    {
+      "from": "redstone-comparator",
+      "to": "t-flip-flop",
+      "rel": "enables",
+      "weight": 4,
+      "directed": true,
+      "notes": "Pairs with Copper Bulb to create 2-block T-FF"
+    },
+    {
+      "from": "observer",
+      "to": "d-flip-flop",
+      "rel": "enables",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "observer",
+      "to": "alu",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "copper-bulb",
+      "to": "t-flip-flop",
+      "rel": "enables",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "copper-bulb",
+      "to": "bpe",
+      "rel": "causes",
+      "weight": 4,
+      "directed": true,
+      "notes": "Copper Bulb T-FF pushes BPE to physical saturation point"
+    },
+    {
+      "from": "quasi-connectivity",
+      "to": "sr-latch",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true,
+      "notes": "BUD switch creates compact QC-based memory cells"
+    },
+    {
+      "from": "quasi-connectivity",
+      "to": "t-flip-flop",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "command-blocks",
+      "to": "von-neumann-arch",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true,
+      "notes": "Hybrid CPU approach uses Command Blocks for instruction handling"
+    },
+    {
+      "from": "command-blocks",
+      "to": "redstone-computation",
+      "rel": "disrupts",
+      "weight": 3,
+      "directed": true,
+      "notes": "Creates philosophical divide between pure Redstone and hybrid approaches"
+    },
+    {
+      "from": "sr-latch",
+      "to": "t-flip-flop",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "sr-latch",
+      "to": "d-flip-flop",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "t-flip-flop",
+      "to": "alu",
+      "rel": "enables",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "d-flip-flop",
+      "to": "alu",
+      "rel": "enables",
+      "weight": 4,
+      "directed": true,
+      "notes": "D-FF registers are the primary data storage within CPU ALU pipeline"
+    },
+    {
+      "from": "alu",
+      "to": "von-neumann-arch",
+      "rel": "enables",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "von-neumann-arch",
+      "to": "turing-completeness",
+      "rel": "enables",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "ripple-carry-adder",
+      "to": "alu",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "finite-state-machine",
+      "to": "alu",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true,
+      "notes": "FSM provides CPU control unit that sequences ALU operations"
+    },
+    {
+      "from": "signal-strength-memory",
+      "to": "alu",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true,
+      "notes": "Analog RAM feeds data to CPU ALU operations"
+    },
+    {
+      "from": "tick-rate-limit",
+      "to": "bpe",
+      "rel": "causes",
+      "weight": 5,
+      "directed": true,
+      "notes": "Fixed tick rate forces minimization of signal path length to achieve any practical speed"
+    },
+    {
+      "from": "ripple-carry-adder",
+      "to": "bpe",
+      "rel": "causes",
+      "weight": 4,
+      "directed": true,
+      "notes": "Carry propagation delay forces architects to minimize adder path length"
+    },
+    {
+      "from": "bpe",
+      "to": "redstone-computation",
+      "rel": "governs",
+      "label": "primary design constraint across all 14 years of evolution",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "observer",
+      "to": "bpe",
+      "rel": "mitigates",
+      "weight": 3,
+      "directed": true,
+      "notes": "Observer Line replaces bulky multi-repeater clock chains"
+    },
+    {
+      "from": "tick-rate-limit",
+      "to": "redstone-computation",
+      "rel": "governs",
+      "label": "20 ticks/second physics ceiling on all execution speed",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "tick-rate-limit",
+      "to": "atari-emulator",
+      "rel": "governs",
+      "label": "caps execution speed to near-zero practical utility",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "redstone-computation",
+      "to": "minecraft-java",
+      "rel": "membership",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "minecraft-java",
+      "to": "minecraft-bedrock",
+      "rel": "association",
+      "weight": 2,
+      "directed": false,
+      "notes": "QC creates incompatible computational physics between editions"
+    },
+    {
+      "from": "theinternetftw",
+      "to": "internetftw-cpu",
+      "rel": "creation",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "n00b-asaurus",
+      "to": "deep-thought",
+      "rel": "creation",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "sethbling",
+      "to": "atari-emulator",
+      "rel": "creation",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "salaja",
+      "to": "von-neumann-arch",
+      "rel": "association",
+      "weight": 3,
+      "directed": true,
+      "notes": "Salaja's 2011 machine with 16-line RAM and hex display was the first stored-program Redstone architecture"
+    },
+    {
+      "from": "laurens-weyn",
+      "to": "von-neumann-arch",
+      "rel": "association",
+      "weight": 2,
+      "directed": true,
+      "notes": "Redgame demonstrated stored-program with GPU integration"
+    },
+    {
+      "from": "internetftw-cpu",
+      "to": "alu",
+      "rel": "implements",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "internetftw-cpu",
+      "to": "turing-completeness",
+      "rel": "achieves",
+      "weight": 3,
+      "directed": true,
+      "notes": "Proved practical arithmetic feasibility, first step toward Turing completeness"
+    },
+    {
+      "from": "deep-thought",
+      "to": "alu",
+      "rel": "implements",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "deep-thought",
+      "to": "von-neumann-arch",
+      "rel": "implements",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "deep-thought",
+      "to": "finite-state-machine",
+      "rel": "implements",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "deep-thought",
+      "to": "bpe",
+      "rel": "achieves",
+      "weight": 3,
+      "directed": true,
+      "notes": "Exemplifies extreme BPE discipline: functional CPU in 40x40x35 blocks"
+    },
+    {
+      "from": "atari-emulator",
+      "to": "von-neumann-arch",
+      "rel": "implements",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "atari-emulator",
+      "to": "turing-completeness",
+      "rel": "achieves",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "atari-2600",
+      "to": "atari-emulator",
+      "rel": "association",
+      "weight": 3,
+      "directed": true,
+      "notes": "Atari 2600 is the emulation target hardware"
+    },
+    {
+      "from": "intel-4004",
+      "to": "deep-thought",
+      "rel": "association",
+      "weight": 2,
+      "directed": false,
+      "notes": "Deep Thought draws explicit architectural parallel to 4-bit Intel 4004"
+    },
+    {
+      "from": "intel-4004",
+      "to": "finite-state-machine",
+      "rel": "implements",
+      "weight": 2,
+      "directed": true,
+      "notes": "Intel 4004 also uses FSM control architecture — validates Redstone approach"
+    },
+    {
+      "from": "theinternetftw",
+      "to": "turing-completeness",
+      "rel": "association",
+      "weight": 2,
+      "directed": true,
+      "notes": "First to prove Redstone arithmetic feasibility — first step to Turing completeness"
+    },
+    {
+      "from": "sethbling",
+      "to": "turing-completeness",
+      "rel": "achieves",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "n00b-asaurus",
+      "to": "bpe",
+      "rel": "achieves",
+      "weight": 3,
+      "directed": true,
+      "notes": "n00b-asaurus is the primary exemplar of BPE-first CPU design philosophy"
+    },
+    {
+      "from": "mojang",
+      "to": "turing-completeness",
+      "rel": "association",
+      "weight": 2,
+      "directed": true,
+      "notes": "Mojang's component additions actively support community progress toward computational universality"
+    },
+    {
+      "from": "java-1-21",
+      "to": "bpe",
+      "rel": "causes",
+      "weight": 3,
+      "directed": true,
+      "notes": "1.21 Copper Bulb triggers design extinction and BPE saturation"
+    },
+    {
+      "from": "java-1-11",
+      "to": "bpe",
+      "rel": "causes",
+      "weight": 3,
+      "directed": true,
+      "notes": "Observer triggers design extinction of multi-repeater clock circuits"
+    },
+    {
+      "from": "sculk-sensor",
+      "to": "redstone-computation",
+      "rel": "enables",
+      "weight": 2,
+      "directed": true,
+      "notes": "Wireless input opens non-contact environmental computing dimension"
+    },
+    {
+      "from": "crafter",
+      "to": "von-neumann-arch",
+      "rel": "enables",
+      "weight": 2,
+      "directed": true,
+      "notes": "Automated I/O hints at programmable output for stored-program systems"
+    },
+    {
+      "from": "redstone-dust",
+      "to": "redstone-computation",
+      "rel": "enables",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "redstone-torch",
+      "to": "redstone-computation",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    },
+    {
+      "from": "redstone-repeater",
+      "to": "redstone-computation",
+      "rel": "enables",
+      "weight": 3,
+      "directed": true
+    }
+  ]
+}

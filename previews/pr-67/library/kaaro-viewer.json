@@ -1,0 +1,772 @@
+{
+  "meta": {
+    "id": "kaaro-viewer",
+    "title": "kaaroViewer: A Self-Governing Spatial Intelligence Platform",
+    "subtitle": "From open-world NER to personalized ontology — the architecture of knowledge drift prevention",
+    "source": "library/kaaro-viewer-2026.md",
+    "domain": "Knowledge Engineering",
+    "year": "2026",
+    "tags": [
+      "kaaroviewer",
+      "spatial-intelligence",
+      "knowledge-graph",
+      "ontology",
+      "llm",
+      "self-governance",
+      "visualization",
+      "three-js"
+    ],
+    "tone": "narrative"
+  },
+  "report_card": {
+    "summary": "kaaroViewer began as an open-world knowledge graph explorer powered by NER and SPARQL, but failed at the boundary of private knowledge with no Wikidata analog. LLMs fill that gap by encoding arbitrary text into the intelligence brief format — but unconstrained LLM freedom causes ontology drift across encodings. The three-part lock (validator + SOP + renderer) and Dream Loop are the current architectural answer to a problem that is named, partially constrained, and still being refined.",
+    "key_stats": [
+      "Library entries (2026): 9 ok · 0 degraded · 0 watch",
+      "Test suite: 168 passing",
+      "VALID_TYPES: 38 node types",
+      "VALID_RELS: 29 edge relationships",
+      "Dream Loop runs: 1 (reveals promoted from warning to error)",
+      "Alone-Time runs: 4 (library 3 degraded → 0 degraded)",
+      "Average edge density: 2.18 edges per node",
+      "Intelligence brief layers: 7 (meta, nodes, edges, story, insights, clusters, report_card)"
+    ],
+    "spine": ["kaaro-viewer", "personalized-ontology", "intelligence-brief"],
+    "protagonists": ["three-part-lock", "dream-loop", "alone-time-loop", "visualize-skill"],
+    "antagonists": ["ontology-drift", "open-world-assumption"],
+    "themes": ["ontology-maintenance", "private-knowledge", "self-governance", "spatial-visualization", "llm-encoding"]
+  },
+  "story": [
+    {
+      "id": "beat-1",
+      "title": "Knowledge Meets the Open World",
+      "node": "open-world-assumption",
+      "nodes": [
+        "open-world-assumption",
+        "opentapioca",
+        "wikidata",
+        "sparql"
+      ],
+      "narration": "The earliest kaaroViewer is built on an implicit assumption: knowledge worth visualizing exists in the open world. OpenTapioca matches text to Wikidata QIDs; SPARQL fetches structured facts — descriptions, images, linked identifiers. For public subjects, this works precisely because Wikidata already knows them. The system renders what it can look up.",
+      "tension": "low",
+      "focus": "foundation"
+    },
+    {
+      "id": "beat-2",
+      "title": "A-Frame and the First Spatial Canvas",
+      "node": "a-frame",
+      "nodes": [
+        "a-frame",
+        "webxr",
+        "kaaro-viewer"
+      ],
+      "narration": "The first rendering layer is A-Frame, a declarative WebXR framework. Public entities from Wikidata become primitives in a 3D scene. The canvas is functional but abstract — labels on geometric shapes. Spatial layout begins to suggest that geometry alone cannot carry meaning.",
+      "tension": "low",
+      "focus": "rendering"
+    },
+    {
+      "id": "beat-3",
+      "title": "The Boundary Where Public Knowledge Ends",
+      "node": "private-knowledge-vault",
+      "nodes": [
+        "private-knowledge-vault",
+        "open-world-assumption",
+        "opentapioca"
+      ],
+      "narration": "Personal knowledge vaults, project notes, research documents — these texts have no QIDs. OpenTapioca cannot match them to Wikidata. SPARQL has nothing to retrieve. The open-world assumption fails at exactly the boundary where personal knowledge begins, and the system that works for public subjects cannot see private ones at all.",
+      "tension": "medium",
+      "focus": "failure"
+    },
+    {
+      "id": "beat-4",
+      "title": "LLM as Ontology Constructor",
+      "node": "intelligence-brief",
+      "nodes": [
+        "intelligence-brief",
+        "gemini",
+        "private-knowledge-vault"
+      ],
+      "narration": "An LLM is introduced to encode private text: identify entities, name types, trace relationships, construct narrative, surface insights. The intelligence brief format emerges — a seven-layer JSON document (meta, nodes, edges, story, insights, clusters, report_card) that becomes the system's lingua franca. The LLM can encode what NER cannot. The library grows beyond public knowledge into personal knowledge vaults.",
+      "tension": "medium",
+      "focus": "pivot"
+    },
+    {
+      "id": "beat-5",
+      "title": "Ontology Drift — The Liability of LLM Freedom",
+      "node": "ontology-drift",
+      "nodes": [
+        "ontology-drift",
+        "intelligence-brief",
+        "validator"
+      ],
+      "narration": "Left unconstrained, the LLM invents types and relationships the renderer does not understand. Two documents on the same topic, encoded weeks apart, produce incompatible schemas. Early encodings produce edge densities as low as 1.32; others reach 2.41. The gap is not quality variance — it is ontological incoherence. Drift becomes the dominant library failure mode.",
+      "tension": "high",
+      "focus": "problem"
+    },
+    {
+      "id": "beat-6",
+      "title": "Three.js — The Visual Contract Made Direct",
+      "node": "three-js",
+      "nodes": [
+        "three-js",
+        "a-frame",
+        "force-directed-layout",
+        "kaaro-viewer"
+      ],
+      "narration": "A-Frame is superseded by a direct Three.js canvas providing full control: force-directed layout, tier-scaled geometry, sentiment aura rings, animated story beat transitions. Each node type maps to a geometry; each sentiment to an aura color. The visual contract makes the ontology concrete — a type that renders as a fallback primitive is visually anonymous. The renderer becomes an enforcement point, not just a display layer.",
+      "tension": "high",
+      "focus": "architecture"
+    },
+    {
+      "id": "beat-7",
+      "title": "The Three-Part Lock — Ontology Made Defensible",
+      "node": "three-part-lock",
+      "nodes": [
+        "three-part-lock",
+        "dream-loop",
+        "alone-time-loop",
+        "validator",
+        "sop-reference"
+      ],
+      "narration": "The three-part lock crystallizes: validator (canonical VALID_TYPES/VALID_RELS — 38 types, 29 rels), SOP reference (semantic + visual explanation), renderer (geometry/style switches) — all three must update atomically. The Dream Loop runs its first execution: the `reveals` relationship, repeatedly used from memory, is promoted from warning to blocking error. Across 4 Alone-Time runs, the library moves from 3 degraded entries to 9 ok · 0 watch · 0 degraded. The personalized ontology has its first defensible form.",
+      "tension": "climax",
+      "focus": "resolution"
+    },
+    {
+      "id": "beat-8",
+      "title": "Two Paths — Explore and Enforce",
+      "node": "explore-pipeline",
+      "nodes": [
+        "explore-pipeline",
+        "visualize-skill",
+        "intelligence-brief",
+        "gemini"
+      ],
+      "narration": "The explore pipeline offers anyone a draft knowledge graph in seconds — Gemini, a single LLM call, approximate ontology adherence. The visualize skill offers a power user a library-grade brief — three-pass encoding, full validator enforcement, permanent registration. The distinction is not quality alone: it is how much of the personalized ontology is enforced. Both paths produce intelligence briefs; only one enforces the full ontology contract.",
+      "tension": "medium",
+      "focus": "interaction"
+    },
+    {
+      "id": "beat-9",
+      "title": "Painting — Images for At-a-Glance Comprehension",
+      "node": "paint-system",
+      "nodes": [
+        "paint-system",
+        "paint-context",
+        "paint-strategies",
+        "gemini",
+        "stable-diffusion"
+      ],
+      "narration": "The paint system adds a comprehension channel that geometry cannot provide. PaintContext assembles three inputs — spatial positioning (nodes in camera frustum), textual context (slide narration + node description), cinematic camera angle — into a prompt informed by stable diffusion seed prompt patterns. 4 named strategies (cinematic/documentary/abstract/blueprint) produce genuinely different images from the same canvas state. Gemini generates the image; Three.js applies it as a mesh texture.",
+      "tension": "medium",
+      "focus": "enrichment"
+    },
+    {
+      "id": "beat-10",
+      "title": "The Ontology Problem Is Named, Not Solved",
+      "node": "kaaro-viewer",
+      "nodes": [
+        "kaaro-viewer",
+        "alone-time-loop",
+        "dream-loop",
+        "health-check",
+        "eval-modal"
+      ],
+      "narration": "9 library entries. 168 tests passing. 1 Dream Loop run complete. The ontology problem — maintaining a stable, evolvable, personalized vocabulary for private knowledge visualization — is now explicit and partially constrained. The vocabulary extension mechanism exists; the gaps that require it lie ahead. The eval loop surfaces the gap between ontological correctness (validator pass) and ontological quality (faithful encoding). The system is self-aware of its own limits.",
+      "tension": "low",
+      "focus": "open-question"
+    }
+  ],
+  "insights": [
+    {
+      "id": "i1",
+      "title": "LLM-encoded ontologies drift irreversibly without atomic updates to all three lock components — validator, SOP, and renderer",
+      "body": "The freedom that makes LLMs useful for encoding private knowledge is the same freedom that causes ontology drift. Early library entries show edge density variance from 1.32 to 2.41 — not quality variance but ontological incoherence. The three-part lock prevents silent divergence: when the validator's vocabulary, the SOP's semantic rules, and the renderer's visual contract all agree, encoders produce consistent graphs. When they diverge, a single missing renderer branch creates visually anonymous nodes that no encoder can detect.",
+      "type": "warning",
+      "evidence": [
+        "ontology-drift",
+        "three-part-lock",
+        "validator",
+        "sop-reference"
+      ],
+      "severity": "high"
+    },
+    {
+      "id": "i2",
+      "title": "The explore pipeline and visualize skill enforce different fractions of the ontology by design — conflating them produces neither speed nor quality",
+      "body": "The explore pipeline approximates the ontology for speed and accessibility; the visualize skill enforces it fully for library permanence. These are not the same tool at different quality levels — they serve different users at different stages of the knowledge lifecycle. Treating explore output as library-grade is the most common misuse. Treating every encoding as requiring visualize-skill depth is the most common bottleneck.",
+      "type": "finding",
+      "evidence": [
+        "explore-pipeline",
+        "visualize-skill",
+        "intelligence-brief"
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "i3",
+      "title": "Spatial positioning, textual slide context, and cinematic camera angle together are sufficient to generate domain-appropriate images — stable diffusion seed prompt patterns transfer directly to knowledge graph painting",
+      "body": "The paint system's three-input prompt construction (spatial + textual + cinematic) reproduces key dimensions that the stable diffusion community discovered empirically. The named strategies — cinematic, documentary, abstract, blueprint — are domain-specific instantiations of well-known compositional patterns, not ad hoc engineering. This transferability means the paint system can be improved by importing prompt engineering research rather than rediscovering it from scratch.",
+      "type": "pattern",
+      "evidence": [
+        "paint-system",
+        "paint-context",
+        "paint-strategies",
+        "stable-diffusion"
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "i4",
+      "title": "The Dream Loop has proven itself for constraint tightening but remains unvalidated for vocabulary extension — the harder half of ontology governance",
+      "body": "Dream Loop run 1 identified an encoder habit (the `reveals` relationship) and tightened the validator constraint. This is the minimal governance case — an existing boundary was enforced more strictly. The harder case — adding genuinely new node types for domains the current vocabulary cannot express — has not yet been tested. The mechanism exists; its performance at the vocabulary boundary remains an open hypothesis.",
+      "type": "opportunity",
+      "evidence": [
+        "dream-loop",
+        "alone-time-loop",
+        "validator",
+        "three-part-lock"
+      ],
+      "severity": "medium"
+    },
+    {
+      "id": "i5",
+      "title": "The kaaro-viewer library entry is the only self-referential encoding in the library — the system that governs re-encoding must also model itself",
+      "body": "The Alone-Time loop selects degraded library entries and re-encodes them. The kaaro-viewer entry is an encoding of the very system that performs re-encoding — the loop that produces kaaro-viewer.json is itself described by kaaro-viewer.json. This self-reference is unavoidable. The 2026 re-encode (Alone-Time run 4 + narrative source document) is the first attempt to encode the causal story rather than only the component inventory.",
+      "type": "paradox",
+      "evidence": [
+        "kaaro-viewer",
+        "alone-time-loop",
+        "intelligence-brief",
+        "visualize-skill"
+      ],
+      "severity": "low"
+    }
+  ],
+  "clusters": [
+    {
+      "id": "c1",
+      "label": "Open-World Failure Space",
+      "color": "#e74c3c",
+      "nodes": [
+        "open-world-assumption",
+        "opentapioca",
+        "wikidata",
+        "sparql",
+        "private-knowledge-vault",
+        "ontology-drift"
+      ],
+      "description": "NER + Wikidata SPARQL works for public entities but fails on private knowledge vaults, producing ontology drift as LLMs fill the gap without constraints."
+    },
+    {
+      "id": "c2",
+      "label": "Ontology Architecture",
+      "color": "#3498db",
+      "nodes": [
+        "personalized-ontology",
+        "intelligence-brief",
+        "three-part-lock",
+        "validator",
+        "sop-reference"
+      ],
+      "description": "The core data model and its enforcement: the intelligence brief as lingua franca, the three-part lock (validator + SOP + renderer) as the system's answer to drift."
+    },
+    {
+      "id": "c3",
+      "label": "Encoding Paths",
+      "color": "#27ae60",
+      "nodes": [
+        "explore-pipeline",
+        "visualize-skill",
+        "gemini",
+        "completion-pipeline"
+      ],
+      "description": "Two paths to a brief: explore pipeline (fast, approximate, Gemini-powered) and visualize skill (deliberate, enforced, Claude-powered). Gemini also powers the paint image generation."
+    },
+    {
+      "id": "c4",
+      "label": "Canvas and Rendering",
+      "color": "#8e44ad",
+      "nodes": [
+        "kaaro-viewer",
+        "three-js",
+        "a-frame",
+        "webxr",
+        "force-directed-layout",
+        "brief-controller",
+        "session-manager"
+      ],
+      "description": "The visualization layer: Three.js canvas (superseding A-Frame) renders the intelligence brief as an interactive force-directed 3D graph. State managed by brief-controller; sessions persisted by session-manager."
+    },
+    {
+      "id": "c5",
+      "label": "Image Layer",
+      "color": "#e67e22",
+      "nodes": [
+        "paint-system",
+        "paint-context",
+        "paint-strategies",
+        "stable-diffusion"
+      ],
+      "description": "The paint system: PaintContext assembles spatial + textual + camera context; named strategies shape the prompt; images generated via Gemini and applied as mesh textures in Three.js."
+    },
+    {
+      "id": "c6",
+      "label": "Self-Governance Loop",
+      "color": "#1abc9c",
+      "nodes": [
+        "dream-loop",
+        "alone-time-loop",
+        "health-check",
+        "eval-modal",
+        "github-issues"
+      ],
+      "description": "The life architecture: health-check monitors library quality, Alone-Time loop re-encodes degraded entries, Dream Loop evolves the ontology vocabulary, eval-modal collects user feedback via GitHub Issues."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "kaaro-viewer",
+      "label": "kaaroViewer",
+      "type": "platform",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "A browser-based spatial intelligence platform that transforms text documents into interactive 3D knowledge graphs. The central subject being encoded — a self-referential encoding of the system that performs encodings.",
+      "metrics": {
+        "Library entries": "9 ok · 0 degraded",
+        "Test suite": "168 passing",
+        "VALID_TYPES": "38",
+        "VALID_RELS": "29",
+        "Avg edge density": "2.18"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "personalized-ontology",
+      "label": "Personalized Ontology",
+      "type": "concept",
+      "tier": "spine",
+      "sentiment": "contested",
+      "description": "The project's central unsolved problem: maintaining a stable, evolvable vocabulary for encoding private knowledge that has no Wikidata analog. Contested because it is both the goal (desired) and the risk (LLM freedom causes drift).",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "intelligence-brief",
+      "label": "Intelligence Brief",
+      "type": "standard",
+      "tier": "spine",
+      "sentiment": "positive",
+      "description": "The system's lingua franca — a seven-layer JSON format (meta, nodes, edges, story, insights, clusters, report_card) that every encoding path produces and every canvas renderer consumes.",
+      "metrics": {
+        "Layers": "7"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "open-world-assumption",
+      "label": "Open-World Assumption",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "The earliest architectural assumption: knowledge to be visualized exists as public entities in Wikidata. Works for public subjects but fails completely at the boundary of private knowledge with no QID.",
+      "metrics": {},
+      "wikidata": "Q1069864",
+      "image": ""
+    },
+    {
+      "id": "ontology-drift",
+      "label": "Ontology Drift",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "negative",
+      "description": "The primary failure mode: LLMs left unconstrained invent node types and edge rels the renderer doesn't recognize, producing incompatible schemas across encodings of related documents.",
+      "metrics": {
+        "Density range observed": "1.32–2.41",
+        "Root cause": "Unconstrained LLM vocabulary construction"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "three-part-lock",
+      "label": "Three-Part Lock",
+      "type": "concept",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The architectural answer to ontology drift: validator (canonical vocabulary), SOP reference (semantic + visual explanation), and renderer (geometry/style switches) must all update atomically. Breaking atomicity silently corrupts encoding quality.",
+      "metrics": {
+        "Components": "3 (validator + SOP + renderer)"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "dream-loop",
+      "label": "Dream Loop",
+      "type": "algorithm",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Meta-governance protocol that reads accumulated encoding signals across Alone-Time handoffs, identifies patterns, and proposes controlled vocabulary extensions to the three-part lock. Run 1 tightened the `reveals` constraint.",
+      "metrics": {
+        "Runs completed": "1"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "explore-pipeline",
+      "label": "Explore Pipeline",
+      "type": "algorithm",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The fast encoding path: a user types a topic in the browser, Gemini generates a brief JSON, the completion pipeline fills gaps, and the canvas renders the result. Approximate ontology adherence. Transient — not registered in the library.",
+      "metrics": {
+        "Latency": "seconds",
+        "Ontology enforcement": "approximate"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "visualize-skill",
+      "label": "Visualize Skill",
+      "type": "algorithm",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The deliberate encoding path: a power user invokes the /visualize Claude CLI skill with a source document. Three-pass structured encoding (nodes → edges → narrative), full validator enforcement, quality gates enforced before library registration.",
+      "metrics": {
+        "Passes": "3 (nodes → edges → narrative)",
+        "Quality gates": "5 (density, beats, insights, climax, validator)"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "paint-system",
+      "label": "Paint System",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Adds a visual comprehension channel to the canvas. P-key triggered; Shift+P cycles strategy. Assembles spatial + textual + cinematic context, applies a named strategy, calls Gemini for image generation, and wraps the result as a Three.js mesh texture.",
+      "metrics": {
+        "Trigger": "P-key (global)",
+        "Strategy cycle": "Shift+P"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "three-js",
+      "label": "Three.js",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The current canvas rendering engine. Superseded A-Frame, providing direct control over geometry, materials, animation, and texture application. Every ontology type maps to a Three.js geometry and color.",
+      "metrics": {},
+      "wikidata": "Q1245512",
+      "image": ""
+    },
+    {
+      "id": "validator",
+      "label": "Validator",
+      "type": "software",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "The canonical source for VALID_TYPES and VALID_RELS — the ontology vocabulary enforcement point. Exit 0 = valid; exit 1 = warnings; exit 2 = cross-reference errors (blocking). Every library entry must pass before registration.",
+      "metrics": {
+        "VALID_TYPES": "38",
+        "VALID_RELS": "29",
+        "Exit codes": "0=valid · 1=warning · 2=error"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "alone-time-loop",
+      "label": "Alone-Time Loop",
+      "type": "algorithm",
+      "tier": "primary",
+      "sentiment": "positive",
+      "description": "Autonomous 6-step re-encoding loop: INGEST library state → SELECT degraded entry → MUTATE → GATE → COMMIT → HANDOFF. Runs until no degraded entries remain. 4 runs completed; library went from 3 degraded to 0 degraded.",
+      "metrics": {
+        "Runs completed": "4",
+        "Library improvement": "3 degraded → 0 degraded"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "opentapioca",
+      "label": "OpenTapioca",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "contested",
+      "description": "Named entity recognition service that matches text spans to Wikidata QIDs. Central to the open-world pipeline but fundamentally incompatible with private knowledge vaults that have no Wikidata representation.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "wikidata",
+      "label": "Wikidata",
+      "type": "platform",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Open knowledge base providing structured facts — descriptions, images, linked identifiers — for public entities. Foundational for the open-world pipeline; also used for enrichment of public nodes in library entries.",
+      "metrics": {},
+      "wikidata": "Q2013",
+      "image": ""
+    },
+    {
+      "id": "sparql",
+      "label": "SPARQL",
+      "type": "algorithm",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Query language for RDF/linked data, used to retrieve structured facts from Wikidata. Precise and expressive for public entity data; returns nothing for entities with no Wikidata presence.",
+      "metrics": {},
+      "wikidata": "Q54871",
+      "image": ""
+    },
+    {
+      "id": "a-frame",
+      "label": "A-Frame",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Declarative WebXR framework that was the original rendering layer. Superseded by direct Three.js when control requirements exceeded what A-Frame's abstraction could satisfy. Remains in codebase as historical artifact.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "type": "model",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Google's LLM and image generation model. Powers the explore pipeline (brief generation) and the paint system (image generation). Also configurable as the BYOM backend via localStorage for any canvas LLM call.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "stable-diffusion",
+      "label": "Stable Diffusion",
+      "type": "model",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Open-source image generation model whose community has developed deep knowledge of effective prompt construction — seed phrases, compositional patterns, visual register triggers. kaaroViewer's paint strategies directly apply these prompt engineering patterns.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "sop-reference",
+      "label": "SOP Reference",
+      "type": "standard",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "The semantic and visual explanation for every node type and edge relationship in VALID_TYPES/VALID_RELS. The encoder's reference document — bridges the formal vocabulary to encoding decisions. Must update atomically with the validator and renderer.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "paint-context",
+      "label": "PaintContext",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Middleware module that assembles the three paint prompt inputs: spatial positioning (nodes in camera frustum), textual context (slide narration + node description), and cinematic camera angle from the Three.js camera state.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "paint-strategies",
+      "label": "Paint Strategies",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Named prompt engineering patterns for four visual registers: cinematic (dramatic lighting, shallow depth of field), documentary (journalistic framing), abstract (geometric/metaphoric), blueprint (technical diagram). Each produces a distinct image from the same canvas state.",
+      "metrics": {
+        "Strategy count": "4 (cinematic · documentary · abstract · blueprint)"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "private-knowledge-vault",
+      "label": "Private Knowledge Vault",
+      "type": "concept",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Personal notes, project documents, research drafts — private knowledge with no Wikidata QID, unmatched by OpenTapioca, unreachable by SPARQL. The use case that broke the open-world assumption and necessitated the LLM pivot.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "health-check",
+      "label": "Health Check",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Library quality monitoring script that scores each entry as ok/watch/degraded/critical based on edge density, node count, beat count, and insight count. Drives the Alone-Time loop's entry selection.",
+      "metrics": {
+        "Health states": "ok · watch · degraded · critical"
+      },
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "eval-modal",
+      "label": "Eval Modal",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "In-canvas UI component (L-key drawer → EVAL button) that collects user ratings and structured observations about library entries, then opens a pre-filled GitHub Issue for tracking (label: eval).",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "github-issues",
+      "label": "GitHub Issues",
+      "type": "platform",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "External feedback channel for user eval submissions. Pre-filled issues include doc ID, date, rating, and structured observations. Acts as the external signal source that can trigger Alone-Time re-encode decisions.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "webxr",
+      "label": "WebXR",
+      "type": "standard",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Browser API standard for immersive 3D and AR/VR experiences. Originally implemented via A-Frame; now available through Three.js immersive mode.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "force-directed-layout",
+      "label": "Force-Directed Layout",
+      "type": "algorithm",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Graph layout algorithm using physical force simulation to position nodes — attraction along edges, repulsion between nodes. Produces emergent spatial clustering that makes the intelligence brief's cluster structure visually legible.",
+      "metrics": {},
+      "wikidata": "Q906415",
+      "image": ""
+    },
+    {
+      "id": "brief-controller",
+      "label": "Brief Controller",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Canvas module managing active brief state: which brief is loaded, which story beat is current, slide navigation. The state machine between the intelligence brief data and the Three.js render loop.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "session-manager",
+      "label": "Session Manager",
+      "type": "software",
+      "tier": "secondary",
+      "sentiment": "neutral",
+      "description": "Persistence module that saves and restores exploration sessions via browser IndexedDB. Allows users to return to a specific canvas state, camera position, and loaded brief.",
+      "metrics": {},
+      "wikidata": null,
+      "image": ""
+    },
+    {
+      "id": "completion-pipeline",
+      "label": "Completion Pipeline",
+      "type": "algorithm",
+      "tier": "secondary",
+      "sentiment": "positive",
+      "description": "Stage 4 of the explore flow: stubs missing nodes for story beat refs (4a), attaches enrichment data from Wikidata (4b), adds edge stubs for implied relationships (4c). Runs after the explore pipeline to complete the draft brief before canvas render.",
+      "metrics": {
+        "Stages": "4a (stub nodes) · 4b (enrichment) · 4c (edge stubs)"
+      },
+      "wikidata": null,
+      "image": ""
+    }
+  ],
+  "edges": [
+    { "from": "opentapioca", "to": "open-world-assumption", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "wikidata", "to": "open-world-assumption", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "sparql", "to": "open-world-assumption", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "opentapioca", "to": "wikidata", "rel": "association", "label": "QID matching — NER spans resolved to Wikidata entities", "weight": 3, "directed": true },
+    { "from": "open-world-assumption", "to": "ontology-drift", "rel": "causes", "label": "", "weight": 5, "directed": true },
+    { "from": "private-knowledge-vault", "to": "ontology-drift", "rel": "causes", "label": "", "weight": 5, "directed": true },
+    { "from": "private-knowledge-vault", "to": "open-world-assumption", "rel": "contradicts", "label": "", "weight": 3, "directed": true },
+    { "from": "opentapioca", "to": "private-knowledge-vault", "rel": "opposes", "label": "NER cannot match entities with no Wikidata QID", "weight": 3, "directed": true },
+    { "from": "ontology-drift", "to": "three-part-lock", "rel": "causes", "label": "", "weight": 5, "directed": true },
+    { "from": "three-part-lock", "to": "ontology-drift", "rel": "mitigates", "label": "", "weight": 5, "directed": true },
+    { "from": "three-part-lock", "to": "validator", "rel": "features", "label": "", "weight": 3, "directed": true },
+    { "from": "three-part-lock", "to": "sop-reference", "rel": "features", "label": "", "weight": 3, "directed": true },
+    { "from": "validator", "to": "intelligence-brief", "rel": "governs", "label": "VALID_TYPES + VALID_RELS vocabulary enforcement", "weight": 4, "directed": true },
+    { "from": "sop-reference", "to": "intelligence-brief", "rel": "governs", "label": "encoding rules + visual semantics for every type and rel", "weight": 3, "directed": true },
+    { "from": "intelligence-brief", "to": "kaaro-viewer", "rel": "enables", "label": "", "weight": 5, "directed": true },
+    { "from": "wikidata", "to": "intelligence-brief", "rel": "enables", "label": "", "weight": 2, "directed": true },
+    { "from": "explore-pipeline", "to": "intelligence-brief", "rel": "achieves", "label": "", "weight": 3, "directed": true },
+    { "from": "visualize-skill", "to": "intelligence-brief", "rel": "achieves", "label": "", "weight": 3, "directed": true },
+    { "from": "visualize-skill", "to": "three-part-lock", "rel": "implements", "label": "", "weight": 3, "directed": true },
+    { "from": "gemini", "to": "explore-pipeline", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "explore-pipeline", "to": "completion-pipeline", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "completion-pipeline", "to": "intelligence-brief", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "explore-pipeline", "to": "visualize-skill", "rel": "association", "label": "two complementary paths to the same output", "weight": 2, "directed": false },
+    { "from": "three-js", "to": "a-frame", "rel": "supersedes", "label": "", "weight": 4, "directed": true },
+    { "from": "three-js", "to": "kaaro-viewer", "rel": "enables", "label": "", "weight": 5, "directed": true },
+    { "from": "a-frame", "to": "webxr", "rel": "enables", "label": "", "weight": 2, "directed": true },
+    { "from": "three-js", "to": "webxr", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "three-js", "to": "force-directed-layout", "rel": "implements", "label": "", "weight": 2, "directed": true },
+    { "from": "brief-controller", "to": "kaaro-viewer", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "session-manager", "to": "kaaro-viewer", "rel": "enables", "label": "", "weight": 2, "directed": true },
+    { "from": "paint-system", "to": "kaaro-viewer", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "paint-context", "to": "paint-system", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "paint-strategies", "to": "paint-system", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "gemini", "to": "paint-system", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "stable-diffusion", "to": "paint-strategies", "rel": "association", "label": "seed prompt patterns transferred to strategy design", "weight": 2, "directed": true },
+    { "from": "intelligence-brief", "to": "paint-context", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "three-js", "to": "paint-system", "rel": "enables", "label": "", "weight": 2, "directed": true },
+    { "from": "health-check", "to": "alone-time-loop", "rel": "governs", "label": "selects degraded entries for re-encoding", "weight": 3, "directed": true },
+    { "from": "alone-time-loop", "to": "intelligence-brief", "rel": "achieves", "label": "", "weight": 3, "directed": true },
+    { "from": "dream-loop", "to": "three-part-lock", "rel": "governs", "label": "vocabulary extension protocol for ontology evolution", "weight": 4, "directed": true },
+    { "from": "dream-loop", "to": "alone-time-loop", "rel": "derives_from", "label": "", "weight": 2, "directed": true },
+    { "from": "dream-loop", "to": "validator", "rel": "achieves", "label": "", "weight": 2, "directed": true },
+    { "from": "eval-modal", "to": "github-issues", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "github-issues", "to": "alone-time-loop", "rel": "enables", "label": "", "weight": 2, "directed": true },
+    { "from": "health-check", "to": "intelligence-brief", "rel": "association", "label": "measures library quality metrics per entry", "weight": 2, "directed": true },
+    { "from": "eval-modal", "to": "intelligence-brief", "rel": "association", "label": "rates quality of library entries", "weight": 2, "directed": true },
+    { "from": "private-knowledge-vault", "to": "visualize-skill", "rel": "causes", "label": "", "weight": 3, "directed": true },
+    { "from": "open-world-assumption", "to": "kaaro-viewer", "rel": "association", "label": "earliest use case and interaction pattern", "weight": 2, "directed": true },
+    { "from": "alone-time-loop", "to": "kaaro-viewer", "rel": "governs", "label": "autonomous re-encoding loop for library quality", "weight": 3, "directed": true },
+    { "from": "explore-pipeline", "to": "kaaro-viewer", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "visualize-skill", "to": "kaaro-viewer", "rel": "enables", "label": "", "weight": 3, "directed": true },
+    { "from": "paint-context", "to": "three-js", "rel": "association", "label": "reads spatial positioning from canvas state", "weight": 2, "directed": true },
+    { "from": "brief-controller", "to": "intelligence-brief", "rel": "association", "label": "manages active brief state and beat navigation", "weight": 2, "directed": true },
+    { "from": "session-manager", "to": "intelligence-brief", "rel": "association", "label": "persists briefs via IndexedDB", "weight": 2, "directed": true },
+    { "from": "alone-time-loop", "to": "validator", "rel": "achieves", "label": "", "weight": 2, "directed": true },
+    { "from": "eval-modal", "to": "alone-time-loop", "rel": "association", "label": "eval scores inform re-encode priority", "weight": 2, "directed": true },
+    { "from": "gemini", "to": "paint-strategies", "rel": "association", "label": "prompt formatting and instruction structure", "weight": 2, "directed": true },
+    { "from": "completion-pipeline", "to": "kaaro-viewer", "rel": "association", "label": "enrichment stage in explore flow reaches canvas", "weight": 2, "directed": true },
+    { "from": "visualize-skill", "to": "intelligence-brief", "rel": "governs", "label": "quality gates: density ≥2.0, 7–12 beats, validator exit 0", "weight": 3, "directed": true },
+    { "from": "personalized-ontology", "to": "ontology-drift", "rel": "causes", "label": "", "weight": 4, "directed": true },
+    { "from": "personalized-ontology", "to": "intelligence-brief", "rel": "association", "label": "brief is the personalized ontology container", "weight": 3, "directed": true },
+    { "from": "personalized-ontology", "to": "three-part-lock", "rel": "association", "label": "lock maintains ontology stability", "weight": 3, "directed": true },
+    { "from": "kaaro-viewer", "to": "paint-system", "rel": "features", "label": "", "weight": 2, "directed": true },
+    { "from": "kaaro-viewer", "to": "eval-modal", "rel": "features", "label": "", "weight": 2, "directed": true }
+  ]
+}
